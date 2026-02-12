@@ -30,6 +30,24 @@ struct Level: Identifiable, Hashable {
             title: "Level 4: Functions",
             summary: "Bundle your favorite actions.",
             lessons: [Lesson.sampleLessons[3]]
+        ),
+        Level(
+            id: "level-5",
+            title: "Level 5: Variables",
+            summary: "Store and remember information.",
+            lessons: [Lesson.sampleLessons[4]]
+        ),
+        Level(
+            id: "level-6",
+            title: "Level 6: Arrays",
+            summary: "Organize lists like a pro.",
+            lessons: [Lesson.sampleLessons[5]]
+        ),
+        Level(
+            id: "level-7",
+            title: "Level 7: Debugging",
+            summary: "Fix bugs and become unstoppable!",
+            lessons: [Lesson.sampleLessons[6]]
         )
     ]
 

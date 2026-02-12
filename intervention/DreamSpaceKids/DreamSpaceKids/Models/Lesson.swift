@@ -60,6 +60,45 @@ struct Lesson: Identifiable, Hashable {
                 correctIndex: 0,
                 explanation: "Functions let you reuse steps without rewriting them."
             )
+        ),
+        Lesson(
+            id: "variables",
+            title: "Variables",
+            summary: "Store and change information.",
+            concept: "Variables are like boxes that hold information. You can change what's inside them!",
+            example: "var score = 0\nscore = score + 10",
+            challenge: Challenge(
+                prompt: "What happens when you change a variable's value?",
+                choices: ["The old value is saved", "The new value replaces the old one", "Both values are kept"],
+                correctIndex: 1,
+                explanation: "Variables can only hold one value at a time. The new value replaces the old one!"
+            )
+        ),
+        Lesson(
+            id: "arrays",
+            title: "Arrays",
+            summary: "Keep lists of things together.",
+            concept: "An array is a list that holds many items in order. Each item has a position number!",
+            example: "let fruits = [\"Apple\", \"Banana\", \"Orange\"]\nprint(fruits[0]) // Apple",
+            challenge: Challenge(
+                prompt: "How do you get the first item in an array?",
+                choices: ["array[1]", "array[0]", "array.first()"],
+                correctIndex: 1,
+                explanation: "Arrays start counting at 0, so the first item is at position 0!"
+            )
+        ),
+        Lesson(
+            id: "debugging",
+            title: "Debugging",
+            summary: "Find and fix mistakes like a pro.",
+            concept: "Debugging means finding errors in code. Everyone makes mistakes - great coders know how to fix them!",
+            example: "// Wrong:\nif score = 10 { }\n// Right:\nif score == 10 { }",
+            challenge: Challenge(
+                prompt: "What's the best way to find a bug in your code?",
+                choices: ["Delete everything and start over", "Test small parts one at a time", "Hope it fixes itself"],
+                correctIndex: 1,
+                explanation: "Testing code in small pieces helps you find exactly where the problem is!"
+            )
         )
     ]
 }

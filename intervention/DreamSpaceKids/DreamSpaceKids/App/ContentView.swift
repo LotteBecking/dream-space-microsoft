@@ -10,10 +10,17 @@ struct ContentView: View {
                     .tabItem {
                         Label("Levels", systemImage: "flag.checkered")
                     }
-                ChallengeView(lesson: Level.allLessons.first ?? Lesson.sampleLessons[0])
+                
+                LeaderboardView()
                     .tabItem {
-                        Label("Practice", systemImage: "puzzlepiece.extension")
+                        Label("Teams", systemImage: "trophy.fill")
                     }
+                
+                SpaceGameView()
+                    .tabItem {
+                        Label("Play", systemImage: "airplane")
+                    }
+                
                 ProgressDashboardView()
                     .tabItem {
                         Label("Progress", systemImage: "chart.bar.fill")
