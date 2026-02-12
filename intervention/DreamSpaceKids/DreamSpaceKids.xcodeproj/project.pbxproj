@@ -1,0 +1,312 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A0000000000000000000100 /* DreamSpaceKidsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000010 /* DreamSpaceKidsApp.swift */; };
+		1A0000000000000000000101 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000011 /* ContentView.swift */; };
+		1A0000000000000000000102 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000012 /* Lesson.swift */; };
+		1A0000000000000000000103 /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000013 /* Challenge.swift */; };
+		1A0000000000000000000104 /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000014 /* ProgressStore.swift */; };
+		1A0000000000000000000105 /* LessonListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000015 /* LessonListView.swift */; };
+		1A0000000000000000000106 /* LessonDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000016 /* LessonDetailView.swift */; };
+		1A0000000000000000000107 /* ChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000017 /* ChallengeView.swift */; };
+		1A0000000000000000000108 /* ProgressDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000018 /* ProgressDashboardView.swift */; };
+		1A0000000000000000000109 /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000019 /* BadgeView.swift */; };
+		1A0000000000000000000110 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000020 /* Theme.swift */; };
+		1A0000000000000000000111 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000021 /* Level.swift */; };
+		1A0000000000000000000112 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000022 /* OnboardingView.swift */; };
+		1A0000000000000000000300 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A000000000000000000001A /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1A0000000000000000000003 /* DreamSpaceKids.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = DreamSpaceKids.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0000000000000000000010 /* DreamSpaceKidsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamSpaceKidsApp.swift; sourceTree = "<group>"; };
+		1A0000000000000000000011 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1A0000000000000000000012 /* Lesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
+		1A0000000000000000000013 /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
+		1A0000000000000000000014 /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
+		1A0000000000000000000015 /* LessonListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonListView.swift; sourceTree = "<group>"; };
+		1A0000000000000000000016 /* LessonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonDetailView.swift; sourceTree = "<group>"; };
+		1A0000000000000000000017 /* ChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeView.swift; sourceTree = "<group>"; };
+		1A0000000000000000000018 /* ProgressDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressDashboardView.swift; sourceTree = "<group>"; };
+		1A0000000000000000000019 /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		1A000000000000000000001A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1A000000000000000000001B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A0000000000000000000020 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		1A0000000000000000000021 /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		1A0000000000000000000022 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		608CA1B22F3CECAD00546EDE /* TestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestPlan.xctestplan; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1A0000000000000000000202 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A0000000000000000000004 = {
+			isa = PBXGroup;
+			children = (
+				608CA1B22F3CECAD00546EDE /* TestPlan.xctestplan */,
+				1A0000000000000000000005 /* DreamSpaceKids */,
+				1A000000000000000000000A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1A0000000000000000000005 /* DreamSpaceKids */ = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000006 /* App */,
+				1A0000000000000000000007 /* Models */,
+				1A0000000000000000000008 /* Stores */,
+				1A0000000000000000000009 /* Views */,
+				1A000000000000000000001A /* Assets.xcassets */,
+				1A000000000000000000001B /* Info.plist */,
+			);
+			path = DreamSpaceKids;
+			sourceTree = "<group>";
+		};
+		1A0000000000000000000006 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000010 /* DreamSpaceKidsApp.swift */,
+				1A0000000000000000000011 /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		1A0000000000000000000007 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000012 /* Lesson.swift */,
+				1A0000000000000000000013 /* Challenge.swift */,
+				1A0000000000000000000021 /* Level.swift */,
+				1A0000000000000000000020 /* Theme.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1A0000000000000000000008 /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000014 /* ProgressStore.swift */,
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
+		1A0000000000000000000009 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000015 /* LessonListView.swift */,
+				1A0000000000000000000016 /* LessonDetailView.swift */,
+				1A0000000000000000000017 /* ChallengeView.swift */,
+				1A0000000000000000000018 /* ProgressDashboardView.swift */,
+				1A0000000000000000000019 /* BadgeView.swift */,
+				1A0000000000000000000022 /* OnboardingView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1A000000000000000000000A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000003 /* DreamSpaceKids.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1A0000000000000000000002 /* DreamSpaceKids */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A0000000000000000000400 /* Build configuration list for PBXNativeTarget "DreamSpaceKids" */;
+			buildPhases = (
+				1A0000000000000000000200 /* Sources */,
+				1A0000000000000000000201 /* Resources */,
+				1A0000000000000000000202 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DreamSpaceKids;
+			productName = DreamSpaceKids;
+			productReference = 1A0000000000000000000003 /* DreamSpaceKids.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1A0000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					1A0000000000000000000002 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 1A0000000000000000000401 /* Build configuration list for PBXProject "DreamSpaceKids" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1A0000000000000000000004;
+			productRefGroup = 1A000000000000000000000A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1A0000000000000000000002 /* DreamSpaceKids */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1A0000000000000000000201 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A0000000000000000000300 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1A0000000000000000000200 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A0000000000000000000100 /* DreamSpaceKidsApp.swift in Sources */,
+				1A0000000000000000000101 /* ContentView.swift in Sources */,
+				1A0000000000000000000102 /* Lesson.swift in Sources */,
+				1A0000000000000000000103 /* Challenge.swift in Sources */,
+				1A0000000000000000000111 /* Level.swift in Sources */,
+				1A0000000000000000000110 /* Theme.swift in Sources */,
+				1A0000000000000000000104 /* ProgressStore.swift in Sources */,
+				1A0000000000000000000105 /* LessonListView.swift in Sources */,
+				1A0000000000000000000106 /* LessonDetailView.swift in Sources */,
+				1A0000000000000000000107 /* ChallengeView.swift in Sources */,
+				1A0000000000000000000108 /* ProgressDashboardView.swift in Sources */,
+				1A0000000000000000000109 /* BadgeView.swift in Sources */,
+				1A0000000000000000000112 /* OnboardingView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1A0000000000000000000500 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = DreamSpaceKids/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamspace.kids;
+				PRODUCT_NAME = DreamSpaceKids;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A0000000000000000000501 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = DreamSpaceKids/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamspace.kids;
+				PRODUCT_NAME = DreamSpaceKids;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1A0000000000000000000600 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = DreamSpaceKids/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamspace.kids;
+				PRODUCT_NAME = DreamSpaceKids;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A0000000000000000000601 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = DreamSpaceKids/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamspace.kids;
+				PRODUCT_NAME = DreamSpaceKids;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A0000000000000000000400 /* Build configuration list for PBXNativeTarget "DreamSpaceKids" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A0000000000000000000600 /* Debug */,
+				1A0000000000000000000601 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		1A0000000000000000000401 /* Build configuration list for PBXProject "DreamSpaceKids" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A0000000000000000000500 /* Debug */,
+				1A0000000000000000000501 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1A0000000000000000000001 /* Project object */;
+}
