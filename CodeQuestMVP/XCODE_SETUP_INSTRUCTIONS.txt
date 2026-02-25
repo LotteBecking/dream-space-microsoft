@@ -1,0 +1,40 @@
+# Xcode Project Setup - Complete Guide
+
+All your Swift files are ready! Follow these steps:
+
+## Quick Setup (5 minutes)
+
+1. Open Xcode
+2. File → New → Project
+3. Choose: iOS → App
+4. Settings:
+   - Product Name: CodeQuestMVP
+   - Team: Your team (or None for simulator only)
+   - Organization Identifier: com.lottebecking
+   - Interface: SwiftUI ← IMPORTANT!
+   - Language: Swift
+   - Storage: None
+   - Include Tests: Optional
+
+5. Save Location: 
+   /Users/lottebecking/Documents/GitHub/dream-space-microsoft/
+
+6. After project creates:
+   - Delete default ContentView.swift
+   - Drag these folders FROM YOUR CodeQuestMVP FOLDER into Xcode:
+     * Models/
+     * ViewModels/
+     * Services/
+     * Views/
+     * SampleData/
+   - Drag CodeQuestMVPApp.swift (replace existing)
+   - When prompted: Check "Copy items if needed"
+
+7. Build and Run! (Cmd + R)
+
+## Alternative: Use Provided Script
+
+Run: ./create_xcode_project.sh
+
+This will attempt to auto-generate the project.
+

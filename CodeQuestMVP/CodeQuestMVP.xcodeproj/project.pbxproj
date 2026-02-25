@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CC483D68D0FA494F9261FBEB /* CodeQuestMVPApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91ABD6EF1497464F9D8DEA69 /* CodeQuestMVPApp.swift */; };
+		D0613263612B4C3F9829CE48 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA480CE57DB43209C0B483E /* Block.swift */; };
+		9FE6E53ED1D6490EADE62AA3 /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01F56205EE6494E9F31F305 /* Mission.swift */; };
+		6315863974D949959C93DF9F /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691ED285951142BCA2B55EBD /* Level.swift */; };
+		1A3CDC9ED1E148C5BADB7593 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF27E86F3FF342E1BD9B20FE /* User.swift */; };
+		25F886642B2C4960B339A3A4 /* GameProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94924546C9E74012B3C5F826 /* GameProgressViewModel.swift */; };
+		F167EE11A50E47668786C5D3 /* MissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588FEA44ECDD44A690322DA6 /* MissionViewModel.swift */; };
+		1F01BAF8153A4745AA780F28 /* BlockExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FCBFD8542843AFA6EC9D58 /* BlockExecutor.swift */; };
+		ADD8F43E28AB4357AA0F5F7A /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD508DA46570401D939D1043 /* MainMenuView.swift */; };
+		FEC68FE926B14BA4B9FF2F86 /* MissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA4ACCA1B441F696D41B13 /* MissionView.swift */; };
+		E63214A6A5D04404B39AF545 /* SimulationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DE3073FB9045B6B9F85AFE /* SimulationView.swift */; };
+		1B1E5D2F1E014424B1A62F3E /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61E7B4283D94B1586557F99 /* WorkspaceView.swift */; };
+		C8707F7E95AA4DC584230375 /* BlockPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C753F871EFE143D08DC87CEE /* BlockPaletteView.swift */; };
+		B0FBA2B9BDF84EFC8729E16F /* LevelSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BC988BBFE74119A34F9470 /* LevelSelectionView.swift */; };
+		697D31581F664B509611B5EA /* MissionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0E2E0960F040138118F0C4 /* MissionListView.swift */; };
+		66749344B4704B46B2BE22C0 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFF2F829D5445FE9E61954E /* ProgressView.swift */; };
+		2B2ED4B100CC4991AB96CD18 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C34610CD50946718FBF0AA2 /* SampleData.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		641AF0F5EA2D4D368395DD6F /* CodeQuestMVP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeQuestMVP.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D31C4A602864398BD77E31C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		91ABD6EF1497464F9D8DEA69 /* CodeQuestMVPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeQuestMVPApp.swift; sourceTree = "<group>"; };
+		CAA480CE57DB43209C0B483E /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
+		E01F56205EE6494E9F31F305 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
+		691ED285951142BCA2B55EBD /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		EF27E86F3FF342E1BD9B20FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		94924546C9E74012B3C5F826 /* GameProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProgressViewModel.swift; sourceTree = "<group>"; };
+		588FEA44ECDD44A690322DA6 /* MissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionViewModel.swift; sourceTree = "<group>"; };
+		60FCBFD8542843AFA6EC9D58 /* BlockExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockExecutor.swift; sourceTree = "<group>"; };
+		DD508DA46570401D939D1043 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
+		E2EA4ACCA1B441F696D41B13 /* MissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionView.swift; sourceTree = "<group>"; };
+		27DE3073FB9045B6B9F85AFE /* SimulationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationView.swift; sourceTree = "<group>"; };
+		E61E7B4283D94B1586557F99 /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
+		C753F871EFE143D08DC87CEE /* BlockPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockPaletteView.swift; sourceTree = "<group>"; };
+		D7BC988BBFE74119A34F9470 /* LevelSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectionView.swift; sourceTree = "<group>"; };
+		6E0E2E0960F040138118F0C4 /* MissionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionListView.swift; sourceTree = "<group>"; };
+		7EFF2F829D5445FE9E61954E /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		6C34610CD50946718FBF0AA2 /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		451C8CEBB69544938260B5B8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		694D74E0D9E24248954F10AE = {
+			isa = PBXGroup;
+			children = (
+				91ABD6EF1497464F9D8DEA69 /* CodeQuestMVPApp.swift */,
+				FAF64AB899F641DFBAF6EA32 /* Models */,
+				C40507388F5B480F9D121489 /* ViewModels */,
+				17F00C9490AC453BACAD1BAF /* Services */,
+				6CA11F73D2644CCDBC94E7E6 /* Views */,
+				5BFBD480D2FF4AFAA56126A5 /* SampleData */,
+				0D31C4A602864398BD77E31C /* Info.plist */,
+				DFE46CE70E59459883C0A0C3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DFE46CE70E59459883C0A0C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				641AF0F5EA2D4D368395DD6F /* CodeQuestMVP.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FAF64AB899F641DFBAF6EA32 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CAA480CE57DB43209C0B483E /* Block.swift */,
+				E01F56205EE6494E9F31F305 /* Mission.swift */,
+				691ED285951142BCA2B55EBD /* Level.swift */,
+				EF27E86F3FF342E1BD9B20FE /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C40507388F5B480F9D121489 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				94924546C9E74012B3C5F826 /* GameProgressViewModel.swift */,
+				588FEA44ECDD44A690322DA6 /* MissionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		17F00C9490AC453BACAD1BAF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				60FCBFD8542843AFA6EC9D58 /* BlockExecutor.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		6CA11F73D2644CCDBC94E7E6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DD508DA46570401D939D1043 /* MainMenuView.swift */,
+				E2EA4ACCA1B441F696D41B13 /* MissionView.swift */,
+				27DE3073FB9045B6B9F85AFE /* SimulationView.swift */,
+				E61E7B4283D94B1586557F99 /* WorkspaceView.swift */,
+				C753F871EFE143D08DC87CEE /* BlockPaletteView.swift */,
+				D7BC988BBFE74119A34F9470 /* LevelSelectionView.swift */,
+				6E0E2E0960F040138118F0C4 /* MissionListView.swift */,
+				7EFF2F829D5445FE9E61954E /* ProgressView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5BFBD480D2FF4AFAA56126A5 /* SampleData */ = {
+			isa = PBXGroup;
+			children = (
+				6C34610CD50946718FBF0AA2 /* SampleData.swift */,
+			);
+			path = SampleData;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3952F12420F949FDBEBE4526 /* CodeQuestMVP */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5DFE3DA9D4B54925A71C8D39 /* Build configuration list for PBXNativeTarget "CodeQuestMVP" */;
+			buildPhases = (
+				482CB2A83ACC484DA9FD7C97 /* Sources */,
+				451C8CEBB69544938260B5B8 /* Frameworks */,
+				2EE67B865B564D0DA6CF6FC3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CodeQuestMVP;
+			productName = CodeQuestMVP;
+			productReference = 641AF0F5EA2D4D368395DD6F /* CodeQuestMVP.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5ACC7FCA31BF4E798599D8CF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1400;
+				LastUpgradeCheck = 1400;
+				TargetAttributes = {
+					3952F12420F949FDBEBE4526 = {
+						CreatedOnToolsVersion = 14.0;
+					};
+				};
+			};
+			buildConfigurationList = 2B88BA1D37894B04AA4E9EFA /* Build configuration list for PBXProject "CodeQuestMVP" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 694D74E0D9E24248954F10AE;
+			productRefGroup = DFE46CE70E59459883C0A0C3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3952F12420F949FDBEBE4526 /* CodeQuestMVP */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2EE67B865B564D0DA6CF6FC3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		482CB2A83ACC484DA9FD7C97 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC483D68D0FA494F9261FBEB /* CodeQuestMVPApp.swift in Sources */,
+				D0613263612B4C3F9829CE48 /* Block.swift in Sources */,
+				9FE6E53ED1D6490EADE62AA3 /* Mission.swift in Sources */,
+				6315863974D949959C93DF9F /* Level.swift in Sources */,
+				1A3CDC9ED1E148C5BADB7593 /* User.swift in Sources */,
+				25F886642B2C4960B339A3A4 /* GameProgressViewModel.swift in Sources */,
+				F167EE11A50E47668786C5D3 /* MissionViewModel.swift in Sources */,
+				1F01BAF8153A4745AA780F28 /* BlockExecutor.swift in Sources */,
+				ADD8F43E28AB4357AA0F5F7A /* MainMenuView.swift in Sources */,
+				FEC68FE926B14BA4B9FF2F86 /* MissionView.swift in Sources */,
+				E63214A6A5D04404B39AF545 /* SimulationView.swift in Sources */,
+				1B1E5D2F1E014424B1A62F3E /* WorkspaceView.swift in Sources */,
+				C8707F7E95AA4DC584230375 /* BlockPaletteView.swift in Sources */,
+				B0FBA2B9BDF84EFC8729E16F /* LevelSelectionView.swift in Sources */,
+				697D31581F664B509611B5EA /* MissionListView.swift in Sources */,
+				66749344B4704B46B2BE22C0 /* ProgressView.swift in Sources */,
+				2B2ED4B100CC4991AB96CD18 /* SampleData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4F83A801D4BE480B8E2A2ABC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1F44673254454BAF9081AB64 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		901FDA18A29146D38167190F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "CodeQuest MVP";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lottebecking.CodeQuestMVP";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D1FAA41EB9EB450F95C780D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "CodeQuest MVP";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lottebecking.CodeQuestMVP";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2B88BA1D37894B04AA4E9EFA /* Build configuration list for PBXProject "CodeQuestMVP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F83A801D4BE480B8E2A2ABC /* Debug */,
+				1F44673254454BAF9081AB64 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5DFE3DA9D4B54925A71C8D39 /* Build configuration list for PBXNativeTarget "CodeQuestMVP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				901FDA18A29146D38167190F /* Debug */,
+				D1FAA41EB9EB450F95C780D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5ACC7FCA31BF4E798599D8CF /* Project object */;
+}
