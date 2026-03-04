@@ -1,0 +1,375 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		071B686F0CC479F7B9642E97 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B77C45F51958474FF3998 /* RootView.swift */; };
+		42B9D83C1C5F016CD335484E /* KidsCodingiOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB6A0EC6B8CFFC8CBD29AF6 /* KidsCodingiOSApp.swift */; };
+		46FAA054D6EED9950A296468 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FA3A22CF2D0CC4B04A22D59 /* Assets.xcassets */; };
+		782EF774E8D405C175754238 /* TeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BD4F53B362A4FB85733215 /* TeamsView.swift */; };
+		8B3E3E0D15CCFCDAA0BDF5C5 /* ChallengesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51539456E22D3233A8778CE3 /* ChallengesView.swift */; };
+		8F47170057077F28268A851B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E7995BE7E5A04E43EAB0D0 /* ProfileView.swift */; };
+		9480E68DD09295966BCE313D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8473FBF34243AECFB6591F /* DashboardView.swift */; };
+		9C3C11C4134435A538509CDC /* ChallengeSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D030B0D114144A5F8C2DFA /* ChallengeSheetView.swift */; };
+		A4F32831B402347764E0E511 /* ChallengeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B953C96F4EB1446D4B901073 /* ChallengeData.swift */; };
+		B802873039E04E5AD8667B48 /* AppModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02CAE7B6FB08A365B57B692 /* AppModels.swift */; };
+		BC06245B6FD0AD833CAD94B5 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B51442D5AAAB5D6089E9E7 /* OnboardingView.swift */; };
+		E36FCA08FA74B98D6150F1ED /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C50DA10F29103849E2D6E49 /* ProgressView.swift */; };
+		E639187FC828BF3AE62E7256 /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB096AEA43F973BAFF652F6A /* AppStore.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1FA3A22CF2D0CC4B04A22D59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2C50DA10F29103849E2D6E49 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		4C8473FBF34243AECFB6591F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		51539456E22D3233A8778CE3 /* ChallengesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengesView.swift; sourceTree = "<group>"; };
+		72BD4F53B362A4FB85733215 /* TeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsView.swift; sourceTree = "<group>"; };
+		74E1D631A67F09FD1B1B940B /* KidsCodingiOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = KidsCodingiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEB6A0EC6B8CFFC8CBD29AF6 /* KidsCodingiOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KidsCodingiOSApp.swift; sourceTree = "<group>"; };
+		B3E7995BE7E5A04E43EAB0D0 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		B57B77C45F51958474FF3998 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B953C96F4EB1446D4B901073 /* ChallengeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeData.swift; sourceTree = "<group>"; };
+		C9B51442D5AAAB5D6089E9E7 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		D02CAE7B6FB08A365B57B692 /* AppModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModels.swift; sourceTree = "<group>"; };
+		D1D030B0D114144A5F8C2DFA /* ChallengeSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSheetView.swift; sourceTree = "<group>"; };
+		FB096AEA43F973BAFF652F6A /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		217D0F5E84608402FEF6F67D = {
+			isa = PBXGroup;
+			children = (
+				3B34AF1554B52424FF15607F /* KidsCodingiOS */,
+				AAA007E8097414853BD454A8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		38D9B2DC9C5B3A51B6CC957B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				FB096AEA43F973BAFF652F6A /* AppStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		3B34AF1554B52424FF15607F /* KidsCodingiOS */ = {
+			isa = PBXGroup;
+			children = (
+				AEB6A0EC6B8CFFC8CBD29AF6 /* KidsCodingiOSApp.swift */,
+				4357158FA6FF9B2CDAC1843D /* Models */,
+				3B8C7C8D0E8124FD2C3691FD /* Resources */,
+				38D9B2DC9C5B3A51B6CC957B /* Services */,
+				9544876B4EDE92E1D2F2E4D3 /* Views */,
+			);
+			path = KidsCodingiOS;
+			sourceTree = "<group>";
+		};
+		3B8C7C8D0E8124FD2C3691FD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1FA3A22CF2D0CC4B04A22D59 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4357158FA6FF9B2CDAC1843D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D02CAE7B6FB08A365B57B692 /* AppModels.swift */,
+				B953C96F4EB1446D4B901073 /* ChallengeData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9544876B4EDE92E1D2F2E4D3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D1D030B0D114144A5F8C2DFA /* ChallengeSheetView.swift */,
+				51539456E22D3233A8778CE3 /* ChallengesView.swift */,
+				4C8473FBF34243AECFB6591F /* DashboardView.swift */,
+				C9B51442D5AAAB5D6089E9E7 /* OnboardingView.swift */,
+				B3E7995BE7E5A04E43EAB0D0 /* ProfileView.swift */,
+				2C50DA10F29103849E2D6E49 /* ProgressView.swift */,
+				B57B77C45F51958474FF3998 /* RootView.swift */,
+				72BD4F53B362A4FB85733215 /* TeamsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AAA007E8097414853BD454A8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				74E1D631A67F09FD1B1B940B /* KidsCodingiOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B2C2051AA3BFB1BFC8BB7B42 /* KidsCodingiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DB764695D91ED5E0C9749A6 /* Build configuration list for PBXNativeTarget "KidsCodingiOS" */;
+			buildPhases = (
+				776216FFF64A4BA401146BA9 /* Sources */,
+				56689566D96C15EB04AB7EBD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KidsCodingiOS;
+			packageProductDependencies = (
+			);
+			productName = KidsCodingiOS;
+			productReference = 74E1D631A67F09FD1B1B940B /* KidsCodingiOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1E43CA1CC2E4CCE8DFF55FA6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = 1B8B7ADEFB95E4233387F746 /* Build configuration list for PBXProject "KidsCodingiOS" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 217D0F5E84608402FEF6F67D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B2C2051AA3BFB1BFC8BB7B42 /* KidsCodingiOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		56689566D96C15EB04AB7EBD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46FAA054D6EED9950A296468 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		776216FFF64A4BA401146BA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B802873039E04E5AD8667B48 /* AppModels.swift in Sources */,
+				E639187FC828BF3AE62E7256 /* AppStore.swift in Sources */,
+				A4F32831B402347764E0E511 /* ChallengeData.swift in Sources */,
+				9C3C11C4134435A538509CDC /* ChallengeSheetView.swift in Sources */,
+				8B3E3E0D15CCFCDAA0BDF5C5 /* ChallengesView.swift in Sources */,
+				9480E68DD09295966BCE313D /* DashboardView.swift in Sources */,
+				42B9D83C1C5F016CD335484E /* KidsCodingiOSApp.swift in Sources */,
+				BC06245B6FD0AD833CAD94B5 /* OnboardingView.swift in Sources */,
+				8F47170057077F28268A851B /* ProfileView.swift in Sources */,
+				E36FCA08FA74B98D6150F1ED /* ProgressView.swift in Sources */,
+				071B686F0CC479F7B9642E97 /* RootView.swift in Sources */,
+				782EF774E8D405C175754238 /* TeamsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		3453B09F7CF02DB6397DB4A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AA0602B01EAECDAA15B61CAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		D87294EA74A199F9264C5DD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.KidsCodingiOS;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FDA75989ED6EB76C26A23B2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.KidsCodingiOS;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1B8B7ADEFB95E4233387F746 /* Build configuration list for PBXProject "KidsCodingiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3453B09F7CF02DB6397DB4A9 /* Debug */,
+				AA0602B01EAECDAA15B61CAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4DB764695D91ED5E0C9749A6 /* Build configuration list for PBXNativeTarget "KidsCodingiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FDA75989ED6EB76C26A23B2C /* Debug */,
+				D87294EA74A199F9264C5DD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1E43CA1CC2E4CCE8DFF55FA6 /* Project object */;
+}
