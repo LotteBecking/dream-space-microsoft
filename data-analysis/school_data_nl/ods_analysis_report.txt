@@ -1,0 +1,150 @@
+FILE: /Users/lottebecking/Downloads/20250926+gemiddelde_referentieniveaus_per_school_2223_2324_2425_Open_data.ods
+EXISTS: True
+SHEETS: ['Toelichting', 'Bestandsbeschrijving', 'Data']
+
+====================================================================================================
+SHEET: Toelichting
+SHAPE: (15, 2)
+COLUMNS: ['Unnamed: 0', 'Toelichting leerresultaten primair onderwijs 2023-2024-2025']
+
+MISSING (%) TOP 20:
+Unnamed: 0                                                     100.000000
+Toelichting leerresultaten primair onderwijs 2023-2024-2025     13.333333
+
+NUMERIC CANDIDATES: []
+
+HEAD:
+ Unnamed: 0                                                                                                                                                                                                                                                                                                                                                                                                                                                               Toelichting leerresultaten primair onderwijs 2023-2024-2025
+        NaN                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       NaN
+        NaN                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Inleiding
+        NaN In dit bestand vindt u van alle reguliere basisscholen de behaalde percentages referentieniveaus op de eindtoets/doorstroomtoets in de schooljaren 2022/2023, 2023/2024 en 2024/2025. Deze informatie hebben wij verkregen uit ROD van DUO. Deze leerresultaten vormen de basis voor de beoordeling van de standaard Resultaten (OR1) in het toezichtkader van de inspectie. U kunt hierover meer lezen in Onderwijsresultaten in het primair onderwijs | Onderwerp | Inspectie van het onderwijs (onderwijsinspectie.nl)
+        NaN                                                                                                                                                                                                      In de tabel wordt per school weergegeven wat de uitkomsten zijn voor de indicatoren die de inspectie beschouwt, te weten de indicator 1F en de indicator 1S/2F. We vergelijken hier het percentage behaalde referentieniveaus op de eindtoetsen/doorstroomtoetsen van 2023, 2024 en 2025 met de signaleringswaarde. 
+        NaN                                                                                                                                                              Bij het beoordelen van de leerresultaten nemen we met behulp van de schoolweging de kenmerken van de gehele groep leerlingen op school mee. Hiermee houden we bij de beoordeling van onderwijsresultaten rekening met de complexiteit van de leerlingpopulatie. De schoolweging wordt berekend door het CBS. De schoolweging maat voor de leerlingpopulatie.
+
+====================================================================================================
+SHEET: Bestandsbeschrijving
+SHAPE: (31, 7)
+COLUMNS: ['Unnamed: 0', 'Bestandsbeschrijving leerresultaten primair onderwijs 2023-2024-2025', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6']
+
+MISSING (%) TOP 20:
+Unnamed: 0                                                              100.000000
+Unnamed: 2                                                              100.000000
+Unnamed: 3                                                              100.000000
+Unnamed: 5                                                              100.000000
+Unnamed: 4                                                              100.000000
+Unnamed: 6                                                               35.483871
+Bestandsbeschrijving leerresultaten primair onderwijs 2023-2024-2025     16.129032
+
+NUMERIC CANDIDATES: []
+
+HEAD:
+ Unnamed: 0                                                                                                                                                                                                         Bestandsbeschrijving leerresultaten primair onderwijs 2023-2024-2025  Unnamed: 2  Unnamed: 3  Unnamed: 4  Unnamed: 5 Unnamed: 6
+        NaN                                                                                                                                                                                                                                                                          NaN         NaN         NaN         NaN         NaN        NaN
+        NaN                                                                                                                                                                                                                                                                    Inleiding         NaN         NaN         NaN         NaN        NaN
+        NaN De leerresultaten vormen de basis voor de beoordeling van de standaard Resultaten (OR1) in het toezichtkader van de inspectie. U kunt hierover meer lezen in Onderwijsresultaten in het primair onderwijs | Onderwerp | Inspectie van het onderwijs (onderwijsinspectie.nl).         NaN         NaN         NaN         NaN        NaN
+        NaN                                                                                                                                                                                                                                                                          NaN         NaN         NaN         NaN         NaN        NaN
+        NaN                                                                                                                                                                                                                                                    Uitkomsten leerresultaten         NaN         NaN         NaN         NaN        NaN
+
+====================================================================================================
+SHEET: Data
+SHAPE: (6205, 19)
+COLUMNS: ['ovt', 'Gemiddelde %1F 2223', 'Gemiddelde %1S/2F 2223', 'Aantal leerlingen 2223', 'Gemiddelde %1F 2324', 'Gemiddelde %1S/2F 2324', 'Aantal leerlingen 2324', 'Gemiddelde %1F 2425', 'Gemiddelde %1S/2F 2425', 'Aantal leerlingen 2425', 'Schoolweging', 'Schoolwegingscategorie', 'Signaleringswaarde 1F', 'Signaleringswaarde 1S/2F', 'Gewogen driejaarsgemiddelde %1F', 'Gewogen driejaarsgemiddelde %1S/2F', 'Totaal aantal leerlingen 3 jaar', 'Uitkomst indicator 1F', 'Uitkomst indicator 1S/2F']
+
+MISSING (%) TOP 20:
+Gemiddelde %1F 2223                   1.563255
+Gemiddelde %1S/2F 2223                1.563255
+Aantal leerlingen 2223                1.563255
+Gemiddelde %1S/2F 2324                0.547945
+Gemiddelde %1F 2324                   0.547945
+Aantal leerlingen 2324                0.547945
+Gemiddelde %1F 2425                   0.322321
+Aantal leerlingen 2425                0.322321
+Gemiddelde %1S/2F 2425                0.322321
+Schoolwegingscategorie                0.225624
+Schoolweging                          0.225624
+Signaleringswaarde 1S/2F              0.225624
+ovt                                   0.000000
+Signaleringswaarde 1F                 0.000000
+Gewogen driejaarsgemiddelde %1F       0.000000
+Gewogen driejaarsgemiddelde %1S/2F    0.000000
+Totaal aantal leerlingen 3 jaar       0.000000
+Uitkomst indicator 1F                 0.000000
+Uitkomst indicator 1S/2F              0.000000
+
+NUMERIC CANDIDATES: ['Gemiddelde %1F 2223', 'Gemiddelde %1S/2F 2223', 'Aantal leerlingen 2223', 'Gemiddelde %1F 2324', 'Gemiddelde %1S/2F 2324', 'Aantal leerlingen 2324', 'Gemiddelde %1F 2425', 'Gemiddelde %1S/2F 2425', 'Aantal leerlingen 2425', 'Schoolweging', 'Signaleringswaarde 1F', 'Signaleringswaarde 1S/2F', 'Gewogen driejaarsgemiddelde %1F', 'Gewogen driejaarsgemiddelde %1S/2F', 'Totaal aantal leerlingen 3 jaar']
+
+DESCRIBE (numeric candidates):
+                                     count         mean         std     min      25%      50%       75%      max
+Gemiddelde %1F 2223                 5837.0    95.779674    4.248587   66.67    94.00    96.83    98.770   100.00
+Gemiddelde %1S/2F 2223              5837.0    59.833408   13.691671    4.17    51.06    60.71    69.230    97.92
+Aantal leerlingen 2223              5837.0    28.788761   17.286039    5.00    17.00    25.00    38.000   179.00
+Gemiddelde %1F 2324                 5893.0    95.525003    4.399671   60.00    93.46    96.55    98.720   100.00
+Gemiddelde %1S/2F 2324              5893.0    56.594650   15.051314    0.00    46.43    56.91    66.670   100.00
+Aantal leerlingen 2324              5893.0    27.633633   16.323081    5.00    16.00    24.00    36.000   128.00
+Gemiddelde %1F 2425                 5908.0    95.995802    4.269178   56.67    94.44    97.04    98.945   100.00
+Gemiddelde %1S/2F 2425              5908.0    55.748507   14.698079    4.17    46.38    56.14    65.875   100.00
+Aantal leerlingen 2425              5908.0    27.284529   16.146646    5.00    16.00    24.00    35.000   131.00
+Schoolweging                        6191.0  2714.503634  862.804353  200.00  2655.00  2918.00  3155.500  3981.00
+Signaleringswaarde 1F               6205.0    85.000000    0.000000   85.00    85.00    85.00    85.000    85.00
+Signaleringswaarde 1S/2F            6191.0   464.314973   73.043145  303.00   435.00   471.00   501.000   683.00
+Gewogen driejaarsgemiddelde %1F     6197.0    95.711239    3.254107   68.63    94.20    96.35    97.990   100.00
+Gewogen driejaarsgemiddelde %1S/2F  6197.0    57.191688   11.756841    6.67    49.71    57.54    65.060    96.25
+Totaal aantal leerlingen 3 jaar     6197.0    80.224625   48.556276    5.00    45.00    71.00   104.000   394.00
+
+COLUMN SUMMARY: Gemiddelde %1F 2223
+mean= 95.77967449032036
+median= 96.83
+p10= 90.48
+p90= 100.0
+
+COLUMN SUMMARY: Gemiddelde %1S/2F 2223
+mean= 59.83340757238307
+median= 60.71
+p10= 41.67
+p90= 76.858
+
+COLUMN SUMMARY: Aantal leerlingen 2223
+mean= 28.788761350008567
+median= 25.0
+p10= 10.0
+p90= 52.0
+
+COLUMN SUMMARY: Gemiddelde %1F 2324
+mean= 95.52500254539285
+median= 96.55
+p10= 90.0
+p90= 100.0
+
+COLUMN SUMMARY: Gemiddelde %1S/2F 2324
+mean= 56.59464958425251
+median= 56.91
+p10= 37.18
+p90= 75.56
+
+COLUMN SUMMARY: Aantal leerlingen 2324
+mean= 27.633633124045478
+median= 24.0
+p10= 10.0
+p90= 49.80000000000018
+
+COLUMN SUMMARY: Gemiddelde %1F 2425
+mean= 95.99580230196344
+median= 97.04
+p10= 90.67
+p90= 100.0
+
+COLUMN SUMMARY: Gemiddelde %1S/2F 2425
+mean= 55.74850710900474
+median= 56.14
+p10= 36.67
+p90= 74.36
+
+HEAD:
+    ovt Gemiddelde %1F 2223 Gemiddelde %1S/2F 2223 Aantal leerlingen 2223 Gemiddelde %1F 2324 Gemiddelde %1S/2F 2324 Aantal leerlingen 2324 Gemiddelde %1F 2425 Gemiddelde %1S/2F 2425 Aantal leerlingen 2425  Schoolweging Schoolwegingscategorie  Signaleringswaarde 1F  Signaleringswaarde 1S/2F Gewogen driejaarsgemiddelde %1F Gewogen driejaarsgemiddelde %1S/2F Totaal aantal leerlingen 3 jaar       Uitkomst indicator 1F    Uitkomst indicator 1S/2F
+00AP|C1               94,44                  55,56                     18               92,31                  51,28                     13               91,67                  47,22                     12         31.47                [31,32)                     85                      43.5                           93,02                              51,94                              43 Boven de signaleringswaarde Boven de signaleringswaarde
+00AR|C1                 100                     70                     20                 100                  59,26                      9               98,41                  46,03                     21         27.78                [27,28)                     85                      50.1                           99,33                                 58                              50 Boven de signaleringswaarde Boven de signaleringswaarde
+00AV|C1                 100                  41,67                      8                 100                     40                      5                  90                  33,33                     10         30.61                [30,31)                     85                      45.5                           95,65                              37,68                              23 Boven de signaleringswaarde Onder de signaleringswaarde
+00AZ|C1               93,33                  53,33                     10                 100                  58,33                     12               97,78                  51,11                     15         31.75                [31,32)                     85                      43.5                            97,3                              54,05                              37 Boven de signaleringswaarde Boven de signaleringswaarde
+00BB|C1               77,78                  37,04                      9               93,94                  63,64                     11               92,59                  33,33                      9         33.14                [33,34)                     85                      38.7                           88,51                              45,98                              29 Boven de signaleringswaarde Boven de signaleringswaarde
+
+DONE
