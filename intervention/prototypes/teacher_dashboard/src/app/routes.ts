@@ -1,12 +1,12 @@
 import { createBrowserRouter } from "react-router";
-import Root from "./components/Root";
-import TeacherHome from "./components/TeacherHome";
-import LessonLibrary from "./components/LessonLibrary";
-import LessonDetail from "./components/LessonDetail";
-import ClassOverview from "./components/ClassOverview";
-import StudentList from "./components/StudentList";
-import StudentProfile from "./components/StudentProfile";
-import Profile from "./components/Profile";
+import Root from "./layout/Root";
+import TeacherHome from "../features/home/TeacherHome";
+import LessonLibrary from "../features/lessons/LessonLibrary";
+import LessonDetail from "../features/lessons/LessonDetail";
+import ClassOverview from "../features/classes/ClassOverview";
+import StudentList from "../features/students/StudentList";
+import StudentProfile from "../features/students/StudentProfile";
+import Profile from "../features/profile/Profile";
 
 export const router = createBrowserRouter([
   {
