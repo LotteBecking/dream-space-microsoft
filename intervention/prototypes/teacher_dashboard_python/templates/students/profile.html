@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+
+{% block title %}{{ student.name }} - Student Profile{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Back Button -->
+    <a href="/students" class="text-purple-600 hover:text-purple-700 flex items-center gap-2">
+        <i class="fas fa-arrow-left"></i> Back to Students
+    </a>
+
+    <!-- Student Header -->
+    <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg p-6 text-white">
+        <div class="flex items-start justify-between">
+            <div class="flex items-center gap-4">
+                <div id="studentAvatarDisplay" class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-3xl font-bold text-white">
+                    {{ student.avatar }}
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold">{{ student.name }}</h1>
+                    <p class="text-purple-100 mt-1">Student ID: {{ student.id }}</p>
+                </div>
+            </div>
+            <button onclick="openAvatarModal()" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition text-sm font-medium">
+                <i class="fas fa-user-pen mr-2"></i> Edit Avatar
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column - Main Content -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Progress Card -->
+            <div class="bg-white rounded-lg p-6 card-shadow">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Overall Progress</h2>
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-700 font-medium">Completion Rate</span>
+                        <span class="text-2xl font-bold text-purple-600">{{ student.progressPercentage }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-4">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-4 rounded-full" style="width: {{ student.progressPercentage }}%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-lg p-4 card-shadow">
+                    <p class="text-gray-600 text-sm">Lessons Completed</p>
+                    <p class="text-3xl font-bold text-gray-900">{{ student.lessonsCompleted }}</p>
+                </div>
+                <div class="bg-white rounded-lg p-4 card-shadow">
+                    <p class="text-gray-600 text-sm">Challenges Completed</p>
+                    <p class="text-3xl font-bold text-gray-900">{{ student.challengesCompleted }}</p>
+                </div>
+            </div>
+
+            <!-- Achievements -->
+            <div class="bg-white rounded-lg p-6 card-shadow">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Achievements</h3>
+                {% if student.achievements %}
+                    <div class="grid grid-cols-2 gap-4">
+                        {% for achievement in student.achievements %}
+                        <div class="border border-gray-200 rounded-lg p-4 text-center">
+                            <div class="text-3xl mb-2">
+                                {% if achievement.icon == 'star' %}<i class="fas fa-star text-yellow-500"></i>
+                                {% elif achievement.icon == 'zap' %}<i class="fas fa-bolt text-yellow-500"></i>
+                                {% elif achievement.icon == 'lightbulb' %}<i class="fas fa-lightbulb text-yellow-500"></i>
+                                {% endif %}
+                            </div>
+                            <p class="font-semibold text-gray-900 text-sm">{{ achievement.name }}</p>
+                            <p class="text-xs text-gray-600 mt-1">{{ achievement.earnedDate }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-gray-600">No achievements earned yet</p>
+                {% endif %}
+            </div>
+
+            <!-- Activity History -->
+            <div class="bg-white rounded-lg p-6 card-shadow">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Recent Activity</h3>
+                {% if student.activityHistory %}
+                    <div class="space-y-4">
+                        {% for activity in student.activityHistory %}
+                        <div class="flex items-start gap-4 pb-4 border-b border-gray-200 last:border-b-0">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0
+                                {% if activity.success %}bg-green-100{% else %}bg-red-100{% endif %}">
+                                {% if activity.type == 'lesson' %}<i class="fas fa-book {% if activity.success %}text-green-600{% else %}text-red-600{% endif %}"></i>
+                                {% elif activity.type == 'challenge' %}<i class="fas fa-puzzle-piece {% if activity.success %}text-green-600{% else %}text-red-600{% endif %}"></i>
+                                {% elif activity.type == 'achievement' %}<i class="fas fa-star {% if activity.success %}text-green-600{% else %}text-red-600{% endif %}"></i>
+                                {% endif %}
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-900">{{ activity.title }}</p>
+                                <p class="text-sm text-gray-600">{{ activity.date }}</p>
+                            </div>
+                            <span class="text-sm font-medium
+                                {% if activity.success %}text-green-600{% else %}text-red-600{% endif %}">
+                                {% if activity.success %}✓ Success{% else %}✗ Incomplete{% endif %}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-gray-600">No recent activity</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right Column - Sidebar -->
+        <div class="space-y-6">
+            <!-- Teacher Notes -->
+            <div class="bg-white rounded-lg p-6 card-shadow">
+                <h3 class="text-lg font-bold text-gray-900 mb-3">Teacher Notes</h3>
+                <p class="text-gray-700">{{ student.teacherNotes }}</p>
+                <button onclick="openNotesModal()" class="mt-4 text-purple-600 hover:text-purple-700 font-medium text-sm">
+                    Edit Notes
+                </button>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="bg-white rounded-lg p-6 card-shadow">
+                <h3 class="text-lg font-bold text-gray-900 mb-3">Information</h3>
+                <div class="space-y-3 text-sm text-gray-700">
+                    <div>
+                        <p class="text-gray-600 text-xs mb-1">Last Activity</p>
+                        <p class="font-medium">{{ student.lastActivity }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 text-xs mb-1">Class</p>
+                        <p class="font-medium">
+                            {% if student.classId == 'class-1' %}Class 4A
+                            {% elif student.classId == 'class-2' %}Class 4B
+                            {% elif student.classId == 'class-3' %}Class 5A
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <button onclick="sendMessage()" class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition font-medium">
+                <i class="fas fa-message mr-2"></i> Send Message
+            </button>
+            <button onclick="viewDetailedReport()" class="w-full border border-purple-600 text-purple-600 px-4 py-2 rounded-lg hover:bg-purple-50 transition font-medium">
+                <i class="fas fa-chart-bar mr-2"></i> View Detailed Report
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Notes Modal -->
+<div id="notesModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-lg max-w-md w-full p-6 card-shadow">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Edit Teacher Notes</h2>
+        
+        <form onsubmit="saveNotes(event)">
+            <textarea id="notesInput" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 h-32" placeholder="Add your notes about this student...">{{ student.teacherNotes }}</textarea>
+            <div class="flex gap-3 mt-6">
+                <button type="button" onclick="closeNotesModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                    Cancel
+                </button>
+                <button type="submit" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Avatar Modal -->
+<div id="avatarModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-lg max-w-lg w-full p-6 card-shadow">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Choose Avatar</h2>
+        <p class="text-gray-600 mb-4">Select an emoji or add custom initials/emoji for this student.</p>
+
+        <div class="grid grid-cols-6 gap-2 mb-5">
+            <button type="button" onclick="setSelectedAvatar('😀')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">😀</button>
+            <button type="button" onclick="setSelectedAvatar('😊')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">😊</button>
+            <button type="button" onclick="setSelectedAvatar('🤖')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">🤖</button>
+            <button type="button" onclick="setSelectedAvatar('🚀')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">🚀</button>
+            <button type="button" onclick="setSelectedAvatar('🐱')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">🐱</button>
+            <button type="button" onclick="setSelectedAvatar('🦊')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">🦊</button>
+            <button type="button" onclick="setSelectedAvatar('🐼')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">🐼</button>
+            <button type="button" onclick="setSelectedAvatar('🌟')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">🌟</button>
+            <button type="button" onclick="setSelectedAvatar('⚽')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">⚽</button>
+            <button type="button" onclick="setSelectedAvatar('🎨')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">🎨</button>
+            <button type="button" onclick="setSelectedAvatar('🎮')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">🎮</button>
+            <button type="button" onclick="setSelectedAvatar('📚')" class="avatar-choice text-2xl border border-gray-200 rounded-lg py-2 hover:bg-gray-50">📚</button>
+        </div>
+
+        <div class="mb-5">
+            <label for="customAvatarInput" class="block text-sm font-medium text-gray-700 mb-2">Or enter custom initials/emoji</label>
+            <input id="customAvatarInput" maxlength="8" placeholder="e.g. EW or 🐯" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <p class="text-xs text-gray-500 mt-1">Up to 8 characters.</p>
+        </div>
+
+        <div class="flex items-center justify-between mb-5">
+            <span class="text-sm text-gray-600">Preview</span>
+            <div id="avatarPreview" class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-xl font-bold text-purple-700">{{ student.avatar }}</div>
+        </div>
+
+        <div class="flex gap-3">
+            <button type="button" onclick="closeAvatarModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                Cancel
+            </button>
+            <button type="button" onclick="saveAvatar()" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium">
+                Save Avatar
+            </button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+const studentId = '{{ student.id }}';
+let selectedAvatar = '{{ student.avatar }}';
+
+function openNotesModal() {
+    document.getElementById('notesModal').classList.remove('hidden');
+}
+
+function closeNotesModal() {
+    document.getElementById('notesModal').classList.add('hidden');
+}
+
+function saveNotes(event) {
+    event.preventDefault();
+    alert('Notes saved successfully!');
+    closeNotesModal();
+}
+
+function sendMessage() {
+    alert('Opening messaging interface...\n\nIn a real application, this would open a chat or messaging panel to communicate directly with the student\'s parent/guardian.');
+}
+
+function viewDetailedReport() {
+    alert('Generating detailed report...\n\nIn a real application, this would show a comprehensive analytics dashboard with charts, progress trends, and detailed breakdowns of student performance.');
+}
+
+function openAvatarModal() {
+    document.getElementById('avatarModal').classList.remove('hidden');
+    setSelectedAvatar(selectedAvatar);
+}
+
+function closeAvatarModal() {
+    document.getElementById('avatarModal').classList.add('hidden');
+}
+
+function setSelectedAvatar(avatar) {
+    selectedAvatar = avatar;
+    document.getElementById('customAvatarInput').value = avatar;
+    document.getElementById('avatarPreview').textContent = avatar;
+
+    document.querySelectorAll('.avatar-choice').forEach(button => {
+        if (button.textContent.trim() === avatar) {
+            button.classList.add('ring-2', 'ring-purple-500', 'bg-purple-50');
+        } else {
+            button.classList.remove('ring-2', 'ring-purple-500', 'bg-purple-50');
+        }
+    });
+}
+
+document.getElementById('customAvatarInput').addEventListener('input', function (event) {
+    const value = event.target.value.trim();
+    if (!value) {
+        return;
+    }
+    selectedAvatar = value;
+    document.getElementById('avatarPreview').textContent = value;
+    document.querySelectorAll('.avatar-choice').forEach(button => {
+        button.classList.remove('ring-2', 'ring-purple-500', 'bg-purple-50');
+    });
+});
+
+async function saveAvatar() {
+    const customValue = document.getElementById('customAvatarInput').value.trim();
+    const avatarToSave = customValue || selectedAvatar;
+
+    if (!avatarToSave) {
+        alert('Please choose or enter an avatar first.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/students/${studentId}/avatar`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ avatar: avatarToSave })
+        });
+
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || 'Unable to save avatar');
+        }
+
+        selectedAvatar = data.avatar;
+        document.getElementById('studentAvatarDisplay').textContent = data.avatar;
+        closeAvatarModal();
+    } catch (error) {
+        alert(error.message || 'Could not save avatar. Please try again.');
+    }
+}
+</script>
+{% endblock %}

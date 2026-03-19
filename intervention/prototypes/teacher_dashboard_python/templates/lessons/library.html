@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Lesson Library - Teacher Dashboard{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div>
+        <h1 class="text-3xl font-bold text-gray-900">Lesson Library</h1>
+        <p class="text-gray-600 mt-2">Explore and assign coding lessons to your classes</p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="bg-white rounded-lg p-4 card-shadow">
+        <form method="get" class="flex gap-2">
+            <div class="flex-1 relative">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                <input 
+                    type="text" 
+                    name="search" 
+                    placeholder="Search lessons..." 
+                    value="{{ search_query }}"
+                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+            </div>
+            <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
+                Search
+            </button>
+            {% if search_query %}
+            <a href="/lessons" class="bg-gray-300 text-gray-900 px-6 py-2 rounded-lg hover:bg-gray-400 transition">
+                Clear
+            </a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Lessons Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% if lessons %}
+            {% for lesson in lessons %}
+            <div class="bg-white rounded-lg overflow-hidden card-shadow hover:shadow-lg transition">
+                <div class="bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500 h-32 flex items-center justify-center">
+                    <i class="fas fa-graduation-cap text-white text-4xl"></i>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-gray-900">{{ lesson.title }}</h3>
+                    <p class="text-sm text-gray-600 mt-2 line-clamp-2">{{ lesson.description }}</p>
+                    
+                    <div class="flex gap-2 mt-3 mb-4">
+                        <span class="inline-block text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded">
+                            {{ lesson.level }}
+                        </span>
+                        <span class="inline-block text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">
+                            {{ lesson.duration }} min
+                        </span>
+                    </div>
+
+                    <a href="/lessons/{{ lesson.id }}" class="block w-full text-center bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                        View Lesson
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-span-3 text-center py-12">
+                <i class="fas fa-book text-4xl text-gray-300 mb-4"></i>
+                <p class="text-gray-600">No lessons found matching "{{ search_query }}"</p>
+                <a href="/lessons" class="text-purple-600 hover:text-purple-700 mt-4 inline-block">Clear search</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

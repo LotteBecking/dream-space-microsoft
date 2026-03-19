@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Class Overview - Teacher Dashboard{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div>
+        <h1 class="text-3xl font-bold text-gray-900">Classes</h1>
+        <p class="text-gray-600 mt-2">Manage and monitor your classes</p>
+    </div>
+
+    <!-- Classes List -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% for class in classes %}
+        <div class="bg-white rounded-lg overflow-hidden card-shadow hover:shadow-lg transition">
+            <!-- Class Header -->
+            <div class="bg-gradient-to-r from-purple-500 to-pink-500 p-4 text-white">
+                <h2 class="text-2xl font-bold">{{ class.name }}</h2>
+            </div>
+
+            <!-- Class Content -->
+            <div class="p-6">
+                <!-- Metrics -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <p class="text-gray-600 text-sm">Students</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ class.studentCount }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 text-sm">Active Assignments</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ class.activeAssignments }}</p>
+                    </div>
+                </div>
+
+                <!-- Engagement Rate -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <p class="text-gray-600 text-sm font-medium">Engagement Rate</p>
+                        <span class="text-lg font-bold text-purple-600">{{ class.engagementRate }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-purple-600 h-2 rounded-full" style="width: {{ class.engagementRate }}%"></div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3">
+                    <a href="/students?class={{ class.id }}" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium text-center">
+                        <i class="fas fa-users mr-1"></i> View Students
+                    </a>
+                    <button onclick="openManageModal('{{ class.id }}')" class="flex-1 px-4 py-2 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition text-sm font-medium">
+                        <i class="fas fa-settings mr-1"></i> Manage
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Add Class Button -->
+    <button onclick="openAddClassModal()" class="w-full bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition font-medium">
+        <i class="fas fa-plus mr-2"></i> Add New Class
+    </button>
+</div>
+
+<!-- Manage Class Modal -->
+<div id="manageClassModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-lg max-w-md w-full p-6 card-shadow">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Manage Class</h2>
+        
+        <form onsubmit="saveClassChanges(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Class Name</label>
+                <input type="text" id="manageClassName" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+            </div>
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea id="manageClassDescription" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 h-24"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button type="button" onclick="closeManageModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                    Cancel
+                </button>
+                <button type="submit" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Class Modal -->
+<div id="addClassModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-lg max-w-md w-full p-6 card-shadow">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Add New Class</h2>
+        
+        <form onsubmit="addClass(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Class Name</label>
+                <input type="text" id="className" placeholder="e.g., Grade 4A" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+            </div>
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Number of Students</label>
+                <input type="number" id="studentCount" placeholder="e.g., 24" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+            </div>
+            <div class="flex gap-3">
+                <button type="button" onclick="closeAddClassModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                    Cancel
+                </button>
+                <button type="submit" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium">
+                    Add Class
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openAddClassModal() {
+    document.getElementById('addClassModal').classList.remove('hidden');
+}
+
+function closeAddClassModal() {
+    document.getElementById('addClassModal').classList.add('hidden');
+}
+
+function addClass(event) {
+    event.preventDefault();
+    const className = document.getElementById('className').value;
+    const studentCount = document.getElementById('studentCount').value;
+    
+    if (!className || !studentCount) {
+        alert('Please fill in all fields');
+        return;
+    }
+    
+    alert(`Class ${className} added with ${studentCount} students`);
+    closeAddClassModal();
+}
+
+function openManageModal(classId) {
+    document.getElementById('manageClassModal').classList.remove('hidden');
+    // Pre-fill with class info (in a real app, this would fetch the class data)
+    document.getElementById('manageClassName').value = 'Class ' + classId.split('-')[1].toUpperCase();
+}
+
+function closeManageModal() {
+    document.getElementById('manageClassModal').classList.add('hidden');
+}
+
+function saveClassChanges(event) {
+    event.preventDefault();
+    alert('Class changes saved successfully!');
+    closeManageModal();
+}
+</script>
+{% endblock %}

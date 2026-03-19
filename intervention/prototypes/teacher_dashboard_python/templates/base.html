@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Teacher Dashboard{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-text {
+            background: linear-gradient(to right, #9333ea, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-shadow {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 card-shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center">
+                        <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
+                            TD
+                        </div>
+                        <span class="ml-3 text-lg font-bold text-gray-900">Teacher Dashboard</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="/" class="nav-link {% if request.path == '/' %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4">
+                        <i class="fas fa-home mr-1"></i> Dashboard
+                    </a>
+                    <a href="/lessons" class="nav-link {% if request.path.startswith('/lessons') %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4">
+                        <i class="fas fa-book mr-1"></i> Lessons
+                    </a>
+                    <a href="/classes" class="nav-link {% if request.path == '/classes' %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4">
+                        <i class="fas fa-users mr-1"></i> Classes
+                    </a>
+                    <a href="/students" class="nav-link {% if request.path.startswith('/students') %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4">
+                        <i class="fas fa-user-graduate mr-1"></i> Students
+                    </a>
+                    <a href="/settings" class="nav-link {% if request.path == '/settings' %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4">
+                        <i class="fas fa-cog mr-1"></i> Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <p class="text-center text-gray-600 text-sm">
+                &copy; 2024 Teacher Dashboard. Empowering teachers and inspiring young minds.
+            </p>
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

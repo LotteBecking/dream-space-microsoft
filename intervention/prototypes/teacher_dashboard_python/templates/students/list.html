@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Students - Teacher Dashboard{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-start">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Students</h1>
+            <p class="text-gray-600 mt-2">Monitor student progress and engagement</p>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-lg p-4 card-shadow">
+        <form method="get" class="flex gap-3 flex-wrap">
+            <div class="flex-1 min-w-xs relative">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                <input 
+                    type="text" 
+                    placeholder="Search students..." 
+                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+            </div>
+            <select name="class" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <option value="">All Classes</option>
+                <option value="class-1" {% if selected_class == 'class-1' %}selected{% endif %}>Class 4A</option>
+                <option value="class-2" {% if selected_class == 'class-2' %}selected{% endif %}>Class 4B</option>
+                <option value="class-3" {% if selected_class == 'class-3' %}selected{% endif %}>Class 5A</option>
+            </select>
+            <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
+                Filter
+            </button>
+        </form>
+    </div>
+
+    <!-- Students Table -->
+    <div class="bg-white rounded-lg overflow-hidden card-shadow">
+        <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Student</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Class</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Progress</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Lessons</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Last Activity</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if students %}
+                    {% for student in students %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center font-semibold text-purple-700">
+                                    {{ student.avatar }}
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">{{ student.name }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-700">
+                            {% if student.classId == 'class-1' %}Class 4A
+                            {% elif student.classId == 'class-2' %}Class 4B
+                            {% elif student.classId == 'class-3' %}Class 5A
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-purple-600 h-2 rounded-full" style="width: {{ student.progressPercentage }}%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-900">{{ student.progressPercentage }}%</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-700">
+                            {{ student.lessonsCompleted }} completed
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-600">
+                            {{ student.lastActivity }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="/students/{{ student.id }}" class="text-purple-600 hover:text-purple-700 font-medium text-sm">
+                                View Profile
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-8 text-center text-gray-600">
+                            <i class="fas fa-users text-4xl text-gray-300 mb-4"></i>
+                            <p class="mt-4">No students found</p>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
