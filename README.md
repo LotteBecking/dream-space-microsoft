@@ -1,12 +1,32 @@
-# Capstone Project CSSci - DreamSpace microsoft
-Instruction for how to use XCode for the intervention prototypes:
-- download XCode + Simulator
-- clone project -> open in github desktop
-- open XCode -> open existing project -> select one of the 3 (most recent under 'prototype' folder, older versions under 'old')
-- Select simulator (I always use iphone 17)
-- press play button (this will build and run the app on ur simulated device)
+# DreamSpace Microsoft - Capstone Project CSSci
 
-#### To Do KidsApp:
-- Design more challenges from different levels (really need to brainstorm these)
-- Improve UX
-- 
+Last updated: 20 March 2026
+
+## Short Progress Summary
+
+Work is now split into 3 parallel streams so the team can move faster while still integrating smoothly:
+
+1. Backend stream: auth, class enrollment, student records, API, and database.
+2. Lesson design stream: teacher-ready lessons and mapped student exercise briefs.
+3. Exercise stream: playable app exercises with progress sync to the teacher dashboard.
+
+Main goal: have a complete prototype with fully functioning backend + first 5 lessons.
+
+## Repository Orientation
+
+- `data-analysis/` is for exploratory data research.
+- Booking data is not stored in this repository and is kept securely in OneDrive.
+- `intervention/prototypes/` contains the most recent versions, including the Swift Xcode app and the teacher dashboard.
+- `intervention/old/` contains older iterations.
+
+## Instructions: Running iOS Prototypes in Xcode
+
+1. Install Xcode and iOS Simulator.
+2. Clone this repository.
+3. Open Xcode, then open an existing project from `intervention/prototypes/` (latest) or `intervention/old/` (older).
+4. Select a simulator device (for example, iPhone 17).
+5. Press Run to build and launch.
+
+## TO DO:
+- Work on tasks as discussed :)
+
