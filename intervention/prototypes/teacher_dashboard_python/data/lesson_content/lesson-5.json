@@ -1,0 +1,64 @@
+{
+  "id": "lesson-5",
+  "title": "Functions & Procedures",
+  "description": "Create reusable blocks of code with functions to organize and simplify your programs.",
+  "duration": 25,
+  "level": "Advanced",
+  "videoUrl": "https://www.youtube.com/embed/FOjESLx0fqU",
+  "objectives": [
+    "Understand functions",
+    "Create reusable code blocks",
+    "Organize complex programs"
+  ],
+  "prerequisites": "Conditionals & Decision Making",
+  "materials": [
+    "Computer",
+    "Code blocks environment",
+    "Function templates"
+  ],
+  "fullDescription": "Master the art of writing reusable code by creating functions. Learn how to organize complex programs into manageable, reusable blocks.",
+  "teacherInstructions": {
+    "setup": "Provide function template cards with placeholders for name, input, and output.",
+    "steps": [
+      "Show repeated code and ask how to avoid duplication (4 min).",
+      "Introduce function blocks with one parameterized example (7 min).",
+      "Students refactor a repetitive script into two functions (10 min).",
+      "Discuss naming conventions and where to reuse each function (6 min)."
+    ],
+    "discussionPrompts": [
+      "What makes a function reusable?",
+      "When should we create a new function instead of adding more blocks?",
+      "How do good function names help teammates understand code?"
+    ],
+    "tips": [
+      "Encourage short, single-purpose functions first.",
+      "Use function naming conventions across the class.",
+      "Ask students to test functions in isolation before combining."
+    ]
+  },
+  "curriculumAlignment": [
+    "Modular Design Principles",
+    "Abstraction Level 3"
+  ],
+  "teacherGuide": "Introduce functions by explaining the concept of reusable code. Show real-life examples of procedures. Demonstrate creating functions with parameters. Have students refactor repetitive code into functions. Emphasize code organization and reusability.",
+  "studentExercises": [
+    {
+      "id": "exercise-5-1",
+      "title": "Create a Simple Function",
+      "description": "Create your first function and call it",
+      "difficulty": "Medium"
+    },
+    {
+      "id": "exercise-5-2",
+      "title": "Functions with Parameters",
+      "description": "Create functions that accept different parameters",
+      "difficulty": "Hard"
+    },
+    {
+      "id": "exercise-5-3",
+      "title": "Refactor Code",
+      "description": "Rewrite repetitive code using functions",
+      "difficulty": "Hard"
+    }
+  ]
+}

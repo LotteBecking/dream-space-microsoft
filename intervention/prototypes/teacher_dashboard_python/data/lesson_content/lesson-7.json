@@ -1,0 +1,64 @@
+{
+  "id": "lesson-7",
+  "title": "Game Development Basics",
+  "description": "Create simple games using coding concepts and game design principles.",
+  "duration": 40,
+  "level": "Advanced",
+  "videoUrl": "https://www.youtube.com/embed/7L7vQHIgKA4",
+  "objectives": [
+    "Understand game loops",
+    "Create interactive gameplay",
+    "Design simple games"
+  ],
+  "prerequisites": "Functions & Procedures",
+  "materials": [
+    "Computer",
+    "Game development environment",
+    "Game design template"
+  ],
+  "fullDescription": "Bring coding to life by creating simple games. Learn game design principles and how to implement them using code.",
+  "teacherInstructions": {
+    "setup": "Share a game canvas template and provide a one-page mechanic checklist (goal, rules, feedback).",
+    "steps": [
+      "Break down a simple game into mechanics and rules (6 min).",
+      "Demonstrate a basic game loop and scoring variable (8 min).",
+      "Students prototype one playable mechanic first (12 min).",
+      "Add win/lose condition and peer playtest in pairs (10 min)."
+    ],
+    "discussionPrompts": [
+      "What makes a game fun but still easy to understand?",
+      "How does feedback help players improve?",
+      "What should happen when a player wins or loses?"
+    ],
+    "tips": [
+      "Prioritize a playable core before adding visual polish.",
+      "Use short playtest cycles with one feedback goal per round.",
+      "Keep scope small so every student reaches a complete game."
+    ]
+  },
+  "curriculumAlignment": [
+    "Interactive Systems",
+    "Design Iteration Level 3"
+  ],
+  "teacherGuide": "Discuss game design fundamentals. Show examples of simple games. Demonstrate the game loop concept. Have students design their own game on paper first. Provide templates to speed up development. Celebrate creative solutions.",
+  "studentExercises": [
+    {
+      "id": "exercise-7-1",
+      "title": "Create a Simple Game",
+      "description": "Build a basic game with one mechanic",
+      "difficulty": "Hard"
+    },
+    {
+      "id": "exercise-7-2",
+      "title": "Add Game Features",
+      "description": "Add scoring and levels to a game",
+      "difficulty": "Hard"
+    },
+    {
+      "id": "exercise-7-3",
+      "title": "Design Your Game",
+      "description": "Create your own original game concept",
+      "difficulty": "Expert"
+    }
+  ]
+}

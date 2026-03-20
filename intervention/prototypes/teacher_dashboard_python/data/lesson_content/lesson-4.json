@@ -1,0 +1,64 @@
+{
+  "id": "lesson-4",
+  "title": "Conditionals & Decision Making",
+  "description": "Use if-statements and conditionals to make your programs make decisions.",
+  "duration": 30,
+  "level": "Intermediate",
+  "videoUrl": "https://www.youtube.com/embed/lAKbCKwdv0s",
+  "objectives": [
+    "Understand conditional statements",
+    "Use if-else blocks",
+    "Create decision-making logic"
+  ],
+  "prerequisites": "Variables & Data Types",
+  "materials": [
+    "Computer",
+    "Code blocks environment",
+    "Decision-making worksheet"
+  ],
+  "fullDescription": "Learn how to make your programs smart by using conditionals. Teach your code to make decisions based on different conditions.",
+  "teacherInstructions": {
+    "setup": "Print if-then scenario cards and place green/red response cards at student desks.",
+    "steps": [
+      "Use daily life examples to explain if/else decisions (4 min).",
+      "Build one simple conditional example together (6 min).",
+      "Students convert scenario cards into conditional blocks (10 min).",
+      "Review edge cases where conditions overlap or fail (6 min)."
+    ],
+    "discussionPrompts": [
+      "How does a computer choose between two actions?",
+      "What should happen if a condition is not true?",
+      "Can one program include multiple decisions in a row?"
+    ],
+    "tips": [
+      "Draw decision trees before students write conditionals.",
+      "Use clear true/false language in every explanation.",
+      "Test both branches of each conditional during demos."
+    ]
+  },
+  "curriculumAlignment": [
+    "Logic and Decision Making",
+    "Control Flow Level 2"
+  ],
+  "teacherGuide": "Start with real-world decision-making examples. Explain if-then logic clearly. Show how to use if-else blocks. Have students debug programs with conditional logic. Emphasize that conditions must be true or false.",
+  "studentExercises": [
+    {
+      "id": "exercise-4-1",
+      "title": "Simple If Statement",
+      "description": "Create a program with a simple if statement",
+      "difficulty": "Medium"
+    },
+    {
+      "id": "exercise-4-2",
+      "title": "If-Else Logic",
+      "description": "Use if-else to create two different outcomes",
+      "difficulty": "Medium"
+    },
+    {
+      "id": "exercise-4-3",
+      "title": "Game Logic",
+      "description": "Create a simple game that uses conditionals",
+      "difficulty": "Hard"
+    }
+  ]
+}

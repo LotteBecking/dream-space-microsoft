@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "lessons": [
+    {
+      "id": "lesson-1",
+      "title": "Introduction to Block Coding",
+      "level": "Beginner",
+      "path": "lesson-1.json",
+      "published": true
+    },
+    {
+      "id": "lesson-2",
+      "title": "Loops & Sequences",
+      "level": "Beginner",
+      "path": "lesson-2.json",
+      "published": true
+    },
+    {
+      "id": "lesson-3",
+      "title": "Variables & Data Types",
+      "level": "Intermediate",
+      "path": "lesson-3.json",
+      "published": true
+    },
+    {
+      "id": "lesson-4",
+      "title": "Conditionals & Decision Making",
+      "level": "Intermediate",
+      "path": "lesson-4.json",
+      "published": true
+    },
+    {
+      "id": "lesson-5",
+      "title": "Functions & Procedures",
+      "level": "Advanced",
+      "path": "lesson-5.json",
+      "published": true
+    },
+    {
+      "id": "lesson-6",
+      "title": "Debugging & Problem Solving",
+      "level": "Intermediate",
+      "path": "lesson-6.json",
+      "published": true
+    },
+    {
+      "id": "lesson-7",
+      "title": "Game Development Basics",
+      "level": "Advanced",
+      "path": "lesson-7.json",
+      "published": true
+    },
+    {
+      "id": "lesson-8",
+      "title": "Arrays & Lists",
+      "level": "Advanced",
+      "path": "lesson-8.json",
+      "published": true
+    }
+  ]
+}

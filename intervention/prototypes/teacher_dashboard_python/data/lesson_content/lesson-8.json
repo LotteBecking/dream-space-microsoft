@@ -1,0 +1,64 @@
+{
+  "id": "lesson-8",
+  "title": "Arrays & Lists",
+  "description": "Work with collections of data using arrays and lists.",
+  "duration": 30,
+  "level": "Advanced",
+  "videoUrl": "https://www.youtube.com/embed/xT8qIIJwMzc",
+  "objectives": [
+    "Understand arrays and lists",
+    "Iterate through collections",
+    "Manipulate multiple data items"
+  ],
+  "prerequisites": "Variables & Data Types",
+  "materials": [
+    "Computer",
+    "Code blocks environment",
+    "Array examples"
+  ],
+  "fullDescription": "Learn to work with collections of data using arrays and lists. Master iteration and manipulation of multiple data items.",
+  "teacherInstructions": {
+    "setup": "Prepare index cards labeled 0 to 9 and object cards to physically model list positions.",
+    "steps": [
+      "Introduce arrays as ordered collections with index positions (5 min).",
+      "Demonstrate reading and updating list items by index (7 min).",
+      "Students build a list-based mini tracker (10 min).",
+      "Practice looping through arrays to summarize results (8 min)."
+    ],
+    "discussionPrompts": [
+      "Why do arrays use positions starting at zero in many tools?",
+      "When would a list be better than many separate variables?",
+      "How can loops and arrays work together efficiently?"
+    ],
+    "tips": [
+      "Use visual index mapping before moving to code.",
+      "Check boundary cases like first and last index explicitly.",
+      "Have students narrate list changes after each operation."
+    ]
+  },
+  "curriculumAlignment": [
+    "Data Structures Foundations",
+    "Collection Processing Level 3"
+  ],
+  "teacherGuide": "Explain arrays as collections of similar items. Show how indexing works. Demonstrate iterating through arrays with loops. Practice common array operations like adding, removing, and searching. Relate arrays to real-world concepts like shopping lists.",
+  "studentExercises": [
+    {
+      "id": "exercise-8-1",
+      "title": "Create an Array",
+      "description": "Create an array and access its elements",
+      "difficulty": "Medium"
+    },
+    {
+      "id": "exercise-8-2",
+      "title": "Iterate Arrays",
+      "description": "Loop through an array and perform operations",
+      "difficulty": "Medium"
+    },
+    {
+      "id": "exercise-8-3",
+      "title": "Array Manipulation",
+      "description": "Create a program that adds, removes, and searches in arrays",
+      "difficulty": "Hard"
+    }
+  ]
+}

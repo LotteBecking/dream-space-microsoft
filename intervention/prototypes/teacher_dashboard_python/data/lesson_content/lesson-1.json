@@ -1,0 +1,63 @@
+{
+  "id": "lesson-1",
+  "title": "Introduction to Block Coding",
+  "description": "Learn the basics of block-based programming with interactive visual blocks.",
+  "duration": 15,
+  "level": "Beginner",
+  "videoUrl": "https://www.youtube.com/embed/MEzGyRb0LnY",
+  "objectives": [
+    "Understand what coding is",
+    "Learn basic programming concepts",
+    "Create your first program"
+  ],
+  "prerequisites": "None",
+  "materials": [
+    "Computer",
+    "Code blocks environment"
+  ],
+  "fullDescription": "This foundational lesson introduces students to the world of coding using visual blocks. Students will learn how code works and create simple programs using drag-and-drop blocks.",
+  "teacherInstructions": {
+    "setup": "Open the block coding tool on all devices and place printed command cards at each table for quick reference.",
+    "steps": [
+      "Introduce coding as giving clear instructions to a computer (4 min).",
+      "Demonstrate dragging and snapping blocks to create a short sequence (5 min).",
+      "Let students recreate the demo sequence in pairs (6 min).",
+      "Run student sequences and discuss what worked and what failed (5 min)."
+    ],
+    "discussionPrompts": [
+      "What makes instructions easy for a computer to follow?",
+      "What happened when blocks were in the wrong order?",
+      "How is block coding similar to giving directions to a friend?"
+    ],
+    "tips": [
+      "Model mistakes on purpose so students learn debugging from the start.",
+      "Use pair work to reduce frustration during first interactions.",
+      "Celebrate tiny wins to build confidence early in the course."
+    ]
+  },
+  "curriculumAlignment": [
+    "Computational Thinking Foundations",
+    "Sequencing and Logic Level 1"
+  ],
+  "teacherGuide": "Start by explaining what coding is and why it's important. Demonstrate how block-based coding works by dragging blocks, then ask students to try it themselves. Monitor progress and provide hints when needed. Celebrate successes to build confidence.",
+  "studentExercises": [
+    {
+      "id": "exercise-1-1",
+      "title": "Drag Your First Block",
+      "description": "Drag a simple block and see what happens",
+      "difficulty": "Easy"
+    },
+    {
+      "id": "exercise-1-2",
+      "title": "Create a Simple Sequence",
+      "description": "Stack 3 blocks in order to create a sequence",
+      "difficulty": "Easy"
+    },
+    {
+      "id": "exercise-1-3",
+      "title": "Build Your First Program",
+      "description": "Create a program that draws a shape",
+      "difficulty": "Medium"
+    }
+  ]
+}

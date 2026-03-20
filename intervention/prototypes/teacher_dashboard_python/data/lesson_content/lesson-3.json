@@ -1,0 +1,64 @@
+{
+  "id": "lesson-3",
+  "title": "Variables & Data Types",
+  "description": "Explore variables and different data types to store and manipulate information.",
+  "duration": 25,
+  "level": "Intermediate",
+  "videoUrl": "https://www.youtube.com/embed/G8hfAePjJv4",
+  "objectives": [
+    "Understand variables",
+    "Learn about data types",
+    "Store and retrieve information"
+  ],
+  "prerequisites": "Loops & Sequences",
+  "materials": [
+    "Computer",
+    "Code blocks environment",
+    "Workbook"
+  ],
+  "fullDescription": "Dive deeper into programming by learning about variables and different data types. Understand how to store, retrieve, and manipulate data in your programs.",
+  "teacherInstructions": {
+    "setup": "Prepare labeled boxes or cups to represent variables and printed value cards for demonstrations.",
+    "steps": [
+      "Explain variables as named storage containers (4 min).",
+      "Demonstrate creating and updating two variables live (6 min).",
+      "Students build a mini program that stores and changes a score (8 min).",
+      "Run examples and inspect how values change step-by-step (7 min)."
+    ],
+    "discussionPrompts": [
+      "Why do we store values instead of typing them each time?",
+      "What happens if two variables hold similar names?",
+      "How do variables make games or quizzes possible?"
+    ],
+    "tips": [
+      "Keep variable names short and meaningful for young learners.",
+      "Use color coding to distinguish text and number values.",
+      "Ask students to predict value changes before running code."
+    ]
+  },
+  "curriculumAlignment": [
+    "Data Representation Basics",
+    "State and Variables Level 2"
+  ],
+  "teacherGuide": "Use real-world analogies to explain variables (containers that hold information). Show how to create variables and change their values. Demonstrate different data types and why they matter. Have students create programs that use multiple variables.",
+  "studentExercises": [
+    {
+      "id": "exercise-3-1",
+      "title": "Create Your First Variable",
+      "description": "Create a variable and set its value",
+      "difficulty": "Easy"
+    },
+    {
+      "id": "exercise-3-2",
+      "title": "Using Variables",
+      "description": "Use variables to store and display information",
+      "difficulty": "Medium"
+    },
+    {
+      "id": "exercise-3-3",
+      "title": "Building a Simple Program",
+      "description": "Create a program that uses multiple variables",
+      "difficulty": "Medium"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "lesson-6",
+  "title": "Debugging & Problem Solving",
+  "description": "Learn systematic approaches to find and fix errors in your code.",
+  "duration": 20,
+  "level": "Intermediate",
+  "videoUrl": "https://www.youtube.com/embed/Z6p2TwjKr6g",
+  "objectives": [
+    "Identify common errors",
+    "Use debugging techniques",
+    "Solve problems systematically"
+  ],
+  "prerequisites": "Loops & Sequences",
+  "materials": [
+    "Computer",
+    "Buggy code examples",
+    "Debugging checklist"
+  ],
+  "fullDescription": "Develop problem-solving skills by learning how to identify and fix errors in code. Understand common mistakes and how to debug programs effectively.",
+  "teacherInstructions": {
+    "setup": "Prepare three pre-bugged example programs and a visible debugging checklist poster.",
+    "steps": [
+      "Normalize mistakes by sharing a bug from a previous lesson (3 min).",
+      "Teach a four-step debugging routine: reproduce, inspect, test, fix (6 min).",
+      "Students debug guided examples in pairs (9 min).",
+      "Class debrief on strategies that found bugs fastest (5 min)."
+    ],
+    "discussionPrompts": [
+      "What clues told you where the bug was?",
+      "Why is changing one thing at a time important while debugging?",
+      "What debugging habit will you reuse in future lessons?"
+    ],
+    "tips": [
+      "Require students to predict the bug before editing code.",
+      "Promote pair-debugging language: driver and reviewer roles.",
+      "Track common bug patterns and revisit them weekly."
+    ]
+  },
+  "curriculumAlignment": [
+    "Testing and Debugging",
+    "Problem Solving Level 2"
+  ],
+  "teacherGuide": "Normalize mistakes and emphasize that debugging is a normal part of programming. Teach systematic debugging techniques like adding print statements and testing small sections. Have students practice fixing buggy programs.",
+  "studentExercises": [
+    {
+      "id": "exercise-6-1",
+      "title": "Find the Bug",
+      "description": "Identify and fix a simple error in provided code",
+      "difficulty": "Easy"
+    },
+    {
+      "id": "exercise-6-2",
+      "title": "Debug a Program",
+      "description": "Debug a more complex program with multiple issues",
+      "difficulty": "Medium"
+    },
+    {
+      "id": "exercise-6-3",
+      "title": "Problem Solving",
+      "description": "Fix a program and improve its efficiency",
+      "difficulty": "Hard"
+    }
+  ]
+}

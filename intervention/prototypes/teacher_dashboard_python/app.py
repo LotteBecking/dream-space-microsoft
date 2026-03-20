@@ -14,25 +14,31 @@ from data.lessons import lessons
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 
-DEFAULT_TEACHER_INSTRUCTIONS = {
-    'setup': 'Prepare colorful blocks or printed pattern cards for hands-on activities',
-    'steps': [
-        'Start with the video introduction (5 min)',
-        'Do a physical pattern activity with blocks (5 min)',
-        'Discuss how patterns exist in nature and daily life (3 min)',
-        'Guide students through the coding exercise (10 min)'
-    ],
-    'discussionPrompts': [
-        'Where do you see patterns in your daily life?',
-        'What makes a pattern a pattern?',
-        'How could patterns help us write less code?'
-    ],
-    'tips': [
-        'Use real-world examples that students can relate to',
-        'Encourage students to create their own patterns',
-        'Connect patterns to music or art for deeper engagement'
-    ]
-}
+def build_default_teacher_instructions(lesson):
+    """Generate lesson-specific fallback instructions when teacherInstructions are missing."""
+    objectives = lesson.get('learningObjectives') or lesson.get('objectives') or []
+    first_objective = objectives[0] if objectives else 'the core lesson objective'
+    title = lesson.get('title', 'this lesson')
+
+    return {
+        'setup': f"Prepare the tools and examples needed to teach {title.lower()}.",
+        'steps': [
+            'Introduce the lesson goals and connect them to prior knowledge (5 min).',
+            f"Demonstrate one core concept focused on {first_objective.lower()} (7 min).",
+            'Guide students through a structured practice activity (10 min).',
+            'Review outcomes, reflect, and assign the linked exercise (5 min).'
+        ],
+        'discussionPrompts': [
+            f"What part of {title.lower()} feels easiest so far?",
+            'What strategy helped you solve a challenge in this lesson?',
+            'How could you apply this concept in a different project?'
+        ],
+        'tips': [
+            'Model one example first, then shift quickly to guided practice.',
+            'Use pair discussion before independent exercise work.',
+            'End with a short reflection to reinforce retention.'
+        ]
+    }
 
 
 def normalize_lesson_detail(lesson):
@@ -45,12 +51,13 @@ def normalize_lesson_detail(lesson):
         or []
     )
 
+    fallback_teacher_instructions = build_default_teacher_instructions(lesson)
     teacher_instructions = lesson.get('teacherInstructions') or {}
     detail_lesson['teacherInstructions'] = {
-        'setup': teacher_instructions.get('setup') or DEFAULT_TEACHER_INSTRUCTIONS['setup'],
-        'steps': teacher_instructions.get('steps') or DEFAULT_TEACHER_INSTRUCTIONS['steps'],
-        'discussionPrompts': teacher_instructions.get('discussionPrompts') or DEFAULT_TEACHER_INSTRUCTIONS['discussionPrompts'],
-        'tips': teacher_instructions.get('tips') or DEFAULT_TEACHER_INSTRUCTIONS['tips']
+        'setup': teacher_instructions.get('setup') or fallback_teacher_instructions['setup'],
+        'steps': teacher_instructions.get('steps') or fallback_teacher_instructions['steps'],
+        'discussionPrompts': teacher_instructions.get('discussionPrompts') or fallback_teacher_instructions['discussionPrompts'],
+        'tips': teacher_instructions.get('tips') or fallback_teacher_instructions['tips']
     }
 
     raw_exercises = lesson.get('studentExercises') or []

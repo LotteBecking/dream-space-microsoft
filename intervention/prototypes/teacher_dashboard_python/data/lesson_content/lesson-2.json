@@ -1,0 +1,63 @@
+{
+  "id": "lesson-2",
+  "title": "Loops & Sequences",
+  "description": "Master loops and sequential programming to create repeating patterns and efficient code.",
+  "duration": 20,
+  "level": "Beginner",
+  "videoUrl": "https://www.youtube.com/embed/RMINSD7MmT4",
+  "objectives": [
+    "Understand loops",
+    "Use repeat blocks",
+    "Create sequential instructions"
+  ],
+  "prerequisites": "Introduction to Block Coding",
+  "materials": [
+    "Computer",
+    "Code blocks environment"
+  ],
+  "fullDescription": "Learn how to use loops to repeat actions and create efficient programs. This lesson covers repeat blocks, sequences, and pattern creation.",
+  "teacherInstructions": {
+    "setup": "Prepare grid paper and repeat-pattern cards so students can first model loops away from the screen.",
+    "steps": [
+      "Show a repetitive task and ask how to shorten instructions (3 min).",
+      "Introduce repeat blocks with one simple visual example (5 min).",
+      "Have students build a pattern using a loop and test it (8 min).",
+      "Challenge students to reduce block count while keeping the same output (6 min)."
+    ],
+    "discussionPrompts": [
+      "When is a loop better than repeating blocks by hand?",
+      "How can we tell if a loop runs too many times?",
+      "Where do we see repetition in real life or games?"
+    ],
+    "tips": [
+      "Use visual counters so students can track loop iterations.",
+      "Start with low repetition numbers before scaling complexity.",
+      "Ask students to explain loop logic out loud before coding."
+    ]
+  },
+  "curriculumAlignment": [
+    "Pattern Recognition",
+    "Iteration and Automation Level 1"
+  ],
+  "teacherGuide": "Introduce the concept of repetition and loops. Show how using a repeat block is more efficient than copying the same block multiple times. Have students practice with simple 2-3 iteration loops, then gradually increase complexity. Visual demonstrations are key for understanding.",
+  "studentExercises": [
+    {
+      "id": "exercise-2-1",
+      "title": "Create a Simple Loop",
+      "description": "Use a repeat block to draw the same shape 4 times",
+      "difficulty": "Easy"
+    },
+    {
+      "id": "exercise-2-2",
+      "title": "Pattern Creation",
+      "description": "Create a repeating pattern using loops",
+      "difficulty": "Medium"
+    },
+    {
+      "id": "exercise-2-3",
+      "title": "Nested Loops",
+      "description": "Use loops within loops to create complex patterns",
+      "difficulty": "Hard"
+    }
+  ]
+}

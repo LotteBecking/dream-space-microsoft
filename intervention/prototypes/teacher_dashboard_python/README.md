@@ -63,4 +63,4 @@ Currently uses JSON files for persistence:
 
 ## Styling
 
-Uses Tailwind CSS via CDN in templates. All UI components are built with Tailwind utility classes for consistency with the original React design.
+Uses Tailwind CSS via CDN in templates. All UI components are built with Tailwind utility classes for consistency with the original figma design.
