@@ -1,64 +1,186 @@
 {
   "id": "lesson-3",
-  "title": "Variables & Data Types",
-  "description": "Explore variables and different data types to store and manipulate information.",
-  "duration": 25,
-  "level": "Intermediate",
-  "videoUrl": "https://www.youtube.com/embed/G8hfAePjJv4",
-  "objectives": [
-    "Understand variables",
-    "Learn about data types",
-    "Store and retrieve information"
+  "title": "If This, Then That - How Computers Make Decisions",
+  "description": "Students learn conditionals, write IF/THEN/ELSE logic, and debug decision rules used in everyday technology.",
+  "duration": 60,
+  "level": "Beginner",
+  "ageGroup": "Groep 5-8 (ages 8-12)",
+  "imageUrl": "/static/images/lesson-3-placeholder.svg",
+  "learningObjectives": [
+    "Explain what a conditional is in plain language.",
+    "Write a basic IF/THEN/ELSE rule and chain conditions with ELSE IF.",
+    "Identify where conditional logic operates in technology used every day.",
+    "Reason about edge cases and rule order in decision systems."
   ],
-  "prerequisites": "Loops & Sequences",
+  "prerequisites": "Builds on Lesson 1 (algorithms, sequences) and Lesson 2 (loops, bugs).",
   "materials": [
-    "Computer",
-    "Code blocks environment",
-    "Workbook"
+    "Three colored papers: red, blue, green",
+    "Whiteboard and marker",
+    "Paper and pencils",
+    "Optional sticky notes for exit reflection"
   ],
-  "fullDescription": "Dive deeper into programming by learning about variables and different data types. Understand how to store, retrieve, and manipulate data in your programs.",
+  "fullDescription": "Age group: Groep 5-8 (ages 8-12). Duration: 45-60 minutes. Devices required: none (fully unplugged). SLO alignment: Domain A (21A), Domain B (22B). Students move from sequence and loop thinking into decision logic with IF/THEN/ELSE, Boolean true/false reasoning, and ELSE IF chains. Role model: Katherine Johnson, whose conditional calculations supported safe Apollo 11 mission decisions.",
   "teacherInstructions": {
-    "setup": "Prepare labeled boxes or cups to represent variables and printed value cards for demonstrations.",
+    "setup": "Place red, blue, and green papers on the floor at the front. Keep vocabulary visible all lesson: Conditional, IF, THEN, ELSE, Boolean.",
     "steps": [
-      "Explain variables as named storage containers (4 min).",
-      "Demonstrate creating and updating two variables live (6 min).",
-      "Students build a mini program that stores and changes a score (8 min).",
-      "Run examples and inspect how values change step-by-step (7 min)."
+      "Phase 1 (0-3 min): Spark question about phone auto-screen-off and game damage triggers. Collect ideas and frame conditional rules as decision instructions.",
+      "Phase 2 (3-10 min): Human conditionals activity. Students act only when IF conditions are true, then compare with IF/THEN/ELSE behavior including default ELSE.",
+      "Phase 3 (10-20 min): Concept intro. Teach syntax IF/THEN/ELSE, Boolean true/false, and real examples (street lights, game health, notifications). Connect to sequence and loops from previous lessons.",
+      "Phase 4 (20-42 min): Floor is lava challenge. Build class rules for red/blue/green sensors, execute with narrator, discuss state/order conflicts, then pairs extend with additional conditions.",
+      "Phase 5 (42-47 min): Discussion on missing rules, large condition sets, and edge cases in automatic systems.",
+      "Exercises (47-57 min): Complete Exercise 1 (write conditionals) and Exercise 2 (fix broken smart home). Use extension for fast finishers.",
+      "Share and reflect (52-57 min): Students share one rule, class proposes edge cases, and complete sentence: 'A conditional is like a _____ because _____. '"
     ],
     "discussionPrompts": [
-      "Why do we store values instead of typing them each time?",
-      "What happens if two variables hold similar names?",
-      "How do variables make games or quizzes possible?"
+      "Who decides game behavior when rules conflict: computer or programmer?",
+      "What changes when many options require ELSE IF chains instead of one IF/ELSE?",
+      "What edge cases might break automatic doors or school heating systems?",
+      "How do sequence, loops, and conditionals combine in one real program?"
     ],
     "tips": [
-      "Keep variable names short and meaningful for young learners.",
-      "Use color coding to distinguish text and number values.",
-      "Ask students to predict value changes before running code."
+      "Acknowledge sensor answers, then stress that rules decide actions from sensor data.",
+      "Use student mistakes in warm-up as examples of wrong branch execution.",
+      "Spend two clear minutes teaching ELSE IF order and first-true behavior.",
+      "If activity gets loud, switch to hand signals instead of shouting.",
+      "Push edge-case discussion; it is central for computational thinking growth."
     ]
   },
   "curriculumAlignment": [
-    "Data Representation Basics",
-    "State and Variables Level 2"
+    "SLO Domain A (21A)",
+    "SLO Domain B (22B)",
+    "Boolean and Conditional Logic",
+    "Computational Thinking - Decision Making"
   ],
-  "teacherGuide": "Use real-world analogies to explain variables (containers that hold information). Show how to create variables and change their values. Demonstrate different data types and why they matter. Have students create programs that use multiple variables.",
+  "teacherGuide": "Core message: conditionals are decision rules that run based on true/false checks. Students should distinguish chained ELSE IF logic from separate IF statements, and understand that rule order changes behavior. Watch for students connecting loop behavior from Lesson 2 to conditional bugs in smart-home examples.",
   "studentExercises": [
     {
       "id": "exercise-3-1",
-      "title": "Create Your First Variable",
-      "description": "Create a variable and set its value",
-      "difficulty": "Easy"
+      "title": "Exercise 1 - Write the Conditional",
+      "description": "Choose one scenario and write full IF/THEN/ELSE logic with at least three connected conditions (IF, ELSE IF, ELSE).",
+      "type": "Written",
+      "difficulty": "Easy",
+      "durationMinutes": 8,
+      "displayMode": "Individual then partner check",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Option A - Smart alarm clock: gentle music on weekdays, loud buzzer on Monday only, silence on weekends.",
+        "Option B - School canteen queue: pre-ordered meals first, then card, then cash; if meal is out of stock, student goes to back of queue.",
+        "Option C - Game power-up: red items add 10 points, gold items double current score, grey items do nothing, black items end the game immediately.",
+        "Write one connected IF/ELSE IF/ELSE chain, not separate IF statements.",
+        "Swap with a partner who must find one edge case your rules do not handle, then add a fix."
+      ],
+      "successCriteria": [
+        "Conditional block uses IF, ELSE IF, and ELSE in one chain.",
+        "Rules match the selected scenario exactly.",
+        "At least one added edge-case fix appears after partner review."
+      ]
     },
     {
       "id": "exercise-3-2",
-      "title": "Using Variables",
-      "description": "Use variables to store and display information",
-      "difficulty": "Medium"
+      "title": "Exercise 2 - Fix the Broken Smart Home",
+      "description": "Identify bugs in three smart-home conditional systems and write corrected logic.",
+      "type": "Bug hunt",
+      "difficulty": "Medium",
+      "durationMinutes": 7,
+      "displayMode": "Pairs or whole class",
+      "materials": [
+        "Whiteboard prompts",
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Problem 1: Heating turns on below 18 degrees but never turns off. Add ELSE IF logic to switch it off above threshold.",
+        "Problem 2: Security light turns on in daylight because darkness condition is missing. Add AND logic: motion detected AND it is dark.",
+        "Problem 3: Fridge sends 47 milk alerts per minute due to forever loop behavior. Add notified state so alerts send once until reset.",
+        "For each problem, name the bug and write a corrected conditional.",
+        "Discuss which fix depends on both loops and conditionals together."
+      ],
+      "successCriteria": [
+        "All three bugs are identified correctly.",
+        "At least one fix uses combined conditions with AND.",
+        "Students explain the notification spam bug as loop + conditional interaction."
+      ]
     },
     {
       "id": "exercise-3-3",
-      "title": "Building a Simple Program",
-      "description": "Create a program that uses multiple variables",
-      "difficulty": "Medium"
+      "title": "Extension - Build a Smarter Traffic Light",
+      "description": "Design conditional rules for an adaptive traffic light using car-count sensors and emergency handling.",
+      "type": "Extension",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Fast finishers",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Write rules for green-light duration based on number of cars waiting on each road.",
+        "Add a priority rule for ambulance detection on any road.",
+        "Add behavior for 3am when no cars are waiting.",
+        "Answer challenge questions about citywide interactions between many traffic lights.",
+        "Explain one risk where optimizing one junction worsens another."
+      ],
+      "successCriteria": [
+        "Rules respond to sensor data with clear conditions.",
+        "Emergency handling has explicit priority behavior.",
+        "Student identifies at least one systems-level side effect."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-3-1",
+      "title": "The Floor Is Lava - Rule Engine",
+      "description": "Build and test a multi-branch ELSE IF game rule system for red, blue, green, and normal floor.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Whole class then pairs",
+      "materials": [
+        "Red, blue, and green floor papers",
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Define one effect for each color sensor tile.",
+        "Write one connected IF/ELSE IF/ELSE block that includes plain floor behavior.",
+        "Test with a narrator while a player steps on tiles in different orders.",
+        "Add two extension rules: zero-health game end, and non-stacking shield behavior.",
+        "Reorder conditions if needed and explain why order matters."
+      ],
+      "successCriteria": [
+        "Rule set includes all tiles and a default ELSE case.",
+        "Pairs can justify condition order with a concrete test case.",
+        "Extended rules handle health and shield edge states correctly."
+      ]
+    },
+    {
+      "id": "challenge-3-2",
+      "title": "Edge Case Detective",
+      "description": "Find hidden edge cases in conditionals and patch them before they become bugs.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 8,
+      "displayMode": "Pairs",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Take one conditional block from Exercise 1 or 2.",
+        "Invent at least two edge cases where the current rules fail.",
+        "Write one additional ELSE IF or ELSE rule to handle each edge case.",
+        "Swap with another pair and test whether their patch closes the gap.",
+        "Mark any remaining unhandled case for class discussion."
+      ],
+      "successCriteria": [
+        "At least two genuine edge cases are identified.",
+        "Added rules are specific and testable.",
+        "Peer testing confirms at least one bug is removed."
+      ]
     }
   ]
 }

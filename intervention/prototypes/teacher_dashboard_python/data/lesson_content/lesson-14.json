@@ -1,0 +1,274 @@
+{
+  "id": "lesson-14",
+  "title": "How Do Computers Learn? Training the Fraud Detector",
+  "description": "Students compare explicit rules with machine learning, assign feature weights, and test a fraud model for accuracy and fairness trade-offs.",
+  "duration": 30,
+  "level": "Intermediate",
+  "ageGroup": "High school (ages 12-17)",
+  "imageUrl": "/static/images/highschool-placeholder.svg",
+  "learningObjectives": [
+    "Explain the difference between explicit rule-based programming and machine learning.",
+    "Identify model features and assign weights for a simple fraud detection task.",
+    "Set and evaluate a decision threshold using training and unseen transactions.",
+    "Recognize at least one fairness risk when models are trained on limited or biased data."
+  ],
+  "prerequisites": "Builds on Lessons 1 to 5.",
+  "materials": [
+    "Whiteboard and marker",
+    "Paper and pencils"
+  ],
+  "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students can explain machine learning basics through fraud detection, assign feature weights and thresholds, and analyze false positives, false negatives, and fairness implications.",
+  "vocabulary": [
+    "Machine learning",
+    "Feature",
+    "Weight",
+    "Threshold",
+    "Training data",
+    "False positive",
+    "False negative"
+  ],
+  "roleModel": {
+    "name": "Fei-Fei Li",
+    "years": "born 1976",
+    "summary": "Built ImageNet, a large labeled dataset that accelerated modern AI image recognition.",
+    "whyItMatters": "Her work showed that model quality depends heavily on data quality and diversity, not only on algorithm choice."
+  },
+  "trainingTransactions": [
+    {
+      "transaction": 1,
+      "location": "Local",
+      "amountEUR": 8,
+      "time": "9:00 AM",
+      "outcome": "Safe"
+    },
+    {
+      "transaction": 2,
+      "location": "Local",
+      "amountEUR": 1200,
+      "time": "2:00 PM",
+      "outcome": "Safe"
+    },
+    {
+      "transaction": 3,
+      "location": "Overseas",
+      "amountEUR": 8,
+      "time": "3:00 AM",
+      "outcome": "Fraud"
+    },
+    {
+      "transaction": 4,
+      "location": "Overseas",
+      "amountEUR": 420,
+      "time": "3:15 AM",
+      "outcome": "Fraud"
+    }
+  ],
+  "testTransactions": [
+    {
+      "transaction": 5,
+      "location": "Local",
+      "amountEUR": 650,
+      "time": "3:30 AM",
+      "actualOutcome": "Safe"
+    },
+    {
+      "transaction": 6,
+      "location": "Overseas",
+      "amountEUR": 25,
+      "time": "2:00 PM",
+      "actualOutcome": "Safe"
+    },
+    {
+      "transaction": 7,
+      "location": "Overseas",
+      "amountEUR": 800,
+      "time": "4:00 AM",
+      "actualOutcome": "Fraud"
+    }
+  ],
+  "teacherInstructions": {
+    "setup": "Write vocabulary and the training transaction table on the board before students arrive.",
+    "steps": [
+      "Phase 1 (0-2 min): Ask spark question on how banks detect fraud even when thieves use normal-looking transactions and valid credentials.",
+      "Phase 1 hook: connect decision scale to modern payment networks where static IF/THEN rules are insufficient.",
+      "Phase 2 (2-8 min): Feature extraction mini-demo with an everyday object. Move from vague description to measurable properties and introduce feature weights.",
+      "Phase 2 bridge: contrast explicit rules with machine learning. Humans provide examples, model learns scoring patterns.",
+      "Phase 3 (8-24 min): Fraud detector activity using 4-row training data and weighted scoring with threshold decisions.",
+      "Round 1 (3 min): identify strongest signal and discuss why feature combinations often matter more than any single feature.",
+      "Round 2 (8 min): groups assign weights for Overseas, Late Night (11pm-5am), and Amount > EUR500, then set a blocking threshold and classify all training cases.",
+      "Round 3 (5 min): apply model to unseen transactions 5 to 7 and compute false positives and false negatives.",
+      "Phase 4 discussion (24-28 min): evaluate who bears error costs and what fairness obligations follow from model limitations.",
+      "Exit reflection (28-30 min): students contrast when machine learning is more powerful than explicit rules and when it is more dangerous.",
+      "Fast finisher: black-box explainability prompt on right-to-explanation trade-offs in automated financial decisions."
+    ],
+    "discussionPrompts": [
+      "Who should define acceptable error rates: company, regulator, or affected users?",
+      "How can demographic disparities emerge even when protected attributes are not explicit features?",
+      "Does more data always improve fairness, or can larger biased datasets scale injustice?",
+      "If historical labels include human bias, what exactly does the model learn and how would we detect it?",
+      "Should a bank be allowed to block transactions it cannot explain in human terms?"
+    ],
+    "tips": [
+      "Ask groups to justify each weight assignment with reasoning, not trial-and-error only.",
+      "Keep false-positive and false-negative costs grounded in lived consequences.",
+      "Highlight that unseen-case errors are expected with tiny training sets.",
+      "Prompt cross-lesson transfer from postcode bias in Lesson 5 to proxy bias in fraud scoring.",
+      "Frame fairness as both technical and governance work, not just model tuning."
+    ]
+  },
+  "curriculumAlignment": [
+    "SLO Domain A (21A)",
+    "SLO Domain B (22B)",
+    "Machine Learning Fundamentals",
+    "Classification Errors and Fairness"
+  ],
+  "teacherGuide": "Core message: machine learning replaces hand-written rules with data-driven scoring, which scales power and risk together. Models can outperform static rules on complex patterns but inherit limits and biases from training data and label processes. Keep students focused on three levers: feature choice, weight assignment, and threshold policy.",
+  "studentExercises": [
+    {
+      "id": "exercise-14-1",
+      "title": "Exercise 1 - Feature Extraction and Weighting",
+      "description": "Identify measurable features and reason about relative importance through weights.",
+      "type": "Concept modeling",
+      "difficulty": "Easy",
+      "durationMinutes": 6,
+      "displayMode": "Whole class",
+      "materials": [
+        "Whiteboard"
+      ],
+      "instructions": [
+        "List measurable features for a familiar object.",
+        "Select the most informative features for classification.",
+        "Assign tentative importance weights.",
+        "Explain why some features deserve higher weights.",
+        "Connect feature choice to model blind spots."
+      ],
+      "successCriteria": [
+        "Students propose measurable rather than vague features.",
+        "Students justify at least one high-weight feature.",
+        "Students recognize that chosen features constrain learning."
+      ]
+    },
+    {
+      "id": "exercise-14-2",
+      "title": "Exercise 2 - Train the Fraud Scorer",
+      "description": "Build a weighted fraud score and threshold that classifies the 4 training transactions correctly.",
+      "type": "Model training",
+      "difficulty": "Medium",
+      "durationMinutes": 9,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Assign weights (1-10) for Overseas, Late Night, and Amount > EUR500.",
+        "Set block threshold based on weighted sum.",
+        "Run model on transactions 1 to 4.",
+        "Adjust until all training examples are classified as expected.",
+        "Document rationale for final weights and threshold."
+      ],
+      "successCriteria": [
+        "Group produces a complete weighted scoring rule.",
+        "Group classifies all training examples correctly.",
+        "Group provides reasoning for parameter choices."
+      ]
+    },
+    {
+      "id": "exercise-14-3",
+      "title": "Exercise 3 - Generalization and Error Analysis",
+      "description": "Test the trained model on unseen transactions and analyze false positives and false negatives.",
+      "type": "Evaluation",
+      "difficulty": "Hard",
+      "durationMinutes": 7,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Apply your model to transactions 5, 6, and 7.",
+        "Compare predictions with actual outcomes.",
+        "Count false positives and false negatives.",
+        "Choose which error type to reduce first and justify for both bank and customer perspectives.",
+        "Propose one model adjustment and predict its side effect."
+      ],
+      "successCriteria": [
+        "Group computes evaluation outcomes correctly.",
+        "Group differentiates false positive and false negative impacts.",
+        "Group explains trade-offs of attempted improvements."
+      ]
+    },
+    {
+      "id": "exercise-14-4",
+      "title": "Exit Reflection - Power vs Risk",
+      "description": "Write one sentence contrasting where machine learning outperforms explicit rules and where it introduces danger.",
+      "type": "Reflection",
+      "difficulty": "Easy",
+      "durationMinutes": 2,
+      "displayMode": "Individual",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Complete: Machine learning is more powerful than explicit rules when ______, but more dangerous when ______.",
+        "Include one concrete lesson example in each blank.",
+        "Mention either data quality, explainability, or fairness.",
+        "Share one revised sentence aloud."
+      ],
+      "successCriteria": [
+        "Student contrasts complexity-handling benefit with risk source.",
+        "Student references a concrete model behavior from class.",
+        "Response links model danger to human consequences."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-14-1",
+      "title": "Proxy Bias Investigation",
+      "description": "Trace how demographic disparities can emerge through correlated variables when protected attributes are absent.",
+      "type": "Challenge",
+      "difficulty": "Hard",
+      "durationMinutes": 3,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Name one non-protected feature that could act as a proxy for demographic group membership.",
+        "Explain one pathway from proxy feature to unequal false positive rates.",
+        "Propose one audit metric to detect this issue.",
+        "State one remediation action and its trade-off."
+      ],
+      "successCriteria": [
+        "Student identifies plausible proxy mechanism.",
+        "Student proposes measurable fairness check.",
+        "Student acknowledges trade-offs in mitigation."
+      ]
+    },
+    {
+      "id": "challenge-14-2",
+      "title": "Explainability vs Accuracy",
+      "description": "Debate whether systems should trade some predictive performance for clearer human explanations in high-impact decisions.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 3,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Argue for an explanation requirement in automated banking decisions.",
+        "Describe one model-design choice that improves explainability.",
+        "Describe one potential accuracy cost of that choice.",
+        "Recommend a policy balance and justify it."
+      ],
+      "successCriteria": [
+        "Student frames explainability as a design choice with costs.",
+        "Student identifies at least one technical lever for transparency.",
+        "Student proposes a defensible policy position."
+      ]
+    }
+  ]
+}

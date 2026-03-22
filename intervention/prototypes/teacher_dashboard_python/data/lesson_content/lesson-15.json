@@ -1,0 +1,273 @@
+{
+  "id": "lesson-15",
+  "title": "Can Data Be Unfair? Auditing Algorithms for Bias",
+  "description": "Students audit a hiring dataset for proxy bias, design a data policy, and evaluate the fairness-versus-accuracy tension in machine learning systems.",
+  "duration": 30,
+  "level": "Intermediate",
+  "ageGroup": "High school (ages 12-17)",
+  "imageUrl": "/static/images/highschool-placeholder.svg",
+  "learningObjectives": [
+    "Identify hidden bias in a dataset and explain how it can affect model outcomes.",
+    "Explain how proxy variables transfer discriminatory patterns without explicitly naming protected characteristics.",
+    "Write a data policy specifying excluded features and required additions for fairer model training.",
+    "Explain why fixing bias in machine learning often requires retraining from new data rather than deleting one rule."
+  ],
+  "prerequisites": "Builds on Lessons 1 to 6.",
+  "materials": [
+    "Whiteboard and marker",
+    "Paper and pencils"
+  ],
+  "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students can audit data for bias, detect proxy-variable mechanisms, and design practical policy interventions while recognizing trade-offs between predictive performance and fairness.",
+  "vocabulary": [
+    "AI bias",
+    "Training data",
+    "Proxy variable",
+    "Algorithmic fairness",
+    "Audit",
+    "Filter bubble"
+  ],
+  "roleModel": {
+    "name": "Joy Buolamwini",
+    "years": "born 1989",
+    "summary": "MIT researcher who documented major facial-recognition error gaps across demographic groups and catalyzed product and policy changes.",
+    "whyItMatters": "Her work established bias auditing as core engineering practice, not optional ethics add-on."
+  },
+  "auditDataset": [
+    {
+      "employee": "A",
+      "postcode": "1071",
+      "commute": "Car",
+      "graduationYear": 2021,
+      "hobbies": [
+        "golf",
+        "sailing"
+      ]
+    },
+    {
+      "employee": "B",
+      "postcode": "1072",
+      "commute": "Car",
+      "graduationYear": 2020,
+      "hobbies": [
+        "tennis",
+        "travel"
+      ]
+    },
+    {
+      "employee": "C",
+      "postcode": "1071",
+      "commute": "Car",
+      "graduationYear": 2022,
+      "hobbies": [
+        "skiing",
+        "sailing"
+      ]
+    },
+    {
+      "employee": "D",
+      "postcode": "1071",
+      "commute": "Car",
+      "graduationYear": 2021,
+      "hobbies": [
+        "cycling",
+        "golf"
+      ]
+    },
+    {
+      "employee": "E",
+      "postcode": "1073",
+      "commute": "Car",
+      "graduationYear": 2019,
+      "hobbies": [
+        "golf",
+        "reading"
+      ]
+    }
+  ],
+  "teacherInstructions": {
+    "setup": "Write vocabulary and spark question on the board. Prepare hiring-audit dataset for Phase 4.",
+    "steps": [
+      "Phase 1 (0-2 min): Ask whether AI trained on historical data can avoid repeating historical mistakes. Capture both sides quickly.",
+      "Phase 1 hook: discuss Amazon hiring-model case where gender was not explicit but historical hiring patterns were learned.",
+      "Phase 2 (2-8 min): Proxy variable mini-case using polo, sailing magazine, and second home as misleading indicators.",
+      "Phase 2 escalation: connect postcode to socioeconomic and racial segregation patterns and ask how hidden discrimination can be detected.",
+      "Phase 3 (8-13 min): Contrast rule-based bias fixes with ML bias remediation. In ML, bias is distributed across many learned weights.",
+      "Phase 3 pressure question: discuss organizational incentives when scrapping a biased model is expensive.",
+      "Phase 4 (13-24 min): Dataset audit challenge in groups using hiring records A to E.",
+      "Round 1 (4 min): feature audit for proxy risks including postcode, commute, hobbies, graduation year, and sample-size limits.",
+      "Round 2 (5 min): write data policy with excluded features and required additions, including causal mechanism for each exclusion.",
+      "Round 3 (3 min): fairness-versus-accuracy dilemma after proxy removals reduce predictive performance.",
+      "Phase 5 (24-28 min): discussion on proxy legitimacy, intent, and governance when biased systems are currently deployed.",
+      "Exit reflection (28-30 min): students explain how bias can emerge without explicit intent."
+    ],
+    "discussionPrompts": [
+      "How do we distinguish harmful proxy use from contextually valid signal use, if at all?",
+      "Does beneficial proxy use (for example postcode bonus for disadvantaged applicants) change ethical status?",
+      "If a deployed model is biased, should it be shut down immediately or run during replacement, and who decides?",
+      "What obligations exist to inform people affected by known model bias?",
+      "Can any purely technical fix solve filter bubbles without reducing personalization quality?"
+    ],
+    "tips": [
+      "Push students to explain mechanisms, not just label features as biased.",
+      "Ask who is absent from the dataset, not only what variables are present.",
+      "Use disagreement in Round 3 as evidence of mature reasoning, not confusion.",
+      "Reinforce that fairness auditing is iterative and outcome-based, not checkbox compliance.",
+      "Link proxy-bias insights back to Lesson 5 and fraud-model fairness from Lesson 6."
+    ]
+  },
+  "curriculumAlignment": [
+    "SLO Domain A (21A)",
+    "SLO Domain B (22B)",
+    "Algorithmic Fairness and Bias Auditing",
+    "Data Governance in Machine Learning"
+  ],
+  "teacherGuide": "Core message: ML bias often lives in data and correlations, not explicit discriminatory code. Effective auditing requires examining proxy mechanisms, representation gaps, error-rate disparities, and governance decisions under business pressure. Keep focus on engineering accountability: measure, document, intervene, and reassess.",
+  "studentExercises": [
+    {
+      "id": "exercise-15-1",
+      "title": "Exercise 1 - Proxy Variable Detection",
+      "description": "Analyze simple feature sets to identify hidden selection criteria and explain the mechanism behind proxy bias.",
+      "type": "Concept audit",
+      "difficulty": "Easy",
+      "durationMinutes": 6,
+      "displayMode": "Whole class",
+      "materials": [
+        "Whiteboard"
+      ],
+      "instructions": [
+        "Review three hiring features with social-class signal.",
+        "Identify protected characteristics indirectly targeted.",
+        "Explain why no explicit protected field is needed for biased outcomes.",
+        "Provide one real-world proxy candidate beyond the examples.",
+        "State one way to test for harmful proxy effects."
+      ],
+      "successCriteria": [
+        "Students identify at least one valid proxy mechanism.",
+        "Students articulate indirect pathway from feature to unfair outcome.",
+        "Students propose one measurable audit approach."
+      ]
+    },
+    {
+      "id": "exercise-15-2",
+      "title": "Exercise 2 - Hiring Dataset Audit",
+      "description": "Audit feature risks and representation gaps in a small hiring dataset used to train a model.",
+      "type": "Dataset review",
+      "difficulty": "Medium",
+      "durationMinutes": 7,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Inspect each feature for proxy risk and fairness impact.",
+        "Flag representation gaps and missing populations.",
+        "Assess sample-size adequacy for generalization.",
+        "Prioritize top three audit findings by expected harm.",
+        "Prepare one short justification per finding."
+      ],
+      "successCriteria": [
+        "Group identifies obvious and subtle proxies.",
+        "Group notes missing-group issue, not only variable issue.",
+        "Group ranks findings using consequence-based reasoning."
+      ]
+    },
+    {
+      "id": "exercise-15-3",
+      "title": "Exercise 3 - Data Policy Draft",
+      "description": "Write an actionable policy with excluded variables, rationale mechanisms, and required data additions.",
+      "type": "Policy design",
+      "difficulty": "Hard",
+      "durationMinutes": 6,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "List excluded features and explain precise unfairness pathway.",
+        "List required additions to improve representativeness.",
+        "Define one monitoring metric for post-deployment fairness.",
+        "State review cadence and ownership role.",
+        "Test policy against fairer-but-less-accurate dilemma and defend choice."
+      ],
+      "successCriteria": [
+        "Policy includes mechanism-level justifications, not generic claims.",
+        "Policy addresses both exclusion and inclusion strategy.",
+        "Policy includes concrete monitoring and governance assignments."
+      ]
+    },
+    {
+      "id": "exercise-15-4",
+      "title": "Exit Reflection - Unintended Bias",
+      "description": "Write one sentence explaining how algorithmic bias can emerge without explicit intent.",
+      "type": "Reflection",
+      "difficulty": "Easy",
+      "durationMinutes": 2,
+      "displayMode": "Individual",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Complete: An algorithm can be biased without anyone intending it to be, because _______.",
+        "Reference either training data, proxy variables, or representation gaps.",
+        "Include one concrete class example.",
+        "Share one response aloud."
+      ],
+      "successCriteria": [
+        "Student links bias source to data-generation process.",
+        "Student avoids framing intent as sole cause of harm.",
+        "Student references a concrete mechanism from lesson activities."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-15-1",
+      "title": "Fairness vs Accuracy Trade-off",
+      "description": "Decide between a less accurate fairer model and a more accurate model that reinforces existing institutional patterns.",
+      "type": "Challenge",
+      "difficulty": "Hard",
+      "durationMinutes": 3,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Choose a deployment stance and justify stakeholders impacted.",
+        "Define one condition under which you would halt deployment.",
+        "Define one condition under which temporary deployment is acceptable.",
+        "Specify who should approve final decision and why."
+      ],
+      "successCriteria": [
+        "Student articulates clear decision criteria.",
+        "Student distinguishes business incentives from public interest.",
+        "Student assigns governance accountability explicitly."
+      ]
+    },
+    {
+      "id": "challenge-15-2",
+      "title": "Filter Bubble Systems Question",
+      "description": "Evaluate whether personalization systems can reduce polarization without degrading individual user experience.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 3,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Describe one technical intervention to reduce filter bubbles.",
+        "Predict one user-experience cost of that intervention.",
+        "Propose who should set platform trade-off policy.",
+        "State one metric for democratic-health impact and one for user satisfaction."
+      ],
+      "successCriteria": [
+        "Student identifies tension between individual and collective outcomes.",
+        "Student proposes measurable evaluation criteria.",
+        "Student recognizes that technical and governance choices are coupled."
+      ]
+    }
+  ]
+}

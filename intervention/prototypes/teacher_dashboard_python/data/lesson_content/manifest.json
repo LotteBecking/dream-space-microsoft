@@ -3,58 +3,114 @@
   "lessons": [
     {
       "id": "lesson-1",
-      "title": "Introduction to Block Coding",
+      "title": "How Does a Computer Think? The PB&J Sandwich Lesson",
       "level": "Beginner",
       "path": "lesson-1.json",
       "published": true
     },
     {
       "id": "lesson-2",
-      "title": "Loops & Sequences",
+      "title": "Don't Repeat Yourself - Loops and Efficiency",
       "level": "Beginner",
       "path": "lesson-2.json",
       "published": true
     },
     {
       "id": "lesson-3",
-      "title": "Variables & Data Types",
+      "title": "If This, Then That - How Computers Make Decisions",
       "level": "Intermediate",
       "path": "lesson-3.json",
       "published": true
     },
     {
       "id": "lesson-4",
-      "title": "Conditionals & Decision Making",
+      "title": "Memory Boxes - How Computers Remember Things",
       "level": "Intermediate",
       "path": "lesson-4.json",
       "published": true
     },
     {
       "id": "lesson-5",
-      "title": "Functions & Procedures",
+      "title": "Teaching the Machine - What AI Actually Is",
       "level": "Advanced",
       "path": "lesson-5.json",
       "published": true
     },
     {
       "id": "lesson-6",
-      "title": "Debugging & Problem Solving",
+      "title": "Secrets and Codes - How Computers Keep Information Safe",
       "level": "Intermediate",
       "path": "lesson-6.json",
       "published": true
     },
     {
       "id": "lesson-7",
-      "title": "Game Development Basics",
+      "title": "Build Something Real - Design Thinking and Your First Prototype",
       "level": "Advanced",
       "path": "lesson-7.json",
       "published": true
     },
     {
       "id": "lesson-8",
-      "title": "Arrays & Lists",
+      "title": "Who Is Technology For? Ethics, Fairness, and Responsibility",
       "level": "Advanced",
       "path": "lesson-8.json",
+      "published": true
+    },
+    {
+      "id": "lesson-9",
+      "title": "Why Does Your Phone Freeze? How Computers Think About Efficiency",
+      "level": "Intermediate",
+      "path": "lesson-9.json",
+      "published": true
+    },
+    {
+      "id": "lesson-10",
+      "title": "How Do Computers Make Secure Decisions? The Cybersecurity Firewall",
+      "level": "Intermediate",
+      "path": "lesson-10.json",
+      "published": true
+    },
+    {
+      "id": "lesson-11",
+      "title": "How Do Computers Handle Massive Data? Loops and the Climate Crisis",
+      "level": "Intermediate",
+      "path": "lesson-11.json",
+      "published": true
+    },
+    {
+      "id": "lesson-12",
+      "title": "How Do Large Teams Build Software? Breaking Problems into Black Boxes",
+      "level": "Intermediate",
+      "path": "lesson-12.json",
+      "published": true
+    },
+    {
+      "id": "lesson-13",
+      "title": "How Do Systems Prioritise? Queues, Stacks, and Emergency Triage",
+      "level": "Intermediate",
+      "path": "lesson-13.json",
+      "published": true
+    },
+    {
+      "id": "lesson-14",
+      "title": "How Do Computers Learn? Training the Fraud Detector",
+      "level": "Intermediate",
+      "path": "lesson-14.json",
+      "published": true
+    },
+    {
+      "id": "lesson-15",
+      "title": "Can Data Be Unfair? Auditing Algorithms for Bias",
+      "level": "Intermediate",
+      "path": "lesson-15.json",
+      "published": true
+    },
+    {
+      "id": "lesson-16",
+      "title": "How Do We Solve Real Problems? The Tech for Good Pitch",
+      "level": "Intermediate",
+      "path": "lesson-16.json",
       "published": true
     }
   ]

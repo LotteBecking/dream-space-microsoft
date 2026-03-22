@@ -1,64 +1,189 @@
 {
   "id": "lesson-7",
-  "title": "Game Development Basics",
-  "description": "Create simple games using coding concepts and game design principles.",
-  "duration": 40,
-  "level": "Advanced",
-  "videoUrl": "https://www.youtube.com/embed/7L7vQHIgKA4",
-  "objectives": [
-    "Understand game loops",
-    "Create interactive gameplay",
-    "Design simple games"
+  "title": "Build Something Real - Design Thinking and Your First Prototype",
+  "description": "Students integrate all prior concepts to define a real problem, design with empathy, and create a three-screen paper prototype with logic.",
+  "duration": 60,
+  "level": "Beginner",
+  "ageGroup": "Groep 5-8 (ages 8-12)",
+  "imageUrl": "/static/images/lesson-7-placeholder.svg",
+  "learningObjectives": [
+    "Identify a real, user-centered problem worth solving.",
+    "Apply empathise, define, and ideate stages of design thinking.",
+    "Produce a three-screen paper prototype with connected navigation.",
+    "Describe logic layer elements using variables, conditionals, and edge-case handling."
   ],
-  "prerequisites": "Functions & Procedures",
+  "prerequisites": "Builds on all previous lessons as an integration session.",
   "materials": [
-    "Computer",
-    "Game development environment",
-    "Game design template"
+    "Paper (at least 6 sheets per group)",
+    "Pencils and pens",
+    "Colored markers (optional)",
+    "Scissors (optional)",
+    "Whiteboard and marker",
+    "Sticky notes"
   ],
-  "fullDescription": "Bring coding to life by creating simple games. Learn game design principles and how to implement them using code.",
+  "fullDescription": "Age group: Groep 5-8 (ages 8-12). Duration: 45-60 minutes. Devices required: none (fully unplugged). SLO alignment: Domain B (22A, 22B), Domain C (23A). Students move from concept understanding to real-world product design through empathy mapping, problem framing, ideation, and paper prototyping. Role model: Reshma Saujani, whose people-first insight shaped Girls Who Code and highlights that design starts with users, not features.",
   "teacherInstructions": {
-    "setup": "Share a game canvas template and provide a one-page mechanic checklist (goal, rules, feedback).",
+    "setup": "Prepare sticky-note wall for problem collection and board space for design-thinking stages: Empathise, Define, Ideate, Prototype, Test.",
     "steps": [
-      "Break down a simple game into mechanics and rules (6 min).",
-      "Demonstrate a basic game loop and scoring variable (8 min).",
-      "Students prototype one playable mechanic first (12 min).",
-      "Add win/lose condition and peer playtest in pairs (10 min)."
+      "Phase 1 (0-3 min): Spark question. Students silently write real annoyances on sticky notes and share selected examples.",
+      "Phase 2 (3-10 min): Broken school day warm-up. Identify problems before proposing solutions and discuss which are technology-solvable.",
+      "Phase 3 (10-20 min): Concept intro. Teach first three design-thinking stages, show wireframe and navigation arrows, and connect to prior lesson logic concepts.",
+      "Phase 4 (20-42 min): Paper prototype sprint in groups of three with timed steps: choose problem, empathy answers, problem statement, ideation, then three-screen prototype.",
+      "Phase 5 (42-47 min): Discussion on user assumptions, solution-first pitfalls, and minimum viable feature scope.",
+      "Exercises (47-57 min): Finish prototype, complete logic-layer worksheet, and write one-sentence pitch.",
+      "Share and reflect (52-57 min): Silent gallery scan, class infers problem from each prototype, and students complete reflection sentence."
     ],
     "discussionPrompts": [
-      "What makes a game fun but still easy to understand?",
-      "How does feedback help players improve?",
-      "What should happen when a player wins or loses?"
+      "How did designing for one named user change feature decisions?",
+      "Why must a strong problem statement avoid mentioning a solution?",
+      "When do extra screens improve a product and when do they reduce usability?",
+      "If you could keep only two screens, what would you cut and why?"
     ],
     "tips": [
-      "Prioritize a playable core before adding visual polish.",
-      "Use short playtest cycles with one feedback goal per round.",
-      "Keep scope small so every student reaches a complete game."
+      "Protect the silent sticky-note step so every student contributes a real problem.",
+      "If groups jump to app ideas, bring them back to who, when, why, and how often.",
+      "Require problem statements to be solution-free before ideation starts.",
+      "During sketching, prioritize logic and edge-case handling over visual polish.",
+      "Use time pressure intentionally to encourage rough, testable prototypes."
     ]
   },
   "curriculumAlignment": [
-    "Interactive Systems",
-    "Design Iteration Level 3"
+    "SLO Domain B (22A)",
+    "SLO Domain B (22B)",
+    "SLO Domain C (23A)",
+    "Design Thinking and User-Centered Innovation"
   ],
-  "teacherGuide": "Discuss game design fundamentals. Show examples of simple games. Demonstrate the game loop concept. Have students design their own game on paper first. Provide templates to speed up development. Celebrate creative solutions.",
+  "teacherGuide": "Core message: great technology starts with a real user problem, not a feature idea. Students should leave with a concrete prototype plus explicit logic notes that tie visual design to computational thinking foundations. Track whether groups revise based on feedback rather than defending first drafts.",
   "studentExercises": [
     {
       "id": "exercise-7-1",
-      "title": "Create a Simple Game",
-      "description": "Build a basic game with one mechanic",
-      "difficulty": "Hard"
+      "title": "Primary Exercise - Paper Prototype Sprint",
+      "description": "In groups, complete a full mini design-thinking cycle and produce a 3-screen paper prototype with navigation and one error-state screen.",
+      "type": "Prototype",
+      "difficulty": "Medium",
+      "durationMinutes": 20,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Paper",
+        "Pencils",
+        "Markers",
+        "Sticky notes"
+      ],
+      "instructions": [
+        "Choose one real school-life problem from sticky notes or warm-up list.",
+        "Empathise: answer who has this problem, when it happens, what they already tried, and how it feels.",
+        "Define: write one problem statement using template '[Name] needs a way to ... because ... but currently ...'.",
+        "Ideate: generate at least six solution ideas in three minutes, then select one to prototype.",
+        "Prototype exactly three screens with titles, at least two interactive elements each, arrows showing flow, and one explicit error or failure case."
+      ],
+      "successCriteria": [
+        "Problem is specific, real, and user-centered.",
+        "Prototype has exactly three connected screens with clear navigation.",
+        "At least one edge-case or failure-state screen is included."
+      ]
     },
     {
       "id": "exercise-7-2",
-      "title": "Add Game Features",
-      "description": "Add scoring and levels to a game",
-      "difficulty": "Hard"
+      "title": "Written Task 1 - The Logic Layer",
+      "description": "For each screen, document one variable, one IF/THEN/ELSE conditional, and one edge case to show system logic behind the design.",
+      "type": "Logic mapping",
+      "difficulty": "Medium",
+      "durationMinutes": 5,
+      "displayMode": "Group worksheet",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "For Screen 1, write screen name, one meaningful variable, one conditional, and one edge case.",
+        "Repeat for Screen 2.",
+        "Repeat for Screen 3.",
+        "Use real app-specific variable names such as TIMETABLE_UPDATED or USER_CLASS, not generic placeholders.",
+        "Check that each conditional matches an actual interaction in your screen design."
+      ],
+      "successCriteria": [
+        "All three screens have specific variables, conditionals, and edge cases.",
+        "Logic entries match the actual prototype behavior.",
+        "Group demonstrates connection between UI decisions and program logic."
+      ]
     },
     {
       "id": "exercise-7-3",
-      "title": "Design Your Game",
-      "description": "Create your own original game concept",
-      "difficulty": "Expert"
+      "title": "Written Task 2 - The Pitch Sentence",
+      "description": "Write a one-sentence Dragon's Den style pitch that states app name, user, problem, feature, and consequence without the app.",
+      "type": "Pitch",
+      "difficulty": "Easy",
+      "durationMinutes": 3,
+      "displayMode": "Group",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Use this formula: 'Our app is called [NAME]. It helps [WHO] solve [PROBLEM] by [FEATURE]. Without it, [CONSEQUENCE].'",
+        "Make sure WHO and PROBLEM match your empathy and define stages.",
+        "Keep sentence specific and testable, not vague.",
+        "Read sentence aloud and revise once for clarity.",
+        "Save this sentence as your opening for Lesson 8 presentation."
+      ],
+      "successCriteria": [
+        "Pitch contains all five required elements.",
+        "Sentence aligns with prototype and problem statement.",
+        "Audience can understand value proposition in one read."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-7-1",
+      "title": "Prototype Stress Test",
+      "description": "Swap prototypes with another group and try to break the design by finding confusing flows, missing states, or unsupported users.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Group swap",
+      "materials": [
+        "Prototype sheets",
+        "Sticky notes",
+        "Pencil"
+      ],
+      "instructions": [
+        "Exchange prototype with another group.",
+        "For five minutes, list every failure point or unclear interaction you can find.",
+        "Frame feedback as 'What happens if ...?' questions.",
+        "Return prototype with feedback note.",
+        "Original group spends five minutes revising design or defending with clear rationale."
+      ],
+      "successCriteria": [
+        "Feedback identifies concrete usability or logic gaps.",
+        "Receiving group can act on at least one suggestion.",
+        "Revision demonstrates iteration rather than cosmetic change only."
+      ]
+    },
+    {
+      "id": "challenge-7-2",
+      "title": "Two-Screen MVP Cut",
+      "description": "Reduce your three-screen concept to a two-screen minimum viable product and justify what was removed.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 8,
+      "displayMode": "Groups",
+      "materials": [
+        "Prototype sheets",
+        "Pencil"
+      ],
+      "instructions": [
+        "Assume you are allowed to keep only two screens.",
+        "Choose which screen to remove.",
+        "Rewrite key navigation arrows and logic to maintain core value.",
+        "Explain what user need is still solved and what trade-off was accepted.",
+        "Share your cut decision with another group and compare priorities."
+      ],
+      "successCriteria": [
+        "Group preserves the core problem-solving flow in two screens.",
+        "Trade-offs are explicit and user-centered.",
+        "MVP decision is justified with clear reasoning."
+      ]
     }
   ]
 }

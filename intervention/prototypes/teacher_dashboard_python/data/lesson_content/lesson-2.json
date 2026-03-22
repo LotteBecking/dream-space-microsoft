@@ -1,63 +1,186 @@
 {
   "id": "lesson-2",
-  "title": "Loops & Sequences",
-  "description": "Master loops and sequential programming to create repeating patterns and efficient code.",
-  "duration": 20,
+  "title": "Don't Repeat Yourself - Loops and Efficiency",
+  "description": "Students learn what loops are, why they make code efficient, and how to debug looping bugs.",
+  "duration": 60,
   "level": "Beginner",
-  "videoUrl": "https://www.youtube.com/embed/RMINSD7MmT4",
-  "objectives": [
-    "Understand loops",
-    "Use repeat blocks",
-    "Create sequential instructions"
+  "ageGroup": "Groep 5-8 (ages 8-12)",
+  "imageUrl": "/static/images/lesson-2-placeholder.svg",
+  "learningObjectives": [
+    "Explain what a loop is and why programmers use loops instead of repeating the same line many times.",
+    "Identify repetition in everyday routines and technology examples.",
+    "Use and explain key vocabulary: loop, iteration, bug, debug, efficient.",
+    "Spot a bug in a loop and suggest a fix."
   ],
-  "prerequisites": "Introduction to Block Coding",
+  "prerequisites": "Lesson 1 - students already understand algorithms and sequences.",
   "materials": [
-    "Computer",
-    "Code blocks environment"
+    "Whiteboard and marker",
+    "Paper and pencils for every student",
+    "Optional sticky notes or index cards for loop cards activity",
+    "Clear space at the front for physical activity"
   ],
-  "fullDescription": "Learn how to use loops to repeat actions and create efficient programs. This lesson covers repeat blocks, sequences, and pattern creation.",
+  "fullDescription": "Age group: Groep 5-8 (ages 8-12). Duration: 45-60 minutes. Devices required: none (fully unplugged). SLO alignment: Domain B (22B). Builds on Lesson 1 by extending sequence thinking into repetition and efficiency. Role model: Grace Hopper, who helped build early programming languages and documented the first actual computer bug, giving us the terms bug and debug.",
   "teacherInstructions": {
-    "setup": "Prepare grid paper and repeat-pattern cards so students can first model loops away from the screen.",
+    "setup": "Write vocabulary on the board and keep it visible all lesson: Loop, Iteration, Bug, Debug, Efficient. Prepare open floor space for the human loop and Fortnite dance debugging activity.",
     "steps": [
-      "Show a repetitive task and ask how to shorten instructions (3 min).",
-      "Introduce repeat blocks with one simple visual example (5 min).",
-      "Have students build a pattern using a loop and test it (8 min).",
-      "Challenge students to reduce block count while keeping the same output (6 min)."
+      "Phase 1 (0-3 min): Spark question using the brushing-teeth scale example. Capture highest and lowest guesses and reveal why loops are needed.",
+      "Phase 2 (3-10 min): Human loop warm-up. Run Clap/Stamp/Beep sequence, then rewrite as LOOP 5 TIMES and discuss iteration counting and LOOP FOREVER.",
+      "Phase 3 (10-20 min): Concept intro and loop types. Connect to Lesson 1 sandwich sequence, show efficiency rewrite with LOOP 10 TIMES, and introduce count/until/forever loops at age-appropriate depth.",
+      "Phase 4 (20-42 min): Fortnite dance bug challenge. Run working loop, then buggy LOOP FOREVER version, then pair debugging with rule constraints and share fixes.",
+      "Phase 5 (42-47 min): Discussion on loop correctness, forever loops in real life, and precision versus efficiency.",
+      "Exercises (47-57 min): Complete Exercise 1 (Rewrite with a loop) and Exercise 2 (Spot the bug). Use extension for fast finishers.",
+      "Share and reflect (52-57 min): Students share corrected loops and complete sentence: 'A loop is useful when _____ and dangerous when _____.'"
     ],
     "discussionPrompts": [
-      "When is a loop better than repeating blocks by hand?",
-      "How can we tell if a loop runs too many times?",
-      "Where do we see repetition in real life or games?"
+      "Round 1 worked and Round 2 broke. What changed between the two programs?",
+      "Where in real life does something loop forever, and what stops it?",
+      "Can code be both precise and efficient at the same time? Why or why not?",
+      "If loops make code shorter, why not use loops for everything?"
     ],
     "tips": [
-      "Use visual counters so students can track loop iterations.",
-      "Start with low repetition numbers before scaling complexity.",
-      "Ask students to explain loop logic out loud before coding."
+      "Do not over-focus on exact tooth-brushing math; absurd scale is the learning hook.",
+      "The physical loop is key for this age group. Keep it short but concrete.",
+      "For high-energy classes, let students mime actions seated instead of standing.",
+      "During pair debug work, ask guiding questions about end position rather than giving answers.",
+      "Leave the sugar loop question open: how does a machine know when to stop?"
     ]
   },
   "curriculumAlignment": [
-    "Pattern Recognition",
-    "Iteration and Automation Level 1"
+    "SLO Domain B (22B)",
+    "Computational Thinking - Iteration and Efficiency",
+    "Debugging Foundations"
   ],
-  "teacherGuide": "Introduce the concept of repetition and loops. Show how using a repeat block is more efficient than copying the same block multiple times. Have students practice with simple 2-3 iteration loops, then gradually increase complexity. Visual demonstrations are key for understanding.",
+  "teacherGuide": "Core message: loops reduce repetition while preserving precision. Students should experience both a working loop and a broken loop physically, then debug with peers. Observe whether students identify the exact source of failure (forever repeat and sequence state mismatch), and whether they can justify fixes clearly.",
   "studentExercises": [
     {
       "id": "exercise-2-1",
-      "title": "Create a Simple Loop",
-      "description": "Use a repeat block to draw the same shape 4 times",
-      "difficulty": "Easy"
+      "title": "Exercise 1 - Rewrite It with a Loop",
+      "description": "Rewrite the repeated hair-brushing algorithm using loops, then create a more complex loop for left/right/back sections. Keep output the same but code more efficient.",
+      "type": "Written",
+      "difficulty": "Easy",
+      "durationMinutes": 8,
+      "displayMode": "Individual then partner check",
+      "materials": [
+        "Paper",
+        "Pencil",
+        "Board prompt"
+      ],
+      "instructions": [
+        "Start from this long algorithm: Move brush from top of head to bottom (repeated 10 times).",
+        "Rewrite it as one count loop that produces the same output.",
+        "Then write a second version: brush left side, brush right side, brush back; repeat those three sections three times.",
+        "Swap with a partner and check whether both loop versions produce the same result as intended.",
+        "If the output changes, debug and rewrite."
+      ],
+      "successCriteria": [
+        "Student identifies the repeated unit correctly.",
+        "Loop version is shorter but equivalent in output.",
+        "Partner can explain why the rewritten loop works."
+      ]
     },
     {
       "id": "exercise-2-2",
-      "title": "Pattern Creation",
-      "description": "Create a repeating pattern using loops",
-      "difficulty": "Medium"
+      "title": "Exercise 2 - Spot the Bug",
+      "description": "Analyze three buggy loops and write fixes: classroom movement logic, infinite sugar loop, and fridge resource leak.",
+      "type": "Bug hunt",
+      "difficulty": "Medium",
+      "durationMinutes": 7,
+      "displayMode": "Pairs or whole class",
+      "materials": [
+        "Whiteboard buggy loop prompts",
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Buggy loop 1: LOOP 5 TIMES: Stand up; Sit down; Lie on the floor. Decide whether this is a logic bug, sequence bug, or both, and justify your fix.",
+        "Buggy loop 2: LOOP FOREVER: Add one sugar to the coffee; Stir. Add a stop condition and discuss how a machine can detect it.",
+        "Buggy loop 3: LOOP 3 TIMES: Open fridge; Take out juice; Pour glass. Fix the missing close-fridge step and explain the resource leak problem.",
+        "Share one fix with another pair and test whether it removes the bug."
+      ],
+      "successCriteria": [
+        "Students identify the core bug in all three loops.",
+        "At least one fix includes a clear stop condition.",
+        "Students can explain why the corrected version is safer or more correct."
+      ]
     },
     {
       "id": "exercise-2-3",
-      "title": "Nested Loops",
-      "description": "Use loops within loops to create complex patterns",
-      "difficulty": "Hard"
+      "title": "Extension - Write a Loop for Something in Your Life",
+      "description": "Choose a repeated real-life activity and model it as a loop with type, stop condition, and one possible bug plus fix.",
+      "type": "Extension",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Fast finishers",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Choose one repeated activity from your life.",
+        "Name the loop type: count, until, or forever.",
+        "Write the steps inside the loop.",
+        "Describe what stops the loop, or explain why it never stops.",
+        "Find one possible bug and write a fix.",
+        "Challenge: write a loop with another loop inside it (nested loop)."
+      ],
+      "successCriteria": [
+        "Loop type matches the activity.",
+        "Stop condition is clearly defined.",
+        "Student can identify and repair one plausible bug."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-2-1",
+      "title": "Fortnite Dance Bug Debug",
+      "description": "Debug the dance loop so it keeps all three moves, ends correctly, and stays physically executable every iteration.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Pairs then class share",
+      "materials": [
+        "Paper",
+        "Pencil",
+        "Open standing space (optional)"
+      ],
+      "instructions": [
+        "Run working code: LOOP 3 TIMES: Dab, Spin, Jump.",
+        "Run buggy code: LOOP FOREVER: Dab, Spin, Touch your toes.",
+        "In pairs, rewrite code so it has a stop and remains physically possible each iteration.",
+        "Keep all three dance moves in your corrected version.",
+        "Share and defend your debug choices."
+      ],
+      "successCriteria": [
+        "Corrected loop includes a finite stop.",
+        "Sequence can be executed repeatedly without getting stuck.",
+        "Pair explains why fix works better than original buggy version."
+      ]
+    },
+    {
+      "id": "challenge-2-2",
+      "title": "Infinite Loop Rescue",
+      "description": "Convert a dangerous forever loop into a safe until or count loop with a measurable stop condition.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 8,
+      "displayMode": "Small groups",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Choose one forever loop example from class.",
+        "Rewrite it as either a count loop or an until loop.",
+        "State exactly how the program can detect the stop condition.",
+        "Test your stop condition by giving a counterexample.",
+        "Revise if your loop still risks running forever."
+      ],
+      "successCriteria": [
+        "Stop condition is explicit and measurable.",
+        "Group can explain how the machine checks stop status.",
+        "Rewritten loop avoids infinite repetition in the test case."
+      ]
     }
   ]
 }

@@ -1,0 +1,296 @@
+{
+  "id": "lesson-10",
+  "title": "How Do Computers Make Secure Decisions? The Cybersecurity Firewall",
+  "description": "Students use Boolean logic to build and test firewall rules, then evaluate false positives, false negatives, and security trade-offs.",
+  "duration": 30,
+  "level": "Intermediate",
+  "ageGroup": "High school (ages 12-17)",
+  "imageUrl": "/static/images/highschool-placeholder.svg",
+  "learningObjectives": [
+    "Explain how Boolean logic operators AND, OR, and NOT combine in conditional rules.",
+    "Apply IF/THEN/ELSE logic to realistic cybersecurity firewall decisions.",
+    "Distinguish false positives from false negatives and evaluate trade-offs.",
+    "Reason about edge cases such as trusted users on untrusted devices and unknown threats."
+  ],
+  "prerequisites": "No prior knowledge assumed beyond Lesson 1.",
+  "materials": [
+    "Whiteboard and marker",
+    "10 index cards representing data packets",
+    "Packet card details prepared before class"
+  ],
+  "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students explain how computers use Boolean logic to build conditional security rules and apply this to a hospital firewall scenario where both blocking threats and allowing legitimate traffic matter.",
+  "vocabulary": [
+    "Boolean logic",
+    "Conditional",
+    "AND",
+    "OR",
+    "NOT",
+    "Firewall",
+    "False positive",
+    "False negative"
+  ],
+  "roleModel": {
+    "name": "Claude Shannon",
+    "years": "1916-2001",
+    "summary": "Mapped George Boole's true/false logic onto electrical on/off switches, establishing the logical foundation of modern computing.",
+    "whyItMatters": "Every conditional rule students write in this lesson depends on Shannon's architecture."
+  },
+  "packetCards": [
+    {
+      "card": 1,
+      "origin": "Unknown",
+      "fileType": ".exe",
+      "size": "15MB",
+      "otherDetail": "Sent at 3am"
+    },
+    {
+      "card": 2,
+      "origin": "Trusted doctor",
+      "fileType": ".pdf",
+      "size": "2MB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 3,
+      "origin": "Unknown",
+      "fileType": ".pdf",
+      "size": "1MB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 4,
+      "origin": "Trusted device",
+      "fileType": ".exe",
+      "size": "8MB",
+      "otherDetail": "Software update"
+    },
+    {
+      "card": 5,
+      "origin": "Unknown",
+      "fileType": ".jpg",
+      "size": "500KB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 6,
+      "origin": "Trusted doctor",
+      "fileType": ".exe",
+      "size": "8MB",
+      "otherDetail": "New device"
+    },
+    {
+      "card": 7,
+      "origin": "Unknown",
+      "fileType": ".docx",
+      "size": "3MB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 8,
+      "origin": "Hacker IP",
+      "fileType": ".pdf",
+      "size": "2MB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 9,
+      "origin": "Trusted device",
+      "fileType": ".pdf",
+      "size": "4MB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 10,
+      "origin": "Unknown",
+      "fileType": ".exe",
+      "size": "2MB",
+      "otherDetail": "Normal hours"
+    }
+  ],
+  "teacherInstructions": {
+    "setup": "Write vocabulary before class and prepare 10 packet cards. Tell students they are making real allow-or-block decisions with consequences.",
+    "steps": [
+      "Phase 1 (0-2 min): Ask spark question about whether passwords will still exist in 30 years. Collect short pair ideas and frame that all future systems still reduce to decision logic.",
+      "Phase 1 hook: Explain that firewalls silently evaluate data in milliseconds using conditional rules similar to what students will write.",
+      "Phase 2 (2-8 min): Human logic gates. Students stand or sit as True/False while you run IF, AND, OR, and NOT rules quickly to model machine precision.",
+      "Phase 3 (8-13 min): Introduce IF (condition) THEN (action) ELSE (different action). Walk through three examples for login security, content moderation, and banking fraud checks.",
+      "Phase 4 (13-24 min): Firewall challenge. Students act as hospital cybersecurity team deciding BLOCK or ALLOW for packet cards. Emphasize dual failure modes: blocking legitimate data and allowing threats.",
+      "Round 1 (3 min): Build one simple rule such as IF file type = .exe THEN block. Test immediately to surface card 4 false positive and card 8 false negative.",
+      "Round 2 (8 min): Groups of three build at least three connected rules using AND, OR, and NOT. Test one group's rules against all 10 cards and count false positives and false negatives.",
+      "Phase 5 (24-28 min): Discussion on trade-offs and Zero-Trust depending on how the challenge unfolded.",
+      "Exit reflection (28-30 min): Students complete one sentence on what makes a good security rule. Capture strongest class wording on the board.",
+      "Fast finisher: Zero-Day exploit prompt about unknown threats that no existing rule targets."
+    ],
+    "discussionPrompts": [
+      "For a hospital, which is worse in a given moment: false positive or false negative? How does context change the answer?",
+      "Where is a false positive potentially worse than a false negative outside cybersecurity?",
+      "Zero-Trust says no person or device is automatically trusted. Is that good security practice, and what usability costs does it create?",
+      "Should Zero-Trust logic be applied in non-digital settings such as schools? What harms might that create?",
+      "What can any ruleset do against a Zero-Day exploit that does not match known threat patterns?"
+    ],
+    "tips": [
+      "Run human logic gates fast to mimic computational speed and deterministic execution.",
+      "Use student mistakes as signal: computers are precise but cannot interpret intent.",
+      "Name false positive and false negative only after students experience both in testing.",
+      "Accept imperfect rulesets if students can articulate the remaining edge case clearly.",
+      "Watch for transfer: students applying trade-off thinking to medicine, criminal justice, or school policy."
+    ]
+  },
+  "curriculumAlignment": [
+    "SLO Domain A (21A)",
+    "SLO Domain B (22B)",
+    "Boolean Logic and Conditional Reasoning",
+    "Cybersecurity Decision Systems"
+  ],
+  "teacherGuide": "Core message: secure decisions are built from precise logic, but precision alone is not enough. Good rules must balance safety and usability, handle edge cases, and adapt as threats change. Anchor language around condition, action, and consequence. Use the hospital context to keep stakes concrete.",
+  "studentExercises": [
+    {
+      "id": "exercise-10-1",
+      "title": "Exercise 1 - Human Logic Gates",
+      "description": "Model IF, AND, OR, and NOT physically by standing for True and sitting for False, then combine operators in mixed conditions.",
+      "type": "Unplugged simulation",
+      "difficulty": "Easy",
+      "durationMinutes": 6,
+      "displayMode": "Whole class",
+      "materials": [
+        "Classroom space"
+      ],
+      "instructions": [
+        "Respond instantly to single-condition IF rules.",
+        "Repeat with AND rules and identify which condition failed when result is False.",
+        "Repeat with OR rules and explain why one true condition is sufficient.",
+        "Apply NOT and mixed condition (sneakers AND NOT watch) to test mental precision.",
+        "Summarize one sentence: why computers need strict true/false definitions."
+      ],
+      "successCriteria": [
+        "Students correctly differentiate AND, OR, and NOT behavior.",
+        "Students can explain how combined conditions change outcomes.",
+        "Students connect physical activity to software rule execution."
+      ]
+    },
+    {
+      "id": "exercise-10-2",
+      "title": "Exercise 2 - Firewall Round 1",
+      "description": "Create one simple rule to block obvious threats, then diagnose why simple rules fail in real systems.",
+      "type": "Rule testing",
+      "difficulty": "Medium",
+      "durationMinutes": 5,
+      "displayMode": "Whole class",
+      "materials": [
+        "Packet cards",
+        "Whiteboard"
+      ],
+      "instructions": [
+        "Propose one class firewall rule (example: block all .exe).",
+        "Test the rule against packet card 4 and packet card 8.",
+        "Label any safe blocked packet as false positive.",
+        "Label any threat allowed packet as false negative.",
+        "State one weakness of the rule in one sentence."
+      ],
+      "successCriteria": [
+        "Students identify at least one false positive and one false negative.",
+        "Students explain why single-condition rules are brittle.",
+        "Students use correct vocabulary during debrief."
+      ]
+    },
+    {
+      "id": "exercise-10-3",
+      "title": "Exercise 3 - Firewall Round 2 Ruleset",
+      "description": "Design at least three connected firewall rules using Boolean logic to reduce both false positives and false negatives across all packets.",
+      "type": "Group design",
+      "difficulty": "Hard",
+      "durationMinutes": 8,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Packet cards",
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Write at least three connected rules using AND, OR, and NOT.",
+        "Test your rules against all 10 packet cards.",
+        "Count false positives and false negatives.",
+        "Check edge case: trusted doctor on a new device.",
+        "Propose one refinement if your rules still fail on a specific card."
+      ],
+      "successCriteria": [
+        "Ruleset uses Boolean operators correctly.",
+        "Group can justify each BLOCK or ALLOW decision.",
+        "Group identifies at least one edge case and a mitigation."
+      ]
+    },
+    {
+      "id": "exercise-10-4",
+      "title": "Exit Reflection - Security Rule Quality",
+      "description": "Write one sentence defining what makes a good security rule and why.",
+      "type": "Reflection",
+      "difficulty": "Easy",
+      "durationMinutes": 2,
+      "displayMode": "Individual",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Complete: A good security rule needs to be _______ because _______.",
+        "Use at least one concept: precision, edge case, false positive, false negative, or update frequency.",
+        "Share with partner and tighten wording.",
+        "Offer strongest class sentence for board capture."
+      ],
+      "successCriteria": [
+        "Sentence links rule quality to consequences.",
+        "Student references at least one lesson concept accurately.",
+        "Reasoning reflects trade-off awareness."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-10-1",
+      "title": "Zero-Trust Edge Case",
+      "description": "Handle trusted-person and untrusted-device ambiguity without collapsing usability.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 4,
+      "displayMode": "Groups",
+      "materials": [
+        "Packet cards",
+        "Paper"
+      ],
+      "instructions": [
+        "Write one extra rule for trusted doctor on a new device.",
+        "Explain whether your rule prioritizes safety or access speed.",
+        "Predict one legitimate user flow your rule might accidentally block.",
+        "Suggest a recovery path after a block decision."
+      ],
+      "successCriteria": [
+        "Group addresses identity plus device trust separately.",
+        "Group articulates a usability-security trade-off.",
+        "Group includes a practical recovery mechanism."
+      ]
+    },
+    {
+      "id": "challenge-10-2",
+      "title": "Fast Finisher - Zero-Day Scenario",
+      "description": "Reason about what a firewall can do when it encounters a brand-new exploit that matches no known rule.",
+      "type": "Challenge",
+      "difficulty": "Hard",
+      "durationMinutes": 3,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Define what makes a Zero-Day different from known threats.",
+        "Propose one defensive strategy that does not rely only on known signatures.",
+        "Explain one limitation of rules-only security against unknown attacks.",
+        "State whether any static ruleset can be fully future-proof and justify your answer."
+      ],
+      "successCriteria": [
+        "Student identifies uncertainty as core security constraint.",
+        "Student proposes at least one adaptive defense concept.",
+        "Student avoids claiming impossible perfect protection."
+      ]
+    }
+  ]
+}

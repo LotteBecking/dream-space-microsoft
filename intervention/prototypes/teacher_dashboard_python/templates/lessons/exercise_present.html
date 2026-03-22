@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}{{ exercise.title }} - Exercise Presentation{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+            <a href="/lessons/{{ lesson.id }}#student-exercises" class="text-purple-600 hover:text-purple-700 flex items-center gap-2 text-sm">
+                <i class="fas fa-arrow-left"></i> Back to Lesson
+            </a>
+            <p class="text-xs text-gray-500 mt-2">Exercise {{ exercise_index + 1 }} of {{ exercise_count }}</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+            {% if previous_exercise_id %}
+            <a href="/lessons/{{ lesson.id }}/exercises/{{ previous_exercise_id }}" class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
+                <i class="fas fa-chevron-left mr-1"></i> Previous
+            </a>
+            {% endif %}
+
+            {% if next_exercise_id %}
+            <a href="/lessons/{{ lesson.id }}/exercises/{{ next_exercise_id }}" class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
+                Next <i class="fas fa-chevron-right ml-1"></i>
+            </a>
+            {% endif %}
+
+            <button onclick="toggleFullscreen()" class="px-3 py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700">
+                <i class="fas fa-expand mr-1"></i> Full Screen
+            </button>
+        </div>
+    </div>
+
+    <div class="rounded-2xl overflow-hidden border border-purple-200 card-shadow">
+        <div class="bg-gradient-to-r from-purple-700 via-indigo-700 to-blue-700 text-white p-8">
+            <p class="uppercase tracking-wider text-xs text-white/80">{{ lesson.title }}</p>
+            <h1 class="mt-2 text-3xl md:text-5xl font-bold leading-tight">{{ exercise.title }}</h1>
+            <p class="mt-4 text-lg md:text-2xl text-white/90 max-w-4xl">{{ exercise.description }}</p>
+
+            <div class="mt-6 flex flex-wrap gap-2 text-sm">
+                <span class="inline-block bg-white/15 px-3 py-1 rounded-full">{{ exercise.type }}</span>
+                <span class="inline-block bg-white/15 px-3 py-1 rounded-full">{{ exercise.difficulty }}</span>
+                <span class="inline-block bg-white/15 px-3 py-1 rounded-full">{{ exercise.durationMinutes }} minutes</span>
+                <span class="inline-block bg-white/15 px-3 py-1 rounded-full">{{ exercise.displayMode }}</span>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 md:p-10">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div class="xl:col-span-2 space-y-6">
+                    <section>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Instructions for Students</h2>
+                        <ol class="space-y-4">
+                            {% for instruction in exercise.instructions %}
+                            <li class="flex items-start gap-4">
+                                <div class="w-9 h-9 rounded-full bg-purple-100 text-purple-700 font-bold flex items-center justify-center flex-shrink-0">
+                                    {{ loop.index }}
+                                </div>
+                                <p class="text-lg md:text-2xl text-gray-800 leading-relaxed">{{ instruction }}</p>
+                            </li>
+                            {% endfor %}
+                        </ol>
+                    </section>
+
+                    <section>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Success Check</h2>
+                        <ul class="space-y-3">
+                            {% for criterion in exercise.successCriteria %}
+                            <li class="flex items-start gap-3 text-gray-800">
+                                <i class="fas fa-check-circle text-green-600 mt-1"></i>
+                                <span class="text-lg md:text-2xl">{{ criterion }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+                </div>
+
+                <aside class="space-y-6">
+                    <section class="border border-gray-200 rounded-xl p-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Materials</h3>
+                        <ul class="space-y-2">
+                            {% for material in exercise.materials %}
+                            <li class="flex items-start gap-2 text-gray-700">
+                                <i class="fas fa-box-open text-blue-500 mt-1"></i>
+                                <span>{{ material }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+
+                    <section class="border border-gray-200 rounded-xl p-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Class Timer</h3>
+                        <p id="timerDisplay" class="text-4xl font-bold text-purple-700" data-seconds="{{ exercise.durationMinutes * 60 }}">{{ exercise.durationMinutes }}:00</p>
+                        <div class="mt-4 grid grid-cols-2 gap-2">
+                            <button onclick="startTimer()" class="px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Start</button>
+                            <button onclick="pauseTimer()" class="px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">Pause</button>
+                            <button onclick="resetTimer()" class="col-span-2 px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">Reset</button>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let timerInterval = null;
+
+function formatSeconds(totalSeconds) {
+    const safeSeconds = Math.max(0, totalSeconds);
+    const minutes = Math.floor(safeSeconds / 60);
+    const seconds = safeSeconds % 60;
+    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+}
+
+function getTimerState() {
+    const display = document.getElementById('timerDisplay');
+    return {
+        display,
+        seconds: Number(display.dataset.seconds || 0)
+    };
+}
+
+function setTimerSeconds(seconds) {
+    const display = document.getElementById('timerDisplay');
+    display.dataset.seconds = String(Math.max(0, seconds));
+    display.textContent = formatSeconds(seconds);
+}
+
+function startTimer() {
+    if (timerInterval) {
+        return;
+    }
+
+    timerInterval = setInterval(() => {
+        const state = getTimerState();
+        if (state.seconds <= 0) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            return;
+        }
+        setTimerSeconds(state.seconds - 1);
+    }, 1000);
+}
+
+function pauseTimer() {
+    if (!timerInterval) {
+        return;
+    }
+    clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+function resetTimer() {
+    pauseTimer();
+    const display = document.getElementById('timerDisplay');
+    const defaultSeconds = {{ exercise.durationMinutes * 60 }};
+    display.dataset.seconds = String(defaultSeconds);
+    display.textContent = formatSeconds(defaultSeconds);
+}
+
+function toggleFullscreen() {
+    const root = document.documentElement;
+    if (!document.fullscreenElement) {
+        root.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+}
+</script>
+{% endblock %}

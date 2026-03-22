@@ -1,0 +1,231 @@
+{
+  "id": "lesson-16",
+  "title": "How Do We Solve Real Problems? The Tech for Good Pitch",
+  "description": "Students synthesize the full program to design and pitch a real system, including logic, data, risks, exclusions, and ethical trade-offs.",
+  "duration": 30,
+  "level": "Advanced",
+  "ageGroup": "High school (ages 12-17)",
+  "imageUrl": "/static/images/highschool-placeholder.svg",
+  "learningObjectives": [
+    "Synthesize concepts from algorithms, conditionals, loops, data structures, machine learning, and bias auditing in one system design.",
+    "Design and communicate a bounded technology intervention for a specific user group and problem.",
+    "Identify technical, ethical, and scale risks, including data dependencies and failure modes.",
+    "Explain who is excluded by a design and justify how trade-offs are governed."
+  ],
+  "prerequisites": "Builds on all previous lessons.",
+  "materials": [
+    "Whiteboard and marker",
+    "Paper and pencils",
+    "Timer for 60-second pitches"
+  ],
+  "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students design and defend a Tech for Good system that addresses a real-world problem while explicitly accounting for data risks, system dependencies, fairness impacts, and excluded users.",
+  "vocabulary": [
+    "Algorithm",
+    "Efficiency",
+    "Boolean logic",
+    "Loop",
+    "Function",
+    "Priority queue",
+    "Machine learning",
+    "Proxy bias",
+    "Audit",
+    "Systems design"
+  ],
+  "roleModel": {
+    "name": "Vanessa Nakate",
+    "years": "born 1996",
+    "summary": "Climate activist emphasizing that communities most affected by technology consequences are often absent from design rooms.",
+    "whyItMatters": "The capstone requires students to design with empathy and explicit inclusion, not just technical novelty."
+  },
+  "designFramework": [
+    "What problem are you solving, and for whom specifically?",
+    "What logic does your system use from this program?",
+    "What data does it use, and what bias risks follow?",
+    "What could go wrong technically, ethically, or at scale?",
+    "Who is left out if the system works exactly as designed?"
+  ],
+  "teacherInstructions": {
+    "setup": "Write full program vocabulary and five-question design framework on the board before class.",
+    "steps": [
+      "Phase 1 (0-3 min): Spark prompt asks for one problem technology could improve and one problem technology could worsen.",
+      "Phase 1 framing: emphasize that strong design starts with both intended benefit and anticipated harm.",
+      "Phase 2 (3-8 min): Systems-thinking warm-up using SMARTPHONE dependency web with student-generated links.",
+      "Phase 2 debrief: identify dependency access gaps, environmental costs, and concentration of control across institutions.",
+      "Phase 3 (8-13 min): Present five required questions for complete system design and model with navigation-app example.",
+      "Phase 3 emphasis: question five (who is left out) is mandatory and central to responsible design.",
+      "Phase 4 design (13-20 min): groups of three choose a bounded real problem and draft architecture answering all five questions.",
+      "Phase 4 challenge loop: teacher acts as ethical hacker, probing privacy, scoring criteria, data coverage, and connectivity assumptions.",
+      "Phase 4 pitch (20-28 min): each group gives a 60-second pitch, followed by 60 seconds of class probing questions.",
+      "Exit reflection (28-30 min): students write one sentence on key learning gain and one unresolved question they will carry forward."
+    ],
+    "discussionPrompts": [
+      "Can technology improve individual experience while harming collective outcomes? Who decides acceptable trade-offs?",
+      "If your system optimizes speed or engagement, who absorbs the external costs?",
+      "When inclusion and performance conflict, what decision rule should teams use?",
+      "What obligations do designers have when dependency failures disproportionately harm already underserved users?",
+      "Which unresolved question from this program should guide the next system iteration?"
+    ],
+    "tips": [
+      "Push teams from vague goals to bounded target problems and users.",
+      "Require at least one design revision after ethical hacker challenge.",
+      "Enforce pitch time strictly to strengthen clarity and prioritization.",
+      "Reward problem-first pitches over technology-first pitches.",
+      "Treat open questions in reflections as signs of mature systems thinking."
+    ]
+  },
+  "curriculumAlignment": [
+    "SLO Domain A (21A)",
+    "SLO Domain B (22B)",
+    "Integrated Computational and Systems Thinking",
+    "Responsible Technology Design and Governance"
+  ],
+  "teacherGuide": "Core message: the strongest technical design is inseparable from explicit choices about users, data, trade-offs, and accountability. This capstone assesses transfer of full-program concepts into real-world framing, not code quantity. Track whether students lead with problem definition, surface exclusions, and revise designs when challenged.",
+  "studentExercises": [
+    {
+      "id": "exercise-16-1",
+      "title": "Exercise 1 - Problem and Harm Framing",
+      "description": "Define one problem technology could help solve and one harm technology could amplify, then justify both.",
+      "type": "Framing",
+      "difficulty": "Easy",
+      "durationMinutes": 4,
+      "displayMode": "Individual then whole class",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Write one problem technology can meaningfully improve.",
+        "Write one problem technology can worsen if poorly designed.",
+        "Name who benefits in the first case and who may be harmed in the second.",
+        "Share concise example with class.",
+        "Refine wording to be specific and testable."
+      ],
+      "successCriteria": [
+        "Student distinguishes benefit from externality clearly.",
+        "Student identifies affected groups rather than abstract outcomes.",
+        "Problem statement is specific enough to guide design choices."
+      ]
+    },
+    {
+      "id": "exercise-16-2",
+      "title": "Exercise 2 - Systems Dependency Map",
+      "description": "Build a dependency web for a common technology to reveal hidden infrastructure, control points, and failure risks.",
+      "type": "Systems mapping",
+      "difficulty": "Medium",
+      "durationMinutes": 5,
+      "displayMode": "Whole class",
+      "materials": [
+        "Whiteboard"
+      ],
+      "instructions": [
+        "Start with SMARTPHONE as central node.",
+        "Add dependencies one-by-one for two minutes.",
+        "Mark at least one dependency with high environmental cost.",
+        "Mark at least one dependency with low-access risk for underserved users.",
+        "State one cascading failure scenario if a dependency goes down."
+      ],
+      "successCriteria": [
+        "Class identifies multi-layer dependencies beyond apps and UI.",
+        "Students connect system function to social and infrastructure constraints.",
+        "Students articulate at least one realistic failure cascade."
+      ]
+    },
+    {
+      "id": "exercise-16-3",
+      "title": "Exercise 3 - Tech for Good Design Sprint",
+      "description": "Design a real-world system using the five-question framework and revise after challenge testing.",
+      "type": "Capstone design",
+      "difficulty": "Hard",
+      "durationMinutes": 7,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Choose a bounded problem and specific target users.",
+        "Answer all five framework questions with concrete details.",
+        "Name at least two program concepts used in system logic.",
+        "Respond to one ethical hacker challenge and revise design.",
+        "Prepare a 60-second pitch and one backup answer for Q and A."
+      ],
+      "successCriteria": [
+        "Group covers all five design questions clearly.",
+        "Design revision is visible after challenge prompt.",
+        "Pitch demonstrates both technical and ethical reasoning."
+      ]
+    },
+    {
+      "id": "exercise-16-4",
+      "title": "Exercise 4 - Timed Pitch and Probe",
+      "description": "Deliver concise 60-second system pitch and answer one probing question under time pressure.",
+      "type": "Communication",
+      "difficulty": "Medium",
+      "durationMinutes": 8,
+      "displayMode": "Whole class",
+      "materials": [
+        "Timer"
+      ],
+      "instructions": [
+        "Pitch system in 60 seconds covering all five questions.",
+        "Receive one class probe question grounded in program vocabulary.",
+        "Answer in 60 seconds with specific evidence from design.",
+        "Note one improvement you would make after feedback.",
+        "Capture strongest problem-first pitch technique observed."
+      ],
+      "successCriteria": [
+        "Team stays within time and covers required elements.",
+        "Response to probing question is specific and coherent.",
+        "Team identifies one concrete post-pitch improvement."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-16-1",
+      "title": "Ethical Hacker Revision Challenge",
+      "description": "Stress-test a design with privacy, inclusion, and infrastructure questions and produce a stronger revised version.",
+      "type": "Challenge",
+      "difficulty": "Hard",
+      "durationMinutes": 3,
+      "displayMode": "Within group",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Choose one challenge prompt about data retention, scoring, training period bias, or connectivity.",
+        "Identify the weakest part of current design under that prompt.",
+        "Revise one component and state what trade-off changed.",
+        "Document who benefits and who still remains excluded."
+      ],
+      "successCriteria": [
+        "Group makes substantive revision rather than cosmetic change.",
+        "Group names explicit trade-off introduced by revision.",
+        "Group updates exclusion analysis after redesign."
+      ]
+    },
+    {
+      "id": "challenge-16-2",
+      "title": "Collective vs Individual Trade-off",
+      "description": "Debate filter-bubble style cases where maximizing personal relevance may reduce collective social outcomes.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 3,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Propose one technical intervention to diversify user information exposure.",
+        "Predict one cost to individual experience metrics.",
+        "Define who should set the trade-off policy and by what process.",
+        "Name one public-interest metric and one user-value metric to track."
+      ],
+      "successCriteria": [
+        "Student recognizes optimization conflict across stakeholder groups.",
+        "Student proposes measurable policy-evaluation criteria.",
+        "Student links design choice to governance responsibility."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "id": "lesson-9",
+  "title": "Why Does Your Phone Freeze? How Computers Think About Efficiency",
+  "description": "Why does your phone freeze? Students explore how computers think about efficiency and why a working algorithm is not always a good one.",
+  "duration": 30,
+  "level": "Intermediate",
+  "ageGroup": "High school (ages 12-17)",
+  "imageUrl": "/static/images/highschool-placeholder.svg",
+  "learningObjectives": [
+    "Explain the difference between a working algorithm and an efficient algorithm.",
+    "Describe how scale changes whether an algorithm is practical.",
+    "Identify a greedy strategy failure and explain why local optimum can fail globally.",
+    "Connect efficiency decisions in software to real-world social and economic consequences."
+  ],
+  "prerequisites": "No prior knowledge assumed.",
+  "materials": [
+    "Whiteboard and marker",
+    "Five sticky notes with numbers: 47, 8, 93, 21, 64",
+    "Paper and pencils"
+  ],
+  "fullDescription": "Age group: 12-17. Duration: 30 minutes. No prior knowledge assumed. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students can explain the difference between a working algorithm and an efficient one, and connect this to technology decisions that affect daily life. Role model: Grace Hopper (1906-1992), mathematician, computer scientist, and US Navy Rear Admiral. She invented the first compiler and challenged inefficient legacy practice with: 'The most dangerous phrase in the language is we've always done it this way.'",
+  "vocabulary": [
+    "Algorithm",
+    "Efficiency",
+    "Trade-off",
+    "Scale"
+  ],
+  "roleModel": {
+    "name": "Grace Hopper",
+    "years": "1906-1992",
+    "summary": "Invented the first compiler, enabling human-readable instructions to be translated into machine code.",
+    "quote": "The most dangerous phrase in the language is we've always done it this way."
+  },
+  "teacherInstructions": {
+    "setup": "Write vocabulary before class: Algorithm, Efficiency, Trade-off, Scale. Prepare five volunteers and numeric sticky notes.",
+    "steps": [
+      "Phase 1 (0-2 min): Put spark question on board: 'Your phone has billions of calculations happening every second. So why does it still freeze, lag, and run out of battery too fast?' Collect pair ideas, acknowledge hardware explanations, then reframe: software instructions matter as much as hardware.",
+      "Phase 1 hook: Use Amazon fulfilment example. At massive scale, a 1% algorithm improvement can save hundreds of millions of euros and fuel cost, while a 1% degradation cascades into delays.",
+      "Phase 2 (2-12 min), Round 1 Bubble Sort: Five volunteers stand as 47, 8, 93, 21, 64. Adjacent comparisons and swaps only. Count swaps aloud. Record scale intuition: 5 items ~10 swaps, 1,000 items ~500,000 swaps, 1,000,000 items ~500,000,000,000 swaps.",
+      "Phase 2 (2-12 min), Round 2 Merge Sort: Reset order, split into groups of two and three, sort small groups, then merge by comparing front values. Record scale intuition: 1,000 items ~10,000 comparisons, 1,000,000 items ~20,000,000 comparisons.",
+      "Phase 2 visual: Draw two curves on board, steep Bubble Sort and flatter Merge Sort. Label x-axis list size and y-axis work required. Emphasize: same output, very different cost.",
+      "Phase 3 (12-24 min): Delivery drone challenge on board map with travel times: A-B 12, A-C 8, B-C 5, B-D 9, C-D 7, D-E 11. Groups write deterministic rules for visiting every warehouse once and returning to A.",
+      "Testing (4 min): Execute one group's rules exactly as written. Typical nearest-unvisited strategy yields A to C to B to D to E and fails because no direct route from E back to A.",
+      "Debrief: Name greedy algorithm only after students diagnose failure. Add look-ahead rule: before committing to next step, ensure remaining nodes still allow path back to A.",
+      "Phase 4 (24-29 min): Choose discussion path based on class momentum - local rationality versus collective harm, or efficiency by business metric versus human/user metric.",
+      "Exit reflection (29-30 min): Students complete sentence: 'The difference between a working algorithm and a good algorithm is _______.' Read 2-3 answers and keep strongest on board for next lesson bridge.",
+      "Fast finisher: Introduce Travelling Salesman growth and P vs NP prompt: if fast perfect solutions existed for this class of problems, what systems would improve and which would become vulnerable?"
+    ],
+    "discussionPrompts": [
+      "Your algorithm made the best local decision at each step and still produced a bad global result. Where else does that happen outside computing?",
+      "Traffic, climate, and social media all show local versus global tension. Who is responsible when no single actor made an obviously wrong individual choice?",
+      "If an app uses extra battery to maximize engagement, is that an efficiency failure or success, and whose objective defines the answer?",
+      "If the algorithm is doing its job perfectly but the job itself is harmful, who should change the objective: company, platform, regulator, or user?",
+      "If hard optimization problems became easy (P vs NP context), what gains and vulnerabilities would appear first?"
+    ],
+    "tips": [
+      "Students do not need formal n^2 versus n log n mathematics; operation counts and curve shape are enough.",
+      "Push algorithm specificity: if two options tie, rules must say what to do. Computers cannot infer intent.",
+      "Do not rescue groups during route design; let the failure reveal itself in testing.",
+      "If a group avoids the trap by chance, test whether their rules still work after changing map weights.",
+      "Watch for three signals: independent diagnosis of greedy failure, genuine disagreement in discussion, and unprompted links to real systemic issues."
+    ]
+  },
+  "curriculumAlignment": [
+    "SLO Domain A (21A)",
+    "SLO Domain B (22B)",
+    "Algorithmic Efficiency and Scale",
+    "Systems Thinking in Technology"
+  ],
+  "teacherGuide": "Core message: correctness is necessary but not sufficient. A computer doing the wrong thing very fast is worse than a computer doing the right thing slightly slower. Move students from 'does it work?' to 'does it still work well at scale, under constraints, and for the right objective?'\n\nBoard setup before class: write vocabulary (Algorithm, Efficiency, Trade-off, Scale) and prepare sticky-note volunteers.\n\nPhase logic:\n1) Spark with phone performance paradox to surface everyday relevance.\n2) Contrast Bubble Sort and Merge Sort to show same output with radically different growth in work required.\n3) Use drone routing task to expose greedy local-optimum failure and introduce look-ahead.\n4) Discuss responsibility when optimized objectives conflict with social good.\n\nExit outcome: students should articulate that good algorithms are judged by scaling behavior, future-state consequences, and whose interests are encoded in the objective function.",
+  "studentExercises": [
+    {
+      "id": "exercise-9-1",
+      "title": "Exercise 1 - Two Ways to Sort",
+      "description": "Compare Bubble Sort and Merge Sort with operation counts, then interpret why both produce correct output but only one remains practical at scale.",
+      "type": "Unplugged simulation",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Whole class",
+      "materials": [
+        "Number sticky notes",
+        "Whiteboard"
+      ],
+      "instructions": [
+        "Sort 47, 8, 93, 21, 64 using adjacent-swap-only method and count swaps.",
+        "Estimate operation growth for 1,000 and 1,000,000 items under this approach.",
+        "Repeat sorting via split-sort-merge approach and count comparisons.",
+        "Draw both growth curves and label x as list size and y as work required.",
+        "Write one sentence explaining why same result can still mean very different cost."
+      ],
+      "successCriteria": [
+        "Students can state that both algorithms are correct but differ in scaling behavior.",
+        "Students interpret growth trend direction correctly from curve sketch.",
+        "Students connect algorithm choice to practical system constraints."
+      ]
+    },
+    {
+      "id": "exercise-9-2",
+      "title": "Exercise 2 - Delivery Drone Route Rules",
+      "description": "Write and test deterministic route rules, then diagnose why nearest-next-step strategy can fail globally.",
+      "type": "Algorithm design",
+      "difficulty": "Medium",
+      "durationMinutes": 12,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Paper",
+        "Pencil",
+        "Board map"
+      ],
+      "instructions": [
+        "Write exact routing rules for visiting each warehouse once and returning to A.",
+        "Test one group's algorithm by literal execution with no interpretation.",
+        "Identify where nearest-unvisited heuristic fails on return feasibility.",
+        "Propose one additional look-ahead rule to avoid trap states.",
+        "State one context where greedy approaches are still acceptable trade-offs."
+      ],
+      "successCriteria": [
+        "Group writes deterministic, testable instructions.",
+        "Group explains local versus global objective mismatch.",
+        "Group proposes at least one feasible mitigation rule."
+      ]
+    },
+    {
+      "id": "exercise-9-3",
+      "title": "Exit Reflection - Working vs Good",
+      "description": "Write and defend one sentence distinguishing algorithm correctness from algorithm quality.",
+      "type": "Reflection",
+      "difficulty": "Easy",
+      "durationMinutes": 3,
+      "displayMode": "Individual",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Complete: 'The difference between a working algorithm and a good algorithm is _______.'.",
+        "Include at least one concept: scale, consequences, trade-off, or future-state checking.",
+        "Share with partner and revise once for precision.",
+        "Volunteer strongest class phrasing for board capture."
+      ],
+      "successCriteria": [
+        "Sentence distinguishes correctness from efficiency or consequences.",
+        "Student uses evidence from class activities.",
+        "Student wording is specific, not generic."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-9-1",
+      "title": "Greedy Trap Debug",
+      "description": "Find the exact failure point in a greedy route and redesign rules with minimal added complexity.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 6,
+      "displayMode": "Groups",
+      "materials": [
+        "Board map",
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Replay nearest-step algorithm and mark first irreversible mistake.",
+        "Write one extra condition to prevent dead-end completion states.",
+        "Test revised rules on original map.",
+        "Discuss whether revised rule would generalize to new maps.",
+        "Document one trade-off introduced by extra checking."
+      ],
+      "successCriteria": [
+        "Group identifies specific failure point, not just final failure outcome.",
+        "Revision improves feasibility without excessive rule bloat.",
+        "Group can explain generalizability limits."
+      ]
+    },
+    {
+      "id": "challenge-9-2",
+      "title": "Fast Finisher - P vs NP Prompt",
+      "description": "Explore implications if hard search problems became easy, including optimization and security consequences.",
+      "type": "Challenge",
+      "difficulty": "Hard",
+      "durationMinutes": 4,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Read prompt about route explosion from 5 to 20 warehouses.",
+        "State one system that benefits if hard problems become easy.",
+        "State one system that becomes vulnerable if hard problems become easy.",
+        "Explain why this matters even without formal proof knowledge."
+      ],
+      "successCriteria": [
+        "Student identifies at least one optimization gain and one security risk.",
+        "Reasoning connects hardness to practical system behavior.",
+        "Response reflects uncertainty responsibly rather than overclaiming."
+      ]
+    }
+  ]
+}

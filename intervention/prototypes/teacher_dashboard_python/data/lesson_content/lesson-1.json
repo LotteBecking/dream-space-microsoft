@@ -1,63 +1,214 @@
 {
   "id": "lesson-1",
-  "title": "Introduction to Block Coding",
-  "description": "Learn the basics of block-based programming with interactive visual blocks.",
-  "duration": 15,
+  "title": "How Does a Computer Think? The PB&J Sandwich Lesson",
+  "description": "Students discover that computers follow exact step-by-step instructions, and that sequence determines the result.",
+  "duration": 60,
   "level": "Beginner",
-  "videoUrl": "https://www.youtube.com/embed/MEzGyRb0LnY",
-  "objectives": [
-    "Understand what coding is",
-    "Learn basic programming concepts",
-    "Create your first program"
+  "ageGroup": "Groep 5-8 (ages 8-12)",
+  "imageUrl": "/static/images/lesson-1-placeholder.svg",
+  "learningObjectives": [
+    "Explain in their own words that a computer follows instructions exactly, one step at a time.",
+    "Describe why sequence matters by showing how changing the order changes the outcome.",
+    "Use key vocabulary correctly: algorithm, input, output, and sequence.",
+    "Debug unclear instructions by testing and improving a written algorithm."
   ],
   "prerequisites": "None",
   "materials": [
-    "Computer",
-    "Code blocks environment"
+    "Bread, peanut butter, and jam (or printed ingredient cards for allergy-safe version)",
+    "Knife and plate",
+    "Whiteboard and marker",
+    "Paper and pencils",
+    "Optional: printed command cards for shy students"
   ],
-  "fullDescription": "This foundational lesson introduces students to the world of coding using visual blocks. Students will learn how code works and create simple programs using drag-and-drop blocks.",
+  "fullDescription": "Age group: Groep 5-8 (ages 8-12). Duration: 45-60 minutes. Devices required: none (fully unplugged). SLO alignment: Domain A (21A), Domain B (22B). Students experience computational thinking through a literal robot activity and a PB&J challenge. The class learns that computers do not guess, every step must be explicit, and order drives output. Role model of the day: Ada Lovelace, who wrote the first algorithm designed for a machine long before modern computers.",
   "teacherInstructions": {
-    "setup": "Open the block coding tool on all devices and place printed command cards at each table for quick reference.",
+    "setup": "Write vocabulary on the board and keep it visible all lesson: Algorithm, Input, Output, Sequence. Place PB&J materials (or picture cards) at the front table. Prepare paper for pair and individual algorithm writing.",
     "steps": [
-      "Introduce coding as giving clear instructions to a computer (4 min).",
-      "Demonstrate dragging and snapping blocks to create a short sequence (5 min).",
-      "Let students recreate the demo sequence in pairs (6 min).",
-      "Run student sequences and discuss what worked and what failed (5 min)."
+      "Phase 1 (0-3 min): Spark question. Ask: 'What could a robot do better than a human, and what could it never do?' Students share in pairs, then collect 3-4 class answers without correcting.",
+      "Phase 2 (3-10 min): Unplugged warm-up (Robot Teacher). Allow only four commands: STEP FORWARD, TURN LEFT, TURN RIGHT, STOP. Follow instructions literally and discuss why precision was hard.",
+      "Phase 3 (10-20 min): Concept intro. Define algorithm and explain input, output, sequence. Use real examples (recipe, morning routine, LEGO) and connect to GPS/recommendation mistakes.",
+      "Phase 4 (20-42 min): PB&J robot challenge. Round 1 class gives instructions while teacher executes literally. Round 2 pairs write a numbered precise algorithm. Round 3 test one pair algorithm and debug in real time.",
+      "Phase 5 (42-47 min): Discussion. Use at least one reflection question about responsibility for errors and revisit opening robot-vs-human ideas.",
+      "Exercises (47-57 min): Individual written algorithm (minimum 6 numbered steps, one action per step, robot-readable) plus optional sequence sorting game for tea-making steps.",
+      "Share and reflect (52-57 min): Students share one step, class spots vagueness, and each student completes: 'An algorithm needs to be ____ because computers cannot ____.'"
     ],
     "discussionPrompts": [
-      "What makes instructions easy for a computer to follow?",
-      "What happened when blocks were in the wrong order?",
-      "How is block coding similar to giving directions to a friend?"
+      "A robot followed your instructions exactly and got the wrong result. Whose fault is that: robot or programmer? Why?",
+      "When a GPS gives a technically valid but strange route, is that a robot problem or an algorithm design problem?",
+      "Return to the opening question: what can robots do better than humans, and what can they never do? Did your view change?",
+      "Is there always one correct sequence, or can some algorithms allow multiple valid orders?"
     ],
     "tips": [
-      "Model mistakes on purpose so students learn debugging from the start.",
-      "Use pair work to reduce frustration during first interactions.",
-      "Celebrate tiny wins to build confidence early in the course."
+      "Be extremely literal during robot activities. Misinterpretations are the teaching moment.",
+      "Do not correct student opening ideas too early; let understanding emerge through activity.",
+      "If students are shy, let them write commands on cards and pass them one at a time.",
+      "If allergies are a concern, use printed ingredient cards or substitute with paper airplane, block stacking, or shape drawing.",
+      "Watch for self-correction and peer debate about precision; these are key understanding indicators for readiness for Week 2."
     ]
   },
   "curriculumAlignment": [
+    "SLO Domain A (21A)",
+    "SLO Domain B (22B)",
     "Computational Thinking Foundations",
-    "Sequencing and Logic Level 1"
+    "Sequencing and Algorithmic Reasoning"
   ],
-  "teacherGuide": "Start by explaining what coding is and why it's important. Demonstrate how block-based coding works by dragging blocks, then ask students to try it themselves. Monitor progress and provide hints when needed. Celebrate successes to build confidence.",
+  "teacherGuide": "Core message: computers execute instructions exactly, without common sense. Keep vocabulary visible all lesson. Use humor and literal execution during PB&J to surface hidden assumptions, then move into debugging. Prioritize depth over speed in discussion: one strong reflection is better than rushed coverage. Post-lesson, check whether students independently improved vague steps and used precision language correctly.",
   "studentExercises": [
     {
       "id": "exercise-1-1",
-      "title": "Drag Your First Block",
-      "description": "Drag a simple block and see what happens",
-      "difficulty": "Easy"
+      "title": "Write the Perfect Algorithm",
+      "description": "Individually write a numbered algorithm (at least 6 steps, one action per step) for one task: getting ready for school, making chocolate milk, or feeding a pet. Then swap and debug with a partner.",
+      "type": "Written",
+      "difficulty": "Easy",
+      "durationMinutes": 10,
+      "displayMode": "Individual then pairs",
+      "materials": [
+        "Paper",
+        "Pencil",
+        "Whiteboard vocabulary list"
+      ],
+      "instructions": [
+        "Choose one task: getting ready for school, making chocolate milk, or feeding a pet.",
+        "Write at least 6 numbered steps.",
+        "Each line must contain one action only.",
+        "Make every step precise enough for a robot that cannot guess.",
+        "Swap with a partner and mark unclear steps with a question mark.",
+        "Improve unclear steps and submit your final algorithm."
+      ],
+      "successCriteria": [
+        "Algorithm has 6 or more numbered steps.",
+        "Each step is one clear action.",
+        "A partner can follow the algorithm without guessing."
+      ]
     },
     {
       "id": "exercise-1-2",
-      "title": "Create a Simple Sequence",
-      "description": "Stack 3 blocks in order to create a sequence",
-      "difficulty": "Easy"
+      "title": "Sequence Sorting Game: Make Tea",
+      "description": "Order six shuffled instruction cards into a logical sequence, compare with a partner, and discuss where sequence is fixed versus flexible.",
+      "type": "Sorting",
+      "difficulty": "Easy",
+      "durationMinutes": 8,
+      "displayMode": "Whole class or pairs",
+      "materials": [
+        "Printed instruction cards or board projection",
+        "Paper for numbering 1-6"
+      ],
+      "instructions": [
+        "Read the six tea-making instruction cards.",
+        "Write the order numbers 1 through 6 next to each step.",
+        "Compare your order with a partner.",
+        "If you disagree, explain why your sequence works.",
+        "Discuss which steps are fixed and which can be flexible."
+      ],
+      "successCriteria": [
+        "Students can justify their sequence choices.",
+        "Students identify at least one flexible step.",
+        "Students connect sequence changes to output changes."
+      ]
     },
     {
       "id": "exercise-1-3",
-      "title": "Build Your First Program",
-      "description": "Create a program that draws a shape",
-      "difficulty": "Medium"
+      "title": "Extension: Robot Chef Algorithm",
+      "description": "For fast finishers: write a canteen robot algorithm for one lunch item, then extend it with allergy safety and missing-ingredient handling.",
+      "type": "Extension",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Fast finishers",
+      "materials": [
+        "Paper",
+        "Pencil",
+        "Optional menu examples"
+      ],
+      "instructions": [
+        "Choose one lunch item from the school canteen menu.",
+        "Write a precise step-by-step algorithm a robot chef could follow.",
+        "Add safety instructions for students with nut allergies.",
+        "Add a rule for what the robot should do if an ingredient runs out.",
+        "Challenge: make your algorithm work for any sandwich type."
+      ],
+      "successCriteria": [
+        "Algorithm is specific and testable.",
+        "Safety and missing ingredient edge cases are included.",
+        "Student can explain how to generalize the algorithm."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-1-1",
+      "title": "Allergy-Safe Robot Chef",
+      "description": "Design a robot-chef algorithm that safely handles a nut allergy without using common sense.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Pairs or small groups",
+      "materials": [
+        "Paper",
+        "Pencil",
+        "Menu item choice"
+      ],
+      "instructions": [
+        "Choose one canteen food item.",
+        "Write a step-by-step robot algorithm for preparing it.",
+        "Add explicit allergy checks before handling ingredients.",
+        "Include safe fallback steps if risky ingredients appear.",
+        "Test your algorithm by having another group try to follow it literally."
+      ],
+      "successCriteria": [
+        "Algorithm includes clear allergy-protection steps.",
+        "Another group can follow it without guessing.",
+        "Team can explain why each safety step is needed."
+      ]
+    },
+    {
+      "id": "challenge-1-2",
+      "title": "What If an Ingredient Runs Out?",
+      "description": "Improve your algorithm with a decision path for missing ingredients during preparation.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 8,
+      "displayMode": "Whole class then pairs",
+      "materials": [
+        "Existing algorithm from Exercise 1",
+        "Pencil for edits"
+      ],
+      "instructions": [
+        "Take an algorithm you already wrote.",
+        "Pick one ingredient that could run out halfway.",
+        "Add precise steps for what the robot does next.",
+        "Include at least one IF style instruction in plain language.",
+        "Run a peer test to see whether the updated logic works."
+      ],
+      "successCriteria": [
+        "Algorithm has a clear missing-ingredient response.",
+        "Decision path is precise and testable.",
+        "Peer tester can execute both normal and missing-ingredient scenarios."
+      ]
+    },
+    {
+      "id": "challenge-1-3",
+      "title": "One Algorithm for Any Sandwich",
+      "description": "Generalize from one sandwich to a reusable algorithm that works with different inputs.",
+      "type": "Challenge",
+      "difficulty": "Hard",
+      "durationMinutes": 10,
+      "displayMode": "Fast finishers or extension station",
+      "materials": [
+        "Paper",
+        "Ingredient cards"
+      ],
+      "instructions": [
+        "Rewrite your sandwich algorithm so it does not mention only peanut butter and jam.",
+        "Use placeholders like SPREAD A and SPREAD B.",
+        "Define input choices at the top (bread type, spread 1, spread 2).",
+        "Keep the action steps specific and in order.",
+        "Test with two different ingredient combinations."
+      ],
+      "successCriteria": [
+        "Algorithm can be reused with different sandwich inputs.",
+        "Order of steps remains valid across both tests.",
+        "Team explains how input changes but algorithm structure stays stable."
+      ]
     }
   ]
 }

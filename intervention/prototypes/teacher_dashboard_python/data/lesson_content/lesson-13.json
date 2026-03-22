@@ -1,0 +1,248 @@
+{
+  "id": "lesson-13",
+  "title": "How Do Systems Prioritise? Queues, Stacks, and Emergency Triage",
+  "description": "Students compare stack, queue, and priority queue behavior, then design triage logic where arrival order differs from urgency.",
+  "duration": 30,
+  "level": "Intermediate",
+  "ageGroup": "High school (ages 12-17)",
+  "imageUrl": "/static/images/highschool-placeholder.svg",
+  "learningObjectives": [
+    "Explain the difference between Stack and Queue processing using LIFO and FIFO behavior.",
+    "Identify when FIFO is appropriate and when it becomes dangerous in high-stakes systems.",
+    "Design a plain-language priority queue algorithm with severity and tie-breaking logic.",
+    "Evaluate how scoring and tie-break rules encode policy choices, not neutral technical facts."
+  ],
+  "prerequisites": "Builds on Lessons 1 to 4.",
+  "materials": [
+    "Whiteboard and marker",
+    "Four physical books or notebooks",
+    "Paper and pencils"
+  ],
+  "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students explain stack versus queue behavior and design a priority queue for emergency triage where order of importance can override order of arrival.",
+  "vocabulary": [
+    "Stack",
+    "Queue",
+    "LIFO",
+    "FIFO",
+    "Priority Queue",
+    "Severity score"
+  ],
+  "roleModel": {
+    "name": "Annie Easley",
+    "years": "1933-2011",
+    "summary": "NASA computer scientist who developed algorithms for energy and rocket systems where processing order affected mission outcomes.",
+    "whyItMatters": "Her work shows that ordering logic is both technical and ethical when resources are limited."
+  },
+  "triageDataset": [
+    {
+      "patient": "A",
+      "arrival": "9:00",
+      "severity": 2,
+      "condition": "sprained ankle"
+    },
+    {
+      "patient": "B",
+      "arrival": "9:05",
+      "severity": 9,
+      "condition": "chest pain"
+    },
+    {
+      "patient": "C",
+      "arrival": "9:10",
+      "severity": 5,
+      "condition": "broken arm"
+    },
+    {
+      "patient": "D",
+      "arrival": "9:15",
+      "severity": 10,
+      "condition": "cannot breathe"
+    }
+  ],
+  "teacherInstructions": {
+    "setup": "Write vocabulary and triage scenario on the board before class. Keep four books ready for stack demonstration.",
+    "steps": [
+      "Phase 1 (0-2 min): Ask spark question about self-driving car processing three simultaneous inputs and who decides priority.",
+      "Phase 1 hook: connect processor scheduling and emergency systems to real-world value-encoded prioritization.",
+      "Phase 2 (2-10 min): Demonstrate stack with four books and define LIFO. Contrast with queue examples and define FIFO.",
+      "Phase 2 reflection: ask why FIFO fairness can fail in hospitals where urgency is not arrival-based.",
+      "Phase 3 (10-15 min): Introduce priority queue with severity score, arrival tie-breaks, and reordering on new high-severity arrivals.",
+      "Phase 3 extension: introduce preemption question, whether high-priority arrivals interrupt currently processed lower-priority tasks.",
+      "Phase 4 (15-24 min): Emergency triage challenge in groups using patient dataset and algorithm rules.",
+      "Round 1 (3 min): initial order by severity expected as D, B, C, A and quick fairness check discussion.",
+      "Round 2 (5 min): add Patient E at 9:20 with severity 7, then update to severity 10 while treatment is in progress to trigger preemption decision.",
+      "Round 3 (2 min): add six simultaneous severity-8 arrivals and require explicit tie-breaking rule.",
+      "Phase 5 (24-28 min): discussion on preemption in safety-critical systems or values encoded in recommendation queues.",
+      "Exit reflection (28-30 min): students write responsibility statement about priority-queue power and weight-setting."
+    ],
+    "discussionPrompts": [
+      "Where is preemption clearly right in everyday life, and where is it dangerous?",
+      "How should designers decide preemption policy in safety-critical systems such as surgical robotics?",
+      "Priority weights in social feeds optimize engagement. Who sets those weights and who is disadvantaged?",
+      "What is the ethical difference between triage prioritization and engagement prioritization if both are implemented with similar data structures?"
+    ],
+    "tips": [
+      "Use physical stack demo first so LIFO is embodied before formal naming.",
+      "Keep reminding students that fairness and safety can conflict in queue policy design.",
+      "Push groups to specify tie-break rules explicitly; unspecified ties cause inconsistent behavior.",
+      "Ask what system state the algorithm can see when making preemption decisions.",
+      "Reward students who identify weight-setting as policy, not just computation."
+    ]
+  },
+  "curriculumAlignment": [
+    "SLO Domain A (21A)",
+    "SLO Domain B (22B)",
+    "Data Structures: Stack, Queue, Priority Queue",
+    "Algorithmic Prioritization and Ethics"
+  ],
+  "teacherGuide": "Core message: ordering structures are decision systems. Stack and queue encode fixed processing logic, while priority queues encode weighted value judgments that must be justified, tested, and monitored for unintended harm. Keep language centered on policy in structure design: what gets processed first, who benefits, and what trade-off is accepted.",
+  "studentExercises": [
+    {
+      "id": "exercise-13-1",
+      "title": "Exercise 1 - Stack vs Queue Demonstration",
+      "description": "Use books and everyday examples to compare LIFO and FIFO processing behavior.",
+      "type": "Unplugged simulation",
+      "difficulty": "Easy",
+      "durationMinutes": 6,
+      "displayMode": "Whole class",
+      "materials": [
+        "Four books or notebooks"
+      ],
+      "instructions": [
+        "Build a physical stack and retrieve the bottom item.",
+        "State why last-added item is removed first in a stack.",
+        "Match undo history and browser back button to LIFO.",
+        "Compare with printer queue FIFO behavior.",
+        "Give one scenario where FIFO is fair but still unsafe."
+      ],
+      "successCriteria": [
+        "Students correctly define LIFO and FIFO.",
+        "Students map each structure to an appropriate everyday use case.",
+        "Students identify at least one high-stakes FIFO limitation."
+      ]
+    },
+    {
+      "id": "exercise-13-2",
+      "title": "Exercise 2 - Priority Queue Basics",
+      "description": "Translate triage scenario into severity-based ordering with explicit tie-breaking.",
+      "type": "Algorithm design",
+      "difficulty": "Medium",
+      "durationMinutes": 5,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Whiteboard",
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Order patients A to D by severity score.",
+        "Define tie-break rule when severity scores are equal.",
+        "Explain why Patient D can be first despite latest arrival.",
+        "Write one sentence on fairness trade-off for Patient A.",
+        "State what metadata your algorithm needs to maintain consistency."
+      ],
+      "successCriteria": [
+        "Group outputs correct initial triage ordering.",
+        "Group defines deterministic tie-break behavior.",
+        "Group can explain urgency-versus-arrival trade-off."
+      ]
+    },
+    {
+      "id": "exercise-13-3",
+      "title": "Exercise 3 - Dynamic Reordering and Preemption",
+      "description": "Handle new arrivals, score updates, and in-progress treatment constraints in a dynamic queue.",
+      "type": "System-state reasoning",
+      "difficulty": "Hard",
+      "durationMinutes": 7,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Insert Patient E with severity 7 into current queue.",
+        "Update Patient E to severity 10 and recompute order.",
+        "Decide whether algorithm preempts ongoing treatment of Patient B.",
+        "Specify what system-state information algorithm must read.",
+        "Document one risk introduced by your preemption policy."
+      ],
+      "successCriteria": [
+        "Group handles dynamic insertion and score updates correctly.",
+        "Group articulates a clear preemption policy.",
+        "Group identifies required system state beyond queue contents."
+      ]
+    },
+    {
+      "id": "exercise-13-4",
+      "title": "Exit Reflection - Power and Responsibility",
+      "description": "Write one sentence connecting priority queue power to accountability in weight-setting.",
+      "type": "Reflection",
+      "difficulty": "Easy",
+      "durationMinutes": 2,
+      "displayMode": "Individual",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Complete: A priority queue is more powerful than a standard queue, but that power comes with the responsibility to _______.",
+        "Include who sets weights and how outcomes should be checked.",
+        "Share one response with class.",
+        "Revise for precision if sentence is vague."
+      ],
+      "successCriteria": [
+        "Student links technical choice to accountability.",
+        "Student identifies at least one governance action.",
+        "Sentence reflects potential for unjust outcomes."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-13-1",
+      "title": "Bias Without Explicit Variable",
+      "description": "Explore how triage outputs can become biased even when postcode is not an explicit model input.",
+      "type": "Challenge",
+      "difficulty": "Hard",
+      "durationMinutes": 3,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Propose one indirect pathway by which postcode-correlated patterns could influence severity scores.",
+        "State one auditing method to detect this pattern.",
+        "Suggest one remediation path: fix, replace, or governance change.",
+        "Explain trade-offs of your chosen remediation."
+      ],
+      "successCriteria": [
+        "Student recognizes proxy-variable mechanism.",
+        "Student suggests concrete monitoring approach.",
+        "Student evaluates intervention trade-offs realistically."
+      ]
+    },
+    {
+      "id": "challenge-13-2",
+      "title": "Redundancy Budget Decision",
+      "description": "Choose which priority-queue pipeline components deserve redundancy under limited resources.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 3,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Name two functions that should have immediate failover.",
+        "Name one function that can tolerate downtime.",
+        "Justify decisions using patient-risk impact.",
+        "Identify who in an organization should approve this trade-off."
+      ],
+      "successCriteria": [
+        "Student prioritizes redundancy by consequence severity.",
+        "Student differentiates critical and non-critical components.",
+        "Student assigns governance responsibility clearly."
+      ]
+    }
+  ]
+}

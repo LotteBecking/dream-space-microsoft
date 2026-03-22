@@ -1,64 +1,188 @@
 {
   "id": "lesson-8",
-  "title": "Arrays & Lists",
-  "description": "Work with collections of data using arrays and lists.",
-  "duration": 30,
-  "level": "Advanced",
-  "videoUrl": "https://www.youtube.com/embed/xT8qIIJwMzc",
-  "objectives": [
-    "Understand arrays and lists",
-    "Iterate through collections",
-    "Manipulate multiple data items"
+  "title": "Who Is Technology For? Ethics, Fairness, and Responsibility",
+  "description": "Students evaluate technology ethics, audit stakeholders and harms, and apply responsible-design thinking to their own prototypes.",
+  "duration": 60,
+  "level": "Beginner",
+  "ageGroup": "Groep 5-8 (ages 8-12)",
+  "imageUrl": "/static/images/lesson-8-placeholder.svg",
+  "learningObjectives": [
+    "Identify at least one ethical question raised by a technology decision.",
+    "Argue a position using evidence and reasoning.",
+    "Apply stakeholder and unintended-consequence analysis to product ideas.",
+    "Audit their own prototype and identify one ethically significant design decision."
   ],
-  "prerequisites": "Variables & Data Types",
+  "prerequisites": "Builds on Lesson 5 (AI bias), Lesson 6 (encryption, privacy), and Lesson 7 (design thinking, empathy).",
   "materials": [
-    "Computer",
-    "Code blocks environment",
-    "Array examples"
+    "Whiteboard and marker",
+    "Paper and pencils",
+    "Sticky notes in two colors (agree and disagree)",
+    "Space for walking debate",
+    "Lesson 7 prototypes"
   ],
-  "fullDescription": "Learn to work with collections of data using arrays and lists. Master iteration and manipulation of multiple data items.",
+  "fullDescription": "Age group: Groep 5-8 (ages 8-12). Duration: 45-60 minutes. Devices required: none (fully unplugged). SLO alignment: Domain C (23A), Domain A (21D). Students practice ethics as structured reasoning, not right-answer recall, and apply it to real case studies and their own design work. Role model: Timnit Gebru, whose research exposed unequal AI performance and emphasized responsibility in technology development.",
   "teacherInstructions": {
-    "setup": "Prepare index cards labeled 0 to 9 and object cards to physically model list positions.",
+    "setup": "Post vocabulary all lesson: Ethics, Stakeholder, Unintended Consequence, Transparency, Consent. Prepare agree/disagree sides for walking debate.",
     "steps": [
-      "Introduce arrays as ordered collections with index positions (5 min).",
-      "Demonstrate reading and updating list items by index (7 min).",
-      "Students build a list-based mini tracker (10 min).",
-      "Practice looping through arrays to summarize results (8 min)."
+      "Phase 1 (0-3 min): Spark question on whether technology can be useful and harmful at the same time.",
+      "Phase 2 (3-10 min): Walking debate with four provocation statements to surface value tensions.",
+      "Phase 3 (10-20 min): Concept intro with five ethical questions and examples for unintended consequences, stakeholders, and consent.",
+      "Phase 4 (20-42 min): Ethics audit challenge in two parts: case-study analysis then own-prototype audit from Lesson 7.",
+      "Phase 5 (42-47 min): Discussion on anonymization limits, design-change options, and builder responsibility.",
+      "Exercises (47-57 min): Complete responsible design checklist and unintended-consequences game; extension for fast finishers.",
+      "Share and reflect (52-57 min): Groups share one checklist question, class spots gaps, and students write personal ethical commitment sentence."
     ],
     "discussionPrompts": [
-      "Why do arrays use positions starting at zero in many tools?",
-      "When would a list be better than many separate variables?",
-      "How can loops and arrays work together efficiently?"
+      "Does anonymized data become automatically ethical to sell? What evidence would you need?",
+      "If you discover harm in your own design, should you fix it, limit it, warn users, or stop building?",
+      "Is ethical responsibility part of the builder's job or only regulators and lawyers?",
+      "Can one product be fair for one group while unfair for another at the same time?"
     ],
     "tips": [
-      "Use visual index mapping before moving to code.",
-      "Check boundary cases like first and last index explicitly.",
-      "Have students narrate list changes after each operation."
+      "Force clear positions in walking debate; no middle stance during response rounds.",
+      "Record tensions, do not rush to resolve them.",
+      "Encourage students to critique their own prototypes, not only the case study.",
+      "Treat discomfort during audit as productive evidence of deeper thinking.",
+      "Look for specific, actionable fixes rather than generic statements."
     ]
   },
   "curriculumAlignment": [
-    "Data Structures Foundations",
-    "Collection Processing Level 3"
+    "SLO Domain C (23A)",
+    "SLO Domain A (21D)",
+    "Responsible Technology Design",
+    "Ethical Reasoning and Stakeholder Analysis"
   ],
-  "teacherGuide": "Explain arrays as collections of similar items. Show how indexing works. Demonstrate iterating through arrays with loops. Practice common array operations like adding, removing, and searching. Relate arrays to real-world concepts like shopping lists.",
+  "teacherGuide": "Core message: ethical technology work means identifying who benefits, who is harmed, and who is excluded before launch. Students should move from abstract opinions to evidence-backed reasoning and specific design changes. The strongest outcome is when groups revise their own prototype after ethical critique.",
   "studentExercises": [
     {
       "id": "exercise-8-1",
-      "title": "Create an Array",
-      "description": "Create an array and access its elements",
-      "difficulty": "Medium"
+      "title": "Exercise 1 - Responsible Design Checklist",
+      "description": "Create a five-question yes/no ethics checklist and apply it to your own prototype, writing one fix for each no answer.",
+      "type": "Checklist",
+      "difficulty": "Easy",
+      "durationMinutes": 8,
+      "displayMode": "Individual",
+      "materials": [
+        "Paper",
+        "Pencil",
+        "Own prototype"
+      ],
+      "instructions": [
+        "Write exactly five yes/no ethical questions.",
+        "Include at least one question about people who are not the primary user.",
+        "Include at least one question about what happens when something goes wrong.",
+        "Apply all five questions to your own prototype.",
+        "For every no answer, write one concrete change that would make it yes."
+      ],
+      "successCriteria": [
+        "Checklist questions are specific and testable.",
+        "Checklist covers consent, stakeholders, and risk or failure pathways.",
+        "At least one genuine no is identified with a concrete fix."
+      ]
     },
     {
       "id": "exercise-8-2",
-      "title": "Iterate Arrays",
-      "description": "Loop through an array and perform operations",
-      "difficulty": "Medium"
+      "title": "Exercise 2 - Unintended Consequences Game",
+      "description": "For each technology, describe intended goal and one plausible unintended consequence affecting an overlooked group.",
+      "type": "Scenario analysis",
+      "difficulty": "Medium",
+      "durationMinutes": 7,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Use this sentence structure: 'The designers wanted [X], but an unintended consequence was [Y], which affected [Z].'",
+        "Technology 1: school canteen app from Lesson 7.",
+        "Technology 2: phone autocorrect system.",
+        "Technology 3: step-count fitness tracker.",
+        "Ensure each consequence is plausible and specific.",
+        "Share one strongest example with the class."
+      ],
+      "successCriteria": [
+        "Each response includes intended goal, consequence, and affected stakeholders.",
+        "At least one consequence highlights an overlooked user group.",
+        "Examples are concrete rather than generic safety claims."
+      ]
     },
     {
       "id": "exercise-8-3",
-      "title": "Array Manipulation",
-      "description": "Create a program that adds, removes, and searches in arrays",
-      "difficulty": "Hard"
+      "title": "Extension - Write the Ethical Brief",
+      "description": "Write a one-page ethical brief for one product option, including data use, stakeholders, launch questions, and harm scenario.",
+      "type": "Extension",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Fast finishers",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Choose one option: AI tutor for primary students, social platform for ages 8-12, or smart school bag with live location tracking.",
+        "State who product is for and who else it affects.",
+        "List what data is collected and who can see it.",
+        "Write three ethical questions the team must answer before launch.",
+        "Describe one realistic harm scenario that could happen even if product works as designed."
+      ],
+      "successCriteria": [
+        "Brief covers users, non-users, data, and governance questions.",
+        "At least one harm scenario is specific and realistic.",
+        "Student shows balanced reasoning across benefits and risks."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-8-1",
+      "title": "Walking Debate Sprint",
+      "description": "Take a clear ethical position on controversial statements, defend it, and respond to opposing reasons.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Whole class movement",
+      "materials": [
+        "Agree and disagree labels",
+        "Two-color sticky notes"
+      ],
+      "instructions": [
+        "Move to agree or disagree side for each statement; no middle position.",
+        "State one evidence-based reason for your position.",
+        "Listen to one opposite-side reason and respond respectfully.",
+        "Track one statement where your own view changed after hearing others.",
+        "Write final position and reason on sticky note."
+      ],
+      "successCriteria": [
+        "Student commits to a position and gives a reason.",
+        "Student engages with opposing view rather than repeating own claim.",
+        "At least one viewpoint shift or tension is documented."
+      ]
+    },
+    {
+      "id": "challenge-8-2",
+      "title": "Ethics Audit of Your Prototype",
+      "description": "Apply the five ethics questions to your own Lesson 7 design and revise one feature based on risk or fairness findings.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Group audit",
+      "materials": [
+        "Lesson 7 prototype",
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Answer five audit questions: who helped, who harmed, who excluded, what could fail, who is responsible.",
+        "Identify one data, consent, or inclusion risk in your design.",
+        "Propose one specific design change to reduce the risk.",
+        "Attach ethics audit note to prototype.",
+        "Prepare to explain what changed and why."
+      ],
+      "successCriteria": [
+        "Audit identifies at least one real ethical issue in own design.",
+        "Revision is specific and linked to audit finding.",
+        "Group can explain trade-off introduced by the change."
+      ]
     }
   ]
 }

@@ -1,0 +1,233 @@
+{
+  "id": "lesson-11",
+  "title": "How Do Computers Handle Massive Data? Loops and the Climate Crisis",
+  "description": "Students use FOR and WHILE loops to process climate readings, flag risks, and reason about safety, thresholds, and real-world consequences.",
+  "duration": 30,
+  "level": "Intermediate",
+  "ageGroup": "High school (ages 12-17)",
+  "imageUrl": "/static/images/highschool-placeholder.svg",
+  "learningObjectives": [
+    "Explain what a loop is and why loops reduce redundancy in code.",
+    "Distinguish when to use a FOR loop versus a WHILE loop.",
+    "Write plain-language loop logic to parse a dataset and flag threshold breaches.",
+    "Interpret how loop design affects safety in climate, medical, and transport systems."
+  ],
+  "prerequisites": "Builds on Lessons 1 and 2. No coding syntax required.",
+  "materials": [
+    "Whiteboard and marker",
+    "Paper and pencils",
+    "Pre-written dataset of 10 ocean temperature anomaly readings"
+  ],
+  "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students explain loops, distinguish FOR and WHILE behavior, and write plain-language instructions that process data for climate risk detection.",
+  "vocabulary": [
+    "Loop",
+    "FOR loop",
+    "WHILE loop",
+    "Array",
+    "Data parsing",
+    "Redundancy"
+  ],
+  "roleModel": {
+    "name": "Margaret Hamilton",
+    "years": "born 1936",
+    "summary": "Lead software engineer for NASA Apollo guidance software that processed large real-time data streams during Moon missions.",
+    "whyItMatters": "Her work showed that software quality and loop efficiency are engineering-critical, not optional."
+  },
+  "climateDataset": [
+    -2,
+    4,
+    1,
+    -5,
+    8,
+    3.2,
+    0,
+    6,
+    -1,
+    5
+  ],
+  "teacherInstructions": {
+    "setup": "Write the vocabulary and the 10 anomaly readings on the board before students arrive.",
+    "steps": [
+      "Phase 1 (0-2 min): Ask spark question about 3.5 billion climate data points and what happens if instructions are wrong.",
+      "Phase 1 hook: connect loops to hurricane, heatwave, and flood forecasting pipelines that no human can parse manually.",
+      "Phase 2 (2-8 min): Human loop demo with repeated star drawing to surface redundancy, error risk, and maintainability differences between repeated lines and looped instructions.",
+      "Phase 3 (8-13 min): Introduce FOR versus WHILE with practical examples (homework checks, heating control, car braking, ventilator operation).",
+      "Phase 3 risk check: discuss infinite loop risk when stop condition cannot be reached (for example, broken sensor input).",
+      "Phase 4 (13-24 min): Climate data challenge using the board dataset and threshold reading > 3 degrees Celsius.",
+      "Round 1 (3 min): class writes and traces FOR loop to flag warnings; identify flagged readings 4, 8, 3.2, 6, 5.",
+      "Round 2 (6 min): groups modify logic to stop after three warnings and compute average flagged value; expected average after first three warnings is approximately 5.07 degrees Celsius.",
+      "Phase 5 (24-28 min): discussion on responsibility for safe stop conditions or on threshold governance in climate systems.",
+      "Exit reflection (28-30 min): students compare when FOR is better than WHILE, and why."
+    ],
+    "discussionPrompts": [
+      "In critical infrastructure, who is accountable for ensuring WHILE-loop stop conditions remain reachable?",
+      "Boeing 737 MAX feedback loops functioned as designed but were unsafe in practice. What does that imply about testing and responsibility?",
+      "If climate baselines shift, who should update a warning threshold and how often should that happen?",
+      "Is threshold drift a technology problem, science problem, governance problem, or all three?"
+    ],
+    "tips": [
+      "Keep loop language concrete: condition, action, and stop condition.",
+      "When groups fail to stop at three warnings, ask where the warning count is stored.",
+      "Plant variable concept naturally by asking how the loop remembers count and running total.",
+      "Use high-stakes examples carefully to shift from mechanics to ethics without losing technical clarity.",
+      "Reward students who challenge threshold assumptions, because that signals systems-level thinking."
+    ]
+  },
+  "curriculumAlignment": [
+    "SLO Domain A (21A)",
+    "SLO Domain B (22B)",
+    "Loops and Data Processing",
+    "Computing for Climate Analytics"
+  ],
+  "teacherGuide": "Core message: loops automate repetition safely only when the stop condition, threshold logic, and data assumptions are maintained. FOR loops are count-based and predictable; WHILE loops are condition-driven and can become dangerous when conditions never update. Use the climate dataset to show both data parsing power and policy-level consequences.",
+  "studentExercises": [
+    {
+      "id": "exercise-11-1",
+      "title": "Exercise 1 - Human Loop Simulation",
+      "description": "Experience redundancy versus looping by comparing repeated manual instructions with a repeat rule.",
+      "type": "Unplugged simulation",
+      "difficulty": "Easy",
+      "durationMinutes": 6,
+      "displayMode": "Whole class",
+      "materials": [
+        "Whiteboard",
+        "Marker"
+      ],
+      "instructions": [
+        "Draw repeated stars using one-at-a-time commands.",
+        "Rewrite instruction using repeat logic.",
+        "Compare error risk in repeated lines versus loop form.",
+        "Discuss how sensor count change affects maintainability.",
+        "Write one sentence on why loops reduce redundancy."
+      ],
+      "successCriteria": [
+        "Students identify repetition as maintainability risk.",
+        "Students explain why one loop update is safer than thousands of repeated edits.",
+        "Students connect looping to large real-world datasets."
+      ]
+    },
+    {
+      "id": "exercise-11-2",
+      "title": "Exercise 2 - FOR vs WHILE Decisions",
+      "description": "Classify scenarios by loop type and justify stop behavior.",
+      "type": "Classification",
+      "difficulty": "Medium",
+      "durationMinutes": 5,
+      "displayMode": "Whole class",
+      "materials": [
+        "Whiteboard"
+      ],
+      "instructions": [
+        "Classify homework-check scenario as FOR.",
+        "Classify heater and ventilator scenarios as WHILE.",
+        "Identify stop condition in each WHILE example.",
+        "Predict one failure mode if stop condition never changes.",
+        "State one safety check to avoid infinite loops."
+      ],
+      "successCriteria": [
+        "Students correctly separate count-based and condition-based iteration.",
+        "Students can name infinite-loop risk.",
+        "Students propose at least one stop-condition safeguard."
+      ]
+    },
+    {
+      "id": "exercise-11-3",
+      "title": "Exercise 3 - Climate Data Parsing Loop",
+      "description": "Write and trace loop logic that flags anomalies above threshold and extends to early-stop and averaging behavior.",
+      "type": "Data parsing",
+      "difficulty": "Hard",
+      "durationMinutes": 9,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Board dataset",
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Write FOR loop: for each reading, flag if reading > 3.",
+        "Trace all 10 readings and mark WARNING or SAFE.",
+        "Modify logic to stop after three warnings.",
+        "Add running total and count for flagged readings.",
+        "Compute average for first three flagged readings and verify approximately 5.07."
+      ],
+      "successCriteria": [
+        "Group writes coherent plain-language loop logic.",
+        "Group correctly flags threshold breaches.",
+        "Group tracks count and total needed for averaging.",
+        "Group can explain why stop condition changes loop choice."
+      ]
+    },
+    {
+      "id": "exercise-11-4",
+      "title": "Exit Reflection - Choosing Loop Types",
+      "description": "Write one sentence explaining when FOR is preferable and when WHILE is preferable.",
+      "type": "Reflection",
+      "difficulty": "Easy",
+      "durationMinutes": 2,
+      "displayMode": "Individual",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Complete: A FOR loop is better when ______, and a WHILE loop is better when ______.",
+        "Use one concrete classroom example for each blank.",
+        "Check if your WHILE example has a reachable stop condition.",
+        "Share one response aloud."
+      ],
+      "successCriteria": [
+        "Student distinguishes known-count from condition-driven repetition.",
+        "Student references at least one real scenario accurately.",
+        "Student mentions stop conditions for WHILE usage."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-11-1",
+      "title": "Parallel Loop Race Condition Prompt",
+      "description": "Explore what can go wrong when multiple processors update a shared warning count at the same time.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 3,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Imagine splitting 10 readings across 5 processors.",
+        "Describe how two processors could update warning count simultaneously.",
+        "Predict one incorrect total outcome that might result.",
+        "Propose one simple coordination rule to reduce the risk."
+      ],
+      "successCriteria": [
+        "Student identifies shared-state conflict risk.",
+        "Student connects speed gains to correctness risks.",
+        "Student proposes a basic mitigation concept."
+      ]
+    },
+    {
+      "id": "challenge-11-2",
+      "title": "Threshold Governance Challenge",
+      "description": "Question whether fixed thresholds remain valid as climate baselines shift.",
+      "type": "Challenge",
+      "difficulty": "Hard",
+      "durationMinutes": 3,
+      "displayMode": "Optional discussion",
+      "materials": [
+        "None"
+      ],
+      "instructions": [
+        "Argue whether the 3-degree threshold should change over time.",
+        "State what evidence would justify a threshold update.",
+        "Identify who should authorize the update.",
+        "Describe one risk of waiting too long to update."
+      ],
+      "successCriteria": [
+        "Student treats thresholds as design choices rather than fixed truths.",
+        "Student links data assumptions to decision quality.",
+        "Student recognizes governance responsibility in technical systems."
+      ]
+    }
+  ]
+}

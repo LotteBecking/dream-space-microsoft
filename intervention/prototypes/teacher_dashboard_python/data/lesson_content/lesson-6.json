@@ -1,64 +1,186 @@
 {
   "id": "lesson-6",
-  "title": "Debugging & Problem Solving",
-  "description": "Learn systematic approaches to find and fix errors in your code.",
-  "duration": 20,
-  "level": "Intermediate",
-  "videoUrl": "https://www.youtube.com/embed/Z6p2TwjKr6g",
-  "objectives": [
-    "Identify common errors",
-    "Use debugging techniques",
-    "Solve problems systematically"
+  "title": "Secrets and Codes - How Computers Keep Information Safe",
+  "description": "Students learn encryption basics, practice encoding and decoding, and evaluate password strength and key security.",
+  "duration": 60,
+  "level": "Beginner",
+  "ageGroup": "Groep 5-8 (ages 8-12)",
+  "imageUrl": "/static/images/lesson-6-placeholder.svg",
+  "learningObjectives": [
+    "Explain why encryption exists and what it protects.",
+    "Apply a simple cipher to encrypt and decrypt messages.",
+    "Describe what a key is and why secrecy of the key matters.",
+    "Describe what makes a password weak or strong with reasons."
   ],
-  "prerequisites": "Loops & Sequences",
+  "prerequisites": "Builds on Lesson 1 (algorithms), Lesson 3 (conditionals), and Lesson 4 (variables).",
   "materials": [
-    "Computer",
-    "Buggy code examples",
-    "Debugging checklist"
+    "Paper and pencils for each student",
+    "Whiteboard and marker",
+    "Optional one envelope per group for message passing"
   ],
-  "fullDescription": "Develop problem-solving skills by learning how to identify and fix errors in code. Understand common mistakes and how to debug programs effectively.",
+  "fullDescription": "Age group: Groep 5-8 (ages 8-12). Duration: 45-60 minutes. Devices required: none (fully unplugged). SLO alignment: Domain A (21A), Domain C (23A). Students explore ciphers, keys, and brute-force attacks through hands-on activities. Role model: Hedy Lamarr, co-inventor of frequency hopping, foundational to secure modern wireless communication.",
   "teacherInstructions": {
-    "setup": "Prepare three pre-bugged example programs and a visible debugging checklist poster.",
+    "setup": "Keep vocabulary visible all lesson: Encryption, Cipher, Key, Decrypt, Hacker. Prepare Caesar-shift alphabet lines and message-passing setup.",
     "steps": [
-      "Normalize mistakes by sharing a bug from a previous lesson (3 min).",
-      "Teach a four-step debugging routine: reproduce, inspect, test, fix (6 min).",
-      "Students debug guided examples in pairs (9 min).",
-      "Class debrief on strategies that found bugs fastest (5 min)."
+      "Phase 1 (0-3 min): Spark question about WhatsApp message privacy and introduce encryption as scrambling with a key.",
+      "Phase 2 (3-10 min): Crack-it warm-up with KHOOR, ZRUOG, FRGH and Caesar shift hinting.",
+      "Phase 3 (10-20 min): Concept intro using message-plus-key model, password strength comparisons, and passphrase strategy.",
+      "Phase 4 (20-42 min): Hacker intercept game with three rounds: public key failure, secret key success, and known-plaintext attack demonstration.",
+      "Phase 5 (42-47 min): Discussion on key exchange, brute-force speed, and privacy versus safety debate.",
+      "Exercises (47-57 min): Complete Exercise 1 (Encrypt and decrypt) and Exercise 2 (Password audit), then extension for fast finishers.",
+      "Share and reflect (52-57 min): Students share custom ciphers and finish sentence: 'Encryption works because _____. '"
     ],
     "discussionPrompts": [
-      "What clues told you where the bug was?",
-      "Why is changing one thing at a time important while debugging?",
-      "What debugging habit will you reuse in future lessons?"
+      "Why did Round 1 fail and Round 2 improve in the intercept game?",
+      "How can two computers agree a secret key if a hacker hears everything?",
+      "Why is brute-force cracking essentially a loop that keeps updating guesses?",
+      "Should strong encryption ever be bypassed for safety investigations?"
     ],
     "tips": [
-      "Require students to predict the bug before editing code.",
-      "Promote pair-debugging language: driver and reviewer roles.",
-      "Track common bug patterns and revisit them weekly."
+      "Acknowledge end-to-end encryption vocabulary if students already know the phrase.",
+      "Use known-plaintext examples to show how predictable words weaken simple ciphers.",
+      "Emphasize that key secrecy is as important as algorithm choice.",
+      "During password ranking, steer toward evidence-based reasoning over opinions.",
+      "Connect brute-force attempts to loop and variable concepts from prior lessons."
     ]
   },
   "curriculumAlignment": [
-    "Testing and Debugging",
-    "Problem Solving Level 2"
+    "SLO Domain A (21A)",
+    "SLO Domain C (23A)",
+    "Cybersecurity Foundations",
+    "Privacy and Digital Safety"
   ],
-  "teacherGuide": "Normalize mistakes and emphasize that debugging is a normal part of programming. Teach systematic debugging techniques like adding print statements and testing small sections. Have students practice fixing buggy programs.",
+  "teacherGuide": "Core message: encryption transforms readable information into unreadable text unless you have the key. Students should experience why public shared keys fail and why secret per-message keys improve security. Push them to justify password strength using search space and predictability, not only symbols.",
   "studentExercises": [
     {
       "id": "exercise-6-1",
-      "title": "Find the Bug",
-      "description": "Identify and fix a simple error in provided code",
-      "difficulty": "Easy"
+      "title": "Exercise 1 - Encrypt and Decrypt",
+      "description": "Complete three cipher tasks: encode with fixed shift, crack unknown shift, and design a stronger custom rule.",
+      "type": "Cipher practice",
+      "difficulty": "Easy",
+      "durationMinutes": 8,
+      "displayMode": "Individual",
+      "materials": [
+        "Paper",
+        "Pencil",
+        "Alphabet reference"
+      ],
+      "instructions": [
+        "Task A: Encrypt DREAM SPACE IS FUN using Caesar shift 6. Expected encrypted text: JXKGS YVEGI OY LAT.",
+        "Task B: Crack YJQQT BTWQI with unknown shift between 1 and 25. Hint: common English greeting. Expected answer: HELLO WORLD with shift 17.",
+        "Task C: Design a better cipher that changes more than letter shift (for example adds fake letters or reorders words).",
+        "Write your Task C rule clearly so a partner can use it.",
+        "Decrypt your own Task A result back to the original message and fix any mismatch."
+      ],
+      "successCriteria": [
+        "Task A encryption is correct and reversible.",
+        "Task B solved using systematic or known-plaintext reasoning.",
+        "Task C rule is unambiguous and harder than plain Caesar shift."
+      ]
     },
     {
       "id": "exercise-6-2",
-      "title": "Debug a Program",
-      "description": "Debug a more complex program with multiple issues",
-      "difficulty": "Medium"
+      "title": "Exercise 2 - Password Audit",
+      "description": "Rank six passwords from weakest to strongest and justify each ranking with evidence.",
+      "type": "Security analysis",
+      "difficulty": "Medium",
+      "durationMinutes": 5,
+      "displayMode": "Pairs",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Rank these from weakest to strongest: password, 12345678, Angela2014, Tr0ub4dor!, correct horse battery staple, Xk#9mP$2qL.",
+        "Expected baseline ranking: 1, 2, 3, 4, 6, 5. Discuss why 4, 5, and 6 may still be debated.",
+        "Explain each ranking based on length, predictability, and character variety.",
+        "Identify why names and years are guessed early in attacks.",
+        "Write one improved replacement for the weakest password."
+      ],
+      "successCriteria": [
+        "Pair gives reasoned ranking, not guesses.",
+        "Pair identifies that length can outperform symbol-heavy short passwords.",
+        "At least one replacement shows stronger structure and memorability."
+      ]
     },
     {
       "id": "exercise-6-3",
-      "title": "Problem Solving",
-      "description": "Fix a program and improve its efficiency",
-      "difficulty": "Hard"
+      "title": "Extension - Build an Unbreakable System",
+      "description": "Design and test a two-layer encryption method, then challenge another student to crack it without the rule.",
+      "type": "Extension",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Fast finishers",
+      "materials": [
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Create a two-step cipher system (for example reverse message then apply Caesar shift).",
+        "Encrypt a short message with your system.",
+        "Pass only encrypted message to another student; keep the rule secret.",
+        "After 2 minutes, reveal rule and compare cracking strategies.",
+        "Answer challenge prompts about key-space size and why one-way functions differ from your method."
+      ],
+      "successCriteria": [
+        "Two-layer algorithm is clearly defined.",
+        "Encrypted message can be correctly decrypted with the rule.",
+        "Student explains why two layers increase cracking effort."
+      ]
+    }
+  ],
+  "studentChallenges": [
+    {
+      "id": "challenge-6-1",
+      "title": "Hacker Intercept Game",
+      "description": "Send and protect 3-word secret messages while an interceptor tries to crack them in real time.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 10,
+      "displayMode": "Groups of three",
+      "materials": [
+        "Paper notes",
+        "Optional envelopes",
+        "Shift tables"
+      ],
+      "instructions": [
+        "Round 1: all groups use Caesar +4 with public key. Observe why all messages are readable.",
+        "Round 2: each group chooses private shift 1-25 and shares only with target team.",
+        "Pass encrypted 3-word messages through teacher interceptor and attempt decryption.",
+        "Compare success rates between public and secret-key rounds.",
+        "Identify one improvement that would make interception even harder."
+      ],
+      "successCriteria": [
+        "Group encrypts and decrypts correctly with chosen key.",
+        "Group can explain why public key-on-board setup fails.",
+        "At least one concrete hardening strategy is proposed."
+      ]
+    },
+    {
+      "id": "challenge-6-2",
+      "title": "Known-Plaintext Defense Lab",
+      "description": "Use a known opening word to break one message, then redesign message format to resist this attack.",
+      "type": "Challenge",
+      "difficulty": "Medium",
+      "durationMinutes": 8,
+      "displayMode": "Pairs",
+      "materials": [
+        "Sample intercepted messages",
+        "Paper",
+        "Pencil"
+      ],
+      "instructions": [
+        "Assume first word is a common term like meet or the and derive likely shift.",
+        "Decrypt the rest of the message with derived key.",
+        "Redesign the sender rule to avoid predictable starts.",
+        "Add one anti-pattern trick (padding, word reorder, or key rotation).",
+        "Retest whether your modified message is harder to crack in 60 seconds."
+      ],
+      "successCriteria": [
+        "Pair demonstrates at least one successful known-plaintext break.",
+        "Defense redesign removes simple predictable opening weakness.",
+        "Retest shows higher cracking difficulty."
+      ]
     }
   ]
 }

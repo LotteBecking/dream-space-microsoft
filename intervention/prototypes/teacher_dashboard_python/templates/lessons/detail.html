@@ -17,8 +17,8 @@
                 <p class="text-gray-600 mt-2">{{ lesson.description }}</p>
             </div>
             <div class="flex gap-2">
-                <span class="inline-block text-sm px-3 py-1 bg-purple-100 text-purple-700 rounded-full font-medium">
-                    {{ lesson.level }}
+                <span class="inline-block text-sm px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full font-medium">
+                    <i class="fas fa-child-reaching mr-1"></i> {{ lesson.ageGroup }}
                 </span>
                 <span class="inline-block text-sm px-3 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
                     <i class="fas fa-clock mr-1"></i> {{ lesson.duration }} min
@@ -36,16 +36,22 @@
         </div>
     </div>
 
-    <!-- Video Section -->
+    <!-- Lesson Image -->
     <div class="bg-white rounded-lg overflow-hidden card-shadow">
         <div class="relative aspect-video bg-gray-900">
-            <iframe
-                class="w-full h-full"
-                src="{{ lesson.videoUrl }}"
-                title="{{ lesson.title }}"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen>
-            </iframe>
+            {% if lesson.imageUrl %}
+            <img src="{{ lesson.imageUrl }}" alt="{{ lesson.title }}" class="w-full h-full object-cover">
+            {% else %}
+            <div class="w-full h-full bg-gradient-to-br from-slate-900 via-indigo-900 to-sky-900 text-white flex items-center justify-center p-8">
+                <div class="text-center">
+                    <div class="mx-auto w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-chalkboard-teacher text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold">{{ lesson.title }}</h2>
+                    <p class="mt-2 text-white/80">Classroom slide placeholder</p>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 
@@ -154,6 +160,7 @@
 
         <div id="tab-exercises" class="space-y-4 hidden">
             <div id="student-exercises" class="space-y-4">
+                <h2 class="text-xl font-bold text-gray-900">Student Exercises</h2>
                 {% for exercise in lesson.studentExercises %}
                 <div class="bg-white rounded-lg p-6 card-shadow">
                     <div class="flex items-start justify-between gap-4">
@@ -168,16 +175,81 @@
                                     {% else %}bg-red-100 text-red-700{% endif %}">
                                     {{ exercise.difficulty }}
                                 </span>
+                                <span class="inline-block border border-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full">
+                                    {{ exercise.durationMinutes }} min
+                                </span>
+                                <span class="inline-block border border-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full">
+                                    {{ exercise.displayMode }}
+                                </span>
                             </div>
                             <p class="text-sm text-gray-600 mt-3">{{ exercise.description }}</p>
+
+                            {% if exercise.instructions %}
+                            <ul class="mt-3 space-y-1 text-sm text-gray-700">
+                                {% for instruction in exercise.instructions[:2] %}
+                                <li class="flex items-start gap-2">
+                                    <span class="text-purple-600 font-semibold">{{ loop.index }}.</span>
+                                    <span>{{ instruction }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
                         </div>
-                        <button onclick="openExerciseApp('{{ exercise.id }}')" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition text-sm font-medium whitespace-nowrap">
-                            <i class="fas fa-play mr-1"></i> Open Exercise
-                        </button>
+                        <a href="/lessons/{{ lesson.id }}/exercises/{{ exercise.id }}" target="_blank" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition text-sm font-medium whitespace-nowrap">
+                            <i class="fas fa-display mr-1"></i> Present Exercise
+                        </a>
                     </div>
                 </div>
                 {% endfor %}
             </div>
+
+            {% if lesson.studentChallenges %}
+            <div id="student-challenges" class="space-y-4 pt-2">
+                <h2 class="text-xl font-bold text-gray-900">Class Challenges</h2>
+                <p class="text-sm text-gray-600">Stretch tasks for deeper algorithm thinking and whole-class reflection.</p>
+
+                {% for challenge in lesson.studentChallenges %}
+                <div class="bg-white rounded-lg p-6 card-shadow border border-amber-200">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-900">{{ challenge.title }}</h3>
+                            <div class="mt-2 flex items-center gap-2">
+                                <span class="inline-block border border-amber-300 bg-amber-50 text-amber-700 text-xs px-2 py-1 rounded-full">{{ challenge.type }}</span>
+                                <span class="inline-block text-xs font-medium px-2 py-1 rounded-full
+                                    {% if challenge.difficulty == 'Beginner' or challenge.difficulty == 'Easy' %}bg-green-100 text-green-700
+                                    {% elif challenge.difficulty == 'Intermediate' or challenge.difficulty == 'Medium' %}bg-yellow-100 text-yellow-700
+                                    {% elif challenge.difficulty == 'Advanced' or challenge.difficulty == 'Hard' %}bg-orange-100 text-orange-700
+                                    {% else %}bg-red-100 text-red-700{% endif %}">
+                                    {{ challenge.difficulty }}
+                                </span>
+                                <span class="inline-block border border-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full">
+                                    {{ challenge.durationMinutes }} min
+                                </span>
+                                <span class="inline-block border border-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full">
+                                    {{ challenge.displayMode }}
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-3">{{ challenge.description }}</p>
+
+                            {% if challenge.instructions %}
+                            <ul class="mt-3 space-y-1 text-sm text-gray-700">
+                                {% for instruction in challenge.instructions[:2] %}
+                                <li class="flex items-start gap-2">
+                                    <span class="text-amber-600 font-semibold">{{ loop.index }}.</span>
+                                    <span>{{ instruction }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        <a href="/lessons/{{ lesson.id }}/challenges/{{ challenge.id }}" target="_blank" class="bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition text-sm font-medium whitespace-nowrap">
+                            <i class="fas fa-trophy mr-1"></i> Present Challenge
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -240,11 +312,6 @@ function assignLesson(event) {
     closeAssignmentModal();
 }
 
-function openExerciseApp(exerciseId) {
-    alert(`Opening exercise: ${exerciseId}\n\nIn a real application, this would connect to the coding app where students can complete the exercise.`);
-    // In a real app, this would navigate to: window.location.href = `/exercise/${exerciseId}`;
-}
-
 function switchLessonTab(tabName) {
     const tabIds = ['overview', 'instructions', 'exercises'];
     tabIds.forEach(id => {
@@ -261,6 +328,10 @@ function switchLessonTab(tabName) {
             trigger.classList.add('text-gray-700');
         }
     });
+}
+
+if (window.location.hash === '#student-exercises' || window.location.hash === '#student-challenges') {
+    switchLessonTab('exercises');
 }
 </script>
 {% endblock %}
