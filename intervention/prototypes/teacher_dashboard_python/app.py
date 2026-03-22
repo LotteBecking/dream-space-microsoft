@@ -44,6 +44,7 @@ def build_default_teacher_instructions(lesson):
 def normalize_lesson_detail(lesson):
     """Ensure lesson detail has the fields required by the tabbed detail template."""
     detail_lesson = dict(lesson)
+    detail_lesson['ageGroup'] = lesson.get('ageGroup') or 'Primary school (ages 8-12)'
 
     detail_lesson['learningObjectives'] = (
         lesson.get('learningObjectives')
@@ -63,15 +64,52 @@ def normalize_lesson_detail(lesson):
     raw_exercises = lesson.get('studentExercises') or []
     normalized_exercises = []
     for index, exercise in enumerate(raw_exercises, start=1):
+        description = exercise.get('description', 'Complete this exercise in the student app.')
+        instructions = exercise.get('instructions') or [description]
+        success_criteria = exercise.get('successCriteria') or [
+            'Students can explain their approach clearly.',
+            'Students can complete the task with precise steps.'
+        ]
+
         normalized_exercises.append({
             'id': exercise.get('id', f"{lesson.get('id', 'lesson')}-exercise-{index}"),
             'title': exercise.get('title', f'Exercise {index}'),
-            'description': exercise.get('description', 'Complete this exercise in the student app.'),
+            'description': description,
             'type': (exercise.get('type') or 'Coding').capitalize(),
-            'difficulty': (exercise.get('difficulty') or lesson.get('level') or 'Beginner').capitalize()
+            'difficulty': (exercise.get('difficulty') or lesson.get('level') or 'Beginner').capitalize(),
+            'durationMinutes': exercise.get('durationMinutes') or 10,
+            'displayMode': exercise.get('displayMode') or 'Whole class',
+            'instructions': instructions,
+            'materials': exercise.get('materials') or ['Paper and pencil'],
+            'successCriteria': success_criteria
         })
 
     detail_lesson['studentExercises'] = normalized_exercises
+
+    raw_challenges = lesson.get('studentChallenges') or []
+    normalized_challenges = []
+    for index, challenge in enumerate(raw_challenges, start=1):
+        challenge_description = challenge.get('description', 'Complete this classroom challenge.')
+        challenge_instructions = challenge.get('instructions') or [challenge_description]
+        challenge_success_criteria = challenge.get('successCriteria') or [
+            'Students can justify their algorithm design decisions.',
+            'Students can revise instructions after testing.'
+        ]
+
+        normalized_challenges.append({
+            'id': challenge.get('id', f"{lesson.get('id', 'lesson')}-challenge-{index}"),
+            'title': challenge.get('title', f'Challenge {index}'),
+            'description': challenge_description,
+            'type': (challenge.get('type') or 'Challenge').capitalize(),
+            'difficulty': (challenge.get('difficulty') or 'Medium').capitalize(),
+            'durationMinutes': challenge.get('durationMinutes') or 10,
+            'displayMode': challenge.get('displayMode') or 'Whole class',
+            'instructions': challenge_instructions,
+            'materials': challenge.get('materials') or ['Paper and pencil'],
+            'successCriteria': challenge_success_criteria
+        })
+
+    detail_lesson['studentChallenges'] = normalized_challenges
     detail_lesson['curriculumAlignment'] = lesson.get('curriculumAlignment') or []
 
     return detail_lesson
@@ -106,15 +144,50 @@ def home():
 @app.route('/lessons')
 def lesson_library():
     """Lesson library page"""
-    search_query = request.args.get('search', '').lower()
-    
-    filtered_lessons = lessons
+    search_query = request.args.get('search', '').strip().lower()
+    selected_track = request.args.get('track', 'all').strip().lower()
+    valid_tracks = {'all', 'primary', 'highschool', 'tv'}
+
+    if selected_track not in valid_tracks:
+        selected_track = 'all'
+
+    def lesson_number(lesson):
+        lesson_id = lesson.get('id', '')
+        if not lesson_id.startswith('lesson-'):
+            return None
+        try:
+            return int(lesson_id.split('-', 1)[1])
+        except (TypeError, ValueError):
+            return None
+
+    filtered_lessons = list(lessons)
+
+    if selected_track == 'primary':
+        filtered_lessons = [
+            lesson for lesson in filtered_lessons
+            if (lesson_number(lesson) or 0) <= 8
+        ]
+    elif selected_track == 'highschool':
+        filtered_lessons = [
+            lesson for lesson in filtered_lessons
+            if (lesson_number(lesson) or 0) >= 9
+        ]
+    elif selected_track == 'tv':
+        filtered_lessons = []
+
     if search_query:
-        filtered_lessons = [l for l in lessons 
-                           if search_query in l['title'].lower() 
-                           or search_query in l['description'].lower()]
-    
-    return render_template('lessons/library.html', lessons=filtered_lessons, search_query=request.args.get('search', ''))
+        filtered_lessons = [
+            lesson for lesson in filtered_lessons
+            if search_query in lesson.get('title', '').lower()
+            or search_query in lesson.get('description', '').lower()
+        ]
+
+    return render_template(
+        'lessons/library.html',
+        lessons=filtered_lessons,
+        search_query=request.args.get('search', ''),
+        selected_track=selected_track
+    )
 
 @app.route('/lessons/<lesson_id>')
 def lesson_detail(lesson_id):
@@ -129,6 +202,66 @@ def lesson_detail(lesson_id):
 
     lesson_detail_data = normalize_lesson_detail(lesson)
     return render_template('lessons/detail.html', lesson=lesson_detail_data)
+
+
+@app.route('/lessons/<lesson_id>/exercises/<exercise_id>')
+def lesson_exercise_present(lesson_id, exercise_id):
+    """Big-screen exercise presentation view for in-class use."""
+    lesson = next((l for l in lessons if l['id'] == lesson_id), None)
+
+    if not lesson:
+        return "Lesson not found", 404
+
+    lesson_detail_data = normalize_lesson_detail(lesson)
+    exercises = lesson_detail_data.get('studentExercises') or []
+    exercise = next((e for e in exercises if e.get('id') == exercise_id), None)
+
+    if not exercise:
+        return "Exercise not found", 404
+
+    exercise_index = next((i for i, e in enumerate(exercises) if e.get('id') == exercise_id), 0)
+    previous_exercise_id = exercises[exercise_index - 1]['id'] if exercise_index > 0 else None
+    next_exercise_id = exercises[exercise_index + 1]['id'] if exercise_index < len(exercises) - 1 else None
+
+    return render_template(
+        'lessons/exercise_present.html',
+        lesson=lesson_detail_data,
+        exercise=exercise,
+        exercise_index=exercise_index,
+        exercise_count=len(exercises),
+        previous_exercise_id=previous_exercise_id,
+        next_exercise_id=next_exercise_id
+    )
+
+
+@app.route('/lessons/<lesson_id>/challenges/<challenge_id>')
+def lesson_challenge_present(lesson_id, challenge_id):
+    """Big-screen challenge presentation view for in-class use."""
+    lesson = next((l for l in lessons if l['id'] == lesson_id), None)
+
+    if not lesson:
+        return "Lesson not found", 404
+
+    lesson_detail_data = normalize_lesson_detail(lesson)
+    challenges = lesson_detail_data.get('studentChallenges') or []
+    challenge = next((c for c in challenges if c.get('id') == challenge_id), None)
+
+    if not challenge:
+        return "Challenge not found", 404
+
+    challenge_index = next((i for i, c in enumerate(challenges) if c.get('id') == challenge_id), 0)
+    previous_challenge_id = challenges[challenge_index - 1]['id'] if challenge_index > 0 else None
+    next_challenge_id = challenges[challenge_index + 1]['id'] if challenge_index < len(challenges) - 1 else None
+
+    return render_template(
+        'lessons/challenge_present.html',
+        lesson=lesson_detail_data,
+        challenge=challenge,
+        challenge_index=challenge_index,
+        challenge_count=len(challenges),
+        previous_challenge_id=previous_challenge_id,
+        next_challenge_id=next_challenge_id
+    )
 
 @app.route('/classes')
 def class_overview():
