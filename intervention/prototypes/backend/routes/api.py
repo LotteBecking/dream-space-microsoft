@@ -291,19 +291,25 @@ def list_achievements():
 @api_bp.route('/next-id/<entity>', methods=['GET'])
 def next_id(entity):
     """Return the next available ID for an entity type.
-    Supported entities: class, assign."""
+    Supported entities: class, assign, student."""
     from database import get_db
     db = get_db()
     if entity == 'class':
         row = db.execute(
-            "SELECT class_id FROM classes ORDER BY class_id DESC LIMIT 1"
+            "SELECT class_id FROM classes ORDER BY LENGTH(class_id) DESC, class_id DESC LIMIT 1"
         ).fetchone()
         n = int(row['class_id'].split('-')[1]) + 1 if row else 1
         return jsonify({"nextId": f"class-{n}"})
     if entity == 'assign':
         row = db.execute(
-            "SELECT assignment_id FROM assignments ORDER BY assignment_id DESC LIMIT 1"
+            "SELECT assignment_id FROM assignments ORDER BY LENGTH(assignment_id) DESC, assignment_id DESC LIMIT 1"
         ).fetchone()
         n = int(row['assignment_id'].split('-')[1]) + 1 if row else 1
         return jsonify({"nextId": f"assign-{n}"})
+    if entity == 'student':
+        row = db.execute(
+            "SELECT student_id FROM students ORDER BY LENGTH(student_id) DESC, student_id DESC LIMIT 1"
+        ).fetchone()
+        n = int(row['student_id'].split('-')[1]) + 1 if row else 1
+        return jsonify({"nextId": f"student-{n}"})
     return jsonify({"error": "Unknown entity"}), 400

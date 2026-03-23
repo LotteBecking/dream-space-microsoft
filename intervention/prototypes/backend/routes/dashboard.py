@@ -12,6 +12,19 @@ import config
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
+
+# ── Auth pages ─────────────────────────────────────────────────────
+
+@dashboard_bp.route('/login')
+def login_page():
+    return render_template('login.html')
+
+
+@dashboard_bp.route('/signup')
+def signup_page():
+    return render_template('signup.html')
+
+
 # Lesson JSON files are loaded once at import time; the list is refreshed on
 # each request for simplicity (lessons are small and cached by the OS).
 _lessons = None

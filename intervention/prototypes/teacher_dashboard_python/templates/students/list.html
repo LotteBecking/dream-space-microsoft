@@ -15,19 +15,22 @@
     <!-- Filters -->
     <div class="bg-white rounded-lg p-4 card-shadow">
         <form method="get" class="flex gap-3 flex-wrap">
-            <div class="flex-1 min-w-xs relative">
+            <div class="flex-1 min-w-[200px] relative">
                 <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                 <input 
                     type="text" 
+                    name="search"
+                    id="searchInput"
                     placeholder="Search students..." 
                     class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    value="{{ request.args.get('search', '') }}"
                 >
             </div>
             <select name="class" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
                 <option value="">All Classes</option>
-                <option value="class-1" {% if selected_class == 'class-1' %}selected{% endif %}>Class 4A</option>
-                <option value="class-2" {% if selected_class == 'class-2' %}selected{% endif %}>Class 4B</option>
-                <option value="class-3" {% if selected_class == 'class-3' %}selected{% endif %}>Class 5A</option>
+                {% for cls in classes %}
+                <option value="{{ cls.id }}" {% if selected_class == cls.id %}selected{% endif %}>{{ cls.name }}</option>
+                {% endfor %}
             </select>
             <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
                 Filter
@@ -51,22 +54,22 @@
             <tbody>
                 {% if students %}
                     {% for student in students %}
-                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                    <tr class="border-b border-gray-200 hover:bg-gray-50 student-row">
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center font-semibold text-purple-700">
                                     {{ student.avatar }}
                                 </div>
                                 <div>
-                                    <p class="font-medium text-gray-900">{{ student.name }}</p>
+                                    <p class="font-medium text-gray-900 student-name">{{ student.name }}</p>
+                                    <p class="text-xs text-gray-400">{{ student.studentId }}</p>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-700">
-                            {% if student.classId == 'class-1' %}Class 4A
-                            {% elif student.classId == 'class-2' %}Class 4B
-                            {% elif student.classId == 'class-3' %}Class 5A
-                            {% endif %}
+                            {% for cls in classes %}
+                                {% if cls.id == student.classId %}{{ cls.name }}{% endif %}
+                            {% endfor %}
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">
@@ -80,10 +83,10 @@
                             {{ student.lessonsCompleted }} completed
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-600">
-                            {{ student.lastActivity }}
+                            {{ student.lastActivity or '—' }}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="/students/{{ student.id }}" class="text-purple-600 hover:text-purple-700 font-medium text-sm">
+                            <a href="/students/{{ student.studentId }}" class="text-purple-600 hover:text-purple-700 font-medium text-sm">
                                 View Profile
                             </a>
                         </td>
@@ -101,4 +104,17 @@
         </table>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Client-side search filtering
+document.getElementById('searchInput').addEventListener('input', function() {
+    const q = this.value.toLowerCase();
+    document.querySelectorAll('.student-row').forEach(row => {
+        const name = row.querySelector('.student-name').textContent.toLowerCase();
+        row.style.display = name.includes(q) ? '' : 'none';
+    });
+});
+</script>
 {% endblock %}

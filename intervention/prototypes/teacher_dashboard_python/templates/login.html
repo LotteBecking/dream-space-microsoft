@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login – DreamSpace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-text {
+            background: linear-gradient(to right, #9333ea, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center px-4">
+
+    <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-14 h-14 gradient-bg rounded-xl text-white text-2xl font-bold mb-4">
+                DS
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900">Welcome back</h1>
+            <p class="text-gray-500 mt-2">Sign in to your DreamSpace account</p>
+        </div>
+
+        <!-- Card -->
+        <div class="bg-white rounded-xl p-8 card-shadow">
+            <!-- Error banner (hidden by default) -->
+            <div id="error-banner" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm flex items-center">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span id="error-message"></span>
+            </div>
+
+            <form id="login-form" class="space-y-5">
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email address</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input type="email" id="email" name="email" required autocomplete="email"
+                               class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                               placeholder="you@example.com">
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" id="password" name="password" required autocomplete="current-password"
+                               class="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                               placeholder="••••••••">
+                        <button type="button" onclick="togglePassword('password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" id="login-btn"
+                        class="w-full gradient-bg text-white font-semibold py-2.5 rounded-lg hover:opacity-90 transition flex items-center justify-center">
+                    <span id="login-text">Sign in</span>
+                    <i id="login-spinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="flex items-center my-6">
+                <div class="flex-1 border-t border-gray-200"></div>
+                <span class="px-4 text-sm text-gray-400">or</span>
+                <div class="flex-1 border-t border-gray-200"></div>
+            </div>
+
+            <!-- Role toggle for signup -->
+            <p class="text-center text-sm text-gray-600">
+                Don't have an account?
+                <a href="/signup" class="font-semibold text-purple-600 hover:text-purple-700 transition">Create one</a>
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <p class="text-center text-xs text-gray-400 mt-6">
+            &copy; 2024 DreamSpace. Empowering teachers and inspiring young minds.
+        </p>
+    </div>
+
+    <script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function showError(msg) {
+            const banner = document.getElementById('error-banner');
+            document.getElementById('error-message').textContent = msg;
+            banner.classList.remove('hidden');
+        }
+
+        function hideError() {
+            document.getElementById('error-banner').classList.add('hidden');
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showError('Please fill in all fields.');
+                return;
+            }
+
+            const btn = document.getElementById('login-btn');
+            const text = document.getElementById('login-text');
+            const spinner = document.getElementById('login-spinner');
+            btn.disabled = true;
+            text.textContent = 'Signing in…';
+            spinner.classList.remove('hidden');
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    showError(data.error || 'Login failed.');
+                    return;
+                }
+
+                // Store session
+                localStorage.setItem('ds_token', data.token);
+                localStorage.setItem('ds_role', data.role);
+                localStorage.setItem('ds_name', data.name);
+                if (data.studentId) localStorage.setItem('ds_student_id', data.studentId);
+                if (data.teacherId) localStorage.setItem('ds_teacher_id', data.teacherId);
+
+                // Redirect based on role
+                if (data.role === 'teacher') {
+                    window.location.href = '/';
+                } else {
+                    window.location.href = '/';
+                }
+            } catch (err) {
+                showError('Network error. Please try again.');
+            } finally {
+                btn.disabled = false;
+                text.textContent = 'Sign in';
+                spinner.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -13,6 +13,8 @@ from routes.dashboard import dashboard_bp
 from routes.api import api_bp
 from routes.api_kids import kids_bp
 from routes.api_tracking import tracking_bp
+from routes.api_auth import auth_bp
+from routes.api_progress import progress_bp
 
 
 def create_app():
@@ -35,6 +37,8 @@ def create_app():
     app.register_blueprint(api_bp)
     app.register_blueprint(kids_bp)
     app.register_blueprint(tracking_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(progress_bp)
 
     return app
 
