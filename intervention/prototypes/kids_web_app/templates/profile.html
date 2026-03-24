@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div style="max-width:600px;margin:0 auto;">
+  <div class="mb-24">
+    <h1 style="font-size:1.6rem;font-weight:800;" class="mb-8">👤 My Profile</h1>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="flash flash-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  {% if not edit %}
+  {# ── View mode ──────────────────────────────────────────────── #}
+  <div class="card mb-16">
+    <div class="profile-avatar-big">{{ profile.get('avatar', '🚀') }}</div>
+    <div class="text-center mb-16">
+      <div style="font-size:1.4rem;font-weight:800;">{{ profile.get('name', g.user_name) }}</div>
+      <div class="text-muted" style="font-size:0.875rem;">
+        Age {{ profile.get('age', '—') }}
+        {% if team_name %} · Team {{ team_name }}{% endif %}
+      </div>
+    </div>
+
+    <div class="grid grid-3 mb-24" style="gap:10px;">
+      <div class="stat-card">
+        <span class="stat-icon">⭐</span>
+        <span class="stat-value text-yellow">{{ stats.get('totalPoints', 0) }}</span>
+        <span class="stat-label">Points</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🔥</span>
+        <span class="stat-value text-purple">{{ stats.get('streak', 0) }}</span>
+        <span class="stat-label">Streak</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🎯</span>
+        <span class="stat-value text-green">{{ stats.get('accuracy', 0) }}%</span>
+        <span class="stat-label">Accuracy</span>
+      </div>
+    </div>
+
+    <a href="{{ url_for('profile.index', edit='1') }}" class="btn btn-primary btn-full">
+      ✏️ Edit Profile
+    </a>
+  </div>
+
+  {% else %}
+  {# ── Edit mode ──────────────────────────────────────────────── #}
+  <div class="card">
+    <div class="card-title mb-16">Edit Profile</div>
+    <form method="post" action="{{ url_for('profile.index') }}">
+
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input class="form-input" type="text" name="name"
+               value="{{ profile.get('name', g.user_name) }}" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Age</label>
+        <input class="form-input" type="number" name="age" min="6" max="20"
+               value="{{ profile.get('age', '') }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Avatar</label>
+        <div class="avatar-grid" id="avatar-grid">
+          {% for emoji in avatars %}
+          <div class="avatar-option {% if emoji == profile.get('avatar', '🚀') %}selected{% endif %}"
+               data-emoji="{{ emoji }}" onclick="pickAvatar(this)">{{ emoji }}</div>
+          {% endfor %}
+        </div>
+        <input type="hidden" name="avatar" id="avatar-input" value="{{ profile.get('avatar', '🚀') }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Team</label>
+        <select class="form-select" name="team_id">
+          <option value="">— No team —</option>
+          {% for team in teams %}
+          <option value="{{ team.id }}" {% if team.id == profile.get('teamId') %}selected{% endif %}>
+            {{ team.name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="flex gap-12">
+        <a href="{{ url_for('profile.index') }}" class="btn btn-secondary" style="flex:1;">Cancel</a>
+        <button type="submit" class="btn btn-primary" style="flex:2;">Save Changes</button>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+
+</div>
+
+<script>
+function pickAvatar(el) {
+  document.querySelectorAll('.avatar-option').forEach(function(e){ e.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('avatar-input').value = el.dataset.emoji;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Lessons{% endblock %}
+
+{% block content %}
+<div class="mb-24">
+  <h1 style="font-size:1.6rem;font-weight:800;" class="mb-8">📚 Lessons</h1>
+  <p class="text-muted">16 hands-on coding lessons — from algorithms to AI</p>
+</div>
+
+{% set lesson_icons = ['🥪','🔁','🔀','📦','🤖','🔐','🏗️','⚖️','📱','🛡️','🌍','🧩','🏥','💳','📊','🌟'] %}
+
+<div class="grid grid-3" style="gap:var(--gap);">
+  {% for lesson in lessons %}
+  <a href="{{ url_for('lessons.detail', lesson_id=lesson.id) }}"
+     class="lesson-card {% if lesson.done %}done{% endif %}">
+    <div class="lesson-thumb">
+      {{ lesson_icons[loop.index0 % lesson_icons | length] }}
+      {% if lesson.done %}
+      <div class="lesson-done-badge">✓ Done</div>
+      {% endif %}
+    </div>
+    <div class="lesson-body">
+      <div class="flex items-center gap-8 mb-4">
+        <span class="badge badge-{{ lesson.levelColor }}">{{ lesson.level }}</span>
+        <span style="font-size:0.7rem;color:var(--text-muted);">Lesson {{ loop.index }}</span>
+      </div>
+      <div class="lesson-title">{{ lesson.title }}</div>
+    </div>
+  </a>
+  {% else %}
+  <div class="card text-center" style="grid-column:1/-1;padding:40px;">
+    <div style="font-size:3rem;margin-bottom:12px;">📚</div>
+    <div class="font-bold mb-8">No lessons found</div>
+    <div class="text-muted" style="font-size:0.85rem;">
+      Check that the lesson JSON files exist in the teacher_dashboard_python folder.
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

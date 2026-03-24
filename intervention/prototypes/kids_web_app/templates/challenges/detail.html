@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}{{ challenge.title }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('challenges.list_challenges') }}" class="btn btn-secondary btn-sm mb-16">← Back</a>
+
+<div style="max-width:680px;margin:0 auto;">
+  <div class="card mb-16">
+    {# Header #}
+    <div class="flex items-center gap-12 mb-16">
+      <span style="font-size:2.5rem;">{{ challenge.categoryEmoji }}</span>
+      <div>
+        <h1 style="font-size:1.3rem;font-weight:800;">{{ challenge.title }}</h1>
+        <div class="flex items-center gap-8 mt-4">
+          <span class="badge badge-{{ challenge.difficultyColor }}">{{ challenge.difficulty | title }}</span>
+          <span class="challenge-points">⭐ {{ challenge.points }} pts</span>
+          <span class="text-muted" style="font-size:0.8rem;">{{ challenge.category }}</span>
+        </div>
+      </div>
+    </div>
+
+    {# Question #}
+    <div style="font-size:1.05rem;font-weight:600;background:var(--surface);padding:16px;border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:20px;">
+      {{ challenge.question }}
+    </div>
+
+    {# Options #}
+    {% if already_done %}
+    <div class="flash flash-success mb-16">✓ You already completed this challenge!</div>
+    {% endif %}
+
+    <div id="options" style="display:flex;flex-direction:column;gap:10px;">
+      {% for option in challenge.options %}
+      <button class="option-btn" data-index="{{ loop.index0 }}"
+              {% if already_done %}disabled{% endif %}
+              onclick="submitAnswer({{ loop.index0 }})">
+        <span style="font-weight:700;margin-right:10px;color:var(--text-muted);">
+          {{ ['A','B','C','D'][loop.index0] }}.
+        </span>
+        {{ option }}
+      </button>
+      {% endfor %}
+    </div>
+
+    {# Result area (hidden initially) #}
+    <div id="result" style="display:none;margin-top:20px;">
+      <div id="result-banner" style="padding:16px;border-radius:var(--radius-sm);font-weight:700;margin-bottom:12px;"></div>
+      <div id="explanation" style="font-size:0.875rem;color:var(--text-muted);padding:12px;background:var(--surface);border-radius:var(--radius-sm);"></div>
+      <div class="flex items-center gap-12 mt-16">
+        <a href="{{ url_for('challenges.list_challenges') }}" class="btn btn-secondary btn-sm">← All Challenges</a>
+        <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary btn-sm">🏠 Dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var CORRECT = {{ challenge.correctAnswer }};
+var EXPLANATION = {{ challenge.explanation | tojson }};
+var CHALLENGE_ID = {{ challenge.id | tojson }};
+var POINTS = {{ challenge.points }};
+var answered = {% if already_done %}true{% else %}false{% endif %};
+
+function submitAnswer(index) {
+  if (answered) return;
+  answered = true;
+
+  var correct = (index === CORRECT);
+  var buttons = document.querySelectorAll('.option-btn');
+  buttons.forEach(function(btn, i) {
+    btn.disabled = true;
+    if (i === CORRECT) btn.classList.add('correct');
+    else if (i === index && !correct) btn.classList.add('wrong');
+  });
+
+  // Post to backend
+  fetch('/challenges/' + CHALLENGE_ID + '/complete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ correct: correct }),
+  });
+
+  // Show result
+  var banner = document.getElementById('result-banner');
+  if (correct) {
+    banner.style.background = 'rgba(76,175,80,0.15)';
+    banner.style.color = '#4CAF50';
+    banner.style.border = '1px solid rgba(76,175,80,0.3)';
+    banner.textContent = '🎉 Correct! You earned ' + POINTS + ' points!';
+  } else {
+    banner.style.background = 'rgba(244,67,54,0.15)';
+    banner.style.color = '#F44336';
+    banner.style.border = '1px solid rgba(244,67,54,0.3)';
+    banner.textContent = '❌ Not quite — but you\'re learning!';
+  }
+  document.getElementById('explanation').textContent = '💡 ' + EXPLANATION;
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+{% endblock %}

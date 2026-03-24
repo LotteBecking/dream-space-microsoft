@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+
+  {# ── Left column ───────────────────────────────────────────────── #}
+  <div style="display:flex;flex-direction:column;gap:var(--gap);">
+
+    {# Welcome card #}
+    <div class="welcome-card gradient-brand">
+      <div class="welcome-avatar">{{ g.user_avatar }}</div>
+      <div class="welcome-name">Hey, {{ g.user_name }}! 👋</div>
+      <div class="welcome-sub">Ready to code something awesome today?</div>
+      <div class="welcome-chips">
+        <span class="welcome-chip">🔥 {{ stats.get('streak', 0) }} day streak</span>
+        <span class="welcome-chip">⭐ {{ stats.get('totalPoints', 0) }} points</span>
+        {% if team_rank > 0 %}
+        <span class="welcome-chip">🏆 Rank #{{ team_rank }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    {# News carousel #}
+    <div class="card" style="padding:0;">
+      <div style="padding:14px 16px 8px;font-weight:700;font-size:0.9rem;">📰 Tech News</div>
+      <div class="carousel-container">
+        <div class="carousel-track"></div>
+        <button class="carousel-btn carousel-btn-prev" aria-label="Previous">‹</button>
+        <button class="carousel-btn carousel-btn-next" aria-label="Next">›</button>
+        <div class="carousel-dots"></div>
+      </div>
+    </div>
+
+    {# Daily challenge card #}
+    {% if daily and not daily.get('error') %}
+    <div class="card">
+      <div class="card-header">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="card-title">⚡ Daily Challenge</div>
+            <div class="card-subtitle">New challenge every day</div>
+          </div>
+          <span class="badge badge-{{ {'beginner':'green','intermediate':'yellow','advanced':'red'}.get(daily.get('difficulty',''),'gray') }}">
+            {{ daily.get('difficulty', '') | title }}
+          </span>
+        </div>
+      </div>
+      <div style="font-weight:700;font-size:1rem;margin-bottom:6px;">{{ daily.get('title', '') }}</div>
+      <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:14px;">{{ daily.get('description', '') }}</div>
+      <div class="flex items-center justify-between">
+        <span class="challenge-points">⭐ {{ daily.get('points', 0) }} pts</span>
+        <a href="{{ url_for('challenges.detail', challenge_id=daily.get('id','')) }}"
+           class="btn btn-primary btn-sm">Try it →</a>
+      </div>
+    </div>
+    {% endif %}
+
+    {# Quick actions #}
+    <div class="card">
+      <div class="card-title mb-16">Quick Actions</div>
+      <div class="quick-actions">
+        <a href="{{ url_for('challenges.list_challenges') }}" class="quick-action">
+          <span class="quick-action-icon">🎯</span>
+          <span class="quick-action-label">Challenges</span>
+        </a>
+        <a href="{{ url_for('lessons.list_lessons') }}" class="quick-action">
+          <span class="quick-action-icon">📚</span>
+          <span class="quick-action-label">Lessons</span>
+        </a>
+        <a href="{{ url_for('progress.index') }}" class="quick-action">
+          <span class="quick-action-icon">📈</span>
+          <span class="quick-action-label">My Progress</span>
+        </a>
+        <a href="{{ url_for('teams.index') }}" class="quick-action">
+          <span class="quick-action-icon">🏆</span>
+          <span class="quick-action-label">Leaderboard</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {# ── Right column ──────────────────────────────────────────────── #}
+  <div style="display:flex;flex-direction:column;gap:var(--gap);">
+
+    {# Stats #}
+    <div class="card">
+      <div class="card-title mb-16">Your Stats</div>
+      <div class="grid grid-2" style="gap:10px;">
+        <div class="stat-card">
+          <span class="stat-icon">⭐</span>
+          <span class="stat-value text-yellow">{{ stats.get('totalPoints', 0) }}</span>
+          <span class="stat-label">Points</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🔥</span>
+          <span class="stat-value text-purple">{{ stats.get('streak', 0) }}</span>
+          <span class="stat-label">Day Streak</span>
+        </div>
+        <div class="stat-card" style="grid-column:1/-1;">
+          <span class="stat-icon">🎯</span>
+          <span class="stat-value text-green">{{ stats.get('accuracy', 0) }}%</span>
+          <span class="stat-label">Accuracy</span>
+        </div>
+      </div>
+    </div>
+
+    {# Team card #}
+    {% if team and not team.get('error') %}
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">{{ team.get('name', 'Your Team') }}</div>
+        {% if team_rank > 0 %}
+        <div class="card-subtitle">Rank #{{ team_rank }} on the leaderboard</div>
+        {% endif %}
+      </div>
+
+      <div class="flex items-center justify-between mb-8">
+        <span style="font-size:0.85rem;color:var(--text-muted);">Team points</span>
+        <span class="font-bold text-purple">{{ team.get('totalPoints', 0) }}</span>
+      </div>
+
+      {% if team_rank > 0 %}
+      {% set total_teams = 3 %}
+      <div class="progress-bar mb-16">
+        <div class="progress-fill" style="width:{{ ((total_teams - team_rank + 1) / total_teams * 100) | int }}%;"></div>
+      </div>
+      {% endif %}
+
+      <div style="font-size:0.8rem;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">
+        Top Members
+      </div>
+      {% set members = team.get('members', []) %}
+      {% for member in members[:4] %}
+      <div class="flex items-center gap-8" style="padding:6px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:1.2rem;">{{ member.get('avatar', '👤') }}</span>
+        <span style="flex:1;font-size:0.85rem;font-weight:600;">{{ member.get('name', '') }}</span>
+        <span style="font-size:0.85rem;font-weight:700;color:var(--purple);">{{ member.get('points', 0) }}</span>
+      </div>
+      {% endfor %}
+
+      <a href="{{ url_for('teams.index') }}" class="btn btn-outline btn-sm btn-full mt-12">
+        View Leaderboard →
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
+{% endblock %}
