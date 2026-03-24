@@ -15,3 +15,6 @@ LESSON_DIR = BASE_DIR.parent / "teacher_dashboard_python" / "data" / "lesson_con
 
 # Optional: NewsAPI key (fallback source for tech news)
 NEWSAPI_KEY = os.environ.get("NEWSAPI_KEY", "")
+
+# Dev flag: set to True to skip onboarding redirect and always show the dashboard
+SKIP_ONBOARDING = os.environ.get("SKIP_ONBOARDING", "true").lower() == "true"

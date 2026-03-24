@@ -2,28 +2,29 @@
 {% block title %}{{ lesson.title }}{% endblock %}
 
 {% block content %}
-<a href="{{ url_for('lessons.list_lessons') }}" class="btn btn-secondary btn-sm mb-16">← All Lessons</a>
+<a href="{{ url_for('lessons.list_lessons') }}" class="btn btn-secondary btn-sm mb-4 inline-flex">← All Lessons</a>
 
 {# Hero #}
-<div class="lesson-hero gradient-brand mb-24">
-  <div class="flex items-center gap-12 mb-12 flex-wrap">
+<div class="welcome-card gradient-brand mb-6">
+  <div class="flex items-center gap-2 mb-3 flex-wrap">
     <span class="badge" style="background:rgba(255,255,255,0.2);color:#fff;">{{ lesson.level }}</span>
-    <span style="font-size:0.85rem;opacity:0.8;">{{ lesson.ageGroup }}</span>
-    <span style="font-size:0.85rem;opacity:0.8;">⏱ {{ lesson.duration }} min</span>
+    <span class="text-sm opacity-80">{{ lesson.ageGroup }}</span>
+    <span class="text-sm opacity-80">⏱ {{ lesson.duration }} min</span>
   </div>
-  <h1 style="font-size:1.5rem;font-weight:800;line-height:1.3;margin-bottom:12px;">{{ lesson.title }}</h1>
-  <p style="opacity:0.85;font-size:0.9rem;">{{ lesson.description }}</p>
+  <h1 class="text-xl font-extrabold leading-snug mb-2">{{ lesson.title }}</h1>
+  <p class="text-sm opacity-85">{{ lesson.description }}</p>
 </div>
 
-<div class="grid grid-2" style="gap:var(--gap);align-items:start;">
-  <div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+  <div class="flex flex-col gap-4">
+
     {# Learning objectives #}
     {% if lesson.learningObjectives %}
-    <div class="card mb-16">
-      <div class="card-title mb-12">🎯 What You'll Learn</div>
+    <div class="card">
+      <div class="font-bold text-base mb-3">🎯 What You'll Learn</div>
       <ul class="instruction-list">
         {% for obj in lesson.learningObjectives %}
-        <li style="font-size:0.875rem;padding:4px 0;">{{ obj }}</li>
+        <li class="text-sm py-1">{{ obj }}</li>
         {% endfor %}
       </ul>
     </div>
@@ -31,34 +32,30 @@
 
     {# Student Exercises #}
     {% if lesson.studentExercises %}
-    <div class="mb-8" style="font-size:1rem;font-weight:800;">📝 Exercises</div>
+    <div class="font-extrabold text-base">📝 Exercises</div>
     {% for ex in lesson.studentExercises %}
     <div class="exercise-card">
-      <div class="flex items-center gap-8 mb-8">
-        <div class="exercise-title" style="flex:1;">{{ ex.title }}</div>
-        <span class="badge badge-{{ {'Easy':'green','Medium':'yellow','Hard':'red'}.get(ex.difficulty,'gray') }}">
-          {{ ex.difficulty }}
-        </span>
-        <span style="font-size:0.75rem;color:var(--text-muted);">{{ ex.durationMinutes }} min</span>
+      <div class="flex items-center gap-2 mb-2 flex-wrap">
+        <div class="font-bold text-sm flex-1">{{ ex.title }}</div>
+        <span class="badge badge-{{ {'Easy':'green','Medium':'yellow','Hard':'red'}.get(ex.difficulty,'gray') }}">{{ ex.difficulty }}</span>
+        <span class="text-xs" style="color:var(--text-muted)">{{ ex.durationMinutes }} min</span>
       </div>
-      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px;">{{ ex.description }}</p>
+      <p class="text-sm mb-3" style="color:var(--text-muted)">{{ ex.description }}</p>
 
       {% if ex.instructions %}
-      <div style="font-size:0.8rem;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;">Steps</div>
-      <ul class="instruction-list" style="font-size:0.85rem;">
+      <div class="text-xs font-bold mb-1.5 uppercase tracking-wide">Steps</div>
+      <ul class="instruction-list text-sm">
         {% for step in ex.instructions %}
-        <li style="padding:3px 0;">{{ step }}</li>
+        <li class="py-0.5">{{ step }}</li>
         {% endfor %}
       </ul>
       {% endif %}
 
       {% if ex.successCriteria %}
-      <div style="font-size:0.8rem;font-weight:700;margin-top:10px;margin-bottom:6px;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">
-        Success Criteria
-      </div>
-      <div class="criteria-list">
+      <div class="text-xs font-bold mt-2.5 mb-1.5 uppercase tracking-wide" style="color:#4CAF50">Success Criteria</div>
+      <div class="flex flex-col gap-1">
         {% for c in ex.successCriteria %}
-        <div class="criteria-item">{{ c }}</div>
+        <div class="criteria-item text-sm">{{ c }}</div>
         {% endfor %}
       </div>
       {% endif %}
@@ -67,24 +64,22 @@
     {% endif %}
   </div>
 
-  <div>
+  <div class="flex flex-col gap-4">
+
     {# Student Challenges #}
     {% if lesson.studentChallenges %}
-    <div class="mb-8" style="font-size:1rem;font-weight:800;">🏆 Challenges</div>
+    <div class="font-extrabold text-base">🏆 Challenges</div>
     {% for ch in lesson.studentChallenges %}
-    <div class="exercise-card" style="border-left:3px solid var(--pink);">
-      <div class="flex items-center gap-8 mb-8">
-        <div class="exercise-title" style="flex:1;">{{ ch.title }}</div>
-        <span class="badge badge-{{ {'Easy':'green','Medium':'yellow','Hard':'red'}.get(ch.difficulty,'gray') }}">
-          {{ ch.difficulty }}
-        </span>
+    <div class="exercise-card" style="border-left:3px solid #E91E8C;">
+      <div class="flex items-center gap-2 mb-2 flex-wrap">
+        <div class="font-bold text-sm flex-1">{{ ch.title }}</div>
+        <span class="badge badge-{{ {'Easy':'green','Medium':'yellow','Hard':'red'}.get(ch.difficulty,'gray') }}">{{ ch.difficulty }}</span>
       </div>
-      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px;">{{ ch.description }}</p>
-
+      <p class="text-sm mb-3" style="color:var(--text-muted)">{{ ch.description }}</p>
       {% if ch.instructions %}
-      <ul class="instruction-list" style="font-size:0.85rem;">
+      <ul class="instruction-list text-sm">
         {% for step in ch.instructions %}
-        <li style="padding:3px 0;">{{ step }}</li>
+        <li class="py-0.5">{{ step }}</li>
         {% endfor %}
       </ul>
       {% endif %}
@@ -94,9 +89,9 @@
 
     {# Materials #}
     {% if lesson.materials %}
-    <div class="card" style="background:var(--surface);border-style:dashed;">
-      <div class="card-title mb-10">🎒 Materials Needed</div>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:4px;font-size:0.85rem;color:var(--text-muted);">
+    <div class="card" style="border-style:dashed;">
+      <div class="font-bold text-base mb-2">🎒 Materials Needed</div>
+      <ul class="flex flex-col gap-1 text-sm" style="color:var(--text-muted)">
         {% for m in lesson.materials %}
         <li>• {{ m }}</li>
         {% endfor %}
@@ -105,14 +100,14 @@
     {% endif %}
 
     {# Mark complete #}
-    <div class="card mt-16 text-center">
+    <div class="card text-center">
       {% if lesson.done %}
-      <div style="font-size:2rem;margin-bottom:8px;">🎉</div>
-      <div class="font-bold mb-4">Lesson Completed!</div>
-      <div class="text-muted" style="font-size:0.85rem;">Great work, coder!</div>
+      <div class="text-4xl mb-2">🎉</div>
+      <div class="font-bold mb-1">Lesson Completed!</div>
+      <div class="text-sm" style="color:var(--text-muted)">Great work, coder!</div>
       {% else %}
-      <div style="font-size:2rem;margin-bottom:8px;">📖</div>
-      <div class="font-bold mb-8">Finished this lesson?</div>
+      <div class="text-4xl mb-2">📖</div>
+      <div class="font-bold mb-2">Finished this lesson?</div>
       <form method="post" action="{{ url_for('lessons.complete', lesson_id=lesson.id) }}">
         <button type="submit" class="btn btn-primary btn-full">Mark as Complete ✓</button>
       </form>

@@ -2,13 +2,13 @@
 {% block title %}Classes{% endblock %}
 
 {% block content %}
-<div class="mb-24">
-  <h1 style="font-size:1.6rem;font-weight:800;" class="mb-8">🏆 Class Competition</h1>
-  <p class="text-muted">Complete challenges to earn points for your class!</p>
+<div class="mb-6">
+  <h1 class="text-2xl font-extrabold mb-1">🏆 Class Competition</h1>
+  <p class="text-sm" style="color:var(--text-muted)">Complete challenges to earn points for your class!</p>
 </div>
 
 {# Tab bar #}
-<div class="filter-tabs mb-16">
+<div class="flex flex-wrap gap-2 mb-6">
   <a href="{{ url_for('teams.index', tab='classes') }}"
      class="filter-tab {% if tab == 'classes' %}active{% endif %}">🏫 Classes</a>
   <a href="{{ url_for('teams.index', tab='coders') }}"
@@ -19,25 +19,25 @@
 
   {# User's own class card #}
   {% if user_class and not user_class.get('error') %}
-  <div class="card mb-16" style="border:2px solid var(--purple);">
-    <div class="flex items-center justify-between mb-12">
+  <div class="card mb-4" style="border:2px solid #7B4FA6;">
+    <div class="flex items-start justify-between mb-3">
       <div>
-        <div style="font-size:0.75rem;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Your Class</div>
-        <div style="font-size:1.1rem;font-weight:800;">{{ user_class.get('name', 'Your Class') }}</div>
+        <div class="text-xs font-bold uppercase tracking-widest mb-0.5" style="color:#7B4FA6">Your Class</div>
+        <div class="text-lg font-extrabold">{{ user_class.get('name', 'Your Class') }}</div>
         {% if user_class_rank > 0 %}
-        <div style="font-size:0.8rem;color:var(--text-muted);">Rank #{{ user_class_rank }} on the leaderboard</div>
+        <div class="text-xs mt-0.5" style="color:var(--text-muted)">Rank #{{ user_class_rank }} on the leaderboard</div>
         {% endif %}
       </div>
-      <div style="font-size:1.6rem;font-weight:800;color:var(--purple);">{{ user_class.get('totalPoints', 0) }}</div>
+      <div class="text-2xl font-extrabold" style="color:#7B4FA6">{{ user_class.get('totalPoints', 0) }}</div>
     </div>
     {% set members = user_class.get('members', []) %}
     {% if members %}
-    <div style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Members</div>
+    <div class="text-xs font-bold uppercase tracking-wide mb-1.5" style="color:var(--text-muted)">Members</div>
     {% for m in members[:4] %}
-    <div class="flex items-center gap-8" style="padding:5px 0;border-bottom:1px solid var(--border);">
-      <span>{{ m.get('avatar', '👤') }}</span>
-      <span style="flex:1;font-size:0.85rem;font-weight:600;">{{ m.get('name', '') }}</span>
-      <span style="font-size:0.85rem;font-weight:700;color:var(--purple);">{{ m.get('points', 0) }}</span>
+    <div class="flex items-center gap-2 py-1.5 border-b last:border-0" style="border-color:var(--border)">
+      <span class="text-xl">{{ m.get('avatar', '👤') }}</span>
+      <span class="flex-1 text-sm font-semibold">{{ m.get('name', '') }}</span>
+      <span class="text-sm font-bold" style="color:#7B4FA6">{{ m.get('points', 0) }}</span>
     </div>
     {% endfor %}
     {% endif %}
@@ -48,30 +48,30 @@
   {% for cls in class_rankings %}
   {% set rank = loop.index %}
   <div class="rank-row">
-    <div class="rank-icon">
+    <div class="w-8 text-center font-bold text-lg shrink-0">
       {% if rank == 1 %}👑{% elif rank == 2 %}🥈{% elif rank == 3 %}🥉{% else %}{{ rank }}{% endif %}
     </div>
-    <div style="flex:1;">
-      <div style="font-weight:700;font-size:0.95rem;">{{ cls.get('name', 'Class') }}</div>
-      <div style="font-size:0.78rem;color:var(--text-muted);">
+    <div class="flex-1 min-w-0">
+      <div class="font-bold text-sm">{{ cls.get('name', 'Class') }}</div>
+      <div class="text-xs" style="color:var(--text-muted)">
         {{ cls.get('members', [])|length }} members
         · {{ (cls.get('totalPoints', 0) / [cls.get('members', [])|length, 1]|max) | int }} avg pts
       </div>
     </div>
-    <div style="font-size:1.1rem;font-weight:800;color:var(--purple);">{{ cls.get('totalPoints', 0) }}</div>
+    <div class="text-lg font-extrabold shrink-0" style="color:#7B4FA6">{{ cls.get('totalPoints', 0) }}</div>
   </div>
   {% else %}
-  <div class="card text-center" style="padding:40px;">
-    <div style="font-size:3rem;margin-bottom:12px;">🏫</div>
+  <div class="card text-center py-10">
+    <div class="text-5xl mb-3">🏫</div>
     <div class="font-bold">No classes yet</div>
-    <div class="text-muted" style="font-size:0.85rem;margin-top:6px;">Enter your class code during onboarding to appear here.</div>
+    <div class="text-sm mt-1.5" style="color:var(--text-muted)">Enter your class code during onboarding to appear here.</div>
   </div>
   {% endfor %}
 
   {# How it works #}
-  <div class="card mt-16">
-    <div class="card-title mb-10">💡 How Competition Works</div>
-    <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:0.875rem;color:var(--text-muted);">
+  <div class="card mt-4">
+    <div class="font-bold text-base mb-2">💡 How Competition Works</div>
+    <ul class="flex flex-col gap-2 text-sm" style="color:var(--text-muted)">
       <li>• Complete daily challenges to earn points for you and your class</li>
       <li>• Class score is the sum of all member points</li>
       <li>• Rankings update as challenges are completed</li>
@@ -85,24 +85,23 @@
   {% for member in member_rankings %}
   {% set rank = loop.index %}
   <div class="rank-row">
-    <div class="rank-icon">
+    <div class="w-8 text-center font-bold text-lg shrink-0">
       {% if rank == 1 %}👑{% elif rank == 2 %}🥈{% elif rank == 3 %}🥉{% else %}{{ rank }}{% endif %}
     </div>
-    <div style="font-size:1.4rem;">{{ member.get('avatar', '👤') }}</div>
-    <div style="flex:1;">
-      <div style="font-weight:700;font-size:0.95rem;">{{ member.get('name', '') }}</div>
-      <div style="font-size:0.78rem;color:var(--text-muted);">{{ member.get('teamName', '') }}</div>
+    <div class="text-2xl shrink-0">{{ member.get('avatar', '👤') }}</div>
+    <div class="flex-1 min-w-0">
+      <div class="font-bold text-sm">{{ member.get('name', '') }}</div>
+      <div class="text-xs" style="color:var(--text-muted)">{{ member.get('teamName', '') }}</div>
     </div>
-    <div style="font-size:1.1rem;font-weight:800;color:var(--purple);">{{ member.get('points', 0) }}</div>
+    <div class="text-lg font-extrabold shrink-0" style="color:#7B4FA6">{{ member.get('points', 0) }}</div>
   </div>
   {% else %}
-  <div class="card text-center" style="padding:40px;">
-    <div style="font-size:3rem;margin-bottom:12px;">👑</div>
+  <div class="card text-center py-10">
+    <div class="text-5xl mb-3">👑</div>
     <div class="font-bold">No coders yet</div>
-    <div class="text-muted" style="font-size:0.85rem;margin-top:6px;">Complete challenges to appear on the leaderboard.</div>
+    <div class="text-sm mt-1.5" style="color:var(--text-muted)">Complete challenges to appear on the leaderboard.</div>
   </div>
   {% endfor %}
 
 {% endif %}
-
 {% endblock %}

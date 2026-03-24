@@ -2,51 +2,45 @@
 {% block title %}{{ challenge.title }}{% endblock %}
 
 {% block content %}
-<a href="{{ url_for('challenges.list_challenges') }}" class="btn btn-secondary btn-sm mb-16">← Back</a>
+<a href="{{ url_for('challenges.list_challenges') }}" class="btn btn-secondary btn-sm mb-4 inline-flex">← Back</a>
 
-<div style="max-width:680px;margin:0 auto;">
-  <div class="card mb-16">
-    {# Header #}
-    <div class="flex items-center gap-12 mb-16">
-      <span style="font-size:2.5rem;">{{ challenge.categoryEmoji }}</span>
+<div class="max-w-2xl mx-auto">
+  <div class="card">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="text-4xl">{{ challenge.categoryEmoji }}</span>
       <div>
-        <h1 style="font-size:1.3rem;font-weight:800;">{{ challenge.title }}</h1>
-        <div class="flex items-center gap-8 mt-4">
+        <h1 class="text-xl font-extrabold">{{ challenge.title }}</h1>
+        <div class="flex items-center gap-2 mt-1 flex-wrap">
           <span class="badge badge-{{ challenge.difficultyColor }}">{{ challenge.difficulty | title }}</span>
-          <span class="challenge-points">⭐ {{ challenge.points }} pts</span>
-          <span class="text-muted" style="font-size:0.8rem;">{{ challenge.category }}</span>
+          <span class="text-xs font-bold" style="color:#FFD700">⭐ {{ challenge.points }} pts</span>
+          <span class="text-xs" style="color:var(--text-muted)">{{ challenge.category }}</span>
         </div>
       </div>
     </div>
 
-    {# Question #}
-    <div style="font-size:1.05rem;font-weight:600;background:var(--surface);padding:16px;border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:20px;">
+    <div class="text-base font-semibold p-4 rounded-lg border mb-5" style="background:var(--surface);border-color:var(--border)">
       {{ challenge.question }}
     </div>
 
-    {# Options #}
     {% if already_done %}
-    <div class="flash flash-success mb-16">✓ You already completed this challenge!</div>
+    <div class="flash flash-success mb-4">✓ You already completed this challenge!</div>
     {% endif %}
 
-    <div id="options" style="display:flex;flex-direction:column;gap:10px;">
+    <div id="options" class="flex flex-col gap-2.5">
       {% for option in challenge.options %}
       <button class="option-btn" data-index="{{ loop.index0 }}"
               {% if already_done %}disabled{% endif %}
               onclick="submitAnswer({{ loop.index0 }})">
-        <span style="font-weight:700;margin-right:10px;color:var(--text-muted);">
-          {{ ['A','B','C','D'][loop.index0] }}.
-        </span>
+        <span class="font-bold mr-2.5" style="color:var(--text-muted)">{{ ['A','B','C','D'][loop.index0] }}.</span>
         {{ option }}
       </button>
       {% endfor %}
     </div>
 
-    {# Result area (hidden initially) #}
-    <div id="result" style="display:none;margin-top:20px;">
-      <div id="result-banner" style="padding:16px;border-radius:var(--radius-sm);font-weight:700;margin-bottom:12px;"></div>
-      <div id="explanation" style="font-size:0.875rem;color:var(--text-muted);padding:12px;background:var(--surface);border-radius:var(--radius-sm);"></div>
-      <div class="flex items-center gap-12 mt-16">
+    <div id="result" class="hidden mt-5">
+      <div id="result-banner" class="p-4 rounded-lg font-bold mb-3"></div>
+      <div id="explanation" class="text-sm p-3 rounded-lg" style="color:var(--text-muted);background:var(--surface)"></div>
+      <div class="flex items-center gap-3 mt-4 flex-wrap">
         <a href="{{ url_for('challenges.list_challenges') }}" class="btn btn-secondary btn-sm">← All Challenges</a>
         <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary btn-sm">🏠 Dashboard</a>
       </div>
@@ -64,37 +58,27 @@ var answered = {% if already_done %}true{% else %}false{% endif %};
 function submitAnswer(index) {
   if (answered) return;
   answered = true;
-
   var correct = (index === CORRECT);
-  var buttons = document.querySelectorAll('.option-btn');
-  buttons.forEach(function(btn, i) {
+  document.querySelectorAll('.option-btn').forEach(function(btn, i) {
     btn.disabled = true;
     if (i === CORRECT) btn.classList.add('correct');
     else if (i === index && !correct) btn.classList.add('wrong');
   });
-
-  // Post to backend
   fetch('/challenges/' + CHALLENGE_ID + '/complete', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ correct: correct }),
   });
-
-  // Show result
   var banner = document.getElementById('result-banner');
   if (correct) {
-    banner.style.background = 'rgba(76,175,80,0.15)';
-    banner.style.color = '#4CAF50';
-    banner.style.border = '1px solid rgba(76,175,80,0.3)';
+    banner.style.cssText = 'background:rgba(76,175,80,0.15);color:#4CAF50;border:1px solid rgba(76,175,80,0.3)';
     banner.textContent = '🎉 Correct! You earned ' + POINTS + ' points!';
   } else {
-    banner.style.background = 'rgba(244,67,54,0.15)';
-    banner.style.color = '#F44336';
-    banner.style.border = '1px solid rgba(244,67,54,0.3)';
+    banner.style.cssText = 'background:rgba(244,67,54,0.15);color:#F44336;border:1px solid rgba(244,67,54,0.3)';
     banner.textContent = '❌ Not quite — but you\'re learning!';
   }
   document.getElementById('explanation').textContent = '💡 ' + EXPLANATION;
-  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').classList.remove('hidden');
   document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 </script>

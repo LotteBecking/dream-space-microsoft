@@ -3,6 +3,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, g
 import services.api_client as api
 from routes.auth import login_required
+import config
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
@@ -19,7 +20,7 @@ def index():
 
     # Redirect to onboarding if no team set (check session fallback for demo mode)
     team_id = profile.get("teamId") or session.get("team_id")
-    if pstatus == 404 or not team_id:
+    if not config.SKIP_ONBOARDING and (pstatus == 404 or not team_id):
         return redirect(url_for("onboarding.index"))
 
     # Fetch user's team details

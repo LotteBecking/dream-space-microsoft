@@ -2,43 +2,42 @@
 {% block title %}Progress{% endblock %}
 
 {% block content %}
-<div class="mb-24">
-  <h1 style="font-size:1.6rem;font-weight:800;" class="mb-8">📈 Your Progress</h1>
-  <p class="text-muted">Track your learning journey</p>
+<div class="mb-6">
+  <h1 class="text-2xl font-extrabold mb-1">📈 Your Progress</h1>
+  <p class="text-sm" style="color:var(--text-muted)">Track your learning journey</p>
 </div>
 
 {# Stats row #}
-<div class="grid grid-4 mb-24" style="gap:10px;">
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
   <div class="stat-card">
-    <span class="stat-icon">⭐</span>
-    <span class="stat-value text-yellow">{{ stats.get('totalPoints', 0) }}</span>
-    <span class="stat-label">Points</span>
+    <span class="text-2xl">⭐</span>
+    <span class="text-xl font-extrabold" style="color:#FFD700">{{ stats.get('totalPoints', 0) }}</span>
+    <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Points</span>
   </div>
   <div class="stat-card">
-    <span class="stat-icon">🔥</span>
-    <span class="stat-value text-purple">{{ stats.get('streak', 0) }}</span>
-    <span class="stat-label">Streak</span>
+    <span class="text-2xl">🔥</span>
+    <span class="text-xl font-extrabold" style="color:#7B4FA6">{{ stats.get('streak', 0) }}</span>
+    <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Streak</span>
   </div>
   <div class="stat-card">
-    <span class="stat-icon">🎯</span>
-    <span class="stat-value text-green">{{ accuracy }}%</span>
-    <span class="stat-label">Accuracy</span>
+    <span class="text-2xl">🎯</span>
+    <span class="text-xl font-extrabold" style="color:#4CAF50">{{ accuracy }}%</span>
+    <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Accuracy</span>
   </div>
   <div class="stat-card">
-    <span class="stat-icon">✅</span>
-    <span class="stat-value">{{ completed_count }}</span>
-    <span class="stat-label">Completed</span>
+    <span class="text-2xl">✅</span>
+    <span class="text-xl font-extrabold">{{ completed_count }}</span>
+    <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Completed</span>
   </div>
 </div>
 
-<div class="grid grid-2" style="gap:var(--gap);align-items:start;">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
 
   {# Left: Weekly chart + Category performance #}
-  <div style="display:flex;flex-direction:column;gap:var(--gap);">
+  <div class="flex flex-col gap-4">
 
-    {# Weekly activity bar chart (rendered via JS) #}
     <div class="card">
-      <div class="card-title mb-16">Weekly Activity</div>
+      <div class="font-bold text-base mb-3">Weekly Activity</div>
       <div class="weekly-chart" id="weekly-chart">
         {% for day in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] %}
         <div class="chart-bar-wrap">
@@ -49,16 +48,15 @@
       </div>
     </div>
 
-    {# Category performance #}
     <div class="card">
-      <div class="card-title mb-16">Category Performance</div>
+      <div class="font-bold text-base mb-3">Category Performance</div>
       {% if category_stats %}
-      <div class="category-row">
+      <div class="flex flex-col gap-3">
         {% for cat, data in category_stats.items() %}
-        <div class="category-item">
-          <div class="category-header">
-            <span class="category-name">{{ data.emoji }} {{ cat }}</span>
-            <span class="category-score">{{ data.correct }}/{{ data.total }} ({{ data.pct }}%)</span>
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold">{{ data.emoji }} {{ cat }}</span>
+            <span class="text-xs font-bold" style="color:var(--text-muted)">{{ data.correct }}/{{ data.total }} ({{ data.pct }}%)</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill" style="width:{{ data.pct }}%;"></div>
@@ -67,51 +65,47 @@
         {% endfor %}
       </div>
       {% else %}
-      <p class="text-muted" style="font-size:0.875rem;">Complete challenges to see your category performance.</p>
+      <p class="text-sm" style="color:var(--text-muted)">Complete challenges to see your category performance.</p>
       {% endif %}
     </div>
   </div>
 
   {# Right: Achievements + Recent history #}
-  <div style="display:flex;flex-direction:column;gap:var(--gap);">
+  <div class="flex flex-col gap-4">
 
-    {# Achievements #}
     <div class="card">
-      <div class="card-title mb-16">🏅 Achievements</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="font-bold text-base mb-3">🏅 Achievements</div>
+      <div class="flex flex-col gap-2">
         {% for a in achievements %}
         <div class="achievement {% if not a.unlocked %}locked{% endif %}">
-          <div class="achievement-icon">{{ a.icon }}</div>
-          <div class="achievement-info">
-            <div class="achievement-title">{{ a.title }}</div>
-            <div class="achievement-desc">{{ a.desc }}</div>
+          <div class="text-2xl">{{ a.icon }}</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-bold">{{ a.title }}</div>
+            <div class="text-xs" style="color:var(--text-muted)">{{ a.desc }}</div>
           </div>
           {% if a.unlocked %}
-          <span class="achievement-badge">Unlocked ✓</span>
+          <span class="badge badge-green shrink-0">Unlocked ✓</span>
           {% endif %}
         </div>
         {% endfor %}
       </div>
     </div>
 
-    {# Challenge history #}
     {% if results %}
     <div class="card">
-      <div class="card-title mb-16">Recent Challenges</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="font-bold text-base mb-3">Recent Challenges</div>
+      <div class="flex flex-col">
         {% for r in results[-10:] | reverse %}
-        <div class="flex items-center gap-12" style="padding:8px 0;border-bottom:1px solid var(--border);">
-          <span style="font-size:1.2rem;">{{ r.categoryEmoji }}</span>
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:0.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-              {{ r.challengeTitle }}
-            </div>
-            <div style="font-size:0.75rem;color:var(--text-muted);">{{ r.category }}</div>
+        <div class="flex items-center gap-3 py-2 border-b last:border-0" style="border-color:var(--border)">
+          <span class="text-xl shrink-0">{{ r.categoryEmoji }}</span>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">{{ r.challengeTitle }}</div>
+            <div class="text-xs" style="color:var(--text-muted)">{{ r.category }}</div>
           </div>
           {% if r.get('correct') %}
-          <span class="badge badge-green">+{{ r.points }}pts</span>
+          <span class="badge badge-green shrink-0">+{{ r.points }}pts</span>
           {% else %}
-          <span class="badge badge-gray">Miss</span>
+          <span class="badge badge-gray shrink-0">Miss</span>
           {% endif %}
         </div>
         {% endfor %}
@@ -123,18 +117,16 @@
 </div>
 
 <script>
-// Build weekly bar chart from results
 var results = {{ results | tojson }};
 var today = new Date();
-var dayPoints = [0, 0, 0, 0, 0, 0, 0]; // Mon-Sun
+var dayPoints = [0, 0, 0, 0, 0, 0, 0];
 
 results.forEach(function(r) {
   if (!r.correct || !r.completedDate) return;
   var d = new Date(r.completedDate);
   var diff = Math.floor((today - d) / 86400000);
   if (diff < 0 || diff >= 7) return;
-  // Map to Mon-Sun index
-  var dayOfWeek = d.getDay(); // 0=Sun
+  var dayOfWeek = d.getDay();
   var monIdx = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
   dayPoints[monIdx] += r.points || 0;
 });
