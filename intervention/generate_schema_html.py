@@ -13,6 +13,104 @@ from datetime import date
 SCHEMA_SQL = Path(__file__).parent / "prototypes" / "backend" / "db" / "schema.sql"
 OUTPUT_HTML = Path(__file__).parent / "schema.html"
 
+# Tables that act as M:N junction bridges
+JUNCTION_TABLES = {
+    "student_achievements", "exercise_attempts",
+    "challenge_results", "team_members",
+}
+
+# Per-group ERD layout and viewport height
+GROUP_CONFIG = {
+    "Teacher Dashboard": {"layout_direction": "LR", "height": 520},
+    "Kids App":          {"layout_direction": "LR", "height": 560},
+    "Auth / Shared":     {"layout_direction": "LR", "height": 420},
+    "Other":             {"layout_direction": "LR", "height": 400},
+}
+
+# ── Zoom/pan JS (defined outside f-string to avoid brace-escaping) ─────────
+ZOOM_PAN_JS = """<script>
+(function () {
+  function initViewport(viewport) {
+    var scale = 1, tx = 0, ty = 0;
+    var dragging = false, startX, startY, startTx, startTy;
+    var svg = null;
+    // Transform the wrapper div, never the SVG itself
+    var xform = viewport.querySelector('.erd-transform');
+
+    function applyTransform() {
+      xform.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+      var label = viewport.parentElement.querySelector('.erd-zoom-label');
+      if (label) label.textContent = Math.round(scale * 100) + '%';
+    }
+
+    function fitSvg() {
+      if (!svg) return;
+      // Use the SVG's declared width/height attributes (set by Mermaid to the
+      // natural diagram size in CSS pixels, independent of any CSS transforms).
+      var svgW = parseFloat(svg.getAttribute('width') || '0');
+      var svgH = parseFloat(svg.getAttribute('height') || '0');
+      if (svgW === 0 || svgH === 0) { setTimeout(fitSvg, 100); return; }
+      var vw = viewport.clientWidth, vh = viewport.clientHeight;
+      scale = Math.min(vw / svgW, vh / svgH) * 0.92;
+      tx = (vw - svgW * scale) / 2;
+      ty = (vh - svgH * scale) / 2;
+      applyTransform();
+    }
+
+    // Zoom toward a point (cx, cy) in viewport coordinates
+    function zoomAt(cx, cy, factor) {
+      var ns = Math.min(Math.max(scale * factor, 0.05), 10);
+      tx = cx - (cx - tx) * (ns / scale);
+      ty = cy - (cy - ty) * (ns / scale);
+      scale = ns;
+      applyTransform();
+    }
+
+    viewport.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      var rect = viewport.getBoundingClientRect();
+      zoomAt(e.clientX - rect.left, e.clientY - rect.top, e.deltaY < 0 ? 1.12 : 1 / 1.12);
+    }, { passive: false });
+
+    viewport.addEventListener('mousedown', function (e) {
+      if (e.button !== 0) return;
+      dragging = true; startX = e.clientX; startY = e.clientY; startTx = tx; startTy = ty;
+      viewport.classList.add('grabbing');
+    });
+    window.addEventListener('mousemove', function (e) {
+      if (!dragging) return;
+      tx = startTx + (e.clientX - startX); ty = startTy + (e.clientY - startY);
+      applyTransform();
+    });
+    window.addEventListener('mouseup', function () {
+      dragging = false; viewport.classList.remove('grabbing');
+    });
+
+    // Buttons zoom toward viewport center
+    var p = viewport.parentElement;
+    p.querySelector('.erd-zoom-in').addEventListener('click', function () {
+      zoomAt(viewport.clientWidth / 2, viewport.clientHeight / 2, 1.3);
+    });
+    p.querySelector('.erd-zoom-out').addEventListener('click', function () {
+      zoomAt(viewport.clientWidth / 2, viewport.clientHeight / 2, 1 / 1.3);
+    });
+    p.querySelector('.erd-reset').addEventListener('click', fitSvg);
+
+    var obs = new MutationObserver(function () {
+      var s = viewport.querySelector('svg');
+      if (s && s !== svg) { svg = s; obs.disconnect(); setTimeout(fitSvg, 120); }
+    });
+    obs.observe(viewport, { childList: true, subtree: true });
+    svg = viewport.querySelector('svg');
+    if (svg) setTimeout(fitSvg, 120);
+  }
+
+  window.addEventListener('load', function () {
+    document.querySelectorAll('.erd-viewport').forEach(initViewport);
+  });
+})();
+</script>"""
+
 
 def parse_tables(sql: str) -> list[dict]:
     """Extract table definitions from schema.sql."""
@@ -85,11 +183,15 @@ def group_tables(tables: list[dict]) -> dict:
     return groups
 
 
-def render_erd(tables: list[dict], all_table_names: set) -> str:
+def render_erd(tables: list[dict], all_table_names: set, layout_direction: str = "LR") -> str:
     """Generate Mermaid erDiagram text for the given tables."""
-    lines = ["erDiagram"]
+    init_line = (
+        '%%{init: {"er": {"layoutDirection": "' + layout_direction + '", '
+        '"diagramPadding": 20, "minEntityWidth": 100, "entityPadding": 10, "useMaxWidth": false}}}%%'
+    )
+    lines = [init_line, "erDiagram"]
 
-    # Entity blocks — only for tables in this group
+    # Entity blocks
     for table in tables:
         lines.append(f"    {table['name']} {{")
         for col in table["columns"]:
@@ -100,11 +202,10 @@ def render_erd(tables: list[dict], all_table_names: set) -> str:
                 constraint = " FK"
             elif col["unique"]:
                 constraint = " UK"
-            # Mermaid type must be a single word; use col type directly
             lines.append(f"        {col['type']} {col['name']}{constraint}")
         lines.append("    }")
 
-    # Relationship lines — FK columns pointing to any known table
+    # Relationship lines
     seen = set()
     for table in tables:
         for col in table["columns"]:
@@ -115,20 +216,31 @@ def render_erd(tables: list[dict], all_table_names: set) -> str:
                 rel_key = f"{ref_t}->{src_t}"
                 if rel_key not in seen:
                     seen.add(rel_key)
-                    # Use string concat to avoid f-string brace confusion
                     lines.append('    ' + ref_t + ' ||--o{ ' + src_t + ' : "' + label + '"')
 
     return "\n".join(lines)
 
 
 def render_table(table: dict) -> str:
+    is_junction = table["name"] in JUNCTION_TABLES
+    junction_banner = ""
+    if is_junction:
+        junction_banner = (
+            '\n    <div class="px-4 py-1 text-xs font-mono font-semibold '
+            'bg-yellow-500/10 text-yellow-400 border-b border-white/10 tracking-wide">'
+            'M:N junction \u2014 bridges two parent tables</div>'
+        )
+
     rows = ""
     for col in table["columns"]:
         badges = ""
         if col["pk"]:
             badges += '<span class="badge pk">PK</span>'
         if col["fk"]:
-            badges += f'<span class="badge fk" title="{col["ref"]}">FK</span>'
+            badges += (
+                f'<span class="badge fk" title="{col["ref"]}">FK</span>'
+                '<span class="badge card">N:1</span>'
+            )
         if col["not_null"]:
             badges += '<span class="badge nn">NN</span>'
         if col["unique"]:
@@ -151,7 +263,7 @@ def render_table(table: dict) -> str:
         </tr>"""
 
     return f"""  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
-    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">{table["name"]}</div>
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">{table["name"]}</div>{junction_banner}
     <div class="overflow-x-auto">
       <table class="w-full text-xs border-collapse">
         <thead>
@@ -176,11 +288,13 @@ def render_group(
     color: str,
     all_table_names: set,
     note: str = "",
+    layout_direction: str = "LR",
+    height: int = 560,
 ) -> str:
     if not tables:
         return ""
 
-    erd_text = render_erd(tables, all_table_names)
+    erd_text = render_erd(tables, all_table_names, layout_direction)
     cards = "\n".join(render_table(t) for t in tables)
     note_html = (
         f'<p class="text-sm text-white/50 mt-1 mb-5 pl-4">{note}</p>'
@@ -196,10 +310,20 @@ def render_group(
   </h2>
   {note_html}
 
-  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6 overflow-x-auto">
-    <p class="text-xs text-white/30 uppercase tracking-widest mb-3 font-semibold">Entity Relationship Diagram</p>
-    <div class="mermaid">
+  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6">
+    <p class="text-xs text-white/30 uppercase tracking-widest mb-2 font-semibold">Entity Relationship Diagram</p>
+    <div class="erd-controls" style="display:flex;gap:6px;margin-bottom:8px;align-items:center;">
+      <button class="erd-btn erd-zoom-in" title="Zoom in">+</button>
+      <button class="erd-btn erd-zoom-out" title="Zoom out">&minus;</button>
+      <button class="erd-btn erd-reset" title="Reset view">&#8857;</button>
+      <span class="erd-zoom-label" style="font-size:0.65rem;color:rgba(255,255,255,0.3);margin-left:4px;">100%</span>
+    </div>
+    <div class="erd-viewport" style="height:{height}px;overflow:hidden;position:relative;cursor:grab;">
+      <div class="erd-transform" style="position:absolute;top:0;left:0;transform-origin:0 0;display:inline-block;">
+        <div class="mermaid">
 {erd_text}
+        </div>
+      </div>
     </div>
   </div>
 
@@ -234,6 +358,8 @@ def generate_html(tables: list[dict]) -> str:
             group_colors.get(name, "#888"),
             all_table_names,
             group_notes.get(name, ""),
+            GROUP_CONFIG.get(name, {}).get("layout_direction", "TB"),
+            GROUP_CONFIG.get(name, {}).get("height", 400),
         )
         for name, tbls in groups.items()
     )
@@ -270,14 +396,15 @@ def generate_html(tables: list[dict]) -> str:
         edgeLabelBackground: '#1a2744',
         attributeBackgroundColorOdd: '#0d1b2e',
         attributeBackgroundColorEven: '#16213e',
+        fontSize: '14px',
       }},
       er: {{
-        diagramPadding: 24,
-        layoutDirection: 'TB',
-        minEntityWidth: 120,
-        minEntityHeight: 60,
-        entityPadding: 16,
-        useMaxWidth: true,
+        diagramPadding: 20,
+        layoutDirection: 'LR',
+        minEntityWidth: 100,
+        minEntityHeight: 50,
+        entityPadding: 10,
+        useMaxWidth: false,
       }}
     }});
   </script>
@@ -287,12 +414,25 @@ def generate_html(tables: list[dict]) -> str:
       display: inline-block; font-size: 0.6rem; font-weight: 700;
       padding: 1px 5px; border-radius: 4px; margin-right: 2px; letter-spacing: 0.04em;
     }}
-    .badge.pk {{ background: rgba(255,215,0,0.2); color: #FFD700; }}
-    .badge.fk {{ background: rgba(233,30,140,0.2); color: #E91E8C; cursor: help; }}
-    .badge.nn {{ background: rgba(244,67,54,0.15); color: #F44336; }}
-    .badge.uq {{ background: rgba(179,157,219,0.2); color: #B39DDB; }}
+    .badge.pk   {{ background: rgba(255,215,0,0.2);    color: #FFD700; }}
+    .badge.fk   {{ background: rgba(233,30,140,0.2);   color: #E91E8C; cursor: help; }}
+    .badge.nn   {{ background: rgba(244,67,54,0.15);   color: #F44336; }}
+    .badge.uq   {{ background: rgba(179,157,219,0.2);  color: #B39DDB; }}
+    .badge.card {{ background: rgba(100,220,160,0.15); color: #64DCA0; }}
+    .badge.mn   {{ background: rgba(255,180,50,0.18);  color: #FFB432; font-size: 0.55rem; }}
     .ref {{ font-size: 0.7rem; color: rgba(240,240,240,0.5); font-family: monospace; }}
-    .mermaid svg {{ max-width: 100% !important; height: auto; }}
+    /* ERD viewport */
+    .erd-viewport {{ touch-action: none; overflow: hidden; position: relative; }}
+    .erd-viewport.grabbing {{ cursor: grabbing !important; }}
+    .erd-transform {{ position: absolute; top: 0; left: 0; transform-origin: 0 0; display: inline-block; }}
+    .erd-btn {{
+      background: rgba(255,255,255,0.08); color: #F0F0F0;
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 5px;
+      width: 26px; height: 26px; font-size: 15px; line-height: 1;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; user-select: none; flex-shrink: 0;
+    }}
+    .erd-btn:hover {{ background: rgba(255,255,255,0.18); }}
   </style>
 </head>
 <body class="font-sans px-4 py-12">
@@ -335,6 +475,7 @@ def generate_html(tables: list[dict]) -> str:
   <code class="font-mono text-pink-400">python generate_schema_html.py</code>
   from the <code class="font-mono text-white/40">intervention/</code> directory
 </footer>
+{ZOOM_PAN_JS}
 </body>
 </html>
 """

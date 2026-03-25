@@ -27,14 +27,15 @@
         edgeLabelBackground: '#1a2744',
         attributeBackgroundColorOdd: '#0d1b2e',
         attributeBackgroundColorEven: '#16213e',
+        fontSize: '14px',
       },
       er: {
-        diagramPadding: 24,
-        layoutDirection: 'TB',
-        minEntityWidth: 120,
-        minEntityHeight: 60,
-        entityPadding: 16,
-        useMaxWidth: true,
+        diagramPadding: 20,
+        layoutDirection: 'LR',
+        minEntityWidth: 100,
+        minEntityHeight: 50,
+        entityPadding: 10,
+        useMaxWidth: false,
       }
     });
   </script>
@@ -44,12 +45,25 @@
       display: inline-block; font-size: 0.6rem; font-weight: 700;
       padding: 1px 5px; border-radius: 4px; margin-right: 2px; letter-spacing: 0.04em;
     }
-    .badge.pk { background: rgba(255,215,0,0.2); color: #FFD700; }
-    .badge.fk { background: rgba(233,30,140,0.2); color: #E91E8C; cursor: help; }
-    .badge.nn { background: rgba(244,67,54,0.15); color: #F44336; }
-    .badge.uq { background: rgba(179,157,219,0.2); color: #B39DDB; }
+    .badge.pk   { background: rgba(255,215,0,0.2);    color: #FFD700; }
+    .badge.fk   { background: rgba(233,30,140,0.2);   color: #E91E8C; cursor: help; }
+    .badge.nn   { background: rgba(244,67,54,0.15);   color: #F44336; }
+    .badge.uq   { background: rgba(179,157,219,0.2);  color: #B39DDB; }
+    .badge.card { background: rgba(100,220,160,0.15); color: #64DCA0; }
+    .badge.mn   { background: rgba(255,180,50,0.18);  color: #FFB432; font-size: 0.55rem; }
     .ref { font-size: 0.7rem; color: rgba(240,240,240,0.5); font-family: monospace; }
-    .mermaid svg { max-width: 100% !important; height: auto; }
+    /* ERD viewport */
+    .erd-viewport { touch-action: none; overflow: hidden; position: relative; }
+    .erd-viewport.grabbing { cursor: grabbing !important; }
+    .erd-transform { position: absolute; top: 0; left: 0; transform-origin: 0 0; display: inline-block; }
+    .erd-btn {
+      background: rgba(255,255,255,0.08); color: #F0F0F0;
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 5px;
+      width: 26px; height: 26px; font-size: 15px; line-height: 1;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; user-select: none; flex-shrink: 0;
+    }
+    .erd-btn:hover { background: rgba(255,255,255,0.18); }
   </style>
 </head>
 <body class="font-sans px-4 py-12">
@@ -94,9 +108,18 @@
   </h2>
   
 
-  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6 overflow-x-auto">
-    <p class="text-xs text-white/30 uppercase tracking-widest mb-3 font-semibold">Entity Relationship Diagram</p>
-    <div class="mermaid">
+  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6">
+    <p class="text-xs text-white/30 uppercase tracking-widest mb-2 font-semibold">Entity Relationship Diagram</p>
+    <div class="erd-controls" style="display:flex;gap:6px;margin-bottom:8px;align-items:center;">
+      <button class="erd-btn erd-zoom-in" title="Zoom in">+</button>
+      <button class="erd-btn erd-zoom-out" title="Zoom out">&minus;</button>
+      <button class="erd-btn erd-reset" title="Reset view">&#8857;</button>
+      <span class="erd-zoom-label" style="font-size:0.65rem;color:rgba(255,255,255,0.3);margin-left:4px;">100%</span>
+    </div>
+    <div class="erd-viewport" style="height:520px;overflow:hidden;position:relative;cursor:grab;">
+      <div class="erd-transform" style="position:absolute;top:0;left:0;transform-origin:0 0;display:inline-block;">
+        <div class="mermaid">
+%%{init: {"er": {"layoutDirection": "LR", "diagramPadding": 20, "minEntityWidth": 100, "entityPadding": 10, "useMaxWidth": false}}}%%
 erDiagram
     teacher_profiles {
         INTEGER id PK
@@ -210,6 +233,8 @@ erDiagram
     students ||--o{ exercise_attempts : "student_id"
     exercises ||--o{ exercise_attempts : "exercise_id"
     lessons ||--o{ exercise_attempts : "lesson_id"
+        </div>
+      </div>
     </div>
   </div>
 
@@ -380,7 +405,7 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">class_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> classes.class_id">FK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> classes.class_id">FK</span><span class="badge card">N:1</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> classes.class_id</span></td>
         </tr>
@@ -485,6 +510,7 @@ erDiagram
   </div>
   <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
     <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">student_achievements</div>
+    <div class="px-4 py-1 text-xs font-mono font-semibold bg-yellow-500/10 text-yellow-400 border-b border-white/10 tracking-wide">M:N junction — bridges two parent tables</div>
     <div class="overflow-x-auto">
       <table class="w-full text-xs border-collapse">
         <thead>
@@ -500,14 +526,14 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">student_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> students.student_id</span></td>
         </tr>
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">achievement_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> achievements.achievement_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> achievements.achievement_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> achievements.achievement_id</span></td>
         </tr>
@@ -546,7 +572,7 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">student_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> students.student_id</span></td>
         </tr>
@@ -687,7 +713,7 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">lesson_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> lessons.lesson_id</span></td>
         </tr>
@@ -754,14 +780,14 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">lesson_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> lessons.lesson_id</span></td>
         </tr>
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">class_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> classes.class_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> classes.class_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> classes.class_id</span></td>
         </tr>
@@ -814,14 +840,14 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">teacher_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teacher_profiles.id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teacher_profiles.id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> teacher_profiles.id</span></td>
         </tr>
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">lesson_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> lessons.lesson_id</span></td>
         </tr>
@@ -860,7 +886,7 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">class_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> classes.class_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> classes.class_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> classes.class_id</span></td>
         </tr>
@@ -877,6 +903,7 @@ erDiagram
   </div>
   <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
     <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">exercise_attempts</div>
+    <div class="px-4 py-1 text-xs font-mono font-semibold bg-yellow-500/10 text-yellow-400 border-b border-white/10 tracking-wide">M:N junction — bridges two parent tables</div>
     <div class="overflow-x-auto">
       <table class="w-full text-xs border-collapse">
         <thead>
@@ -899,21 +926,21 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">student_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> students.student_id</span></td>
         </tr>
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">exercise_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> exercises.exercise_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> exercises.exercise_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> exercises.exercise_id</span></td>
         </tr>
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">lesson_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> lessons.lesson_id</span></td>
         </tr>
@@ -966,9 +993,18 @@ erDiagram
   </h2>
   <p class="text-sm text-white/50 mt-1 mb-5 pl-4">These 6 tables are shared by <strong>both the iOS app (SwiftUI)</strong> and the <strong>Kids Web App</strong> — both clients connect to the same backend (port 5000) and the same SQLite database. There is no separate database per client.</p>
 
-  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6 overflow-x-auto">
-    <p class="text-xs text-white/30 uppercase tracking-widest mb-3 font-semibold">Entity Relationship Diagram</p>
-    <div class="mermaid">
+  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6">
+    <p class="text-xs text-white/30 uppercase tracking-widest mb-2 font-semibold">Entity Relationship Diagram</p>
+    <div class="erd-controls" style="display:flex;gap:6px;margin-bottom:8px;align-items:center;">
+      <button class="erd-btn erd-zoom-in" title="Zoom in">+</button>
+      <button class="erd-btn erd-zoom-out" title="Zoom out">&minus;</button>
+      <button class="erd-btn erd-reset" title="Reset view">&#8857;</button>
+      <span class="erd-zoom-label" style="font-size:0.65rem;color:rgba(255,255,255,0.3);margin-left:4px;">100%</span>
+    </div>
+    <div class="erd-viewport" style="height:560px;overflow:hidden;position:relative;cursor:grab;">
+      <div class="erd-transform" style="position:absolute;top:0;left:0;transform-origin:0 0;display:inline-block;">
+        <div class="mermaid">
+%%{init: {"er": {"layoutDirection": "LR", "diagramPadding": 20, "minEntityWidth": 100, "entityPadding": 10, "useMaxWidth": false}}}%%
 erDiagram
     teams {
         TEXT team_id PK
@@ -1027,6 +1063,8 @@ erDiagram
     teams ||--o{ user_profiles : "team_id"
     user_profiles ||--o{ challenge_results : "member_id"
     challenges ||--o{ challenge_results : "challenge_id"
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1080,6 +1118,7 @@ erDiagram
   </div>
   <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
     <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">team_members</div>
+    <div class="px-4 py-1 text-xs font-mono font-semibold bg-yellow-500/10 text-yellow-400 border-b border-white/10 tracking-wide">M:N junction — bridges two parent tables</div>
     <div class="overflow-x-auto">
       <table class="w-full text-xs border-collapse">
         <thead>
@@ -1102,7 +1141,7 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">team_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teams.team_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teams.team_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> teams.team_id</span></td>
         </tr>
@@ -1169,7 +1208,7 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">team_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teams.team_id">FK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teams.team_id">FK</span><span class="badge card">N:1</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> teams.team_id</span></td>
         </tr>
@@ -1295,6 +1334,7 @@ erDiagram
   </div>
   <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
     <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">challenge_results</div>
+    <div class="px-4 py-1 text-xs font-mono font-semibold bg-yellow-500/10 text-yellow-400 border-b border-white/10 tracking-wide">M:N junction — bridges two parent tables</div>
     <div class="overflow-x-auto">
       <table class="w-full text-xs border-collapse">
         <thead>
@@ -1317,14 +1357,14 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">member_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> user_profiles.member_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> user_profiles.member_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> user_profiles.member_id</span></td>
         </tr>
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">challenge_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> challenges.challenge_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> challenges.challenge_id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> challenges.challenge_id</span></td>
         </tr>
@@ -1437,9 +1477,18 @@ erDiagram
   </h2>
   
 
-  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6 overflow-x-auto">
-    <p class="text-xs text-white/30 uppercase tracking-widest mb-3 font-semibold">Entity Relationship Diagram</p>
-    <div class="mermaid">
+  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6">
+    <p class="text-xs text-white/30 uppercase tracking-widest mb-2 font-semibold">Entity Relationship Diagram</p>
+    <div class="erd-controls" style="display:flex;gap:6px;margin-bottom:8px;align-items:center;">
+      <button class="erd-btn erd-zoom-in" title="Zoom in">+</button>
+      <button class="erd-btn erd-zoom-out" title="Zoom out">&minus;</button>
+      <button class="erd-btn erd-reset" title="Reset view">&#8857;</button>
+      <span class="erd-zoom-label" style="font-size:0.65rem;color:rgba(255,255,255,0.3);margin-left:4px;">100%</span>
+    </div>
+    <div class="erd-viewport" style="height:420px;overflow:hidden;position:relative;cursor:grab;">
+      <div class="erd-transform" style="position:absolute;top:0;left:0;transform-origin:0 0;display:inline-block;">
+        <div class="mermaid">
+%%{init: {"er": {"layoutDirection": "LR", "diagramPadding": 20, "minEntityWidth": 100, "entityPadding": 10, "useMaxWidth": false}}}%%
 erDiagram
     accounts {
         INTEGER id PK
@@ -1460,6 +1509,8 @@ erDiagram
     students ||--o{ accounts : "student_id"
     teacher_profiles ||--o{ accounts : "teacher_id"
     accounts ||--o{ auth_sessions : "account_id"
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1517,14 +1568,14 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">student_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span><span class="badge card">N:1</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> students.student_id</span></td>
         </tr>
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">teacher_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teacher_profiles.id">FK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teacher_profiles.id">FK</span><span class="badge card">N:1</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> teacher_profiles.id</span></td>
         </tr>
@@ -1563,7 +1614,7 @@ erDiagram
         <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
           <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">account_id</td>
           <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
-          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> accounts.id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> accounts.id">FK</span><span class="badge card">N:1</span><span class="badge nn">NN</span></td>
           <td class="px-3 py-2 whitespace-nowrap"></td>
           <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> accounts.id</span></td>
         </tr>
@@ -1593,5 +1644,87 @@ erDiagram
   <code class="font-mono text-pink-400">python generate_schema_html.py</code>
   from the <code class="font-mono text-white/40">intervention/</code> directory
 </footer>
+<script>
+(function () {
+  function initViewport(viewport) {
+    var scale = 1, tx = 0, ty = 0;
+    var dragging = false, startX, startY, startTx, startTy;
+    var svg = null;
+    // Transform the wrapper div, never the SVG itself
+    var xform = viewport.querySelector('.erd-transform');
+
+    function applyTransform() {
+      xform.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+      var label = viewport.parentElement.querySelector('.erd-zoom-label');
+      if (label) label.textContent = Math.round(scale * 100) + '%';
+    }
+
+    function fitSvg() {
+      if (!svg) return;
+      // Use the SVG's declared width/height attributes (set by Mermaid to the
+      // natural diagram size in CSS pixels, independent of any CSS transforms).
+      var svgW = parseFloat(svg.getAttribute('width') || '0');
+      var svgH = parseFloat(svg.getAttribute('height') || '0');
+      if (svgW === 0 || svgH === 0) { setTimeout(fitSvg, 100); return; }
+      var vw = viewport.clientWidth, vh = viewport.clientHeight;
+      scale = Math.min(vw / svgW, vh / svgH) * 0.92;
+      tx = (vw - svgW * scale) / 2;
+      ty = (vh - svgH * scale) / 2;
+      applyTransform();
+    }
+
+    // Zoom toward a point (cx, cy) in viewport coordinates
+    function zoomAt(cx, cy, factor) {
+      var ns = Math.min(Math.max(scale * factor, 0.05), 10);
+      tx = cx - (cx - tx) * (ns / scale);
+      ty = cy - (cy - ty) * (ns / scale);
+      scale = ns;
+      applyTransform();
+    }
+
+    viewport.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      var rect = viewport.getBoundingClientRect();
+      zoomAt(e.clientX - rect.left, e.clientY - rect.top, e.deltaY < 0 ? 1.12 : 1 / 1.12);
+    }, { passive: false });
+
+    viewport.addEventListener('mousedown', function (e) {
+      if (e.button !== 0) return;
+      dragging = true; startX = e.clientX; startY = e.clientY; startTx = tx; startTy = ty;
+      viewport.classList.add('grabbing');
+    });
+    window.addEventListener('mousemove', function (e) {
+      if (!dragging) return;
+      tx = startTx + (e.clientX - startX); ty = startTy + (e.clientY - startY);
+      applyTransform();
+    });
+    window.addEventListener('mouseup', function () {
+      dragging = false; viewport.classList.remove('grabbing');
+    });
+
+    // Buttons zoom toward viewport center
+    var p = viewport.parentElement;
+    p.querySelector('.erd-zoom-in').addEventListener('click', function () {
+      zoomAt(viewport.clientWidth / 2, viewport.clientHeight / 2, 1.3);
+    });
+    p.querySelector('.erd-zoom-out').addEventListener('click', function () {
+      zoomAt(viewport.clientWidth / 2, viewport.clientHeight / 2, 1 / 1.3);
+    });
+    p.querySelector('.erd-reset').addEventListener('click', fitSvg);
+
+    var obs = new MutationObserver(function () {
+      var s = viewport.querySelector('svg');
+      if (s && s !== svg) { svg = s; obs.disconnect(); setTimeout(fitSvg, 120); }
+    });
+    obs.observe(viewport, { childList: true, subtree: true });
+    svg = viewport.querySelector('svg');
+    if (svg) setTimeout(fitSvg, 120);
+  }
+
+  window.addEventListener('load', function () {
+    document.querySelectorAll('.erd-viewport').forEach(initViewport);
+  });
+})();
+</script>
 </body>
 </html>
