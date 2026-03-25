@@ -394,6 +394,10 @@ def api_update_student_avatar(student_id):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """User registration page"""
+    # Redirect GET requests to home (which shows the modal)
+    if request.method == 'GET':
+        return redirect(url_for('home'))
+    
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         school = request.form.get('school', '').strip()
@@ -402,19 +406,24 @@ def register():
         
         # Validation
         if not username:
-            return render_template('register.html', error='Username is required')
+            session['auth_error'] = 'Username is required'
+            return redirect(url_for('home'))
         
         if not school:
-            return render_template('register.html', error='School is required')
+            session['auth_error'] = 'School is required'
+            return redirect(url_for('home'))
         
         if not password:
-            return render_template('register.html', error='Password is required')
+            session['auth_error'] = 'Password is required'
+            return redirect(url_for('home'))
         
         if len(password) < 8:
-            return render_template('register.html', error='Password must be at least 8 characters')
+            session['auth_error'] = 'Password must be at least 8 characters'
+            return redirect(url_for('home'))
         
         if password != confirm_password:
-            return render_template('register.html', error='Passwords do not match')
+            session['auth_error'] = 'Passwords do not match'
+            return redirect(url_for('home'))
         
         # Register user
         success, message = register_user(username, password, school)
@@ -425,19 +434,23 @@ def register():
             session['user_school'] = school
             return redirect(url_for('home'))
         else:
-            return render_template('register.html', error=message)
-    
-    return render_template('register.html')
+            session['auth_error'] = message
+            return redirect(url_for('home'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """User login page"""
+    # Redirect GET requests to home (which shows the modal)
+    if request.method == 'GET':
+        return redirect(url_for('home'))
+    
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
         
         if not username or not password:
-            return render_template('login.html', error='Username and password are required')
+            session['auth_error'] = 'Username and password are required'
+            return redirect(url_for('home'))
         
         success, result = verify_user(username, password)
         
@@ -446,9 +459,8 @@ def login():
             session['user_school'] = result.get('school', '')
             return redirect(url_for('home'))
         else:
-            return render_template('login.html', error=result)
-    
-    return render_template('login.html')
+            session['auth_error'] = result
+            return redirect(url_for('home'))
 
 @app.route('/logout')
 def logout():

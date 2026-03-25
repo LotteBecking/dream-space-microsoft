@@ -11,9 +11,9 @@
 
     /* Glassmorphism Card */
     .glass-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     }
 
@@ -43,6 +43,7 @@
         position: relative;
         overflow: hidden;
         border: none;
+        color: #ffffff !important;
     }
 
     .btn-primary:hover {
@@ -185,25 +186,22 @@
                     <p class="text-gray-600 text-lg">Start teaching, building futures</p>
                 </div>
 
-                <!-- Login Link -->
-                <p class="text-center text-gray-700 text-base mb-4">
-                    Already have an account? 
-                    <a href="/login" class="auth-link ml-1">Sign in</a>
-                </p>
-
-                <!-- Divider -->
-                <div class="divider">or</div>
+                <!-- Auth Toggle Links -->
+                <div class="text-center text-gray-700 text-base mb-6">
+                    <p id="register-toggle">Already have an account? <a href="#" class="auth-link ml-1 cursor-pointer" onclick="toggleForm(event)">Sign in</a></p>
+                    <p id="login-toggle" class="hidden">Don't have an account? <a href="#" class="auth-link ml-1 cursor-pointer" onclick="toggleForm(event)">Sign up</a></p>
+                </div>
 
                 <!-- Registration Form -->
-                <form method="POST" action="/register" class="space-y-6">
+                <form id="register-form" method="POST" action="/register" class="space-y-6">
                     <!-- Username Field -->
                     <div class="form-field">
-                        <label for="username" class="form-label mb-3 block">Username</label>
+                        <label for="reg-username" class="form-label mb-3 block">Username</label>
                         <div class="relative group">
                             <i class="fas fa-user input-icon absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
                             <input 
                                 type="text" 
-                                id="username" 
+                                id="reg-username" 
                                 name="username" 
                                 required 
                                 class="input-field w-full pl-12 pr-4 py-3 rounded-xl text-gray-800 text-base"
@@ -214,12 +212,12 @@
 
                     <!-- School Field -->
                     <div class="form-field">
-                        <label for="school" class="form-label mb-3 block">School Name</label>
+                        <label for="reg-school" class="form-label mb-3 block">School Name</label>
                         <div class="relative group">
                             <i class="fas fa-school input-icon absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
                             <input 
                                 type="text" 
-                                id="school" 
+                                id="reg-school" 
                                 name="school" 
                                 required 
                                 class="input-field w-full pl-12 pr-4 py-3 rounded-xl text-gray-800 text-base"
@@ -230,12 +228,12 @@
 
                     <!-- Password Field -->
                     <div class="form-field">
-                        <label for="password" class="form-label mb-3 block">Password</label>
+                        <label for="reg-password" class="form-label mb-3 block">Password</label>
                         <div class="relative group">
                             <i class="fas fa-lock input-icon absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
                             <input 
                                 type="password" 
-                                id="password" 
+                                id="reg-password" 
                                 name="password" 
                                 required 
                                 class="input-field w-full pl-12 pr-4 py-3 rounded-xl text-gray-800 text-base"
@@ -246,12 +244,12 @@
 
                     <!-- Confirm Password Field -->
                     <div class="form-field">
-                        <label for="confirm_password" class="form-label mb-3 block">Confirm Password</label>
+                        <label for="reg-confirm" class="form-label mb-3 block">Confirm Password</label>
                         <div class="relative group">
                             <i class="fas fa-lock input-icon absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
                             <input 
                                 type="password" 
-                                id="confirm_password" 
+                                id="reg-confirm" 
                                 name="confirm_password" 
                                 required 
                                 class="input-field w-full pl-12 pr-4 py-3 rounded-xl text-gray-800 text-base"
@@ -259,6 +257,14 @@
                             >
                         </div>
                     </div>
+
+                    <!-- Error Message -->
+                    {% if session.get('auth_error') %}
+                    <div class="error-message rounded-xl p-4 flex items-start gap-3 text-red-700">
+                        <i class="fas fa-exclamation-circle mt-1 flex-shrink-0"></i>
+                        <span class="text-sm font-medium">{{ session.pop('auth_error') }}</span>
+                    </div>
+                    {% endif %}
 
                     <!-- Submit Button -->
                     <button 
@@ -270,11 +276,79 @@
                     </button>
                 </form>
 
-                <!-- Password Confirmation Footer -->
+                <!-- Login Form -->
+                <form id="login-form" method="POST" action="/login" class="space-y-6 hidden">
+                    <!-- Username Field -->
+                    <div class="form-field">
+                        <label for="login-username" class="form-label mb-3 block">Username</label>
+                        <div class="relative group">
+                            <i class="fas fa-user input-icon absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                            <input 
+                                type="text" 
+                                id="login-username" 
+                                name="username" 
+                                required 
+                                class="input-field w-full pl-12 pr-4 py-3 rounded-xl text-gray-800 text-base"
+                                placeholder="Your username"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-field">
+                        <label for="login-password" class="form-label mb-3 block">Password</label>
+                        <div class="relative group">
+                            <i class="fas fa-lock input-icon absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                            <input 
+                                type="password" 
+                                id="login-password" 
+                                name="password" 
+                                required 
+                                class="input-field w-full pl-12 pr-4 py-3 rounded-xl text-gray-800 text-base"
+                                placeholder="••••••••"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Error Message -->
+                    {% if session.get('auth_error') %}
+                    <div class="error-message rounded-xl p-4 flex items-start gap-3 text-red-700">
+                        <i class="fas fa-exclamation-circle mt-1 flex-shrink-0"></i>
+                        <span class="text-sm font-medium">{{ session.pop('auth_error') }}</span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        class="btn-primary w-full text-white font-bold py-3 px-6 rounded-xl text-lg flex items-center justify-center gap-2 shadow-lg"
+                    >
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Sign In</span>
+                    </button>
+                </form>
+
+                    <!-- Footer -->
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+function toggleForm(event) {
+    event.preventDefault();
+    const registerForm = document.getElementById('register-form');
+    const loginForm = document.getElementById('login-form');
+    const registerToggle = document.getElementById('register-toggle');
+    const loginToggle = document.getElementById('login-toggle');
+    
+    registerForm.classList.toggle('hidden');
+    loginForm.classList.toggle('hidden');
+    registerToggle.classList.toggle('hidden');
+    loginToggle.classList.toggle('hidden');
+}
+</script>
 {% endif %}
 
 <div class="space-y-6 pb-20 md:pb-8{% if not is_logged_in %} opacity-50 pointer-events-none{% endif %}">
