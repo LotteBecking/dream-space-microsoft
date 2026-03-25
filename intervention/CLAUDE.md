@@ -4,11 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-DreamSpace is a digital coding intervention for kids consisting of three components that share a single SQLite database:
+DreamSpace is a digital coding intervention for kids consisting of four components that share a single SQLite database:
 
 1. **Unified Flask Backend** (`prototypes/backend/`) — serves both the teacher dashboard HTML and the kids app REST API on port 5000
 2. **Teacher Dashboard** (`prototypes/teacher_dashboard_python/`) — its templates, static assets, and lesson JSON files are served by the backend (not run standalone)
 3. **Kids Learning iOS App** (`prototypes/kids_learning_app/`) — SwiftUI app that calls the backend REST API
+4. **Kids Web App** (`kids_web_app/`) — Flask web app (port 5001) mirroring the iOS experience for browsers; proxies all data to the backend via HTTP
 
 ## Running the Backend
 
@@ -16,7 +17,7 @@ DreamSpace is a digital coding intervention for kids consisting of three compone
 cd prototypes/backend
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-python seed_db.py          # initialize/re-seed DB (add --force to wipe first)
+python scripts/seed_db.py  # initialize/re-seed DB (add --force to wipe first)
 python app.py              # starts Flask at http://localhost:5000
 ```
 
@@ -41,11 +42,11 @@ Default API base URL is `http://127.0.0.1:5000` (simulator). For a physical devi
 Teacher Browser ──────────────────────────────────────────────┐
                                                                ▼
 Kids iOS App ──── REST /api/kids/* ────► Flask Backend (5000) ◄─── HTML /dashboard/*
-                                              │
-                                              ▼
-                                       SQLite (dreamspace.db)
-                                              │
-                                   lesson JSON files (teacher_dashboard_python/)
+Kids Web App ──── REST /api/kids/* ──┘         │
+(port 5001)                                    ▼
+                                        SQLite (dreamspace.db)
+                                               │
+                                    lesson JSON files (teacher_dashboard_python/)
 ```
 
 ### Backend layer breakdown
@@ -57,7 +58,7 @@ Kids iOS App ──── REST /api/kids/* ────► Flask Backend (5000) 
 | `database.py` | `get_db()` / `init_db()` — SQLite connection per request |
 | `models.py` | All query functions; returns camelCase dicts for API consumers |
 | `validators.py` | Regex validators for every ID type |
-| `schema.sql` | Authoritative schema — edit this, then re-run `seed_db.py --force` |
+| `db/schema.sql` | Authoritative schema — edit this, then re-run `scripts/seed_db.py --force` |
 | `routes/dashboard.py` | Teacher dashboard HTML pages |
 | `routes/api.py` | Teacher REST API |
 | `routes/api_kids.py` | Kids app REST API |
@@ -92,14 +93,26 @@ The iOS app is **local-first**: state updates immediately in `AppStore`, then sy
 - Never reuse an ID value across entity types, even if the numbers overlap
 - `validators.py` contains the regex checks — use them when accepting IDs from external input
 
+## Running the Kids Web App
+
+```bash
+cd kids_web_app
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+python app.py    # starts at http://localhost:5001 (backend must be on 5000)
+```
+
+Works in demo mode (static fallback data) if the backend is not running.
+
 ## Database
 
-- Schema is in `schema.sql`; `database.py` auto-creates it on first startup
+- Schema is in `prototypes/backend/db/schema.sql`; `database.py` auto-creates it on first startup
 - All tables use `PRAGMA foreign_keys = ON`
 - `models.py` is the only place that talks to the DB — don't write raw SQL in routes
-- Kids-app tables (`teams`, `team_members`, `user_profiles`, `challenges`, `challenge_results`) are in the same `dreamspace.db` as teacher tables
-- `user_tracking` is a polymorphic analytics table — `user_type` is `'student'` or `'teacher'`
+- 20 tables total: teacher dashboard (12), kids app (6), auth/shared (2)
+- **Full schema reference:** [`md-files/backend-database-schema-2026-03-24.md`](md-files/backend-database-schema-2026-03-24.md)
+- **HTML visualization:** open `schema.html` in a browser (regenerate with `python generate_schema_html.py`)
 
 ## Lesson Content
 
-Lessons live as JSON files in `teacher_dashboard_python/data/lesson_content/lesson-N.json`. `lesson_loader.py` reads them at runtime. Both the teacher dashboard and the REST API serve content from these files — edit the JSON there to change lesson content.
+Lessons live as JSON files in `prototypes/teacher_dashboard_python/data/lesson_content/lesson-N.json`. `lesson_loader.py` reads them at runtime. Both the teacher dashboard and the REST API serve content from these files — edit the JSON there to change lesson content.

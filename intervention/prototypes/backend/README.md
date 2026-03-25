@@ -14,7 +14,7 @@ venv\Scripts\activate        # Windows
 pip install -r requirements.txt
 
 # 3. Create tables and seed default data
-python seed_db.py
+python scripts/seed_db.py
 
 # 4. Run the server
 python app.py
@@ -29,7 +29,7 @@ The server starts at **http://localhost:5000**.
 
 ## Database
 
-SQLite database stored at `backend/dreamspace.db`. Tables are created automatically on first run from [schema.sql](schema.sql).
+SQLite database stored at `backend/dreamspace.db`. Tables are created automatically on first run from [db/schema.sql](db/schema.sql).
 
 ### ID Conventions
 
@@ -123,12 +123,14 @@ backend/
 ├── app.py              # Flask application factory
 ├── config.py           # Paths and settings
 ├── database.py         # SQLite connection lifecycle
-├── schema.sql          # Full database schema
 ├── models.py           # Query functions (all entities)
 ├── validators.py       # ID-format regex validators
 ├── lesson_loader.py    # Reads lesson JSON from teacher_dashboard
-├── seed_db.py          # Populate DB with default data
 ├── requirements.txt
+├── db/
+│   └── schema.sql      # Full database schema
+├── scripts/
+│   └── seed_db.py      # Populate DB with default data
 └── routes/
     ├── dashboard.py    # Teacher dashboard HTML pages
     ├── api.py          # Teacher / admin REST API

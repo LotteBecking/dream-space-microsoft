@@ -25,7 +25,7 @@ def close_db(_exc=None):
 
 def init_db(app):
     """Create all tables from schema.sql if they don't exist."""
-    schema_path = os.path.join(os.path.dirname(__file__), 'schema.sql')
+    schema_path = os.path.join(os.path.dirname(__file__), 'db', 'schema.sql')
     with app.app_context():
         db = get_db()
         with open(schema_path, 'r', encoding='utf-8') as f:

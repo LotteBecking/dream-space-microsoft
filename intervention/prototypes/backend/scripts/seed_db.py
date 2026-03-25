@@ -7,7 +7,12 @@ Usage:
 """
 
 import json
+import os
 import sys
+
+# Allow imports from the backend root (parent of this scripts/ folder)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from app import create_app
 from database import get_db
 

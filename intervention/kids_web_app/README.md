@@ -5,7 +5,7 @@ A web-based alternative to the iOS kids learning app, built with Flask. Runs on 
 ## Quick Start
 
 ```bash
-cd intervention/prototypes/kids_web_app
+cd intervention/kids_web_app
 pip install -r requirements.txt
 python app.py
 ```
@@ -21,7 +21,7 @@ source venv/bin/activate
 python app.py
 
 # Terminal 2 — Kids Web App (port 5001)
-cd intervention/prototypes/kids_web_app
+cd intervention/kids_web_app
 python app.py
 ```
 

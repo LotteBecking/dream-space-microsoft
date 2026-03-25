@@ -1,812 +1,1597 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DreamSpace · Database Schema</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DreamSpace Database Schema</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {}
+      }
+    }
+  </script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        background: '#0d1b2e',
+        mainBkg: '#1a2744',
+        nodeBorder: '#7B4FA6',
+        lineColor: '#7B4FA6',
+        textColor: '#F0F0F0',
+        edgeLabelBackground: '#1a2744',
+        attributeBackgroundColorOdd: '#0d1b2e',
+        attributeBackgroundColorEven: '#16213e',
+      },
+      er: {
+        diagramPadding: 24,
+        layoutDirection: 'TB',
+        minEntityWidth: 120,
+        minEntityHeight: 60,
+        entityPadding: 16,
+        useMaxWidth: true,
+      }
+    });
+  </script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #0d0d0f;
-      --surface:   #141416;
-      --card:      #1a1a1e;
-      --border:    #2a2a30;
-      --border-hi: #3a3a44;
-      --text:      #e8e8f0;
-      --muted:     #6b6b7a;
-      --accent:    #7c6af7;
-      --accent-lo: rgba(124,106,247,.12);
-      --green:     #4ade80;
-      --green-lo:  rgba(74,222,128,.10);
-      --amber:     #fbbf24;
-      --amber-lo:  rgba(251,191,36,.10);
-      --blue:      #60a5fa;
-      --blue-lo:   rgba(96,165,250,.10);
-      --pink:      #f472b6;
-      --pink-lo:   rgba(244,114,182,.10);
-      --teal:      #2dd4bf;
-      --teal-lo:   rgba(45,212,191,.10);
-      --orange:    #fb923c;
-      --orange-lo: rgba(251,146,60,.10);
-      --red:       #f87171;
-      --red-lo:    rgba(248,113,113,.10);
-      --font-mono: "SF Mono", "Fira Code", "Cascadia Code", monospace;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
-      --radius:    10px;
-      --radius-sm: 6px;
+    body { background-color: #1A1A2E; color: #F0F0F0; }
+    .badge {
+      display: inline-block; font-size: 0.6rem; font-weight: 700;
+      padding: 1px 5px; border-radius: 4px; margin-right: 2px; letter-spacing: 0.04em;
     }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-sans);
-      min-height: 100vh;
-      padding: 48px 32px 80px;
-    }
-
-    /* ── Header ─────────────────────────────────────────── */
-    header {
-      max-width: 1200px;
-      margin: 0 auto 48px;
-    }
-    header .label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-    header h1 {
-      font-size: 28px;
-      font-weight: 600;
-      letter-spacing: -.02em;
-      color: var(--text);
-    }
-    header p {
-      margin-top: 8px;
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    /* ── Section titles ─────────────────────────────────── */
-    .section-title {
-      max-width: 1200px;
-      margin: 0 auto 20px;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* ── Grid ───────────────────────────────────────────── */
-    .grid {
-      max-width: 1200px;
-      margin: 0 auto 56px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-    }
-
-    /* ── Entity card ────────────────────────────────────── */
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: border-color .15s, box-shadow .15s;
-    }
-    .card:hover {
-      border-color: var(--border-hi);
-      box-shadow: 0 0 0 1px var(--border-hi), 0 8px 24px rgba(0,0,0,.4);
-    }
-
-    .card-header {
-      padding: 14px 16px 12px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .card-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .card-title {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: .01em;
-      flex: 1;
-    }
-    .card-badge {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      padding: 2px 7px;
-      border-radius: 99px;
-      border: 1px solid;
-      letter-spacing: .04em;
-    }
-
-    .card-body { padding: 4px 0 8px; }
-
-    .field {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      padding: 5px 16px;
-    }
-    .field-name {
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      color: var(--text);
-      min-width: 130px;
-    }
-    .field-type {
-      font-size: 11px;
-      color: var(--muted);
-    }
-    .pk-tag, .fk-tag {
-      font-family: var(--font-mono);
-      font-size: 9.5px;
-      padding: 1px 5px;
-      border-radius: 4px;
-      letter-spacing: .04em;
-      flex-shrink: 0;
-    }
-    .pk-tag { background: rgba(124,106,247,.18); color: var(--accent); }
-    .fk-tag { background: rgba(96,165,250,.15); color: var(--blue); }
-
-    .regex-row {
-      margin: 4px 16px 4px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 7px 10px;
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      color: var(--accent);
-      letter-spacing: .02em;
-    }
-    .regex-row span { color: var(--muted); font-size: 10px; margin-right: 6px; }
-
-    /* ── Relationship map ───────────────────────────────── */
-    .rel-grid {
-      max-width: 1200px;
-      margin: 0 auto 56px;
-      display: grid;
-      gap: 10px;
-    }
-    .rel-row {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-      transition: border-color .15s;
-    }
-    .rel-row:hover { border-color: var(--border-hi); }
-
-    .rel-entity {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 3px 9px;
-      border-radius: 5px;
-    }
-    .rel-arrow {
-      color: var(--muted);
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-    .rel-via {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--blue);
-      background: var(--blue-lo);
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-    .rel-label {
-      color: var(--muted);
-      font-size: 12px;
-    }
-    .rel-cardinality {
-      margin-left: auto;
-      font-size: 11px;
-      color: var(--muted);
-      font-family: var(--font-mono);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-
-    /* ── ID legend ──────────────────────────────────────── */
-    .legend {
-      max-width: 1200px;
-      margin: 0 auto 56px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 10px;
-    }
-    .legend-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .legend-example {
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .legend-regex {
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      color: var(--muted);
-    }
-    .legend-examples {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-      margin-top: 2px;
-    }
-    .legend-pill {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      padding: 1px 7px;
-      border-radius: 99px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-    }
-
-    /* ── Footer ─────────────────────────────────────────── */
-    footer {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    footer span { font-family: var(--font-mono); }
+    .badge.pk { background: rgba(255,215,0,0.2); color: #FFD700; }
+    .badge.fk { background: rgba(233,30,140,0.2); color: #E91E8C; cursor: help; }
+    .badge.nn { background: rgba(244,67,54,0.15); color: #F44336; }
+    .badge.uq { background: rgba(179,157,219,0.2); color: #B39DDB; }
+    .ref { font-size: 0.7rem; color: rgba(240,240,240,0.5); font-family: monospace; }
+    .mermaid svg { max-width: 100% !important; height: auto; }
   </style>
 </head>
-<body>
+<body class="font-sans px-4 py-12">
 
-<header>
-  <div class="label">DreamSpace · Digital Intervention</div>
-  <h1>Database Schema</h1>
-  <p>Entity relationships and ID structure for the Flask backend + iOS app. All IDs use predictable slug formats enforced by <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent)">validators.py</code>.</p>
+<header class="text-center mb-16 max-w-2xl mx-auto">
+  <h1 class="text-4xl font-black mb-3"
+      style="background:linear-gradient(135deg,#7B4FA6,#E91E8C,#FF6B35);
+             -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+    DreamSpace Database Schema
+  </h1>
+  <p class="text-white/40 text-sm">
+    Generated from
+    <code class="text-pink-400 font-mono">prototypes/backend/db/schema.sql</code>
+    &middot; March 25, 2026
+  </p>
+  <div class="flex justify-center gap-5 mt-8 flex-wrap">
+    <div class="bg-[#0F3460] border border-white/10 rounded-2xl px-8 py-4 text-center">
+      <div class="text-3xl font-black text-purple-400">20</div>
+      <div class="text-xs text-white/40 uppercase tracking-widest mt-1">Tables</div>
+    </div>
+    <div class="bg-[#0F3460] border border-white/10 rounded-2xl px-8 py-4 text-center">
+      <div class="text-3xl font-black text-purple-400">SQLite</div>
+      <div class="text-xs text-white/40 uppercase tracking-widest mt-1">Engine</div>
+    </div>
+    <div class="bg-[#0F3460] border border-white/10 rounded-2xl px-8 py-4 text-center">
+      <div class="text-3xl font-black text-purple-400">1</div>
+      <div class="text-xs text-white/40 uppercase tracking-widest mt-1">Shared DB</div>
+    </div>
+    <div class="bg-[#0F3460] border border-white/10 rounded-2xl px-8 py-4 text-center">
+      <div class="text-3xl font-black text-purple-400">3</div>
+      <div class="text-xs text-white/40 uppercase tracking-widest mt-1">Client Groups</div>
+    </div>
+  </div>
 </header>
 
-<!-- ── ENTITIES ─────────────────────────────────────────────── -->
-<div class="section-title">Entities</div>
-<div class="grid">
 
-  <!-- CLASS -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-dot" style="background:#7c6af7"></div>
-      <div class="card-title" style="color:#7c6af7">class</div>
-      <div class="card-badge" style="color:#7c6af7;border-color:rgba(124,106,247,.3)">Teacher</div>
-    </div>
-    <div class="card-body">
-      <div class="regex-row"><span>PK pattern</span>^class-[0-9]+$</div>
-      <div class="field"><span class="field-name">class_id</span><span class="pk-tag">PK</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">name</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">student_count</span><span class="field-type">INTEGER</span></div>
-      <div class="field"><span class="field-name">active_assignments</span><span class="field-type">INTEGER</span></div>
-      <div class="field"><span class="field-name">engagement_rate</span><span class="field-type">INTEGER</span></div>
-    </div>
-  </div>
+<section class="max-w-7xl mx-auto mb-20 px-4">
+  <h2 class="text-sm font-black uppercase tracking-widest mb-1 pl-3"
+      style="border-left: 4px solid #7B4FA6; color: #7B4FA6">
+    Teacher Dashboard
+    <span class="font-normal opacity-60 text-xs normal-case tracking-normal ml-1">(12 tables)</span>
+  </h2>
+  
 
-  <!-- STUDENT -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-dot" style="background:#4ade80"></div>
-      <div class="card-title" style="color:#4ade80">student</div>
-      <div class="card-badge" style="color:#4ade80;border-color:rgba(74,222,128,.3)">Teacher</div>
-    </div>
-    <div class="card-body">
-      <div class="regex-row"><span>PK pattern</span>^student-[0-9]+$</div>
-      <div class="field"><span class="field-name">student_id</span><span class="pk-tag">PK</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">class_id</span><span class="fk-tag">FK</span><span class="field-type">TEXT → class</span></div>
-      <div class="field"><span class="field-name">name</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">progress_percentage</span><span class="field-type">INTEGER</span></div>
-      <div class="field"><span class="field-name">challenges_completed</span><span class="field-type">INTEGER</span></div>
-      <div class="field"><span class="field-name">lessons_completed</span><span class="field-type">INTEGER</span></div>
-      <div class="field"><span class="field-name">teacher_notes</span><span class="field-type">TEXT</span></div>
-    </div>
-  </div>
-
-  <!-- LESSON -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-dot" style="background:#60a5fa"></div>
-      <div class="card-title" style="color:#60a5fa">lesson</div>
-      <div class="card-badge" style="color:#60a5fa;border-color:rgba(96,165,250,.3)">Content</div>
-    </div>
-    <div class="card-body">
-      <div class="regex-row"><span>PK pattern</span>^lesson-[0-9]+$</div>
-      <div class="field"><span class="field-name">lesson_id</span><span class="pk-tag">PK</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">title</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">description</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">duration</span><span class="field-type">INTEGER (mins)</span></div>
-      <div class="field"><span class="field-name">level</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">video_url</span><span class="field-type">TEXT</span></div>
-    </div>
-  </div>
-
-  <!-- EXERCISE -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-dot" style="background:#2dd4bf"></div>
-      <div class="card-title" style="color:#2dd4bf">exercise</div>
-      <div class="card-badge" style="color:#2dd4bf;border-color:rgba(45,212,191,.3)">Content</div>
-    </div>
-    <div class="card-body">
-      <div class="regex-row"><span>PK pattern</span>^exercise-[0-9]+-[0-9]+$</div>
-      <div class="field"><span class="field-name">exercise_id</span><span class="pk-tag">PK</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">lesson_id</span><span class="fk-tag">FK</span><span class="field-type">TEXT → lesson</span></div>
-      <div class="field"><span class="field-name">title</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">description</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">difficulty</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">exercise_type</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">sort_order</span><span class="field-type">INTEGER</span></div>
-    </div>
-  </div>
-
-  <!-- ASSIGNMENT -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-dot" style="background:#fbbf24"></div>
-      <div class="card-title" style="color:#fbbf24">assignment</div>
-      <div class="card-badge" style="color:#fbbf24;border-color:rgba(251,191,36,.3)">Teacher</div>
-    </div>
-    <div class="card-body">
-      <div class="regex-row"><span>PK pattern</span>^assign-[0-9]+$</div>
-      <div class="field"><span class="field-name">assignment_id</span><span class="pk-tag">PK</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">lesson_id</span><span class="fk-tag">FK</span><span class="field-type">TEXT → lesson</span></div>
-      <div class="field"><span class="field-name">class_id</span><span class="fk-tag">FK</span><span class="field-type">TEXT → class</span></div>
-      <div class="field"><span class="field-name">assigned_date</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">due_date</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">completion_rate</span><span class="field-type">INTEGER %</span></div>
-    </div>
-  </div>
-
-  <!-- ACHIEVEMENT -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-dot" style="background:#fb923c"></div>
-      <div class="card-title" style="color:#fb923c">achievement</div>
-      <div class="card-badge" style="color:#fb923c;border-color:rgba(251,146,60,.3)">Gamification</div>
-    </div>
-    <div class="card-body">
-      <div class="regex-row"><span>PK pattern</span>^ach-[0-9]+$</div>
-      <div class="field"><span class="field-name">achievement_id</span><span class="pk-tag">PK</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">name</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">icon</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">description</span><span class="field-type">TEXT</span></div>
-    </div>
-  </div>
-
-  <!-- ACTIVITY ENTRY -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-dot" style="background:#f472b6"></div>
-      <div class="card-title" style="color:#f472b6">activity_entry</div>
-      <div class="card-badge" style="color:#f472b6;border-color:rgba(244,114,182,.3)">Tracking</div>
-    </div>
-    <div class="card-body">
-      <div class="regex-row"><span>PK pattern</span>^act-[0-9]+$</div>
-      <div class="field"><span class="field-name">activity_id</span><span class="pk-tag">PK</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">student_id</span><span class="fk-tag">FK</span><span class="field-type">TEXT → student</span></div>
-      <div class="field"><span class="field-name">activity_type</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">title</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">activity_date</span><span class="field-type">TEXT</span></div>
-      <div class="field"><span class="field-name">success</span><span class="field-type">INTEGER (0/1)</span></div>
-    </div>
-  </div>
-
-  <!-- STUDENT_ACHIEVEMENT (junction) -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-dot" style="background:#6b6b7a"></div>
-      <div class="card-title" style="color:#a0a0b0">student_achievement</div>
-      <div class="card-badge" style="color:#6b6b7a;border-color:rgba(107,107,122,.3)">Junction</div>
-    </div>
-    <div class="card-body">
-      <div class="field"><span class="field-name">student_id</span><span class="fk-tag">FK</span><span class="field-type">TEXT → student</span></div>
-      <div class="field"><span class="field-name">achievement_id</span><span class="fk-tag">FK</span><span class="field-type">TEXT → achievement</span></div>
-      <div class="field"><span class="field-name">earned_date</span><span class="field-type">TEXT</span></div>
-      <div style="margin: 6px 16px 4px; font-size: 11px; color: var(--muted);">Composite PK: (student_id, achievement_id)</div>
+  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6 overflow-x-auto">
+    <p class="text-xs text-white/30 uppercase tracking-widest mb-3 font-semibold">Entity Relationship Diagram</p>
+    <div class="mermaid">
+erDiagram
+    teacher_profiles {
+        INTEGER id PK
+        TEXT name
+        TEXT email
+        TEXT school
+        TEXT avatar
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+    classes {
+        TEXT class_id PK
+        TEXT name
+        INTEGER student_count
+        INTEGER active_assignments
+        INTEGER engagement_rate
+        TIMESTAMP created_at
+    }
+    students {
+        TEXT student_id PK
+        TEXT name
+        TEXT avatar
+        TEXT class_id FK
+        INTEGER progress_percentage
+        INTEGER challenges_completed
+        INTEGER lessons_completed
+        TEXT last_activity
+        TEXT teacher_notes
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+    achievements {
+        TEXT achievement_id PK
+        TEXT name
+        TEXT icon
+        TEXT description
+    }
+    student_achievements {
+        TEXT student_id FK
+        TEXT achievement_id FK
+        TEXT earned_date
+    }
+    activity_log {
+        TEXT activity_id PK
+        TEXT student_id FK
+        TEXT activity_type
+        TEXT title
+        TEXT activity_date
+        INTEGER success
+        TIMESTAMP created_at
+    }
+    lessons {
+        TEXT lesson_id PK
+        TEXT title
+        TEXT description
+        INTEGER duration
+        TEXT level
+        TEXT video_url
+        INTEGER published
+        TIMESTAMP created_at
+    }
+    exercises {
+        TEXT exercise_id PK
+        TEXT lesson_id FK
+        TEXT title
+        TEXT description
+        TEXT difficulty
+        TEXT exercise_type
+        INTEGER sort_order
+    }
+    assignments {
+        TEXT assignment_id PK
+        TEXT lesson_id FK
+        TEXT class_id FK
+        TEXT assigned_date
+        TEXT due_date
+        INTEGER completion_rate
+        TIMESTAMP created_at
+    }
+    last_viewed_lessons {
+        INTEGER teacher_id FK
+        TEXT lesson_id FK
+        TIMESTAMP viewed_at
+    }
+    class_codes {
+        TEXT code PK
+        TEXT class_id FK
+        TIMESTAMP created_at
+    }
+    exercise_attempts {
+        INTEGER id PK
+        TEXT student_id FK
+        TEXT exercise_id FK
+        TEXT lesson_id FK
+        INTEGER score
+        INTEGER completed
+        INTEGER time_spent_sec
+        TEXT attempt_data
+        TIMESTAMP created_at
+    }
+    classes ||--o{ students : "class_id"
+    students ||--o{ student_achievements : "student_id"
+    achievements ||--o{ student_achievements : "achievement_id"
+    students ||--o{ activity_log : "student_id"
+    lessons ||--o{ exercises : "lesson_id"
+    lessons ||--o{ assignments : "lesson_id"
+    classes ||--o{ assignments : "class_id"
+    teacher_profiles ||--o{ last_viewed_lessons : "teacher_id"
+    lessons ||--o{ last_viewed_lessons : "lesson_id"
+    classes ||--o{ class_codes : "class_id"
+    students ||--o{ exercise_attempts : "student_id"
+    exercises ||--o{ exercise_attempts : "exercise_id"
+    lessons ||--o{ exercise_attempts : "lesson_id"
     </div>
   </div>
 
-</div>
-
-<!-- ── RELATIONSHIPS ──────────────────────────────────────────── -->
-<div class="section-title">Relationships</div>
-<div class="rel-grid">
-
-  <div class="rel-row">
-    <div class="rel-entity" style="background:rgba(74,222,128,.1);color:#4ade80">student</div>
-    <div class="rel-arrow">→</div>
-    <div class="rel-entity" style="background:rgba(124,106,247,.1);color:#7c6af7">class</div>
-    <div class="rel-label">belongs to via</div>
-    <div class="rel-via">class_id</div>
-    <div class="rel-cardinality">N : 1</div>
+  <p class="text-xs text-white/30 uppercase tracking-widest mb-3 font-semibold pl-1">Table Reference</p>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">teacher_profiles</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">name</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">email</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">school</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">avatar</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">updated_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  <div class="rel-row">
-    <div class="rel-entity" style="background:rgba(251,191,36,.1);color:#fbbf24">assignment</div>
-    <div class="rel-arrow">→</div>
-    <div class="rel-entity" style="background:rgba(96,165,250,.1);color:#60a5fa">lesson</div>
-    <div class="rel-label">covers via</div>
-    <div class="rel-via">lesson_id</div>
-    <div class="rel-cardinality">N : 1</div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">classes</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">class_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">name</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">student_count</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">active_assignments</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">engagement_rate</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  <div class="rel-row">
-    <div class="rel-entity" style="background:rgba(251,191,36,.1);color:#fbbf24">assignment</div>
-    <div class="rel-arrow">→</div>
-    <div class="rel-entity" style="background:rgba(124,106,247,.1);color:#7c6af7">class</div>
-    <div class="rel-label">assigned to via</div>
-    <div class="rel-via">class_id</div>
-    <div class="rel-cardinality">N : 1</div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">students</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">student_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">name</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">avatar</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">class_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> classes.class_id">FK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> classes.class_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">progress_percentage</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">challenges_completed</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">lessons_completed</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">last_activity</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">teacher_notes</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">''</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">updated_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  <div class="rel-row">
-    <div class="rel-entity" style="background:rgba(124,106,247,.1);color:#7c6af7">class</div>
-    <div class="rel-arrow">→</div>
-    <div class="rel-entity" style="background:rgba(74,222,128,.1);color:#4ade80">student</div>
-    <div class="rel-label">contains via</div>
-    <div class="rel-via">students[ ]</div>
-    <div class="rel-cardinality">1 : N</div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">achievements</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">achievement_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">name</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">icon</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">description</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  <div class="rel-row">
-    <div class="rel-entity" style="background:rgba(96,165,250,.1);color:#60a5fa">lesson</div>
-    <div class="rel-arrow">→</div>
-    <div class="rel-entity" style="background:rgba(45,212,191,.1);color:#2dd4bf">exercise</div>
-    <div class="rel-label">broken into via</div>
-    <div class="rel-via">lesson_id</div>
-    <div class="rel-cardinality">1 : N</div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">student_achievements</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">student_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> students.student_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">achievement_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> achievements.achievement_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> achievements.achievement_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">earned_date</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  <div class="rel-row">
-    <div class="rel-entity" style="background:rgba(74,222,128,.1);color:#4ade80">student</div>
-    <div class="rel-arrow">→</div>
-    <div class="rel-entity" style="background:rgba(244,114,182,.1);color:#f472b6">activity_entry</div>
-    <div class="rel-label">logs via</div>
-    <div class="rel-via">student_id</div>
-    <div class="rel-cardinality">1 : N</div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">activity_log</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">activity_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">student_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> students.student_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">activity_type</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">title</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">activity_date</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">success</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  <div class="rel-row">
-    <div class="rel-entity" style="background:rgba(74,222,128,.1);color:#4ade80">student</div>
-    <div class="rel-arrow">⇄</div>
-    <div class="rel-entity" style="background:rgba(251,146,60,.1);color:#fb923c">achievement</div>
-    <div class="rel-label">earned via</div>
-    <div class="rel-via">student_achievement</div>
-    <div class="rel-cardinality">N : M</div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">lessons</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">lesson_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">title</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">description</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">duration</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">level</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">video_url</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">published</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">1</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">exercises</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">exercise_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">lesson_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> lessons.lesson_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">title</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">description</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">difficulty</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">exercise_type</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">'Coding'</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">sort_order</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">assignments</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">assignment_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">lesson_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> lessons.lesson_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">class_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> classes.class_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> classes.class_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">assigned_date</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">due_date</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">completion_rate</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">last_viewed_lessons</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">teacher_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teacher_profiles.id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> teacher_profiles.id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">lesson_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> lessons.lesson_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">viewed_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">class_codes</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">code</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">class_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> classes.class_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> classes.class_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">exercise_attempts</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">student_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> students.student_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">exercise_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> exercises.exercise_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> exercises.exercise_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">lesson_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> lessons.lesson_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> lessons.lesson_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">score</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">completed</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">time_spent_sec</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">attempt_data</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</section>
+<section class="max-w-7xl mx-auto mb-20 px-4">
+  <h2 class="text-sm font-black uppercase tracking-widest mb-1 pl-3"
+      style="border-left: 4px solid #E91E8C; color: #E91E8C">
+    Kids App
+    <span class="font-normal opacity-60 text-xs normal-case tracking-normal ml-1">(6 tables)</span>
+  </h2>
+  <p class="text-sm text-white/50 mt-1 mb-5 pl-4">These 6 tables are shared by <strong>both the iOS app (SwiftUI)</strong> and the <strong>Kids Web App</strong> — both clients connect to the same backend (port 5000) and the same SQLite database. There is no separate database per client.</p>
 
-</div>
-
-<!-- ── ID LEGEND ──────────────────────────────────────────────── -->
-<div class="section-title">ID Reference</div>
-<div class="legend">
-
-  <div class="legend-item">
-    <div class="legend-example" style="color:#4ade80">student-N</div>
-    <div class="legend-regex">^student-[0-9]+$</div>
-    <div class="legend-examples">
-      <span class="legend-pill">student-1</span>
-      <span class="legend-pill">student-2</span>
-      <span class="legend-pill">student-11</span>
+  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6 overflow-x-auto">
+    <p class="text-xs text-white/30 uppercase tracking-widest mb-3 font-semibold">Entity Relationship Diagram</p>
+    <div class="mermaid">
+erDiagram
+    teams {
+        TEXT team_id PK
+        TEXT name
+        INTEGER total_points
+        TIMESTAMP created_at
+    }
+    team_members {
+        TEXT member_id PK
+        TEXT team_id FK
+        TEXT name
+        TEXT avatar
+        INTEGER points
+    }
+    user_profiles {
+        TEXT member_id PK
+        TEXT name
+        INTEGER age
+        TEXT team_id FK
+        TEXT avatar
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+    challenges {
+        TEXT challenge_id PK
+        TEXT title
+        TEXT description
+        TEXT difficulty
+        TEXT category
+        INTEGER points
+        TEXT question
+        TEXT options
+        INTEGER correct_answer
+        TEXT explanation
+        TEXT age_group
+    }
+    challenge_results {
+        TEXT id PK
+        TEXT member_id FK
+        TEXT challenge_id FK
+        INTEGER completed
+        INTEGER correct
+        INTEGER points
+        TIMESTAMP completed_date
+    }
+    user_tracking {
+        INTEGER id PK
+        TEXT user_type
+        TEXT user_id
+        TEXT event_type
+        TEXT event_data
+        TEXT session_id
+        TIMESTAMP created_at
+    }
+    teams ||--o{ team_members : "team_id"
+    teams ||--o{ user_profiles : "team_id"
+    user_profiles ||--o{ challenge_results : "member_id"
+    challenges ||--o{ challenge_results : "challenge_id"
     </div>
   </div>
 
-  <div class="legend-item">
-    <div class="legend-example" style="color:#7c6af7">class-N</div>
-    <div class="legend-regex">^class-[0-9]+$</div>
-    <div class="legend-examples">
-      <span class="legend-pill">class-1</span>
-      <span class="legend-pill">class-2</span>
-      <span class="legend-pill">class-3</span>
+  <p class="text-xs text-white/30 uppercase tracking-widest mb-3 font-semibold pl-1">Table Reference</p>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">teams</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">team_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">name</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">total_points</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">team_members</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">member_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">team_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teams.team_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> teams.team_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">name</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">avatar</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">points</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">user_profiles</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">member_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">name</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">age</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">team_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teams.team_id">FK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> teams.team_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">avatar</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">updated_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">challenges</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">challenge_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">title</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">description</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">difficulty</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">category</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">points</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">question</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">options</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">correct_answer</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">explanation</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">age_group</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">challenge_results</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">member_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> user_profiles.member_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> user_profiles.member_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">challenge_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> challenges.challenge_id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> challenges.challenge_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">completed</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">correct</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">points</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">0</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">completed_date</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">user_tracking</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">user_type</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">user_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">event_type</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">event_data</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">session_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</section>
+<section class="max-w-7xl mx-auto mb-20 px-4">
+  <h2 class="text-sm font-black uppercase tracking-widest mb-1 pl-3"
+      style="border-left: 4px solid #FF6B35; color: #FF6B35">
+    Auth / Shared
+    <span class="font-normal opacity-60 text-xs normal-case tracking-normal ml-1">(2 tables)</span>
+  </h2>
+  
+
+  <div class="rounded-xl border border-white/10 bg-[#0d1b2e] p-5 mb-6 overflow-x-auto">
+    <p class="text-xs text-white/30 uppercase tracking-widest mb-3 font-semibold">Entity Relationship Diagram</p>
+    <div class="mermaid">
+erDiagram
+    accounts {
+        INTEGER id PK
+        TEXT email UK
+        TEXT password_hash
+        TEXT role
+        TEXT display_name
+        TEXT student_id FK
+        INTEGER teacher_id FK
+        TIMESTAMP created_at
+    }
+    auth_sessions {
+        TEXT token PK
+        INTEGER account_id FK
+        TIMESTAMP created_at
+        TIMESTAMP expires_at
+    }
+    students ||--o{ accounts : "student_id"
+    teacher_profiles ||--o{ accounts : "teacher_id"
+    accounts ||--o{ auth_sessions : "account_id"
     </div>
   </div>
 
-  <div class="legend-item">
-    <div class="legend-example" style="color:#60a5fa">lesson-N</div>
-    <div class="legend-regex">^lesson-[0-9]+$</div>
-    <div class="legend-examples">
-      <span class="legend-pill">lesson-1</span>
-      <span class="legend-pill">lesson-8</span>
-      <span class="legend-pill">lesson-16</span>
+  <p class="text-xs text-white/30 uppercase tracking-widest mb-3 font-semibold pl-1">Table Reference</p>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">accounts</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">email</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span><span class="badge uq">UQ</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">password_hash</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">role</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">'student',</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">display_name</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">student_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> students.student_id">FK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> students.student_id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">teacher_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> teacher_profiles.id">FK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> teacher_profiles.id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-
-  <div class="legend-item">
-    <div class="legend-example" style="color:#2dd4bf">exercise-N-N</div>
-    <div class="legend-regex">^exercise-[0-9]+-[0-9]+$</div>
-    <div class="legend-examples">
-      <span class="legend-pill">exercise-1-1</span>
-      <span class="legend-pill">exercise-4-2</span>
-      <span class="legend-pill">exercise-8-3</span>
+  <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0F3460]">
+    <div class="px-4 py-2.5 bg-[#16213e] border-b border-white/10 font-mono font-bold text-yellow-400 text-sm">auth_sessions</div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-white/5">
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Column</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Type</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Flags</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">Default</th>
+            <th class="px-3 py-2 text-left text-white/40 font-semibold uppercase text-xs tracking-widest">References</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">token</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TEXT</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge pk">PK</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">account_id</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">INTEGER</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge fk" title="-> accounts.id">FK</span><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="ref whitespace-nowrap">-> accounts.id</span></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">created_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"><code class="text-orange-400 text-xs font-mono">CURRENT_TIMESTAMP</code></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        <tr class="border-t border-white/10 hover:bg-white/5 transition-colors">
+          <td class="px-3 py-2 font-mono font-semibold text-white text-xs whitespace-nowrap">expires_at</td>
+          <td class="px-3 py-2 font-mono text-green-400 text-xs whitespace-nowrap">TIMESTAMP</td>
+          <td class="px-3 py-2 whitespace-nowrap"><span class="badge nn">NN</span></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+          <td class="px-3 py-2 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-
-  <div class="legend-item">
-    <div class="legend-example" style="color:#fbbf24">assign-N</div>
-    <div class="legend-regex">^assign-[0-9]+$</div>
-    <div class="legend-examples">
-      <span class="legend-pill">assign-1</span>
-      <span class="legend-pill">assign-2</span>
-    </div>
   </div>
+</section>
 
-  <div class="legend-item">
-    <div class="legend-example" style="color:#fb923c">ach-N</div>
-    <div class="legend-regex">^ach-[0-9]+$</div>
-    <div class="legend-examples">
-      <span class="legend-pill">ach-1</span>
-      <span class="legend-pill">ach-2</span>
-      <span class="legend-pill">ach-3</span>
-    </div>
-  </div>
-
-  <div class="legend-item">
-    <div class="legend-example" style="color:#f472b6">act-N</div>
-    <div class="legend-regex">^act-[0-9]+$</div>
-    <div class="legend-examples">
-      <span class="legend-pill">act-1</span>
-      <span class="legend-pill">act-2</span>
-    </div>
-  </div>
-
-</div>
-
-<!-- ── ERD DIAGRAM ──────────────────────────────────────────────── -->
-<div class="section-title" style="max-width:1200px;margin:0 auto 20px;">Entity Relationship Diagram</div>
-<div style="max-width:1200px;margin:0 auto 56px;">
-  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;overflow-x:auto;">
-
-    <!-- Legend strip -->
-    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);">
-      <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted);">
-        <svg width="28" height="10"><line x1="0" y1="5" x2="28" y2="5" stroke="#3a3a44" stroke-width="1.5" stroke-dasharray="4,3"/></svg>
-        FK reference
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);">
-        <span style="font-family:var(--font-mono);font-size:9px;background:rgba(124,106,247,.18);color:#7c6af7;padding:1px 5px;border-radius:3px;">PK</span>Primary key
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);">
-        <span style="font-family:var(--font-mono);font-size:9px;background:rgba(96,165,250,.15);color:#60a5fa;padding:1px 5px;border-radius:3px;">FK</span>Foreign key
-      </div>
-      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);">
-        <span style="font-family:var(--font-mono);font-size:10px;">1</span>
-        <svg width="22" height="10"><line x1="0" y1="5" x2="22" y2="5" stroke="#3a3a44" stroke-width="1.5"/></svg>
-        <span style="font-family:var(--font-mono);font-size:10px;">N</span>
-        One-to-many
-      </div>
-      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);">
-        <span style="font-family:var(--font-mono);font-size:10px;">N</span>
-        <svg width="22" height="10"><line x1="0" y1="5" x2="22" y2="5" stroke="#3a3a44" stroke-width="1.5"/></svg>
-        <span style="font-family:var(--font-mono);font-size:10px;">M</span>
-        Many-to-many (junction)
-      </div>
-    </div>
-    <!--
-      Layout: 3 columns × 3 rows, all connections are strictly horizontal or vertical.
-      Col1 x=20–240  Col2 x=280–500  Col3 x=540–760
-      Row1 y=30      Row2 y=220      Row3 y=400
-    -->
-    <svg viewBox="0 0 800 530" width="100%" style="min-width:600px;display:block;" xmlns="http://www.w3.org/2000/svg">
-
-      <!-- ── DOMAIN BANDS (subtle row backgrounds) ── -->
-      <rect x="8" y="18" width="784" height="150" rx="6" fill="rgba(124,106,247,.03)" stroke="rgba(124,106,247,.08)" stroke-width="1"/>
-      <text x="16" y="31" font-family="-apple-system,sans-serif" font-size="9" font-weight="500" letter-spacing=".08em" fill="rgba(124,106,247,.4)">CLASSROOM</text>
-
-      <rect x="8" y="206" width="784" height="128" rx="6" fill="rgba(251,191,36,.03)" stroke="rgba(251,191,36,.08)" stroke-width="1"/>
-      <text x="16" y="219" font-family="-apple-system,sans-serif" font-size="9" font-weight="500" letter-spacing=".08em" fill="rgba(251,191,36,.4)">BRIDGE &amp; GAMIFICATION</text>
-
-      <rect x="8" y="388" width="784" height="128" rx="6" fill="rgba(96,165,250,.03)" stroke="rgba(96,165,250,.08)" stroke-width="1"/>
-      <text x="16" y="401" font-family="-apple-system,sans-serif" font-size="9" font-weight="500" letter-spacing=".08em" fill="rgba(96,165,250,.4)">CURRICULUM</text>
-
-      <!-- ── CONNECTOR LINES (drawn before entities so they sit behind) ── -->
-
-      <!-- 1. class → student  (student.class_id FK)  horizontal -->
-      <line x1="240" y1="70" x2="280" y2="70" stroke="#3a3a44" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <text x="243" y="66" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">1</text>
-      <text x="266" y="66" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">N</text>
-
-      <!-- 2. student → activity_entry  (activity_entry.student_id FK)  horizontal -->
-      <line x1="500" y1="80" x2="540" y2="80" stroke="#3a3a44" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <text x="503" y="76" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">1</text>
-      <text x="527" y="76" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">N</text>
-
-      <!-- 3. class ↕ assignment  (assignment.class_id FK)  vertical col1 -->
-      <line x1="130" y1="110" x2="130" y2="220" stroke="#3a3a44" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <text x="134" y="120" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">1</text>
-      <text x="134" y="214" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">N</text>
-      <text x="136" y="168" font-family="'SF Mono',monospace" font-size="8" fill="rgba(96,165,250,.6)">class_id</text>
-
-      <!-- 4. assignment ↕ lesson  (assignment.lesson_id FK)  vertical col1 -->
-      <line x1="130" y1="328" x2="130" y2="400" stroke="#3a3a44" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <text x="134" y="338" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">N</text>
-      <text x="134" y="394" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">1</text>
-      <text x="136" y="366" font-family="'SF Mono',monospace" font-size="8" fill="rgba(96,165,250,.6)">lesson_id</text>
-
-      <!-- 5. student ↕ student_achievement  (stu_ach.student_id FK)  vertical col2 -->
-      <line x1="390" y1="138" x2="390" y2="220" stroke="#3a3a44" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <text x="394" y="150" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">1</text>
-      <text x="394" y="214" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">N</text>
-      <text x="396" y="182" font-family="'SF Mono',monospace" font-size="8" fill="rgba(96,165,250,.6)">student_id</text>
-
-      <!-- 6. student_achievement → achievement  (stu_ach.achievement_id FK)  horizontal -->
-      <line x1="500" y1="260" x2="540" y2="260" stroke="#3a3a44" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <text x="503" y="256" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">N</text>
-      <text x="527" y="256" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">1</text>
-
-      <!-- 7. lesson → exercise  (exercise.lesson_id FK)  horizontal -->
-      <line x1="240" y1="447" x2="280" y2="447" stroke="#3a3a44" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <text x="243" y="443" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">1</text>
-      <text x="266" y="443" font-family="'SF Mono',monospace" font-size="9" fill="#4a4a58">N</text>
-
-      <!-- ── ENTITIES ── -->
-
-      <!-- ROW 1 ─── CLASSROOM ───────────────────────────── -->
-
-      <!-- CLASS  col1 row1 -->
-      <g transform="translate(20,30)">
-        <rect width="220" height="80" rx="8" fill="#1a1a1e" stroke="#7c6af7" stroke-width="1.5"/>
-        <rect width="220" height="28" rx="8" fill="rgba(124,106,247,.14)"/>
-        <rect y="20" width="220" height="8" fill="rgba(124,106,247,.14)"/>
-        <circle cx="14" cy="14" r="5" fill="#7c6af7"/>
-        <text x="25" y="19" font-family="-apple-system,sans-serif" font-size="11.5" font-weight="600" fill="#7c6af7">class</text>
-        <text x="163" y="19" font-family="'SF Mono',monospace" font-size="9" fill="rgba(124,106,247,.5)">class-N</text>
-        <text x="10" y="43" font-family="'SF Mono',monospace" font-size="10" fill="#e8e8f0">class_id</text><text x="170" y="43" font-family="'SF Mono',monospace" font-size="9" fill="#7c6af7">PK</text>
-        <text x="10" y="57" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">name</text>
-        <text x="10" y="71" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">student_count, eng_%</text>
-      </g>
-
-      <!-- STUDENT  col2 row1 -->
-      <g transform="translate(280,30)">
-        <rect width="220" height="108" rx="8" fill="#1a1a1e" stroke="#4ade80" stroke-width="1.5"/>
-        <rect width="220" height="28" rx="8" fill="rgba(74,222,128,.1)"/>
-        <rect y="20" width="220" height="8" fill="rgba(74,222,128,.1)"/>
-        <circle cx="14" cy="14" r="5" fill="#4ade80"/>
-        <text x="25" y="19" font-family="-apple-system,sans-serif" font-size="11.5" font-weight="600" fill="#4ade80">student</text>
-        <text x="150" y="19" font-family="'SF Mono',monospace" font-size="9" fill="rgba(74,222,128,.5)">student-N</text>
-        <text x="10" y="43" font-family="'SF Mono',monospace" font-size="10" fill="#e8e8f0">student_id</text><text x="170" y="43" font-family="'SF Mono',monospace" font-size="9" fill="#7c6af7">PK</text>
-        <text x="10" y="57" font-family="'SF Mono',monospace" font-size="10" fill="#60a5fa">class_id</text><text x="170" y="57" font-family="'SF Mono',monospace" font-size="9" fill="#60a5fa">FK</text>
-        <text x="10" y="71" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">name, avatar</text>
-        <text x="10" y="85" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">progress_%, challenges</text>
-        <text x="10" y="99" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">lessons, teacher_notes</text>
-      </g>
-
-      <!-- ACTIVITY_ENTRY  col3 row1 -->
-      <g transform="translate(540,30)">
-        <rect width="220" height="108" rx="8" fill="#1a1a1e" stroke="#f472b6" stroke-width="1.5"/>
-        <rect width="220" height="28" rx="8" fill="rgba(244,114,182,.1)"/>
-        <rect y="20" width="220" height="8" fill="rgba(244,114,182,.1)"/>
-        <circle cx="14" cy="14" r="5" fill="#f472b6"/>
-        <text x="25" y="19" font-family="-apple-system,sans-serif" font-size="11.5" font-weight="600" fill="#f472b6">activity_entry</text>
-        <text x="167" y="19" font-family="'SF Mono',monospace" font-size="9" fill="rgba(244,114,182,.5)">act-N</text>
-        <text x="10" y="43" font-family="'SF Mono',monospace" font-size="10" fill="#e8e8f0">activity_id</text><text x="170" y="43" font-family="'SF Mono',monospace" font-size="9" fill="#7c6af7">PK</text>
-        <text x="10" y="57" font-family="'SF Mono',monospace" font-size="10" fill="#60a5fa">student_id</text><text x="170" y="57" font-family="'SF Mono',monospace" font-size="9" fill="#60a5fa">FK</text>
-        <text x="10" y="71" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">activity_type, title</text>
-        <text x="10" y="85" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">activity_date</text>
-        <text x="10" y="99" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">success (0/1)</text>
-      </g>
-
-      <!-- ROW 2 ─── BRIDGE & GAMIFICATION ─────────────── -->
-
-      <!-- ASSIGNMENT  col1 row2 -->
-      <g transform="translate(20,220)">
-        <rect width="220" height="108" rx="8" fill="#1a1a1e" stroke="#fbbf24" stroke-width="1.5"/>
-        <rect width="220" height="28" rx="8" fill="rgba(251,191,36,.1)"/>
-        <rect y="20" width="220" height="8" fill="rgba(251,191,36,.1)"/>
-        <circle cx="14" cy="14" r="5" fill="#fbbf24"/>
-        <text x="25" y="19" font-family="-apple-system,sans-serif" font-size="11.5" font-weight="600" fill="#fbbf24">assignment</text>
-        <text x="157" y="19" font-family="'SF Mono',monospace" font-size="9" fill="rgba(251,191,36,.5)">assign-N</text>
-        <text x="10" y="43" font-family="'SF Mono',monospace" font-size="10" fill="#e8e8f0">assignment_id</text><text x="170" y="43" font-family="'SF Mono',monospace" font-size="9" fill="#7c6af7">PK</text>
-        <text x="10" y="57" font-family="'SF Mono',monospace" font-size="10" fill="#60a5fa">lesson_id</text><text x="170" y="57" font-family="'SF Mono',monospace" font-size="9" fill="#60a5fa">FK</text>
-        <text x="10" y="71" font-family="'SF Mono',monospace" font-size="10" fill="#60a5fa">class_id</text><text x="170" y="71" font-family="'SF Mono',monospace" font-size="9" fill="#60a5fa">FK</text>
-        <text x="10" y="85" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">assigned_date, due_date</text>
-        <text x="10" y="99" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">completion_%</text>
-      </g>
-
-      <!-- STUDENT_ACHIEVEMENT  col2 row2  (junction) -->
-      <g transform="translate(280,220)">
-        <rect width="220" height="80" rx="8" fill="#1a1a1e" stroke="#3a3a44" stroke-width="1.5"/>
-        <rect width="220" height="28" rx="8" fill="rgba(107,107,122,.1)"/>
-        <rect y="20" width="220" height="8" fill="rgba(107,107,122,.1)"/>
-        <circle cx="14" cy="14" r="5" fill="#6b6b7a"/>
-        <text x="25" y="18" font-family="-apple-system,sans-serif" font-size="10.5" font-weight="600" fill="#a0a0b0">student_achievement</text>
-        <text x="158" y="26" font-family="-apple-system,sans-serif" font-size="8" fill="#4a4a58">junction</text>
-        <text x="10" y="43" font-family="'SF Mono',monospace" font-size="10" fill="#60a5fa">student_id</text><text x="170" y="43" font-family="'SF Mono',monospace" font-size="9" fill="#60a5fa">FK</text>
-        <text x="10" y="57" font-family="'SF Mono',monospace" font-size="10" fill="#60a5fa">achievement_id</text><text x="170" y="57" font-family="'SF Mono',monospace" font-size="9" fill="#60a5fa">FK</text>
-        <text x="10" y="71" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">earned_date</text>
-      </g>
-
-      <!-- ACHIEVEMENT  col3 row2 -->
-      <g transform="translate(540,220)">
-        <rect width="220" height="80" rx="8" fill="#1a1a1e" stroke="#fb923c" stroke-width="1.5"/>
-        <rect width="220" height="28" rx="8" fill="rgba(251,146,60,.1)"/>
-        <rect y="20" width="220" height="8" fill="rgba(251,146,60,.1)"/>
-        <circle cx="14" cy="14" r="5" fill="#fb923c"/>
-        <text x="25" y="19" font-family="-apple-system,sans-serif" font-size="11.5" font-weight="600" fill="#fb923c">achievement</text>
-        <text x="163" y="19" font-family="'SF Mono',monospace" font-size="9" fill="rgba(251,146,60,.5)">ach-N</text>
-        <text x="10" y="43" font-family="'SF Mono',monospace" font-size="10" fill="#e8e8f0">achievement_id</text><text x="170" y="43" font-family="'SF Mono',monospace" font-size="9" fill="#7c6af7">PK</text>
-        <text x="10" y="57" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">name, icon</text>
-        <text x="10" y="71" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">description</text>
-      </g>
-
-      <!-- ROW 3 ─── CURRICULUM ─────────────────────────── -->
-
-      <!-- LESSON  col1 row3 -->
-      <g transform="translate(20,400)">
-        <rect width="220" height="94" rx="8" fill="#1a1a1e" stroke="#60a5fa" stroke-width="1.5"/>
-        <rect width="220" height="28" rx="8" fill="rgba(96,165,250,.1)"/>
-        <rect y="20" width="220" height="8" fill="rgba(96,165,250,.1)"/>
-        <circle cx="14" cy="14" r="5" fill="#60a5fa"/>
-        <text x="25" y="19" font-family="-apple-system,sans-serif" font-size="11.5" font-weight="600" fill="#60a5fa">lesson</text>
-        <text x="159" y="19" font-family="'SF Mono',monospace" font-size="9" fill="rgba(96,165,250,.5)">lesson-N</text>
-        <text x="10" y="43" font-family="'SF Mono',monospace" font-size="10" fill="#e8e8f0">lesson_id</text><text x="170" y="43" font-family="'SF Mono',monospace" font-size="9" fill="#7c6af7">PK</text>
-        <text x="10" y="57" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">title, description</text>
-        <text x="10" y="71" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">duration, level</text>
-        <text x="10" y="85" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">video_url</text>
-      </g>
-
-      <!-- EXERCISE  col2 row3 -->
-      <g transform="translate(280,400)">
-        <rect width="220" height="108" rx="8" fill="#1a1a1e" stroke="#2dd4bf" stroke-width="1.5"/>
-        <rect width="220" height="28" rx="8" fill="rgba(45,212,191,.1)"/>
-        <rect y="20" width="220" height="8" fill="rgba(45,212,191,.1)"/>
-        <circle cx="14" cy="14" r="5" fill="#2dd4bf"/>
-        <text x="25" y="19" font-family="-apple-system,sans-serif" font-size="11.5" font-weight="600" fill="#2dd4bf">exercise</text>
-        <text x="150" y="19" font-family="'SF Mono',monospace" font-size="9" fill="rgba(45,212,191,.5)">exercise-N-N</text>
-        <text x="10" y="43" font-family="'SF Mono',monospace" font-size="10" fill="#e8e8f0">exercise_id</text><text x="170" y="43" font-family="'SF Mono',monospace" font-size="9" fill="#7c6af7">PK</text>
-        <text x="10" y="57" font-family="'SF Mono',monospace" font-size="10" fill="#60a5fa">lesson_id</text><text x="170" y="57" font-family="'SF Mono',monospace" font-size="9" fill="#60a5fa">FK</text>
-        <text x="10" y="71" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">title, description</text>
-        <text x="10" y="85" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">difficulty, type</text>
-        <text x="10" y="99" font-family="'SF Mono',monospace" font-size="10" fill="#6b6b7a">sort_order</text>
-      </g>
-
-    </svg>
-  </div>
-</div>
-
-<footer>
-  <div>DreamSpace Digital Intervention · Database Schema</div>
-  <span>dreamspace.db · SQLite · Flask backend</span>
+<footer class="text-center text-white/25 text-xs mt-8 pb-10">
+  DreamSpace &middot; Regenerate with
+  <code class="font-mono text-pink-400">python generate_schema_html.py</code>
+  from the <code class="font-mono text-white/40">intervention/</code> directory
 </footer>
-
 </body>
 </html>
