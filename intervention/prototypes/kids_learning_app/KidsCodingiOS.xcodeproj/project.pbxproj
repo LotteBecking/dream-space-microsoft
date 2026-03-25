@@ -137,9 +137,10 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
 			};
 			buildConfigurationList = 1B8B7ADEFB95E4233387F746 /* Build configuration list for PBXProject "KidsCodingiOS" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -149,6 +150,7 @@
 			mainGroup = 217D0F5E84608402FEF6F67D;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
+			productRefGroup = AAA007E8097414853BD454A8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
