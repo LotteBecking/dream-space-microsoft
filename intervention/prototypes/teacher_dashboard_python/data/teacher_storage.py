@@ -12,7 +12,8 @@ STORAGE_KEYS = {
     'CLASSES': DATA_DIR / 'classes.json',
     'STUDENTS': DATA_DIR / 'students.json',
     'ASSIGNMENTS': DATA_DIR / 'assignments.json',
-    'LAST_LESSON': DATA_DIR / 'last_lesson.txt'
+    'LAST_LESSON': DATA_DIR / 'last_lesson.txt',
+    'USERS': DATA_DIR / 'users.json'
 }
 
 # Default data
@@ -302,3 +303,58 @@ def save_last_lesson(lesson_id):
     """Save last viewed lesson ID"""
     with open(STORAGE_KEYS['LAST_LESSON'], 'w') as f:
         f.write(lesson_id)
+
+# User Authentication
+def get_users():
+    """Get all registered users"""
+    if STORAGE_KEYS['USERS'].exists():
+        with open(STORAGE_KEYS['USERS'], 'r') as f:
+            return json.load(f)
+    return {}
+
+def save_users(users):
+    """Save users to storage"""
+    with open(STORAGE_KEYS['USERS'], 'w') as f:
+        json.dump(users, f, indent=2)
+
+def user_exists(username):
+    """Check if user exists by username"""
+    users = get_users()
+    return username.lower() in users
+
+def register_user(username, password, school):
+    """Register a new user"""
+    if user_exists(username):
+        return False, "Username already taken"
+    
+    users = get_users()
+    import hashlib
+    
+    # Simple password hashing (in production, use bcrypt or argon2)
+    password_hash = hashlib.sha256(password.encode()).hexdigest()
+    
+    users[username.lower()] = {
+        'username': username,
+        'school': school,
+        'password_hash': password_hash,
+        'created_at': datetime.now().isoformat()
+    }
+    
+    save_users(users)
+    return True, "User registered successfully"
+
+def verify_user(username, password):
+    """Verify user credentials"""
+    users = get_users()
+    user = users.get(username.lower())
+    
+    if not user:
+        return False, "Invalid username or password"
+    
+    import hashlib
+    password_hash = hashlib.sha256(password.encode()).hexdigest()
+    
+    if user['password_hash'] != password_hash:
+        return False, "Invalid username or password"
+    
+    return True, user

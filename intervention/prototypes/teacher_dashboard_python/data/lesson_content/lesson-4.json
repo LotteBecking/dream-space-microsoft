@@ -76,7 +76,7 @@
         "Write the full state after each step and compare with a partner line by line."
       ],
       "successCriteria": [
-        "Student tracks all three variables at every step.",
+        "Student tracks all three variabsles at every step.",
         "Condition branches in Steps 3 and 5 use SHIELD correctly.",
         "Final state matches: HEALTH 110, SHIELD true, POTIONS 2."
       ]
