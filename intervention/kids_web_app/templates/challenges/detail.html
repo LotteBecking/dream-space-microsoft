@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}{{ challenge.title }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('challenges.list_challenges') }}" class="btn btn-secondary btn-sm mb-4 inline-flex">← Back</a>
+
+<div class="max-w-2xl mx-auto">
+  <div class="card">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="text-4xl">{{ challenge.categoryEmoji }}</span>
+      <div>
+        <h1 class="text-xl font-extrabold">{{ challenge.title }}</h1>
+        <div class="flex items-center gap-2 mt-1 flex-wrap">
+          <span class="badge badge-{{ challenge.difficultyColor }}">{{ challenge.difficulty | title }}</span>
+          <span class="text-xs font-bold" style="color:#FFD700">⭐ {{ challenge.points }} pts</span>
+          <span class="text-xs" style="color:var(--text-muted)">{{ challenge.category }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-base font-semibold p-4 rounded-lg border mb-5" style="background:var(--surface);border-color:var(--border)">
+      {{ challenge.question }}
+    </div>
+
+    {% if already_done %}
+    <div class="flash flash-success mb-4">✓ You already completed this challenge!</div>
+    {% endif %}
+
+    <div id="options" class="flex flex-col gap-2.5">
+      {% for option in challenge.options %}
+      <button class="option-btn" data-index="{{ loop.index0 }}"
+              {% if already_done %}disabled{% endif %}
+              onclick="submitAnswer({{ loop.index0 }})">
+        <span class="font-bold mr-2.5" style="color:var(--text-muted)">{{ ['A','B','C','D'][loop.index0] }}.</span>
+        {{ option }}
+      </button>
+      {% endfor %}
+    </div>
+
+    <div id="result" class="hidden mt-5">
+      <div id="result-banner" class="p-4 rounded-lg font-bold mb-3"></div>
+      <div id="explanation" class="text-sm p-3 rounded-lg" style="color:var(--text-muted);background:var(--surface)"></div>
+      <div class="flex items-center gap-3 mt-4 flex-wrap">
+        <a href="{{ url_for('challenges.list_challenges') }}" class="btn btn-secondary btn-sm">← All Challenges</a>
+        <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary btn-sm">🏠 Dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var CORRECT = {{ challenge.correctAnswer }};
+var EXPLANATION = {{ challenge.explanation | tojson }};
+var CHALLENGE_ID = {{ challenge.id | tojson }};
+var POINTS = {{ challenge.points }};
+var answered = {% if already_done %}true{% else %}false{% endif %};
+
+function submitAnswer(index) {
+  if (answered) return;
+  answered = true;
+  var correct = (index === CORRECT);
+  document.querySelectorAll('.option-btn').forEach(function(btn, i) {
+    btn.disabled = true;
+    if (i === CORRECT) btn.classList.add('correct');
+    else if (i === index && !correct) btn.classList.add('wrong');
+  });
+  fetch('/challenges/' + CHALLENGE_ID + '/complete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ correct: correct }),
+  });
+  var banner = document.getElementById('result-banner');
+  if (correct) {
+    banner.style.cssText = 'background:rgba(76,175,80,0.15);color:#4CAF50;border:1px solid rgba(76,175,80,0.3)';
+    banner.textContent = '🎉 Correct! You earned ' + POINTS + ' points!';
+  } else {
+    banner.style.cssText = 'background:rgba(244,67,54,0.15);color:#F44336;border:1px solid rgba(244,67,54,0.3)';
+    banner.textContent = '❌ Not quite — but you\'re learning!';
+  }
+  document.getElementById('explanation').textContent = '💡 ' + EXPLANATION;
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+{% endblock %}

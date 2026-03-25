@@ -12,17 +12,26 @@ final class AppStore: ObservableObject {
     @Published private(set) var results: [ChallengeResult] = []
     @Published private(set) var teams: [Team] = []
 
+    /// Server-computed stats (points, streak, accuracy).  Updated after API calls.
+    @Published private(set) var serverStats: APIService.UserStats?
+
+    /// Non-nil when a network error occurred — views can display it.
+    @Published var lastError: String?
+
+    private let api = APIService.shared
     private let defaults = UserDefaults.standard
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
     init() {
-        loadState()
+        loadLocalState()
         if teams.isEmpty {
             teams = Self.defaultTeams
             save(teams, key: StorageKey.teams)
         }
     }
+
+    // MARK: - Computed properties (local fallbacks)
 
     var todayChallenge: Challenge {
         ChallengeData.dailyChallenge(for: Date())
@@ -36,10 +45,11 @@ final class AppStore: ObservableObject {
     }
 
     var totalPoints: Int {
-        results.reduce(0) { $0 + ($1.correct ? $1.points : 0) }
+        serverStats?.totalPoints ?? results.reduce(0) { $0 + ($1.correct ? $1.points : 0) }
     }
 
     var streak: Int {
+        if let s = serverStats { return s.streak }
         guard !results.isEmpty else { return 0 }
 
         let completedDays = Set(results.filter(\.completed).map { Calendar.current.startOfDay(for: $0.date) })
@@ -58,6 +68,15 @@ final class AppStore: ObservableObject {
         }
 
         return currentStreak
+    }
+
+    var accuracy: Int {
+        serverStats?.accuracy ?? {
+            let completed = results.filter(\.completed)
+            guard !completed.isEmpty else { return 0 }
+            let correct = completed.filter(\.correct).count
+            return Int(round(Double(correct) / Double(completed.count) * 100))
+        }()
     }
 
     var userTeam: Team? {
@@ -103,6 +122,8 @@ final class AppStore: ObservableObject {
         results.contains { $0.challengeId == challengeId && $0.completed }
     }
 
+    // MARK: - Onboarding / Profile (local + API)
+
     func saveOnboarding(name: String, age: Int) {
         let avatars = ["👦", "👧", "🧒", "👨", "👩", "🧑"]
         let profile = UserProfile(
@@ -116,6 +137,9 @@ final class AppStore: ObservableObject {
         self.profile = profile
         ensureUserMember(profile)
         save(profile, key: StorageKey.profile)
+
+        // Sync to server in the background
+        Task { await syncProfileToServer(profile) }
     }
 
     func updateProfile(name: String, age: Int) {
@@ -126,7 +150,11 @@ final class AppStore: ObservableObject {
         self.profile = profile
         replaceUserMember(profile)
         save(profile, key: StorageKey.profile)
+
+        Task { await syncProfileToServer(profile) }
     }
+
+    // MARK: - Challenge completion (local + API)
 
     func completeChallenge(_ challenge: Challenge, correct: Bool) {
         let result = ChallengeResult(
@@ -142,9 +170,84 @@ final class AppStore: ObservableObject {
         if correct {
             addPointsToCurrentMember(challenge.points)
         }
+
+        // Send to server
+        Task {
+            guard let memberId = profile?.memberId else { return }
+            do {
+                lastError = nil
+                let _ = try await api.completeChallenge(
+                    challengeId: challenge.id,
+                    memberId: memberId,
+                    correct: correct)
+
+                // Refresh server stats and teams after completion
+                await refreshFromServer()
+
+                // Track the event
+                try? await api.trackEvent(
+                    userType: "student", userId: memberId,
+                    eventType: "challenge_completed",
+                    eventData: [
+                        "challenge_id": challenge.id,
+                        "correct": String(correct),
+                        "points": String(correct ? challenge.points : 0)
+                    ])
+            } catch {
+                lastError = error.localizedDescription
+            }
+        }
     }
 
-    private func loadState() {
+    // MARK: - Server sync
+
+    /// Pull latest teams and stats from the backend.
+    func refreshFromServer() async {
+        do {
+            lastError = nil
+            let serverTeams = try await api.fetchTeams()
+            teams = serverTeams
+            save(teams, key: StorageKey.teams)
+
+            if let memberId = profile?.memberId {
+                serverStats = try await api.fetchStats(memberId)
+            }
+        } catch {
+            // Non-fatal: we still have local data
+            lastError = error.localizedDescription
+        }
+    }
+
+    /// Called once at app launch to pull the latest cloud data.
+    func loadFromServerIfAvailable() async {
+        // Try to get profile from server if we have a local memberId
+        if let memberId = profile?.memberId {
+            do {
+                let serverProfile = try await api.fetchProfile(memberId)
+                self.profile = serverProfile
+                save(serverProfile, key: StorageKey.profile)
+            } catch {
+                // Server unreachable — keep local profile
+            }
+        }
+
+        await refreshFromServer()
+    }
+
+    // MARK: - Private: API sync helpers
+
+    private func syncProfileToServer(_ profile: UserProfile) async {
+        do {
+            lastError = nil
+            try await api.createProfile(profile)
+        } catch {
+            lastError = error.localizedDescription
+        }
+    }
+
+    // MARK: - Private: local persistence
+
+    private func loadLocalState() {
         profile = load(UserProfile.self, key: StorageKey.profile)
         results = load([ChallengeResult].self, key: StorageKey.results) ?? []
         teams = load([Team].self, key: StorageKey.teams) ?? []

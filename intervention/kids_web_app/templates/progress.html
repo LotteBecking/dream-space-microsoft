@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}Progress{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <h1 class="text-2xl font-extrabold mb-1">📈 Your Progress</h1>
+  <p class="text-sm" style="color:var(--text-muted)">Track your learning journey</p>
+</div>
+
+{# Stats row #}
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+  <div class="stat-card">
+    <span class="text-2xl">⭐</span>
+    <span class="text-xl font-extrabold" style="color:#FFD700">{{ stats.get('totalPoints', 0) }}</span>
+    <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Points</span>
+  </div>
+  <div class="stat-card">
+    <span class="text-2xl">🔥</span>
+    <span class="text-xl font-extrabold" style="color:#7B4FA6">{{ stats.get('streak', 0) }}</span>
+    <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Streak</span>
+  </div>
+  <div class="stat-card">
+    <span class="text-2xl">🎯</span>
+    <span class="text-xl font-extrabold" style="color:#4CAF50">{{ accuracy }}%</span>
+    <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Accuracy</span>
+  </div>
+  <div class="stat-card">
+    <span class="text-2xl">✅</span>
+    <span class="text-xl font-extrabold">{{ completed_count }}</span>
+    <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Completed</span>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+
+  {# Left: Weekly chart + Category performance #}
+  <div class="flex flex-col gap-4">
+
+    <div class="card">
+      <div class="font-bold text-base mb-3">Weekly Activity</div>
+      <div class="weekly-chart" id="weekly-chart">
+        {% for day in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] %}
+        <div class="chart-bar-wrap">
+          <div class="chart-bar" id="bar-{{ loop.index0 }}" style="height:4px;"></div>
+          <div class="chart-label">{{ day }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="font-bold text-base mb-3">Category Performance</div>
+      {% if category_stats %}
+      <div class="flex flex-col gap-3">
+        {% for cat, data in category_stats.items() %}
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold">{{ data.emoji }} {{ cat }}</span>
+            <span class="text-xs font-bold" style="color:var(--text-muted)">{{ data.correct }}/{{ data.total }} ({{ data.pct }}%)</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:{{ data.pct }}%;"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-sm" style="color:var(--text-muted)">Complete challenges to see your category performance.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  {# Right: Achievements + Recent history #}
+  <div class="flex flex-col gap-4">
+
+    <div class="card">
+      <div class="font-bold text-base mb-3">🏅 Achievements</div>
+      <div class="flex flex-col gap-2">
+        {% for a in achievements %}
+        <div class="achievement {% if not a.unlocked %}locked{% endif %}">
+          <div class="text-2xl">{{ a.icon }}</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-bold">{{ a.title }}</div>
+            <div class="text-xs" style="color:var(--text-muted)">{{ a.desc }}</div>
+          </div>
+          {% if a.unlocked %}
+          <span class="badge badge-green shrink-0">Unlocked ✓</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if results %}
+    <div class="card">
+      <div class="font-bold text-base mb-3">Recent Challenges</div>
+      <div class="flex flex-col">
+        {% for r in results[-10:] | reverse %}
+        <div class="flex items-center gap-3 py-2 border-b last:border-0" style="border-color:var(--border)">
+          <span class="text-xl shrink-0">{{ r.categoryEmoji }}</span>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">{{ r.challengeTitle }}</div>
+            <div class="text-xs" style="color:var(--text-muted)">{{ r.category }}</div>
+          </div>
+          {% if r.get('correct') %}
+          <span class="badge badge-green shrink-0">+{{ r.points }}pts</span>
+          {% else %}
+          <span class="badge badge-gray shrink-0">Miss</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+var results = {{ results | tojson }};
+var today = new Date();
+var dayPoints = [0, 0, 0, 0, 0, 0, 0];
+
+results.forEach(function(r) {
+  if (!r.correct || !r.completedDate) return;
+  var d = new Date(r.completedDate);
+  var diff = Math.floor((today - d) / 86400000);
+  if (diff < 0 || diff >= 7) return;
+  var dayOfWeek = d.getDay();
+  var monIdx = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  dayPoints[monIdx] += r.points || 0;
+});
+
+var max = Math.max.apply(null, dayPoints) || 1;
+dayPoints.forEach(function(pts, i) {
+  var bar = document.getElementById('bar-' + i);
+  if (bar) {
+    bar.style.height = (pts === 0 ? 4 : Math.max(Math.round((pts / max) * 90), 6)) + 'px';
+  }
+});
+</script>
+{% endblock %}

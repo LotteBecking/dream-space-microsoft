@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In · Dream Space</title>
+  <script>
+    (function(){
+      var t=localStorage.getItem('ds-theme')||(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+      document.documentElement.setAttribute('data-theme',t);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['selector', '[data-theme="dark"]'],
+      theme: { extend: { fontFamily: { sans: ['Inter','system-ui','sans-serif'] } } },
+    }
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+</head>
+<body class="min-h-screen flex items-center justify-center px-4 py-8 bg-[#F5F5F5] dark:bg-[#1A1A2E] text-[#1A1A2E] dark:text-[#F0F0F0] font-sans">
+
+<div class="w-full max-w-sm">
+  <div class="card overflow-hidden p-0">
+    <div class="welcome-card gradient-brand text-center">
+      <div class="text-5xl mb-2">🚀</div>
+      <h1 class="text-xl font-extrabold mb-1">Welcome back!</h1>
+      <p class="text-sm opacity-85">Sign in to Dream Space and keep coding</p>
+    </div>
+    <div class="p-6">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+
+      <form method="post" action="{{ url_for('auth.login') }}">
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input class="form-input" type="email" id="email" name="email"
+                 placeholder="your@email.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input class="form-input" type="password" id="password" name="password"
+                 placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full mt-2">Sign In →</button>
+      </form>
+
+      <p class="text-center text-sm mt-4" style="color:var(--text-muted)">
+        New to Dream Space?
+        <a href="{{ url_for('auth.signup') }}" class="font-semibold" style="color:#7B4FA6">Create account</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

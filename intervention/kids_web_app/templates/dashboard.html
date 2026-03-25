@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
+
+  {# Left column #}
+  <div class="flex flex-col gap-4 min-w-0">
+
+    {# Welcome card #}
+    <div class="welcome-card gradient-brand">
+      <div class="text-5xl mb-2">{{ g.user_avatar }}</div>
+      <div class="text-2xl font-extrabold">Hey, {{ g.user_name }}! 👋</div>
+      <div class="text-sm opacity-80 mb-3">Ready to code something awesome today?</div>
+      <div class="flex flex-wrap gap-2">
+        <span class="inline-flex items-center gap-1 bg-white/15 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-bold">🔥 {{ stats.get('streak', 0) }} day streak</span>
+        <span class="inline-flex items-center gap-1 bg-white/15 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-bold">⭐ {{ stats.get('totalPoints', 0) }} points</span>
+        {% if team_rank > 0 %}
+        <span class="inline-flex items-center gap-1 bg-white/15 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-bold">🏆 Rank #{{ team_rank }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    {# News carousel #}
+    <div class="card" style="padding:0;">
+      <div class="px-4 pt-3.5 pb-2 font-bold text-sm">📰 Tech News</div>
+      <div class="carousel-container">
+        <div class="carousel-track"></div>
+        <button class="carousel-btn carousel-btn-prev" aria-label="Previous">‹</button>
+        <button class="carousel-btn carousel-btn-next" aria-label="Next">›</button>
+        <div class="carousel-dots"></div>
+      </div>
+    </div>
+
+    {# Daily challenge #}
+    {% if daily and not daily.get('error') %}
+    <div class="card">
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <div class="font-bold text-base">⚡ Daily Challenge</div>
+          <div class="text-xs mt-0.5" style="color:var(--text-muted)">New challenge every day</div>
+        </div>
+        <span class="badge badge-{{ {'beginner':'green','intermediate':'yellow','advanced':'red'}.get(daily.get('difficulty',''),'gray') }}">
+          {{ daily.get('difficulty','') | title }}
+        </span>
+      </div>
+      <div class="font-bold text-base mb-1">{{ daily.get('title','') }}</div>
+      <div class="text-sm mb-4" style="color:var(--text-muted)">{{ daily.get('description','') }}</div>
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-bold" style="color:#FFD700">⭐ {{ daily.get('points',0) }} pts</span>
+        <a href="{{ url_for('challenges.detail', challenge_id=daily.get('id','')) }}" class="btn btn-primary btn-sm">Try it →</a>
+      </div>
+    </div>
+    {% endif %}
+
+    {# Quick actions #}
+    <div class="card">
+      <div class="font-bold text-base mb-3">Quick Actions</div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        {% for href, icon, label in [
+          (url_for('challenges.list_challenges'), '🎯', 'Challenges'),
+          (url_for('lessons.list_lessons'), '📚', 'Lessons'),
+          (url_for('progress.index'), '📈', 'My Progress'),
+          (url_for('teams.index'), '🏆', 'Leaderboard'),
+        ] %}
+        <a href="{{ href }}" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border text-center transition-all hover:-translate-y-0.5"
+           style="border-color:var(--border);background:var(--surface);color:var(--text-muted)">
+          <span class="text-2xl">{{ icon }}</span>
+          <span class="text-[0.7rem] font-semibold leading-tight">{{ label }}</span>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {# Right sidebar #}
+  <div class="flex flex-col gap-4 min-w-0">
+
+    {# Stats #}
+    <div class="card">
+      <div class="font-bold text-base mb-3">Your Stats</div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="stat-card">
+          <span class="text-2xl">⭐</span>
+          <span class="text-xl font-extrabold" style="color:#FFD700">{{ stats.get('totalPoints',0) }}</span>
+          <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Points</span>
+        </div>
+        <div class="stat-card">
+          <span class="text-2xl">🔥</span>
+          <span class="text-xl font-extrabold" style="color:#7B4FA6">{{ stats.get('streak',0) }}</span>
+          <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Day Streak</span>
+        </div>
+        <div class="stat-card col-span-2">
+          <span class="text-2xl">🎯</span>
+          <span class="text-xl font-extrabold" style="color:#4CAF50">{{ stats.get('accuracy',0) }}%</span>
+          <span class="text-[0.65rem] uppercase tracking-wider" style="color:var(--text-muted)">Accuracy</span>
+        </div>
+      </div>
+    </div>
+
+    {# Team card #}
+    {% if team and not team.get('error') %}
+    <div class="card">
+      <div class="font-bold text-base">{{ team.get('name','Your Team') }}</div>
+      {% if team_rank > 0 %}
+      <div class="text-xs mt-0.5 mb-3" style="color:var(--text-muted)">Rank #{{ team_rank }} on the leaderboard</div>
+      {% else %}<div class="mb-3"></div>{% endif %}
+      <div class="flex items-center justify-between mb-1.5">
+        <span class="text-sm" style="color:var(--text-muted)">Team points</span>
+        <span class="font-bold" style="color:#7B4FA6">{{ team.get('totalPoints',0) }}</span>
+      </div>
+      {% if team_rank > 0 %}
+      {% set total_teams = 3 %}
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:{{ ((total_teams - team_rank + 1) / total_teams * 100) | int }}%;"></div>
+      </div>
+      {% endif %}
+      <div class="text-[0.7rem] font-bold uppercase tracking-wide mb-2" style="color:var(--text-muted)">Top Members</div>
+      {% for member in team.get('members',[])[:4] %}
+      <div class="flex items-center gap-2 py-1.5 border-b last:border-0" style="border-color:var(--border)">
+        <span class="text-xl">{{ member.get('avatar','👤') }}</span>
+        <span class="flex-1 text-sm font-semibold">{{ member.get('name','') }}</span>
+        <span class="text-sm font-bold" style="color:#7B4FA6">{{ member.get('points',0) }}</span>
+      </div>
+      {% endfor %}
+      <a href="{{ url_for('teams.index') }}" class="btn btn-outline btn-sm btn-full mt-3">View Leaderboard →</a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
+{% endblock %}
