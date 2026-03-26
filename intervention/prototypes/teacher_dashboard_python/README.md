@@ -1,66 +1,32 @@
 # Teacher Dashboard (Python)
 
-This folder contains the teacher dashboard implemented as a Python Flask web application with HTML and Tailwind CSS.
+> **Note:** This folder's templates and lesson content are **served by the unified backend** (`prototypes/backend/app.py`), not run standalone. The `app.py` in this folder is legacy and should not be run directly.
+>
+> To run the teacher dashboard:
+> ```bash
+> cd prototypes/backend
+> python app.py   # serves dashboard at http://localhost:5000
+> ```
 
-This is a port of the React/Vite dashboard to a Python backend with Jinja2 templates.
+This folder contains the Jinja2 templates, lesson JSON content, and static assets for the teacher-facing dashboard.
+
+## What's in here
+
+- `templates/` — Jinja2 HTML templates rendered by `backend/app.py`
+- `data/lesson_content/` — 16 lesson JSON files (`lesson-1.json` … `lesson-16.json`) + `manifest.json`
+- `static/images/` — Lesson thumbnail images and SVGs
+- `data/lessons.py`, `data/teacher_storage.py` — Legacy data utilities (superseded by `backend/models.py`)
+
+## Lesson Content
+
+Lessons live as JSON files in `data/lesson_content/lesson-N.json`. Both the teacher dashboard and the kids app (iOS + web) read lesson content from these files. Edit the JSON here to change lesson content.
 
 ## Features
 
-- Teacher dashboard landing page
+- Teacher dashboard home
 - Lesson library with search
 - Lesson detail view
 - Class overview and management
 - Student list with filtering
 - Student progress profiles
-- Teacher settings
-
-## Install and Run
-
-### Setup
-
-1. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-### Running
-
-Start the development server:
-```bash
-python app.py
-```
-
-The app will be available at `http://localhost:5000`
-
-## Project Structure
-
-- `app.py`: Main Flask application and routes
-- `data/`: Data storage and management modules
-  - `teacher_storage.py`: Teacher profile, classes, students, and assignments storage
-  - `lessons.py`: Lesson data
-- `templates/`: Jinja2 HTML templates
-  - `base.html`: Base layout with navigation
-  - `home.html`: Dashboard home
-  - `lessons/`: Lesson-related pages
-  - `classes/`: Class management pages
-  - `students/`: Student-related pages
-  - `profile.html`: Teacher settings
-- `static/`: Static assets (currently using Tailwind via CDN)
-
-## Data Storage
-
-Currently uses JSON files for persistence:
-- `data/profiles/teacher.json`: Teacher profile
-- `data/classes.json`: Classes data
-- `data/students.json`: Students data
-- `data/assignments.json`: Assignments data
-
-## Styling
-
-Uses Tailwind CSS via CDN in templates. All UI components are built with Tailwind utility classes for consistency with the original figma design.
+- Teacher settings / profile

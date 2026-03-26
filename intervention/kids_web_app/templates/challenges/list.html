@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Challenges{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <h1 class="text-2xl font-extrabold mb-1">🎯 Challenges</h1>
+  <p class="text-sm" style="color:var(--text-muted)">Test your coding knowledge and earn points!</p>
+</div>
+
+<div class="flex flex-wrap gap-2 mb-6">
+  <a href="{{ url_for('challenges.list_challenges') }}" class="filter-tab {% if not difficulty %}active{% endif %}">All</a>
+  <a href="{{ url_for('challenges.list_challenges', difficulty='beginner') }}" class="filter-tab {% if difficulty == 'beginner' %}active{% endif %}">🟢 Beginner</a>
+  <a href="{{ url_for('challenges.list_challenges', difficulty='intermediate') }}" class="filter-tab {% if difficulty == 'intermediate' %}active{% endif %}">🟡 Intermediate</a>
+  <a href="{{ url_for('challenges.list_challenges', difficulty='advanced') }}" class="filter-tab {% if difficulty == 'advanced' %}active{% endif %}">🔴 Advanced</a>
+</div>
+
+{% if challenges %}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {% for c in challenges %}
+  <a href="{{ url_for('challenges.detail', challenge_id=c.id) }}"
+     class="card flex flex-col gap-2.5 relative hover:-translate-y-1 hover:shadow-xl transition-all no-underline {% if c.done %}opacity-65{% endif %}">
+    {% if c.done %}
+    <div class="absolute top-3 right-3 w-6 h-6 rounded-full bg-[#4CAF50] text-white flex items-center justify-center text-xs font-bold">✓</div>
+    {% endif %}
+    <div class="text-3xl">{{ c.categoryEmoji }}</div>
+    <div class="font-bold text-base">{{ c.title }}</div>
+    <div class="text-xs" style="color:var(--text-muted)">{{ c.description }}</div>
+    <div class="flex items-center gap-2 flex-wrap mt-auto">
+      <span class="badge badge-{{ c.difficultyColor }}">{{ c.difficulty | title }}</span>
+      <span class="text-xs font-bold" style="color:#FFD700">⭐ {{ c.points }} pts</span>
+    </div>
+    <div class="text-xs" style="color:var(--text-muted)">{{ c.category }}</div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="card text-center py-12">
+  <div class="text-5xl mb-3">🎮</div>
+  <div class="font-bold mb-2">No challenges found</div>
+  <div class="text-sm" style="color:var(--text-muted)">
+    {% if offline %}The backend isn't connected. Try starting it on port 5000.{% else %}Try a different filter above.{% endif %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

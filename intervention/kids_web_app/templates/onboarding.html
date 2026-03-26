@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto">
+  <div class="card">
+    <div class="text-center mb-5">
+      <div class="text-5xl mb-2">🚀</div>
+      <h2 class="text-xl font-extrabold mb-1">Set up your Dream Space profile</h2>
+      <p class="text-sm" style="color:var(--text-muted)">You're almost ready to start coding!</p>
+    </div>
+
+    <form method="post" action="{{ url_for('onboarding.index') }}" id="onboard-form">
+
+      <div class="form-group">
+        <label class="form-label">Your nickname</label>
+        <input class="form-input" type="text" name="name" value="{{ onboard_name }}" required
+               placeholder="e.g. StarCoder99">
+        <p class="text-xs mt-1" style="color:var(--text-muted)">🔒 Stay safe — use a nickname, not your real name.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Your age
+          <span class="font-normal" style="color:var(--text-muted)">(optional)</span>
+        </label>
+        <input class="form-input" type="number" name="age" min="6" max="20" placeholder="e.g. 12">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Class code
+          <span class="font-normal" style="color:var(--text-muted)">(optional)</span>
+        </label>
+        <input class="form-input" type="text" name="class_code" placeholder="e.g. AB12CD"
+               style="text-transform:uppercase;letter-spacing:0.1em;"
+               oninput="this.value=this.value.toUpperCase()">
+        <p class="text-xs mt-1" style="color:var(--text-muted)">Ask your teacher for your class code to connect with your class.</p>
+      </div>
+
+      {% if classes %}
+      <div class="form-group">
+        <label class="form-label">
+          Join a class
+          <span class="font-normal" style="color:var(--text-muted)">(optional)</span>
+        </label>
+        <div class="team-pick-grid mt-2">
+          {% for cls in classes %}
+          <div class="team-pick-card" data-id="{{ cls.id }}" onclick="pickClass(this)">
+            {% set emojis = ['🌙','⭐','🚀','💎','🔥','🌈'] %}
+            <div class="text-3xl mb-1">{{ emojis[loop.index0 % emojis|length] }}</div>
+            <div class="font-semibold text-sm">{{ cls.name }}</div>
+            <div class="text-xs mt-0.5" style="color:var(--text-muted)">{{ cls.totalPoints }} pts</div>
+          </div>
+          {% endfor %}
+        </div>
+        <input type="hidden" name="class_id" id="class-input" value="">
+      </div>
+      {% endif %}
+
+      <div class="form-group">
+        <label class="form-label">Pick your avatar</label>
+        <div class="avatar-grid" id="avatar-grid">
+          {% for emoji in avatars %}
+          <div class="avatar-option {% if emoji == onboard_avatar %}selected{% endif %}"
+               data-emoji="{{ emoji }}"
+               onclick="pickAvatar(this)">{{ emoji }}</div>
+          {% endfor %}
+        </div>
+        <input type="hidden" name="avatar" id="avatar-input" value="{{ onboard_avatar }}">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full mt-2">
+        Start coding! 🚀
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+function pickAvatar(el) {
+  document.querySelectorAll('.avatar-option').forEach(function(e){ e.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('avatar-input').value = el.dataset.emoji;
+}
+function pickClass(el) {
+  document.querySelectorAll('.team-pick-card').forEach(function(e){ e.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('class-input').value = el.dataset.id;
+}
+</script>
+{% endblock %}

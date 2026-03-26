@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Lessons{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <h1 class="text-2xl font-extrabold mb-1">📚 Lessons</h1>
+  <p class="text-sm" style="color:var(--text-muted)">16 hands-on coding lessons — from algorithms to AI</p>
+</div>
+
+{% set lesson_icons = ['🥪','🔁','🔀','📦','🤖','🔐','🏗️','⚖️','📱','🛡️','🌍','🧩','🏥','💳','📊','🌟'] %}
+
+{% if lessons %}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {% for lesson in lessons %}
+  <a href="{{ url_for('lessons.detail', lesson_id=lesson.id) }}"
+     class="card flex flex-col gap-2.5 relative hover:-translate-y-1 hover:shadow-xl transition-all no-underline {% if lesson.done %}opacity-65{% endif %}">
+    {% if lesson.done %}
+    <div class="absolute top-3 right-3 w-6 h-6 rounded-full bg-[#4CAF50] text-white flex items-center justify-center text-xs font-bold">✓</div>
+    {% endif %}
+    <div class="text-4xl">{{ lesson_icons[loop.index0 % lesson_icons | length] }}</div>
+    <div class="flex items-center gap-2 flex-wrap">
+      <span class="badge badge-{{ lesson.levelColor }}">{{ lesson.level }}</span>
+      <span class="text-xs" style="color:var(--text-muted)">Lesson {{ loop.index }}</span>
+    </div>
+    <div class="font-bold text-base leading-snug">{{ lesson.title }}</div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="card text-center py-12">
+  <div class="text-5xl mb-3">📚</div>
+  <div class="font-bold mb-2">No lessons found</div>
+  <div class="text-sm" style="color:var(--text-muted)">
+    Check that the lesson JSON files exist in the teacher_dashboard_python folder.
+  </div>
+</div>
+{% endif %}
+{% endblock %}

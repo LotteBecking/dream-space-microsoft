@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import json
 import os
 from datetime import datetime
@@ -7,12 +7,14 @@ from data.teacher_storage import (
     get_classes, save_classes,
     get_students, save_students,
     get_assignments, save_assignments,
-    get_last_lesson, save_last_lesson
+    get_last_lesson, save_last_lesson,
+    register_user, verify_user
 )
 from data.lessons import lessons
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
+app.secret_key = os.environ.get('SECRET_KEY', 'teacher-dashboard-dev-key-change-in-production')
 
 def build_default_teacher_instructions(lesson):
     """Generate lesson-specific fallback instructions when teacherInstructions are missing."""
@@ -133,6 +135,29 @@ def home():
     total_assignments = sum(c['activeAssignments'] for c in classes)
     avg_engagement = round(sum(c['engagementRate'] for c in classes) / len(classes)) if classes else 0
     
+    # Check if user is logged in
+    is_logged_in = 'user_username' in session
+    
+    return render_template('home.html',
+                         featured_lesson=featured_lesson,
+                         last_lesson=last_lesson,
+                         classes=classes,
+                         total_students=total_students,
+                         total_assignments=total_assignments,
+                         avg_engagement=avg_engagement,
+                         is_logged_in=is_logged_in)
+    featured_lesson = lessons[0] if lessons else None
+    
+    # Find last lesson
+    last_lesson = None
+    if last_lesson_id:
+        last_lesson = next((l for l in lessons if l['id'] == last_lesson_id), None)
+    
+    # Calculate totals
+    total_students = sum(c['studentCount'] for c in classes)
+    total_assignments = sum(c['activeAssignments'] for c in classes)
+    avg_engagement = round(sum(c['engagementRate'] for c in classes) / len(classes)) if classes else 0
+    
     return render_template('home.html',
                          featured_lesson=featured_lesson,
                          last_lesson=last_lesson,
@@ -144,6 +169,9 @@ def home():
 @app.route('/lessons')
 def lesson_library():
     """Lesson library page"""
+    if 'user_username' not in session:
+        return redirect(url_for('home'))
+    
     search_query = request.args.get('search', '').strip().lower()
     selected_track = request.args.get('track', 'all').strip().lower()
     valid_tracks = {'all', 'primary', 'highschool', 'tv'}
@@ -192,6 +220,9 @@ def lesson_library():
 @app.route('/lessons/<lesson_id>')
 def lesson_detail(lesson_id):
     """Single lesson detail page"""
+    if 'user_username' not in session:
+        return redirect(url_for('home'))
+    
     lesson = next((l for l in lessons if l['id'] == lesson_id), None)
     
     if not lesson:
@@ -266,12 +297,18 @@ def lesson_challenge_present(lesson_id, challenge_id):
 @app.route('/classes')
 def class_overview():
     """Class management overview"""
+    if 'user_username' not in session:
+        return redirect(url_for('home'))
+    
     classes = get_classes()
     return render_template('classes/overview.html', classes=classes)
 
 @app.route('/students')
 def student_list():
     """Student list and filters"""
+    if 'user_username' not in session:
+        return redirect(url_for('home'))
+    
     class_id = request.args.get('class')
     students = get_students()
     classes = get_classes()
@@ -288,6 +325,9 @@ def student_list():
 @app.route('/students/<student_id>')
 def student_profile(student_id):
     """Detailed student progress page"""
+    if 'user_username' not in session:
+        return redirect(url_for('home'))
+    
     students = get_students()
     student = next((s for s in students if s['id'] == student_id), None)
     
@@ -299,6 +339,9 @@ def student_profile(student_id):
 @app.route('/settings')
 def profile():
     """Teacher profile settings"""
+    if 'user_username' not in session:
+        return redirect(url_for('home'))
+    
     profile = get_teacher_profile()
     return render_template('profile.html', profile=profile)
 
@@ -345,6 +388,85 @@ def api_update_student_avatar(student_id):
     save_students(students)
 
     return jsonify({"success": True, "studentId": student_id, "avatar": avatar})
+
+# Authentication Routes
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """User registration page"""
+    # Redirect GET requests to home (which shows the modal)
+    if request.method == 'GET':
+        return redirect(url_for('home'))
+    
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        school = request.form.get('school', '').strip()
+        password = request.form.get('password', '').strip()
+        confirm_password = request.form.get('confirm_password', '').strip()
+        
+        # Validation
+        if not username:
+            session['auth_error'] = 'Username is required'
+            return redirect(url_for('home'))
+        
+        if not school:
+            session['auth_error'] = 'School is required'
+            return redirect(url_for('home'))
+        
+        if not password:
+            session['auth_error'] = 'Password is required'
+            return redirect(url_for('home'))
+        
+        if len(password) < 8:
+            session['auth_error'] = 'Password must be at least 8 characters'
+            return redirect(url_for('home'))
+        
+        if password != confirm_password:
+            session['auth_error'] = 'Passwords do not match'
+            return redirect(url_for('home'))
+        
+        # Register user
+        success, message = register_user(username, password, school)
+        
+        if success:
+            # Auto-login after registration
+            session['user_username'] = username
+            session['user_school'] = school
+            return redirect(url_for('home'))
+        else:
+            session['auth_error'] = message
+            return redirect(url_for('home'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """User login page"""
+    # Redirect GET requests to home (which shows the modal)
+    if request.method == 'GET':
+        return redirect(url_for('home'))
+    
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+        
+        if not username or not password:
+            session['auth_error'] = 'Username and password are required'
+            return redirect(url_for('home'))
+        
+        success, result = verify_user(username, password)
+        
+        if success:
+            session['user_username'] = username
+            session['user_school'] = result.get('school', '')
+            return redirect(url_for('home'))
+        else:
+            session['auth_error'] = result
+            return redirect(url_for('home'))
+
+@app.route('/logout')
+def logout():
+    """Logout user"""
+    session.clear()
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('lessons.list_lessons') }}" class="btn btn-secondary btn-sm mb-4 inline-flex">← All Lessons</a>
+
+{# Hero #}
+<div class="welcome-card gradient-brand mb-6">
+  <div class="flex items-center gap-2 mb-3 flex-wrap">
+    <span class="badge" style="background:rgba(255,255,255,0.2);color:#fff;">{{ lesson.level }}</span>
+    <span class="text-sm opacity-80">{{ lesson.ageGroup }}</span>
+    <span class="text-sm opacity-80">⏱ {{ lesson.duration }} min</span>
+  </div>
+  <h1 class="text-xl font-extrabold leading-snug mb-2">{{ lesson.title }}</h1>
+  <p class="text-sm opacity-85">{{ lesson.description }}</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+  <div class="flex flex-col gap-4">
+
+    {# Learning objectives #}
+    {% if lesson.learningObjectives %}
+    <div class="card">
+      <div class="font-bold text-base mb-3">🎯 What You'll Learn</div>
+      <ul class="instruction-list">
+        {% for obj in lesson.learningObjectives %}
+        <li class="text-sm py-1">{{ obj }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {# Student Exercises #}
+    {% if lesson.studentExercises %}
+    <div class="font-extrabold text-base">📝 Exercises</div>
+    {% for ex in lesson.studentExercises %}
+    <div class="exercise-card">
+      <div class="flex items-center gap-2 mb-2 flex-wrap">
+        <div class="font-bold text-sm flex-1">{{ ex.title }}</div>
+        <span class="badge badge-{{ {'Easy':'green','Medium':'yellow','Hard':'red'}.get(ex.difficulty,'gray') }}">{{ ex.difficulty }}</span>
+        <span class="text-xs" style="color:var(--text-muted)">{{ ex.durationMinutes }} min</span>
+      </div>
+      <p class="text-sm mb-3" style="color:var(--text-muted)">{{ ex.description }}</p>
+
+      {% if ex.instructions %}
+      <div class="text-xs font-bold mb-1.5 uppercase tracking-wide">Steps</div>
+      <ul class="instruction-list text-sm">
+        {% for step in ex.instructions %}
+        <li class="py-0.5">{{ step }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if ex.successCriteria %}
+      <div class="text-xs font-bold mt-2.5 mb-1.5 uppercase tracking-wide" style="color:#4CAF50">Success Criteria</div>
+      <div class="flex flex-col gap-1">
+        {% for c in ex.successCriteria %}
+        <div class="criteria-item text-sm">{{ c }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="flex flex-col gap-4">
+
+    {# Student Challenges #}
+    {% if lesson.studentChallenges %}
+    <div class="font-extrabold text-base">🏆 Challenges</div>
+    {% for ch in lesson.studentChallenges %}
+    <div class="exercise-card" style="border-left:3px solid #E91E8C;">
+      <div class="flex items-center gap-2 mb-2 flex-wrap">
+        <div class="font-bold text-sm flex-1">{{ ch.title }}</div>
+        <span class="badge badge-{{ {'Easy':'green','Medium':'yellow','Hard':'red'}.get(ch.difficulty,'gray') }}">{{ ch.difficulty }}</span>
+      </div>
+      <p class="text-sm mb-3" style="color:var(--text-muted)">{{ ch.description }}</p>
+      {% if ch.instructions %}
+      <ul class="instruction-list text-sm">
+        {% for step in ch.instructions %}
+        <li class="py-0.5">{{ step }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {# Materials #}
+    {% if lesson.materials %}
+    <div class="card" style="border-style:dashed;">
+      <div class="font-bold text-base mb-2">🎒 Materials Needed</div>
+      <ul class="flex flex-col gap-1 text-sm" style="color:var(--text-muted)">
+        {% for m in lesson.materials %}
+        <li>• {{ m }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {# Mark complete #}
+    <div class="card text-center">
+      {% if lesson.done %}
+      <div class="text-4xl mb-2">🎉</div>
+      <div class="font-bold mb-1">Lesson Completed!</div>
+      <div class="text-sm" style="color:var(--text-muted)">Great work, coder!</div>
+      {% else %}
+      <div class="text-4xl mb-2">📖</div>
+      <div class="font-bold mb-2">Finished this lesson?</div>
+      <form method="post" action="{{ url_for('lessons.complete', lesson_id=lesson.id) }}">
+        <button type="submit" class="btn btn-primary btn-full">Mark as Complete ✓</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
