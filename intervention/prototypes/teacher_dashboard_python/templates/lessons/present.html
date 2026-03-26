@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ lesson.title }} — Teaching View</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { overflow: hidden; }
+        .slide { display: none; }
+        .slide.active { display: flex; }
+        .colour-indigo  { --accent: #4f46e5; --accent-light: #eef2ff; --accent-border: #c7d2fe; --accent-text: #3730a3; }
+        .colour-yellow  { --accent: #ca8a04; --accent-light: #fefce8; --accent-border: #fde68a; --accent-text: #92400e; }
+        .colour-blue    { --accent: #2563eb; --accent-light: #eff6ff; --accent-border: #bfdbfe; --accent-text: #1e3a8a; }
+        .colour-purple  { --accent: #9333ea; --accent-light: #faf5ff; --accent-border: #e9d5ff; --accent-text: #6b21a8; }
+        .colour-orange  { --accent: #ea580c; --accent-light: #fff7ed; --accent-border: #fed7aa; --accent-text: #9a3412; }
+        .colour-teal    { --accent: #0d9488; --accent-light: #f0fdfa; --accent-border: #99f6e4; --accent-text: #134e4a; }
+        .colour-green   { --accent: #16a34a; --accent-light: #f0fdf4; --accent-border: #bbf7d0; --accent-text: #14532d; }
+        .colour-amber   { --accent: #d97706; --accent-light: #fffbeb; --accent-border: #fde68a; --accent-text: #78350f; }
+        .colour-pink    { --accent: #db2777; --accent-light: #fdf2f8; --accent-border: #fbcfe8; --accent-text: #831843; }
+        .accent-bg      { background-color: var(--accent); }
+        .accent-light   { background-color: var(--accent-light); border-color: var(--accent-border); }
+        .accent-text    { color: var(--accent-text); }
+        .accent-border  { border-color: var(--accent-border); }
+        .content-area::-webkit-scrollbar { width: 6px; }
+        .content-area::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-gray-950 h-screen flex flex-col select-none">
+
+    <!-- Top bar -->
+    <div class="flex-none bg-gray-900 border-b border-gray-800 px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <a href="/lessons/{{ lesson.id }}" class="text-gray-400 hover:text-white transition text-sm flex items-center gap-1.5">
+                <i class="fas fa-arrow-left text-xs"></i> Back
+            </a>
+            <div class="h-4 w-px bg-gray-700"></div>
+            <span class="text-white font-semibold text-sm truncate max-w-sm">{{ lesson.title }}</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span id="slide-counter" class="text-gray-400 text-sm font-mono"></span>
+            <div class="flex gap-2">
+                <button onclick="prevSlide()" id="btn-prev" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded text-sm transition flex items-center gap-1.5 disabled:opacity-30" disabled>
+                    <i class="fas fa-chevron-left text-xs"></i> Prev
+                </button>
+                <button onclick="nextSlide()" id="btn-next" class="px-3 py-1.5 bg-white hover:bg-gray-100 text-gray-900 rounded text-sm font-medium transition flex items-center gap-1.5">
+                    Next <i class="fas fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="flex-none h-1 bg-gray-800">
+        <div id="progress-bar" class="h-full bg-purple-500 transition-all duration-300" style="width: 0%"></div>
+    </div>
+
+    <!-- Slides -->
+    <div class="flex-1 overflow-hidden relative">
+
+        {% for slide in slides %}
+        <div id="slide-{{ loop.index0 }}"
+             class="slide colour-{{ slide.colour }} absolute inset-0 flex-col overflow-hidden">
+
+            <!-- Phase / Time header -->
+            <div class="flex-none accent-bg px-8 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="text-white/70 text-sm font-medium uppercase tracking-wider">{{ slide.phase }}</span>
+                    {% if slide.time %}
+                    <span class="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full font-mono">{{ slide.time }}</span>
+                    {% endif %}
+                </div>
+                <h1 class="text-white font-bold text-lg">{{ slide.title }}</h1>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-y-auto content-area bg-white">
+                <div class="max-w-4xl mx-auto px-8 py-6 space-y-5">
+
+                    {% if slide.whatToSay %}
+                    <div class="accent-light border rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fas fa-comment-dots accent-text text-base"></i>
+                            <span class="font-bold accent-text text-sm uppercase tracking-wide">What to say</span>
+                        </div>
+                        <p class="text-gray-800 text-base leading-relaxed font-medium italic">{{ slide.whatToSay }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.whatToDo %}
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fas fa-list-check text-gray-500 text-base"></i>
+                            <span class="font-bold text-gray-700 text-sm uppercase tracking-wide">What to do</span>
+                        </div>
+                        <ol class="space-y-2">
+                            {% for step in slide.whatToDo %}
+                            <li class="flex gap-3 text-gray-700 text-base leading-snug">
+                                <span class="text-gray-400 font-mono text-sm mt-0.5 flex-none">{{ loop.index }}.</span>
+                                <span>{{ step }}</span>
+                            </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.rules %}
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fas fa-ruler text-gray-500 text-base"></i>
+                            <span class="font-bold text-gray-700 text-sm uppercase tracking-wide">Rules for students</span>
+                        </div>
+                        <ul class="space-y-2">
+                            {% for rule in slide.rules %}
+                            <li class="flex gap-2 text-gray-700 text-base">
+                                <i class="fas fa-check text-green-500 mt-1 text-sm flex-none"></i>
+                                <span>{{ rule }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.discussionQuestions %}
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fas fa-comments text-blue-500 text-base"></i>
+                            <span class="font-bold text-blue-800 text-sm uppercase tracking-wide">Discussion questions — pick one</span>
+                        </div>
+                        <div class="space-y-3">
+                            {% for q in slide.discussionQuestions %}
+                            <div class="bg-white border border-blue-100 rounded-lg p-4 text-gray-800 text-base leading-relaxed">
+                                {{ q }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.challengeQuestions %}
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fas fa-rocket text-amber-600 text-base"></i>
+                            <span class="font-bold text-amber-800 text-sm uppercase tracking-wide">Challenge questions for students</span>
+                        </div>
+                        <ul class="space-y-2">
+                            {% for q in slide.challengeQuestions %}
+                            <li class="flex gap-2 text-gray-700 text-base leading-snug">
+                                <i class="fas fa-arrow-right text-amber-500 mt-1 text-sm flex-none"></i>
+                                <span>{{ q }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.task %}
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-pen-to-square text-amber-600 text-base"></i>
+                            <span class="font-bold text-amber-800 text-sm uppercase tracking-wide">Their task</span>
+                        </div>
+                        <p class="text-gray-800 text-base leading-relaxed">{{ slide.task }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.exitReflection %}
+                    <div class="accent-light border accent-border rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-sticky-note accent-text text-base"></i>
+                            <span class="font-bold accent-text text-sm uppercase tracking-wide">Exit reflection — say this or use sticky notes</span>
+                        </div>
+                        <p class="text-gray-900 text-xl font-semibold leading-relaxed">{{ slide.exitReflection }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.discussionClose %}
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-lightbulb text-blue-500 text-base"></i>
+                            <span class="font-bold text-blue-800 text-sm uppercase tracking-wide">To close the activity</span>
+                        </div>
+                        <p class="text-gray-800 text-base leading-relaxed">{{ slide.discussionClose }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.roleModel %}
+                    <div class="bg-purple-50 border border-purple-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-star text-purple-500 text-base"></i>
+                            <span class="font-bold text-purple-800 text-sm uppercase tracking-wide">Role model of the day</span>
+                        </div>
+                        <p class="text-gray-800 text-base leading-relaxed">{{ slide.roleModel }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.tip %}
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-lightbulb text-green-600 text-base"></i>
+                            <span class="font-bold text-green-800 text-sm uppercase tracking-wide">Teacher tip</span>
+                        </div>
+                        <p class="text-gray-700 text-base leading-relaxed">{{ slide.tip }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.shyStudentsNote %}
+                    <div class="bg-sky-50 border border-sky-200 rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas fa-hand text-sky-500 text-sm"></i>
+                            <span class="font-bold text-sky-800 text-xs uppercase tracking-wide">If students are shy</span>
+                        </div>
+                        <p class="text-gray-700 text-sm leading-relaxed">{{ slide.shyStudentsNote }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.realWorldConnection %}
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-globe text-slate-500 text-base"></i>
+                            <span class="font-bold text-slate-700 text-sm uppercase tracking-wide">Real-world connection</span>
+                        </div>
+                        <p class="text-gray-700 text-base leading-relaxed">{{ slide.realWorldConnection }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if slide.watchFor %}
+                    <div class="bg-rose-50 border border-rose-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-eye text-rose-500 text-base"></i>
+                            <span class="font-bold text-rose-800 text-sm uppercase tracking-wide">What to watch for — Week 2 readiness</span>
+                        </div>
+                        <p class="text-gray-700 text-base leading-relaxed">{{ slide.watchFor }}</p>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- Bottom nav bar -->
+    <div class="flex-none bg-gray-900 border-t border-gray-800 px-6 py-3 flex items-center justify-between">
+        <button onclick="prevSlide()" id="btn-prev-bottom"
+                class="px-5 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition flex items-center gap-2 font-medium disabled:opacity-30" disabled>
+            <i class="fas fa-chevron-left"></i> Previous
+        </button>
+
+        <!-- Dot indicators -->
+        <div id="dot-row" class="flex gap-1.5 flex-wrap justify-center max-w-xs">
+            {% for slide in slides %}
+            <button onclick="goToSlide({{ loop.index0 }})"
+                    id="dot-{{ loop.index0 }}"
+                    title="{{ slide.phase }}: {{ slide.title }}"
+                    class="w-2 h-2 rounded-full bg-gray-600 hover:bg-gray-400 transition">
+            </button>
+            {% endfor %}
+        </div>
+
+        <button onclick="nextSlide()" id="btn-next-bottom"
+                class="px-5 py-2 bg-white hover:bg-gray-100 text-gray-900 rounded-lg transition flex items-center gap-2 font-medium">
+            Next <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+</body>
+<script>
+    const totalSlides = {{ slides | length }};
+    let current = 0;
+
+    function goToSlide(index) {
+        document.getElementById('slide-' + current).classList.remove('active');
+        document.getElementById('dot-' + current).classList.remove('bg-white');
+        document.getElementById('dot-' + current).classList.add('bg-gray-600');
+
+        current = index;
+
+        document.getElementById('slide-' + current).classList.add('active');
+        document.getElementById('dot-' + current).classList.remove('bg-gray-600');
+        document.getElementById('dot-' + current).classList.add('bg-white');
+
+        // Scroll content back to top
+        const contentAreas = document.querySelectorAll('#slide-' + current + ' .content-area');
+        contentAreas.forEach(el => el.scrollTop = 0);
+
+        updateControls();
+    }
+
+    function nextSlide() {
+        if (current < totalSlides - 1) goToSlide(current + 1);
+    }
+
+    function prevSlide() {
+        if (current > 0) goToSlide(current - 1);
+    }
+
+    function updateControls() {
+        const isFirst = current === 0;
+        const isLast = current === totalSlides - 1;
+
+        document.getElementById('btn-prev').disabled = isFirst;
+        document.getElementById('btn-prev-bottom').disabled = isFirst;
+        document.getElementById('btn-next').disabled = isLast;
+        document.getElementById('btn-next-bottom').disabled = isLast;
+
+        if (isLast) {
+            document.getElementById('btn-next-bottom').textContent = '';
+            document.getElementById('btn-next-bottom').innerHTML = '<i class="fas fa-flag-checkered mr-1"></i> End of lesson';
+        } else {
+            document.getElementById('btn-next-bottom').innerHTML = 'Next <i class="fas fa-chevron-right"></i>';
+        }
+
+        document.getElementById('slide-counter').textContent = (current + 1) + ' / ' + totalSlides;
+        document.getElementById('progress-bar').style.width = ((current + 1) / totalSlides * 100) + '%';
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            prevSlide();
+        }
+    });
+
+    // Init
+    goToSlide(0);
+</script>
+</html>
