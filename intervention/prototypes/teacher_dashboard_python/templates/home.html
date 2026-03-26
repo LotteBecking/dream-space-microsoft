@@ -123,10 +123,8 @@
     .form-field:nth-child(2) { animation-delay: 0.2s; }
     .form-field:nth-child(3) { animation-delay: 0.3s; }
     .form-field:nth-child(4) { animation-delay: 0.4s; }
-
-    @keyframes slideUp {
-        from {
-            opacity: 0;
+        .form-field:nth-child(5) { animation-delay: 0.5s; }
+        .form-field:nth-child(6) { animation-delay: 0.6s; }
             transform: translateY(40px);
         }
         to {
@@ -188,12 +186,28 @@
 
                 <!-- Auth Toggle Links -->
                 <div class="text-center text-gray-700 text-base mb-6">
-                    <p id="register-toggle">Already have an account? <a href="#" class="auth-link ml-1 cursor-pointer" onclick="toggleForm(event)">Sign in</a></p>
-                    <p id="login-toggle" class="hidden">Don't have an account? <a href="#" class="auth-link ml-1 cursor-pointer" onclick="toggleForm(event)">Sign up</a></p>
+                    <p id="register-toggle" {% if session.get('show_login_form') %}class="hidden"{% endif %}>Already have an account? <a href="#" class="auth-link ml-1 cursor-pointer" onclick="toggleForm(event)">Sign in</a></p>
+                    <p id="login-toggle" {% if not session.get('show_login_form') %}class="hidden"{% endif %}>Don't have an account? <a href="#" class="auth-link ml-1 cursor-pointer" onclick="toggleForm(event)">Sign up</a></p>
                 </div>
 
                 <!-- Registration Form -->
-                <form id="register-form" method="POST" action="/register" class="space-y-6">
+                <form id="register-form" method="POST" action="/register" class="space-y-6{% if session.get('show_login_form') %} hidden{% endif %}">
+                    <!-- Email Field -->
+                    <div class="form-field">
+                        <label for="reg-email" class="form-label mb-3 block">Email Address</label>
+                        <div class="relative group">
+                            <i class="fas fa-envelope input-icon absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                            <input 
+                                type="email" 
+                                id="reg-email" 
+                                name="email" 
+                                required 
+                                class="input-field w-full pl-12 pr-4 py-3 rounded-xl text-gray-800 text-base"
+                                placeholder="Your email address"
+                            >
+                        </div>
+                    </div>
+
                     <!-- Username Field -->
                     <div class="form-field">
                         <label for="reg-username" class="form-label mb-3 block">Username</label>
@@ -277,7 +291,7 @@
                 </form>
 
                 <!-- Login Form -->
-                <form id="login-form" method="POST" action="/login" class="space-y-6 hidden">
+                <form id="login-form" method="POST" action="/login" class="space-y-6{% if not session.get('show_login_form') %} hidden{% endif %}">
                     <!-- Username Field -->
                     <div class="form-field">
                         <label for="login-username" class="form-label mb-3 block">Username</label>

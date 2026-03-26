@@ -136,7 +136,7 @@ def home():
     avg_engagement = round(sum(c['engagementRate'] for c in classes) / len(classes)) if classes else 0
     
     # Check if user is logged in
-    is_logged_in = 'user_username' in session
+    is_logged_in = 'user_email' in session
     
     return render_template('home.html',
                          featured_lesson=featured_lesson,
@@ -169,7 +169,7 @@ def home():
 @app.route('/lessons')
 def lesson_library():
     """Lesson library page"""
-    if 'user_username' not in session:
+    if 'user_email' not in session:
         return redirect(url_for('home'))
     
     search_query = request.args.get('search', '').strip().lower()
@@ -220,7 +220,7 @@ def lesson_library():
 @app.route('/lessons/<lesson_id>')
 def lesson_detail(lesson_id):
     """Single lesson detail page"""
-    if 'user_username' not in session:
+    if 'user_email' not in session:
         return redirect(url_for('home'))
     
     lesson = next((l for l in lessons if l['id'] == lesson_id), None)
@@ -297,7 +297,7 @@ def lesson_challenge_present(lesson_id, challenge_id):
 @app.route('/classes')
 def class_overview():
     """Class management overview"""
-    if 'user_username' not in session:
+    if 'user_email' not in session:
         return redirect(url_for('home'))
     
     classes = get_classes()
@@ -306,7 +306,7 @@ def class_overview():
 @app.route('/students')
 def student_list():
     """Student list and filters"""
-    if 'user_username' not in session:
+    if 'user_email' not in session:
         return redirect(url_for('home'))
     
     class_id = request.args.get('class')
@@ -325,7 +325,7 @@ def student_list():
 @app.route('/students/<student_id>')
 def student_profile(student_id):
     """Detailed student progress page"""
-    if 'user_username' not in session:
+    if 'user_email' not in session:
         return redirect(url_for('home'))
     
     students = get_students()
@@ -339,11 +339,24 @@ def student_profile(student_id):
 @app.route('/settings')
 def profile():
     """Teacher profile settings"""
-    if 'user_username' not in session:
+    if 'user_email' not in session:
         return redirect(url_for('home'))
     
+    # Get or create profile with current user's session data
     profile = get_teacher_profile()
-    return render_template('profile.html', profile=profile)
+    
+    # Ensure profile has the current logged-in user's data
+    email = session.get('user_email', '')
+    username = session.get('user_username', '')
+    user_data = {
+        'username': username,
+        'email': email,
+        'school': session.get('user_school', ''),
+        'name': profile.get('name') or username,
+        'avatar': email[0].upper() if email else 'U'
+    }
+    
+    return render_template('profile.html', profile=user_data, user_data=user_data)
 
 # API Routes
 
@@ -399,12 +412,17 @@ def register():
         return redirect(url_for('home'))
     
     if request.method == 'POST':
+        email = request.form.get('email', '').strip()
         username = request.form.get('username', '').strip()
         school = request.form.get('school', '').strip()
         password = request.form.get('password', '').strip()
         confirm_password = request.form.get('confirm_password', '').strip()
         
         # Validation
+        if not email:
+            session['auth_error'] = 'Email is required'
+            return redirect(url_for('home'))
+        
         if not username:
             session['auth_error'] = 'Username is required'
             return redirect(url_for('home'))
@@ -426,10 +444,12 @@ def register():
             return redirect(url_for('home'))
         
         # Register user
-        success, message = register_user(username, password, school)
+        success, message = register_user(email, password, school, username)
         
         if success:
+            session.pop('show_login_form', None)  # Clear the flag on successful registration
             # Auto-login after registration
+            session['user_email'] = email
             session['user_username'] = username
             session['user_school'] = school
             return redirect(url_for('home'))
@@ -445,21 +465,24 @@ def login():
         return redirect(url_for('home'))
     
     if request.method == 'POST':
-        username = request.form.get('username', '').strip()
+        email = request.form.get('username', '').strip()  # Using same field name 'username' for backward compatibility
         password = request.form.get('password', '').strip()
         
-        if not username or not password:
-            session['auth_error'] = 'Username and password are required'
+        if not email or not password:
+            session['auth_error'] = 'Email and password are required'
             return redirect(url_for('home'))
         
-        success, result = verify_user(username, password)
+        success, result = verify_user(email, password)
         
         if success:
-            session['user_username'] = username
+            session['user_email'] = email
+            session['user_username'] = result.get('username', '')
             session['user_school'] = result.get('school', '')
+            session.pop('show_login_form', None)  # Clear the flag on successful login
             return redirect(url_for('home'))
         else:
             session['auth_error'] = result
+            session['show_login_form'] = True  # Keep login form visible on error
             return redirect(url_for('home'))
 
 @app.route('/logout')

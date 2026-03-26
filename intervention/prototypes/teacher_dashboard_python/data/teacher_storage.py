@@ -317,15 +317,15 @@ def save_users(users):
     with open(STORAGE_KEYS['USERS'], 'w') as f:
         json.dump(users, f, indent=2)
 
-def user_exists(username):
-    """Check if user exists by username"""
+def user_exists(email):
+    """Check if user exists by email"""
     users = get_users()
-    return username.lower() in users
+    return email.lower() in users
 
-def register_user(username, password, school):
+def register_user(email, password, school, username):
     """Register a new user"""
-    if user_exists(username):
-        return False, "Username already taken"
+    if user_exists(email):
+        return False, "Email already registered"
     
     users = get_users()
     import hashlib
@@ -333,7 +333,8 @@ def register_user(username, password, school):
     # Simple password hashing (in production, use bcrypt or argon2)
     password_hash = hashlib.sha256(password.encode()).hexdigest()
     
-    users[username.lower()] = {
+    users[email.lower()] = {
+        'email': email,
         'username': username,
         'school': school,
         'password_hash': password_hash,
@@ -343,18 +344,18 @@ def register_user(username, password, school):
     save_users(users)
     return True, "User registered successfully"
 
-def verify_user(username, password):
+def verify_user(email, password):
     """Verify user credentials"""
     users = get_users()
-    user = users.get(username.lower())
+    user = users.get(email.lower())
     
     if not user:
-        return False, "Invalid username or password"
+        return False, "Invalid email or password"
     
     import hashlib
     password_hash = hashlib.sha256(password.encode()).hexdigest()
     
     if user['password_hash'] != password_hash:
-        return False, "Invalid username or password"
+        return False, "Invalid email or password"
     
     return True, user
