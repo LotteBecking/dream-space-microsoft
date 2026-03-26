@@ -96,13 +96,28 @@
                 'lesson-15': 'fa-search-dollar',
                 'lesson-16': 'fa-lightbulb'
             } %}
+            {% set lesson_covers = {
+                'lesson-1': '/static/images/lesson-1-cover.jpg',
+                'lesson-2': '/static/images/lesson-2-cover.jpg',
+                'lesson-3': '/static/images/lesson-3-cover.jpg',
+                'lesson-4': '/static/images/lesson-4-cover.jpg',
+                'lesson-5': '/static/images/lesson-5-cover.jpg',
+                'lesson-6': '/static/images/lesson-6-cover.jpg'
+            } %}
             {% for lesson in lessons %}
             {% set banner_gradient = banner_gradients.get(lesson.id, 'from-purple-400 via-pink-400 to-purple-500') %}
             {% set banner_icon = banner_icons.get(lesson.id, 'fa-graduation-cap') %}
+            {% set lesson_cover = lesson_covers.get(lesson.id) %}
             <div class="bg-white rounded-lg overflow-hidden card-shadow hover:shadow-lg transition">
+                {% if lesson_cover %}
+                <div class="h-32 overflow-hidden">
+                    <img src="{{ lesson_cover }}" alt="{{ lesson.title }}" class="w-full h-full object-cover">
+                </div>
+                {% else %}
                 <div class="bg-gradient-to-r {{ banner_gradient }} h-32 flex items-center justify-center">
                     <i class="fas {{ banner_icon }} text-white text-4xl"></i>
                 </div>
+                {% endif %}
                 <div class="p-4">
                     <h3 class="text-lg font-bold text-gray-900">{{ lesson.title }}</h3>
                     <p class="text-sm text-gray-600 mt-2 line-clamp-2">{{ lesson.description }}</p>

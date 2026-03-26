@@ -2,336 +2,932 @@
 
 {% block title %}{{ lesson.title }} - Teacher Dashboard{% endblock %}
 
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  .dp {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    --ac: #7c3aed;
+    --ac-rgb: 124,58,237;
+    --ac2: #2563eb;
+    --ac2-rgb: 37,99,235;
+    --ac3: #5b21b6;
+    --tx: #111827;
+    --mu: #6b7280;
+    --sf: #ffffff;
+    --sf2: #f3f4f6;
+    --bd: #e5e7eb;
+    --fd: 'DM Serif Display', Georgia, serif;
+    --fm: 'JetBrains Mono', monospace;
+  }
+
+  /* ── back link ── */
+  .dp .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.82rem; color: var(--mu);
+    text-decoration: none; margin-bottom: 24px;
+    transition: color 0.15s;
+  }
+  .dp .back-link:hover { color: var(--ac); }
+
+  /* ── lesson header ── */
+  .dp .lesson-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  .dp .lesson-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--fm); font-size: 0.68rem;
+    color: var(--ac);
+    background: rgba(var(--ac-rgb), 0.08);
+    border: 1px solid rgba(var(--ac-rgb), 0.2);
+    padding: 4px 10px; border-radius: 4px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .dp .lesson-heading {
+    font-family: var(--fd);
+    font-size: 2.1rem; line-height: 1.18;
+    color: var(--tx); letter-spacing: -0.03em; margin: 0;
+  }
+
+  .dp .lesson-heading em { color: var(--ac); font-style: italic; }
+
+  .dp .meta-row {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;
+  }
+
+  .dp .meta-pill {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.77rem; color: var(--mu);
+    background: var(--sf2); border: 1px solid var(--bd);
+    padding: 4px 12px; border-radius: 20px;
+  }
+
+  .dp .meta-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  .dp .btn-start {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 24px;
+    background: var(--ac); color: #fff;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.93rem;
+    border: none; border-radius: 8px; cursor: pointer;
+    text-decoration: none; white-space: nowrap;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(var(--ac-rgb), 0.3);
+  }
+
+  .dp .btn-start:hover {
+    background: var(--ac3); color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(var(--ac-rgb), 0.4);
+  }
+
+  .dp .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px;
+    background: var(--sf); color: var(--ac);
+    font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.85rem;
+    border: 1px solid rgba(var(--ac-rgb), 0.3); border-radius: 8px;
+    cursor: pointer; text-decoration: none; white-space: nowrap;
+    transition: all 0.15s;
+  }
+
+  .dp .btn-secondary:hover {
+    background: rgba(var(--ac-rgb), 0.05); color: var(--ac);
+  }
+
+  .dp .header-actions {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+  }
+
+  /* ── vocab ── */
+  .dp .section-title {
+    font-family: var(--fm); font-size: 0.62rem;
+    color: var(--mu); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+
+  .dp .vocab-strip {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px;
+  }
+
+  .dp .vocab-badge {
+    background: var(--sf); border: 1px solid var(--bd);
+    border-radius: 8px; padding: 9px 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .dp .vocab-word {
+    font-family: var(--fm); font-size: 0.77rem;
+    color: var(--ac); font-weight: 600; display: block;
+  }
+
+  .dp .vocab-def {
+    font-size: 0.72rem; color: var(--mu); display: block; margin-top: 2px;
+  }
+
+  /* ── info grid ── */
+  .dp .info-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 14px; margin-bottom: 32px;
+  }
+
+  .dp .info-card {
+    background: var(--sf); border: 1px solid var(--bd);
+    border-radius: 12px; padding: 18px;
+  }
+
+  .dp .info-card h3 {
+    font-family: var(--fm); font-size: 0.62rem;
+    color: var(--mu); letter-spacing: 0.1em;
+    text-transform: uppercase; margin: 0 0 10px 0;
+  }
+
+  .dp .info-list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+
+  .dp .info-list li {
+    font-size: 0.84rem; color: var(--tx);
+    padding-left: 13px; position: relative; line-height: 1.45;
+  }
+
+  .dp .info-list li::before {
+    content: ''; position: absolute; left: 0; top: 8px;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(var(--ac-rgb), 0.45);
+  }
+
+  /* ── phase list ── */
+  .dp .phase-list {
+    display: flex; flex-direction: column; gap: 8px; margin-bottom: 40px;
+  }
+
+  .dp .phase-row {
+    display: grid; grid-template-columns: 120px 1fr auto;
+    align-items: center; gap: 16px;
+    background: var(--sf); border: 1px solid var(--bd);
+    border-radius: 10px; padding: 13px 17px;
+    transition: all 0.15s;
+  }
+
+  .dp .phase-row.clickable { cursor: pointer; }
+
+  .dp .phase-row.clickable:hover {
+    border-color: var(--ac);
+    background: rgba(var(--ac-rgb), 0.03);
+  }
+
+  .dp .phase-time {
+    font-family: var(--fm); font-size: 0.7rem; color: var(--ac2);
+  }
+
+  .dp .phase-label { font-size: 0.87rem; font-weight: 500; color: var(--tx); }
+
+  .dp .phase-label small {
+    display: block; font-size: 0.72rem; color: var(--mu);
+    font-weight: 400; margin-top: 2px;
+  }
+
+  .dp .phase-arrow { color: var(--mu); font-size: 0.9rem; }
+
+  /* ── exercise / challenge cards ── */
+  .dp .ex-card {
+    background: var(--sf); border: 1px solid var(--bd);
+    border-radius: 12px; padding: 20px;
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+
+  .dp .ch-card {
+    background: rgba(var(--ac2-rgb), 0.03);
+    border: 1px solid rgba(var(--ac2-rgb), 0.2);
+    border-radius: 12px; padding: 20px;
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+
+  .dp .card-body { flex: 1; }
+
+  .dp .card-title {
+    font-size: 0.95rem; font-weight: 600; color: var(--tx); margin: 0 0 6px 0;
+  }
+
+  .dp .chip {
+    display: inline-block; font-size: 0.68rem;
+    padding: 2px 8px; border-radius: 4px;
+    font-family: var(--fm); margin-right: 5px;
+    border: 1px solid var(--bd); color: var(--mu);
+  }
+
+  .dp .chip-easy   { background: #f0fdf4; border-color: #bbf7d0; color: #16a34a; }
+  .dp .chip-medium { background: #fefce8; border-color: #fde68a; color: #b45309; }
+  .dp .chip-hard   { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+
+  .dp .card-desc { font-size: 0.83rem; color: var(--mu); margin-top: 8px; line-height: 1.5; }
+
+  .dp .btn-present {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 16px; border-radius: 7px;
+    font-size: 0.8rem; font-weight: 500;
+    white-space: nowrap; text-decoration: none; transition: all 0.15s;
+  }
+
+  .dp .btn-present-ex {
+    background: rgba(var(--ac-rgb), 0.08);
+    border: 1px solid rgba(var(--ac-rgb), 0.2);
+    color: var(--ac);
+  }
+
+  .dp .btn-present-ex:hover { background: rgba(var(--ac-rgb), 0.15); color: var(--ac); }
+
+  .dp .btn-present-ch {
+    background: rgba(var(--ac2-rgb), 0.08);
+    border: 1px solid rgba(var(--ac2-rgb), 0.2);
+    color: var(--ac2);
+  }
+
+  .dp .btn-present-ch:hover { background: rgba(var(--ac2-rgb), 0.15); color: var(--ac2); }
+
+  /* ── divider ── */
+  .dp .section-divider {
+    border: none; border-top: 1px solid var(--bd); margin: 36px 0;
+  }
+
+  /* ───────────────────────────────── SLIDESHOW OVERLAY ─── */
+  #ss-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(250, 251, 255, 0.98);
+    z-index: 9999; flex-direction: column;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    --ac: #7c3aed; --ac-rgb: 124,58,237;
+    --ac2: #2563eb; --ac2-rgb: 37,99,235;
+    --ac3: #5b21b6;
+    --tx: #111827; --mu: #6b7280;
+    --sf: #ffffff; --sf2: #f3f4f6; --bd: #e5e7eb;
+  }
+
+  #ss-overlay.active { display: flex; }
+
+  .ss-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 24px;
+    border-bottom: 1px solid var(--bd);
+    background: var(--sf);
+    flex-shrink: 0;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.06);
+  }
+
+  .ss-phase-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; color: var(--ac);
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+  }
+
+  .ss-dots {
+    display: flex; gap: 5px; flex-wrap: wrap;
+    max-width: 360px; justify-content: center;
+  }
+
+  .ss-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #d1d5db; border: none; padding: 0; cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .ss-dot.active { background: var(--ac); transform: scale(1.4); }
+  .ss-dot.done   { background: #6ee7b7; }
+
+  .ss-close {
+    background: none; border: 1px solid var(--bd); color: var(--mu);
+    padding: 5px 13px; border-radius: 6px; cursor: pointer;
+    font-size: 0.77rem; font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .ss-close:hover { border-color: #ef4444; color: #ef4444; }
+
+  /* progress bar */
+  .ss-progress-bar {
+    flex-shrink: 0; height: 3px; background: #e5e7eb;
+  }
+
+  .ss-progress-fill {
+    height: 100%; background: var(--ac); transition: width 0.3s;
+  }
+
+  /* slide area */
+  .ss-wrapper {
+    flex: 1; overflow-y: auto; padding: 40px 32px;
+  }
+
+  .ss-wrapper::-webkit-scrollbar { width: 5px; }
+  .ss-wrapper::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+  .ss-inner {
+    max-width: 760px; margin: 0 auto;
+    animation: ssIn 0.25s ease;
+  }
+
+  @keyframes ssIn {
+    from { opacity: 0; transform: translateX(14px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .ss-phase-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.63rem; color: var(--ac2);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .ss-phase-tag::before {
+    content: ''; display: inline-block;
+    width: 16px; height: 2px; background: var(--ac2);
+  }
+
+  .ss-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.8rem; line-height: 1.2;
+    color: var(--tx); margin: 0 0 4px 0;
+  }
+
+  .ss-timing {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; color: var(--mu); margin-bottom: 26px;
+  }
+
+  .ss-section { margin-bottom: 20px; }
+
+  .ss-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; color: var(--mu);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 7px;
+  }
+
+  .say-box {
+    background: rgba(var(--ac2-rgb), 0.06);
+    border-left: 3px solid var(--ac2);
+    border-radius: 0 9px 9px 0;
+    padding: 14px 16px;
+    font-size: 0.9rem; line-height: 1.65;
+    color: var(--tx); font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .do-box {
+    background: rgba(var(--ac-rgb), 0.05);
+    border-left: 3px solid var(--ac);
+    border-radius: 0 9px 9px 0;
+    padding: 14px 16px;
+    font-size: 0.88rem; line-height: 1.6; color: var(--tx);
+  }
+
+  .tip-box {
+    background: rgba(var(--ac-rgb), 0.05);
+    border: 1px solid rgba(var(--ac-rgb), 0.15);
+    border-radius: 9px; padding: 14px 16px;
+    font-size: 0.85rem; line-height: 1.55; color: var(--tx);
+  }
+
+  .tip-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; color: var(--ac);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 5px; display: block;
+  }
+
+  .step-list {
+    list-style: none; counter-reset: steps;
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 0; margin: 0;
+  }
+
+  .step-list li {
+    counter-increment: steps;
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 0.87rem; line-height: 1.55; color: var(--tx);
+  }
+
+  .step-list li::before {
+    content: counter(steps);
+    display: flex; align-items: center; justify-content: center;
+    min-width: 22px; height: 22px;
+    background: rgba(var(--ac-rgb), 0.08);
+    border: 1px solid rgba(var(--ac-rgb), 0.2);
+    border-radius: 50%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem; color: var(--ac);
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  .bullet-list {
+    list-style: none; display: flex; flex-direction: column;
+    gap: 6px; padding: 0; margin: 0;
+  }
+
+  .bullet-list li {
+    font-size: 0.86rem; padding-left: 15px;
+    position: relative; line-height: 1.5; color: var(--tx);
+  }
+
+  .bullet-list li::before {
+    content: '→'; position: absolute; left: 0;
+    color: var(--ac3); font-size: 0.78rem;
+  }
+
+  .rm-card {
+    background: var(--sf);
+    border: 1px solid rgba(var(--ac-rgb), 0.2);
+    border-radius: 12px; padding: 17px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+
+  .rm-icon {
+    width: 40px; height: 40px;
+    background: rgba(var(--ac-rgb), 0.1);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+
+  .rm-name {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1rem; color: var(--ac); margin-bottom: 2px;
+  }
+
+  .rm-years {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.63rem; color: var(--mu); margin-bottom: 6px;
+  }
+
+  .rm-text { font-size: 0.83rem; line-height: 1.55; color: var(--tx); }
+
+  /* slide bottom nav */
+  .ss-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 15px 26px;
+    border-top: 1px solid var(--bd); background: var(--sf);
+    flex-shrink: 0;
+  }
+
+  .ss-btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 9px 20px;
+    background: var(--sf2); border: 1px solid var(--bd);
+    color: var(--tx); font-family: 'DM Sans', sans-serif;
+    font-size: 0.84rem; border-radius: 7px; cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .ss-btn:hover:not(:disabled) { border-color: var(--ac2); color: var(--ac2); }
+  .ss-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .ss-btn-next {
+    background: var(--ac); border-color: var(--ac);
+    color: #fff; font-weight: 600;
+  }
+
+  .ss-btn-next:hover:not(:disabled) {
+    background: var(--ac3); border-color: var(--ac3); color: #fff;
+  }
+
+  .ss-counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.73rem; color: var(--mu);
+  }
+
+  @media (max-width: 768px) {
+    .dp .info-grid { grid-template-columns: 1fr; }
+    .dp .lesson-header { grid-template-columns: 1fr; }
+    .dp .phase-row { grid-template-columns: 90px 1fr auto; }
+    .dp .lesson-heading { font-size: 1.55rem; }
+    .dp .header-actions { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="space-y-6">
-    <!-- Back Button -->
-    <a href="/lessons" class="text-purple-600 hover:text-purple-700 flex items-center gap-2">
-        <i class="fas fa-arrow-left"></i> Back to Lessons
-    </a>
+<div class="dp">
 
-    <!-- Lesson Header -->
-    <div class="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
-        <div class="flex justify-between items-start">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">{{ lesson.title }}</h1>
-                <p class="text-gray-600 mt-2">{{ lesson.description }}</p>
-            </div>
-            <div class="flex gap-2">
-                <span class="inline-block text-sm px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full font-medium">
-                    <i class="fas fa-child-reaching mr-1"></i> {{ lesson.ageGroup }}
-                </span>
-                <span class="inline-block text-sm px-3 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
-                    <i class="fas fa-clock mr-1"></i> {{ lesson.duration }} min
-                </span>
-            </div>
-        </div>
+  <a href="/lessons" class="back-link">
+    <i class="fas fa-arrow-left" style="font-size:0.75rem"></i> Back to Lessons
+  </a>
 
-        <div class="mt-4 flex flex-wrap gap-3">
-            <button onclick="openAssignmentModal()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition font-medium">
-                <i class="fas fa-paper-plane mr-2"></i> Assign to Class
-            </button>
-            <a href="#student-exercises" onclick="switchLessonTab('exercises')" class="border border-purple-600 text-purple-600 px-4 py-2 rounded-lg hover:bg-purple-50 transition font-medium">
-                <i class="fas fa-laptop-code mr-2"></i> Open Student Exercises
-            </a>
+  <!-- Lesson Header -->
+  <div class="lesson-header">
+    <div>
+      <div class="lesson-tag">
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg>
+        {{ lesson.id | replace('lesson-', 'Lesson ') }} &middot; {{ lesson.level }}
+      </div>
+      <h1 class="lesson-heading">{{ lesson.title }}</h1>
+      <div class="meta-row">
+        <div class="meta-pill">
+          <div class="meta-dot" style="background:#7c3aed"></div>
+          {{ lesson.ageGroup }}
         </div>
+        <div class="meta-pill">
+          <div class="meta-dot" style="background:#2563eb"></div>
+          {{ lesson.duration }} min
+        </div>
+        {% if lesson.curriculumAlignment %}
+        {% for std in lesson.curriculumAlignment[:2] %}
+        <div class="meta-pill">
+          <div class="meta-dot" style="background:#059669"></div>
+          {{ std }}
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
     </div>
 
-    <!-- Lesson Image -->
-    <div class="bg-white rounded-lg overflow-hidden card-shadow">
-        <div class="relative aspect-video bg-gray-900">
-            {% if lesson.imageUrl %}
-            <img src="{{ lesson.imageUrl }}" alt="{{ lesson.title }}" class="w-full h-full object-cover">
-            {% else %}
-            <div class="w-full h-full bg-gradient-to-br from-slate-900 via-indigo-900 to-sky-900 text-white flex items-center justify-center p-8">
-                <div class="text-center">
-                    <div class="mx-auto w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-chalkboard-teacher text-2xl"></i>
-                    </div>
-                    <h2 class="text-2xl md:text-3xl font-bold">{{ lesson.title }}</h2>
-                    <p class="mt-2 text-white/80">Classroom slide placeholder</p>
-                </div>
-            </div>
-            {% endif %}
-        </div>
+    <div class="header-actions">
+      {% if lesson.lessonSlides %}
+      <button class="btn-start" onclick="openSlideshow(0)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Start Lesson
+      </button>
+      {% endif %}
+      <button class="btn-secondary" onclick="openAssignmentModal()">
+        <i class="fas fa-paper-plane" style="font-size:0.8rem"></i> Assign to Class
+      </button>
     </div>
+  </div>
 
-    <!-- Lesson Content Tabs -->
-    <div class="space-y-4">
-        <div class="grid w-full grid-cols-3 bg-gray-100 rounded-lg p-1">
-            <button id="tab-trigger-overview" onclick="switchLessonTab('overview')" class="rounded-md py-2 text-sm font-medium bg-white text-purple-700 shadow-sm transition">Overview</button>
-            <button id="tab-trigger-instructions" onclick="switchLessonTab('instructions')" class="rounded-md py-2 text-sm font-medium text-gray-700 transition">Teacher Guide</button>
-            <button id="tab-trigger-exercises" onclick="switchLessonTab('exercises')" class="rounded-md py-2 text-sm font-medium text-gray-700 transition">Student Exercises</button>
-        </div>
-
-        <div id="tab-overview" class="space-y-6">
-            <div class="bg-white rounded-lg p-6 card-shadow">
-                <h2 class="text-xl font-bold text-gray-900 mb-3">Lesson Overview</h2>
-                <p class="text-gray-700 leading-relaxed">{{ lesson.fullDescription }}</p>
-            </div>
-
-            <div class="bg-white rounded-lg p-6 card-shadow">
-                <h2 class="text-xl font-bold text-gray-900 mb-1">Learning Objectives</h2>
-                <p class="text-gray-500 text-sm mb-4">What students will learn in this lesson</p>
-                <ul class="space-y-3">
-                    {% for objective in lesson.learningObjectives %}
-                    <li class="flex items-start gap-3">
-                        <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <span class="text-purple-600 text-sm font-semibold">{{ loop.index }}</span>
-                        </div>
-                        <span class="text-gray-700">{{ objective }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-            <div class="bg-white rounded-lg p-6 card-shadow">
-                <h2 class="text-xl font-bold text-gray-900 mb-3">Required Materials</h2>
-                <ul class="space-y-2">
-                    {% for material in lesson.materials %}
-                    <li class="flex gap-3 text-gray-700">
-                        <i class="fas fa-box text-blue-500"></i>
-                        <span>{{ material }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-            {% if lesson.curriculumAlignment %}
-            <div class="bg-white rounded-lg p-6 card-shadow">
-                <h2 class="text-xl font-bold text-gray-900 mb-3">Curriculum Alignment</h2>
-                <div class="flex flex-wrap gap-2">
-                    {% for standard in lesson.curriculumAlignment %}
-                    <span class="inline-block border border-gray-300 text-gray-700 text-sm px-3 py-1 rounded-full">{{ standard }}</span>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-        </div>
-
-        <div id="tab-instructions" class="space-y-6 hidden">
-            <div class="bg-white rounded-lg p-6 card-shadow">
-                <h2 class="text-xl font-bold text-gray-900 mb-3">Classroom Setup</h2>
-                <p class="text-gray-700">{{ lesson.teacherInstructions.setup }}</p>
-            </div>
-
-            <div class="bg-white rounded-lg p-6 card-shadow">
-                <h2 class="text-xl font-bold text-gray-900 mb-1">Step-by-Step Teaching Guide</h2>
-                <p class="text-gray-500 text-sm mb-4">Follow these steps for a successful lesson</p>
-                <div class="space-y-4">
-                    {% for step in lesson.teacherInstructions.steps %}
-                    <div class="flex gap-4">
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
-                            <span class="text-white font-semibold">{{ loop.index }}</span>
-                        </div>
-                        <div class="flex-1 pt-1">
-                            <p class="text-gray-700">{{ step }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 card-shadow">
-                <h2 class="text-xl font-bold text-blue-900 mb-1">Discussion Prompts</h2>
-                <p class="text-blue-700 text-sm mb-4">Questions to engage students</p>
-                <ul class="space-y-2">
-                    {% for prompt in lesson.teacherInstructions.discussionPrompts %}
-                    <li class="flex items-start gap-2">
-                        <span class="text-blue-600 font-semibold">💬</span>
-                        <span class="text-gray-700">{{ prompt }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-            <div class="bg-green-50 border border-green-200 rounded-lg p-6 card-shadow">
-                <h2 class="text-xl font-bold text-green-900 mb-1">Teaching Tips</h2>
-                <p class="text-green-700 text-sm mb-4">Best practices for this lesson</p>
-                <ul class="space-y-2">
-                    {% for tip in lesson.teacherInstructions.tips %}
-                    <li class="flex items-start gap-2">
-                        <span class="text-green-600">💡</span>
-                        <span class="text-gray-700">{{ tip }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-
-        <div id="tab-exercises" class="space-y-4 hidden">
-            <div id="student-exercises" class="space-y-4">
-                <h2 class="text-xl font-bold text-gray-900">Student Exercises</h2>
-                {% for exercise in lesson.studentExercises %}
-                <div class="bg-white rounded-lg p-6 card-shadow">
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex-1">
-                            <h3 class="text-lg font-bold text-gray-900">{{ exercise.title }}</h3>
-                            <div class="mt-2 flex items-center gap-2">
-                                <span class="inline-block border border-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full">{{ exercise.type }}</span>
-                                <span class="inline-block text-xs font-medium px-2 py-1 rounded-full
-                                    {% if exercise.difficulty == 'Beginner' or exercise.difficulty == 'Easy' %}bg-green-100 text-green-700
-                                    {% elif exercise.difficulty == 'Intermediate' or exercise.difficulty == 'Medium' %}bg-yellow-100 text-yellow-700
-                                    {% elif exercise.difficulty == 'Advanced' or exercise.difficulty == 'Hard' %}bg-orange-100 text-orange-700
-                                    {% else %}bg-red-100 text-red-700{% endif %}">
-                                    {{ exercise.difficulty }}
-                                </span>
-                                <span class="inline-block border border-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full">
-                                    {{ exercise.durationMinutes }} min
-                                </span>
-                                <span class="inline-block border border-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full">
-                                    {{ exercise.displayMode }}
-                                </span>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-3">{{ exercise.description }}</p>
-
-                            {% if exercise.instructions %}
-                            <ul class="mt-3 space-y-1 text-sm text-gray-700">
-                                {% for instruction in exercise.instructions[:2] %}
-                                <li class="flex items-start gap-2">
-                                    <span class="text-purple-600 font-semibold">{{ loop.index }}.</span>
-                                    <span>{{ instruction }}</span>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                        </div>
-                        <a href="/lessons/{{ lesson.id }}/exercises/{{ exercise.id }}" target="_blank" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition text-sm font-medium whitespace-nowrap">
-                            <i class="fas fa-display mr-1"></i> Present Exercise
-                        </a>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
-            {% if lesson.studentChallenges %}
-            <div id="student-challenges" class="space-y-4 pt-2">
-                <h2 class="text-xl font-bold text-gray-900">Class Challenges</h2>
-                <p class="text-sm text-gray-600">Stretch tasks for deeper algorithm thinking and whole-class reflection.</p>
-
-                {% for challenge in lesson.studentChallenges %}
-                <div class="bg-white rounded-lg p-6 card-shadow border border-amber-200">
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex-1">
-                            <h3 class="text-lg font-bold text-gray-900">{{ challenge.title }}</h3>
-                            <div class="mt-2 flex items-center gap-2">
-                                <span class="inline-block border border-amber-300 bg-amber-50 text-amber-700 text-xs px-2 py-1 rounded-full">{{ challenge.type }}</span>
-                                <span class="inline-block text-xs font-medium px-2 py-1 rounded-full
-                                    {% if challenge.difficulty == 'Beginner' or challenge.difficulty == 'Easy' %}bg-green-100 text-green-700
-                                    {% elif challenge.difficulty == 'Intermediate' or challenge.difficulty == 'Medium' %}bg-yellow-100 text-yellow-700
-                                    {% elif challenge.difficulty == 'Advanced' or challenge.difficulty == 'Hard' %}bg-orange-100 text-orange-700
-                                    {% else %}bg-red-100 text-red-700{% endif %}">
-                                    {{ challenge.difficulty }}
-                                </span>
-                                <span class="inline-block border border-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full">
-                                    {{ challenge.durationMinutes }} min
-                                </span>
-                                <span class="inline-block border border-gray-300 text-gray-700 text-xs px-2 py-1 rounded-full">
-                                    {{ challenge.displayMode }}
-                                </span>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-3">{{ challenge.description }}</p>
-
-                            {% if challenge.instructions %}
-                            <ul class="mt-3 space-y-1 text-sm text-gray-700">
-                                {% for instruction in challenge.instructions[:2] %}
-                                <li class="flex items-start gap-2">
-                                    <span class="text-amber-600 font-semibold">{{ loop.index }}.</span>
-                                    <span>{{ instruction }}</span>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                        </div>
-                        <a href="/lessons/{{ lesson.id }}/challenges/{{ challenge.id }}" target="_blank" class="bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition text-sm font-medium whitespace-nowrap">
-                            <i class="fas fa-trophy mr-1"></i> Present Challenge
-                        </a>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
+  <!-- Vocabulary Strip -->
+  {% if lesson.vocabulary %}
+  <p class="section-title">Key Vocabulary &mdash; Write on board before class</p>
+  <div class="vocab-strip">
+    {% for v in lesson.vocabulary %}
+    <div class="vocab-badge">
+      <span class="vocab-word">{{ v.word }}</span>
+      <span class="vocab-def">{{ v.def }}</span>
     </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Info Grid -->
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>Learning Objectives</h3>
+      <ul class="info-list">
+        {% for obj in lesson.learningObjectives %}
+        <li>{{ obj }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>Materials Needed</h3>
+      <ul class="info-list">
+        {% for mat in lesson.materials %}
+        <li>{{ mat }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>Setup Checklist</h3>
+      <ul class="info-list">
+        {% if lesson.vocabulary %}
+        <li>Vocabulary written on board and visible all lesson</li>
+        {% endif %}
+        {% if lesson.teacherInstructions and lesson.teacherInstructions.setup %}
+        <li>{{ lesson.teacherInstructions.setup }}</li>
+        {% else %}
+        <li>Materials prepared at front of room</li>
+        <li>Paper ready for pair and individual activities</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Phase List -->
+  {% if lesson.lessonSlides %}
+  <p class="section-title" style="margin-top:4px">Lesson Phases &mdash; Click any phase to jump to it</p>
+  <div class="phase-list">
+    {% for slide in lesson.lessonSlides %}
+    <div class="phase-row clickable" onclick="openSlideshow({{ loop.index0 }})">
+      <span class="phase-time">{{ slide.time }}</span>
+      <div class="phase-label">
+        {{ slide.phase }}: {{ slide.title }}
+        {% if slide.whatToSay %}<small>Includes exact wording to say</small>{% endif %}
+      </div>
+      <span class="phase-arrow">&#8250;</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% elif lesson.teacherInstructions and lesson.teacherInstructions.steps %}
+  <p class="section-title" style="margin-top:4px">Teaching Steps</p>
+  <div class="phase-list">
+    {% for step in lesson.teacherInstructions.steps %}
+    <div class="phase-row">
+      <span class="phase-time">Step {{ loop.index }}</span>
+      <div class="phase-label">{{ step }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Student Exercises -->
+  {% if lesson.studentExercises %}
+  <hr class="section-divider">
+  <p class="section-title">Student Exercises</p>
+  <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:32px">
+    {% for ex in lesson.studentExercises %}
+    <div class="ex-card">
+      <div class="card-body">
+        <h3 class="card-title">{{ ex.title }}</h3>
+        <div style="margin-bottom:6px">
+          <span class="chip">{{ ex.type }}</span>
+          <span class="chip chip-{{ ex.difficulty | lower }}">{{ ex.difficulty }}</span>
+          <span class="chip">{{ ex.durationMinutes }} min</span>
+          <span class="chip">{{ ex.displayMode }}</span>
+        </div>
+        <p class="card-desc">{{ ex.description }}</p>
+      </div>
+      <a href="/lessons/{{ lesson.id }}/exercises/{{ ex.id }}" target="_blank" class="btn-present btn-present-ex">
+        <i class="fas fa-display" style="font-size:0.75rem"></i> Present
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Student Challenges -->
+  {% if lesson.studentChallenges %}
+  <p class="section-title">Class Challenges</p>
+  <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:40px">
+    {% for ch in lesson.studentChallenges %}
+    <div class="ch-card">
+      <div class="card-body">
+        <h3 class="card-title">{{ ch.title }}</h3>
+        <div style="margin-bottom:6px">
+          <span class="chip" style="background:#eff6ff; border-color:#bfdbfe; color:#1d4ed8">{{ ch.type }}</span>
+          <span class="chip chip-{{ ch.difficulty | lower }}">{{ ch.difficulty }}</span>
+          <span class="chip">{{ ch.durationMinutes }} min</span>
+          <span class="chip">{{ ch.displayMode }}</span>
+        </div>
+        <p class="card-desc">{{ ch.description }}</p>
+      </div>
+      <a href="/lessons/{{ lesson.id }}/challenges/{{ ch.id }}" target="_blank" class="btn-present btn-present-ch">
+        <i class="fas fa-trophy" style="font-size:0.75rem"></i> Present
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
 </div>
+
+<!-- ─── SLIDESHOW OVERLAY ─── -->
+{% if lesson.lessonSlides %}
+<div id="ss-overlay">
+
+  <div class="ss-topbar">
+    <div class="ss-phase-label" id="ss-phase-label"></div>
+    <div class="ss-dots" id="ss-dots"></div>
+    <button class="ss-close" onclick="closeSlideshow()">&times; Close</button>
+  </div>
+
+  <div class="ss-progress-bar">
+    <div class="ss-progress-fill" id="ss-progress-fill" style="width:0%"></div>
+  </div>
+
+  <div class="ss-wrapper">
+    <div class="ss-inner" id="ss-content"></div>
+  </div>
+
+  <div class="ss-nav">
+    <button class="ss-btn" id="ss-btn-prev" onclick="changeSlide(-1)" disabled>
+      &larr; Previous
+    </button>
+    <span class="ss-counter">Slide <span id="ss-num">1</span> / <span id="ss-total"></span></span>
+    <button class="ss-btn ss-btn-next" id="ss-btn-next" onclick="changeSlide(1)">
+      Next &rarr;
+    </button>
+  </div>
+
+</div>
+{% endif %}
 
 <!-- Assignment Modal -->
-<div id="assignmentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-lg max-w-md w-full p-6 card-shadow">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Assign Lesson</h2>
-        <p class="text-gray-600 mb-4">Select which class to assign this lesson to.</p>
-        
-        <form onsubmit="assignLesson(event)">
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Select Class</label>
-                <select id="classSelect" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <option value="">Choose a class...</option>
-                    <option value="class-1">Class 4A</option>
-                    <option value="class-2">Class 4B</option>
-                    <option value="class-3">Class 5A</option>
-                </select>
-            </div>
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Due Date</label>
-                <input type="date" id="dueDate" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-            </div>
-            <div class="flex gap-3">
-                <button type="button" onclick="closeAssignmentModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
-                    Cancel
-                </button>
-                <button type="submit" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium">
-                    Assign
-                </button>
-            </div>
-        </form>
-    </div>
+<div id="assignmentModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl">
+    <h2 class="text-xl font-bold text-gray-900 mb-4" style="font-family:'DM Serif Display',serif">Assign Lesson</h2>
+    <p class="text-gray-500 text-sm mb-4">Select which class to assign this lesson to.</p>
+    <form onsubmit="assignLesson(event)">
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Class</label>
+        <select id="classSelect" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400">
+          <option value="">Choose a class...</option>
+          <option value="class-1">Class 4A</option>
+          <option value="class-2">Class 4B</option>
+          <option value="class-3">Class 5A</option>
+        </select>
+      </div>
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+        <input type="date" id="dueDate" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400">
+      </div>
+      <div class="flex gap-3">
+        <button type="button" onclick="closeAssignmentModal()" class="flex-1 px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition">Cancel</button>
+        <button type="submit" class="flex-1 px-4 py-2 text-white rounded-lg text-sm font-medium transition" style="background:#7c3aed">Assign</button>
+      </div>
+    </form>
+  </div>
 </div>
-
 {% endblock %}
 
 {% block scripts %}
 <script>
-function openAssignmentModal() {
-    document.getElementById('assignmentModal').classList.remove('hidden');
+/* ─── Assignment Modal ─── */
+function openAssignmentModal() { document.getElementById('assignmentModal').classList.remove('hidden'); }
+function closeAssignmentModal() { document.getElementById('assignmentModal').classList.add('hidden'); }
+function assignLesson(e) {
+  e.preventDefault();
+  const c = document.getElementById('classSelect').value;
+  const d = document.getElementById('dueDate').value;
+  if (!c || !d) { alert('Please fill in all fields'); return; }
+  alert('Lesson assigned to ' + c + ' — due ' + d);
+  closeAssignmentModal();
 }
 
-function closeAssignmentModal() {
-    document.getElementById('assignmentModal').classList.add('hidden');
+{% if lesson.lessonSlides %}
+/* ─── Slideshow ─── */
+const SLIDES = {{ lesson.lessonSlides | tojson }};
+let cur = 0;
+
+function buildSlideHTML(s) {
+  let h = `
+    <div class="ss-phase-tag">${s.phase}</div>
+    <div class="ss-title">${s.title}</div>
+    ${s.time ? `<div class="ss-timing">${s.time}</div>` : ''}
+  `;
+
+  if (s.roleModel) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Role model of the day</div>
+      <div class="rm-card">
+        <div class="rm-icon">&#11088;</div>
+        <div>
+          <div class="rm-name">Ada Lovelace</div>
+          <div class="rm-years">1815&ndash;1852 &middot; Mathematician &amp; First Programmer</div>
+          <div class="rm-text">${s.roleModel}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if (s.whatToSay) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Say to the class</div>
+      <div class="say-box">${s.whatToSay}</div>
+    </div>`;
+  }
+
+  if (s.whatToDo && s.whatToDo.length) {
+    h += `<div class="ss-section">
+      <div class="ss-label">What to do</div>
+      <ul class="step-list">${s.whatToDo.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  if (s.rules && s.rules.length) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Rules for students</div>
+      <ul class="bullet-list">${s.rules.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  if (s.discussionQuestions && s.discussionQuestions.length) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Discussion questions &mdash; pick one</div>
+      ${s.discussionQuestions.map(q => `<div class="say-box" style="margin-bottom:8px">${q}</div>`).join('')}
+    </div>`;
+  }
+
+  if (s.challengeQuestions && s.challengeQuestions.length) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Challenge questions for students</div>
+      <ul class="bullet-list">${s.challengeQuestions.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  if (s.task) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Their task</div>
+      <div class="do-box">${s.task}</div>
+    </div>`;
+  }
+
+  if (s.realWorldConnection) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Real-world connection</div>
+      <div class="do-box">${s.realWorldConnection}</div>
+    </div>`;
+  }
+
+  if (s.discussionClose) {
+    h += `<div class="ss-section">
+      <div class="ss-label">To close the activity</div>
+      <div class="do-box">${s.discussionClose}</div>
+    </div>`;
+  }
+
+  if (s.exitReflection) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Exit reflection &mdash; say this or use sticky notes</div>
+      <div class="say-box" style="font-size:1.05rem;font-weight:600;font-style:normal">${s.exitReflection}</div>
+    </div>`;
+  }
+
+  if (s.tip) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Teacher tip</div>
+      <div class="tip-box"><span class="tip-label">&#128161; Tip</span>${s.tip}</div>
+    </div>`;
+  }
+
+  if (s.shyStudentsNote) {
+    h += `<div class="ss-section">
+      <div class="ss-label">If students are shy</div>
+      <div class="tip-box"><span class="tip-label">&#9995; Note</span>${s.shyStudentsNote}</div>
+    </div>`;
+  }
+
+  if (s.watchFor) {
+    h += `<div class="ss-section">
+      <div class="ss-label">What to watch for &mdash; readiness check</div>
+      <div class="tip-box"><span class="tip-label">&#128065; Observe</span>${s.watchFor}</div>
+    </div>`;
+  }
+
+  return h;
 }
 
-function assignLesson(event) {
-    event.preventDefault();
-    const classId = document.getElementById('classSelect').value;
-    const dueDate = document.getElementById('dueDate').value;
-    
-    if (!classId || !dueDate) {
-        alert('Please fill in all fields');
-        return;
-    }
-    
-    alert(`Lesson assigned to class ${classId} with due date ${dueDate}`);
-    closeAssignmentModal();
+function buildDots() {
+  const c = document.getElementById('ss-dots');
+  c.innerHTML = '';
+  SLIDES.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'ss-dot' + (i === cur ? ' active' : i < cur ? ' done' : '');
+    d.title = SLIDES[i].phase + ': ' + SLIDES[i].title;
+    d.onclick = () => goTo(i);
+    c.appendChild(d);
+  });
 }
 
-function switchLessonTab(tabName) {
-    const tabIds = ['overview', 'instructions', 'exercises'];
-    tabIds.forEach(id => {
-        const content = document.getElementById(`tab-${id}`);
-        const trigger = document.getElementById(`tab-trigger-${id}`);
-
-        if (id === tabName) {
-            content.classList.remove('hidden');
-            trigger.classList.add('bg-white', 'text-purple-700', 'shadow-sm');
-            trigger.classList.remove('text-gray-700');
-        } else {
-            content.classList.add('hidden');
-            trigger.classList.remove('bg-white', 'text-purple-700', 'shadow-sm');
-            trigger.classList.add('text-gray-700');
-        }
-    });
+function renderSlide() {
+  const s = SLIDES[cur];
+  document.getElementById('ss-phase-label').textContent = s.phase + ' \u00b7 ' + (cur + 1) + ' of ' + SLIDES.length;
+  document.getElementById('ss-num').textContent = cur + 1;
+  document.getElementById('ss-total').textContent = SLIDES.length;
+  document.getElementById('ss-content').innerHTML = buildSlideHTML(s);
+  document.getElementById('ss-progress-fill').style.width = ((cur + 1) / SLIDES.length * 100) + '%';
+  document.getElementById('ss-btn-prev').disabled = cur === 0;
+  const nextBtn = document.getElementById('ss-btn-next');
+  nextBtn.innerHTML = cur === SLIDES.length - 1 ? '&#127937; End of Lesson' : 'Next &rarr;';
+  buildDots();
+  document.querySelector('.ss-wrapper').scrollTop = 0;
 }
 
-if (window.location.hash === '#student-exercises' || window.location.hash === '#student-challenges') {
-    switchLessonTab('exercises');
+function goTo(index) { cur = index; renderSlide(); }
+
+function openSlideshow(startIndex) {
+  cur = startIndex || 0;
+  document.getElementById('ss-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderSlide();
 }
+
+function closeSlideshow() {
+  document.getElementById('ss-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function changeSlide(dir) {
+  const next = cur + dir;
+  if (next >= SLIDES.length) { closeSlideshow(); return; }
+  if (next < 0) return;
+  goTo(next);
+}
+
+document.addEventListener('keydown', e => {
+  const overlay = document.getElementById('ss-overlay');
+  if (!overlay.classList.contains('active')) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+  if (e.key === 'Escape') closeSlideshow();
+});
+{% endif %}
 </script>
 {% endblock %}
