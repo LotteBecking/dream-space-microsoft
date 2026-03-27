@@ -1,32 +1,122 @@
-# Teacher Dashboard (Python)
+# Teacher Dashboard (Flask)
 
-> **Note:** This folder's templates and lesson content are **served by the unified backend** (`prototypes/backend/app.py`), not run standalone. The `app.py` in this folder is legacy and should not be run directly.
->
-> To run the teacher dashboard:
-> ```bash
-> cd prototypes/backend
-> python app.py   # serves dashboard at http://localhost:5000
-> ```
+A teacher-facing dashboard for planning coding lessons, tracking student progress, and managing classes.
 
-This folder contains the Jinja2 templates, lesson JSON content, and static assets for the teacher-facing dashboard.
+## Overview
 
-## What's in here
+This app provides:
 
-- `templates/` — Jinja2 HTML templates rendered by `backend/app.py`
-- `data/lesson_content/` — 16 lesson JSON files (`lesson-1.json` … `lesson-16.json`) + `manifest.json`
-- `static/images/` — Lesson thumbnail images and SVGs
-- `data/lessons.py`, `data/teacher_storage.py` — Legacy data utilities (superseded by `backend/models.py`)
+- A home dashboard with quick lesson access, leaderboard, class metrics, and challenge insights
+- A searchable lesson library and detailed lesson pages
+- Student and class management views
+- A basic account/settings page
+- Local JSON-based storage for rapid prototyping
 
-## Lesson Content
+## Tech Stack
 
-Lessons live as JSON files in `data/lesson_content/lesson-N.json`. Both the teacher dashboard and the kids app (iOS + web) read lesson content from these files. Edit the JSON here to change lesson content.
+- Python 3.10+
+- Flask
+- Jinja2 templates
+- Tailwind CSS (CDN)
+- Font Awesome icons
+
+## Project Structure
+
+- app.py: main Flask app and routes
+- requirements.txt: Python dependencies
+- data/teacher_storage.py: local storage and auth helpers
+- data/lessons.py: lesson loading/search utilities
+- data/lesson_content/: lesson JSON files and manifest
+- data/store/: runtime JSON storage (users, students, classes, last lesson)
+- templates/: UI templates
+- static/images/: lesson images and assets
 
 ## Features
 
-- Teacher dashboard home
-- Lesson library with search
-- Lesson detail view
-- Class overview and management
-- Student list with filtering
-- Student progress profiles
-- Teacher settings / profile
+- Authentication
+- Register/login/logout flows using local user storage
+
+- Dashboard
+- Dynamic greeting and account context
+- Featured lesson card with lesson cover support
+- Podium-style top students leaderboard
+- Most popular completed challenges panel
+- Key metrics: total students, active assignments, average engagement
+
+- Lessons
+- Lesson library with search and track filtering
+- Lesson detail pages with normalized teacher instructions
+- Exercise and challenge presentation routes for classroom display
+
+- Students and Classes
+- Student list with class filter
+- Student profile pages
+- Class overview cards
+
+## Getting Started
+
+### 1. Clone and enter the project
+
+```bash
+git clone <your-repo-url>
+cd dream-space-microsoft/intervention/prototypes/teacher_dashboard_python
+```
+
+### 2. Create and activate a virtual environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Run the app
+
+```bash
+python app.py
+```
+
+Open http://127.0.0.1:5000 in your browser.
+
+## Default Data and Storage
+
+The app uses local JSON/text storage in data/store.
+
+- users.json: registered users
+- students.json: student records
+- classes.json: class records
+- assignments.json: assignment records
+- teacher_profile.json: profile defaults
+- last_lesson.txt: recently opened lesson
+
+If storage files are missing, defaults from data/teacher_storage.py are used.
+
+## Important Notes
+
+- This is a prototype-oriented implementation with local file storage.
+- Passwords are SHA-256 hashed for development simplicity, not production security.
+- For production, migrate to a proper database and stronger password hashing such as bcrypt or argon2.
+
+## API Endpoints (Prototype)
+
+- GET/POST /api/profile
+- GET /api/classes
+- GET /api/students
+- POST /api/students/<student_id>/avatar
+
+## Roadmap Ideas
+
+- Add class/grade selection to registration
+- Replace local storage with a relational database
+- Add role-based access control
+- Add tests and CI checks
+- Add analytics from live student activity events
+
+## License
+
+Add your preferred license here, for example MIT.
