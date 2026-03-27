@@ -122,6 +122,8 @@ def normalize_lesson_detail(lesson):
 def home():
     """Teacher dashboard home page"""
     classes = get_classes()
+    students = get_students()
+    teacher_profile = get_teacher_profile()
     last_lesson_id = get_last_lesson()
     featured_lesson = lessons[0] if lessons else None
     
@@ -129,6 +131,99 @@ def home():
     last_lesson = None
     if last_lesson_id:
         last_lesson = next((l for l in lessons if l['id'] == last_lesson_id), None)
+
+    # If a lesson was viewed, make it the featured lesson for quick continuation.
+    if last_lesson:
+        featured_lesson = last_lesson
+
+    previous_lesson = None
+    next_lesson = None
+    if lessons:
+        lesson_index_by_id = {
+            lesson.get('id'): index
+            for index, lesson in enumerate(lessons)
+            if lesson.get('id')
+        }
+
+        current_lesson_id = featured_lesson.get('id') if featured_lesson else None
+        current_index = lesson_index_by_id.get(current_lesson_id, 0)
+
+        if current_index > 0:
+            previous_lesson = lessons[current_index - 1]
+        if current_index < len(lessons) - 1:
+            next_lesson = lessons[current_index + 1]
+
+    class_name_by_id = {
+        class_item.get('id'): class_item.get('name', 'Unknown class')
+        for class_item in classes
+    }
+    top_students = sorted(
+        students,
+        key=lambda student: (
+            student.get('progressPercentage', 0),
+            student.get('challengesCompleted', 0)
+        ),
+        reverse=True
+    )[:3]
+
+    leaderboard_students = [
+        {
+            **student,
+            'className': class_name_by_id.get(student.get('classId'), 'Unknown class')
+        }
+        for student in top_students
+    ]
+
+    challenge_completion_counts = {}
+    for student in students:
+        for activity in student.get('activityHistory', []):
+            if activity.get('type') != 'challenge':
+                continue
+            if not activity.get('success', True):
+                continue
+
+            challenge_title = (activity.get('title') or '').strip()
+            if not challenge_title:
+                continue
+
+            challenge_completion_counts[challenge_title] = challenge_completion_counts.get(challenge_title, 0) + 1
+
+    popular_challenges = [
+        {
+            'title': challenge_title,
+            'completedCount': completion_count
+        }
+        for challenge_title, completion_count in sorted(
+            challenge_completion_counts.items(),
+            key=lambda item: item[1],
+            reverse=True
+        )[:5]
+    ]
+
+    lesson_covers = {
+        'lesson-1': '/static/images/lesson-1-cover.jpg',
+        'lesson-2': '/static/images/lesson-2-cover.jpg',
+        'lesson-3': '/static/images/lesson-3-cover.jpg',
+        'lesson-4': '/static/images/lesson-4-cover.jpg',
+        'lesson-5': '/static/images/lesson-5-cover.jpg',
+        'lesson-6': '/static/images/lesson-6-cover.jpg'
+    }
+
+    featured_lesson_cover = None
+    if featured_lesson:
+        featured_lesson_cover = lesson_covers.get(featured_lesson.get('id'))
+
+    current_hour = datetime.now().hour
+    if current_hour < 12:
+        day_greeting = 'Good morning'
+    elif current_hour < 18:
+        day_greeting = 'Good afternoon'
+    else:
+        day_greeting = 'Good evening'
+
+    teacher_name = session.get('user_username') or teacher_profile.get('name') or 'Teacher'
+    teacher_school = session.get('user_school') or teacher_profile.get('school') or 'School not set'
+    teacher_class_label = 'Groep 7-8' # placeholder until we implement class level in sign up
     
     # Calculate totals
     total_students = sum(c['studentCount'] for c in classes)
@@ -136,40 +231,30 @@ def home():
     avg_engagement = round(sum(c['engagementRate'] for c in classes) / len(classes)) if classes else 0
     
     # Check if user is logged in
-    is_logged_in = 'user_email' in session
+    is_logged_in = 'user_username' in session
     
     return render_template('home.html',
                          featured_lesson=featured_lesson,
                          last_lesson=last_lesson,
+                         previous_lesson=previous_lesson,
+                         next_lesson=next_lesson,
+                         leaderboard_students=leaderboard_students,
+                         popular_challenges=popular_challenges,
+                         featured_lesson_cover=featured_lesson_cover,
+                         day_greeting=day_greeting,
+                         teacher_name=teacher_name,
+                         teacher_school=teacher_school,
+                         teacher_class_label=teacher_class_label,
                          classes=classes,
                          total_students=total_students,
                          total_assignments=total_assignments,
                          avg_engagement=avg_engagement,
                          is_logged_in=is_logged_in)
-    featured_lesson = lessons[0] if lessons else None
-    
-    # Find last lesson
-    last_lesson = None
-    if last_lesson_id:
-        last_lesson = next((l for l in lessons if l['id'] == last_lesson_id), None)
-    
-    # Calculate totals
-    total_students = sum(c['studentCount'] for c in classes)
-    total_assignments = sum(c['activeAssignments'] for c in classes)
-    avg_engagement = round(sum(c['engagementRate'] for c in classes) / len(classes)) if classes else 0
-    
-    return render_template('home.html',
-                         featured_lesson=featured_lesson,
-                         last_lesson=last_lesson,
-                         classes=classes,
-                         total_students=total_students,
-                         total_assignments=total_assignments,
-                         avg_engagement=avg_engagement)
 
 @app.route('/lessons')
 def lesson_library():
     """Lesson library page"""
-    if 'user_email' not in session:
+    if 'user_username' not in session:
         return redirect(url_for('home'))
     
     search_query = request.args.get('search', '').strip().lower()
@@ -220,7 +305,7 @@ def lesson_library():
 @app.route('/lessons/<lesson_id>')
 def lesson_detail(lesson_id):
     """Single lesson detail page"""
-    if 'user_email' not in session:
+    if 'user_username' not in session:
         return redirect(url_for('home'))
     
     lesson = next((l for l in lessons if l['id'] == lesson_id), None)
@@ -297,7 +382,7 @@ def lesson_challenge_present(lesson_id, challenge_id):
 @app.route('/classes')
 def class_overview():
     """Class management overview"""
-    if 'user_email' not in session:
+    if 'user_username' not in session:
         return redirect(url_for('home'))
     
     classes = get_classes()
@@ -306,7 +391,7 @@ def class_overview():
 @app.route('/students')
 def student_list():
     """Student list and filters"""
-    if 'user_email' not in session:
+    if 'user_username' not in session:
         return redirect(url_for('home'))
     
     class_id = request.args.get('class')
@@ -325,7 +410,7 @@ def student_list():
 @app.route('/students/<student_id>')
 def student_profile(student_id):
     """Detailed student progress page"""
-    if 'user_email' not in session:
+    if 'user_username' not in session:
         return redirect(url_for('home'))
     
     students = get_students()
@@ -339,24 +424,11 @@ def student_profile(student_id):
 @app.route('/settings')
 def profile():
     """Teacher profile settings"""
-    if 'user_email' not in session:
+    if 'user_username' not in session:
         return redirect(url_for('home'))
     
-    # Get or create profile with current user's session data
     profile = get_teacher_profile()
-    
-    # Ensure profile has the current logged-in user's data
-    email = session.get('user_email', '')
-    username = session.get('user_username', '')
-    user_data = {
-        'username': username,
-        'email': email,
-        'school': session.get('user_school', ''),
-        'name': profile.get('name') or username,
-        'avatar': email[0].upper() if email else 'U'
-    }
-    
-    return render_template('profile.html', profile=user_data, user_data=user_data)
+    return render_template('profile.html', profile=profile)
 
 # API Routes
 
@@ -412,17 +484,12 @@ def register():
         return redirect(url_for('home'))
     
     if request.method == 'POST':
-        email = request.form.get('email', '').strip()
         username = request.form.get('username', '').strip()
         school = request.form.get('school', '').strip()
         password = request.form.get('password', '').strip()
         confirm_password = request.form.get('confirm_password', '').strip()
         
         # Validation
-        if not email:
-            session['auth_error'] = 'Email is required'
-            return redirect(url_for('home'))
-        
         if not username:
             session['auth_error'] = 'Username is required'
             return redirect(url_for('home'))
@@ -444,12 +511,10 @@ def register():
             return redirect(url_for('home'))
         
         # Register user
-        success, message = register_user(email, password, school, username)
+        success, message = register_user(username, password, school)
         
         if success:
-            session.pop('show_login_form', None)  # Clear the flag on successful registration
             # Auto-login after registration
-            session['user_email'] = email
             session['user_username'] = username
             session['user_school'] = school
             return redirect(url_for('home'))
@@ -465,24 +530,21 @@ def login():
         return redirect(url_for('home'))
     
     if request.method == 'POST':
-        email = request.form.get('username', '').strip()  # Using same field name 'username' for backward compatibility
+        username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
         
-        if not email or not password:
-            session['auth_error'] = 'Email and password are required'
+        if not username or not password:
+            session['auth_error'] = 'Username and password are required'
             return redirect(url_for('home'))
         
-        success, result = verify_user(email, password)
+        success, result = verify_user(username, password)
         
         if success:
-            session['user_email'] = email
-            session['user_username'] = result.get('username', '')
+            session['user_username'] = username
             session['user_school'] = result.get('school', '')
-            session.pop('show_login_form', None)  # Clear the flag on successful login
             return redirect(url_for('home'))
         else:
             session['auth_error'] = result
-            session['show_login_form'] = True  # Keep login form visible on error
             return redirect(url_for('home'))
 
 @app.route('/logout')
