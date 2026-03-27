@@ -426,8 +426,18 @@ def profile():
     """Teacher profile settings"""
     if 'user_username' not in session:
         return redirect(url_for('home'))
-    
-    profile = get_teacher_profile()
+
+    stored_profile = get_teacher_profile() or {}
+    username = session.get('user_username', '')
+    school = session.get('user_school', '')
+
+    profile = {
+        'name': username or stored_profile.get('name', ''),
+        'school': school or stored_profile.get('school', ''),
+        'email': stored_profile.get('email', ''),
+        'avatar': (username[:2].upper() if username else stored_profile.get('avatar', 'TD'))
+    }
+
     return render_template('profile.html', profile=profile)
 
 # API Routes
