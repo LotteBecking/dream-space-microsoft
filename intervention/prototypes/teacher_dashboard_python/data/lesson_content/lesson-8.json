@@ -1,5 +1,232 @@
 {
   "id": "lesson-8",
+  "vocabulary": [
+    {
+      "word": "Ethics",
+      "def": "The study of what is right, fair, and responsible"
+    },
+    {
+      "word": "Stakeholder",
+      "def": "Anyone affected by a decision, not just the person who made it"
+    },
+    {
+      "word": "Unintended Consequence",
+      "def": "A result of a decision that nobody planned for"
+    },
+    {
+      "word": "Transparency",
+      "def": "Being open and honest about how something works and why"
+    },
+    {
+      "word": "Consent",
+      "def": "Agreeing to something after being fully informed about what it means"
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "violet",
+      "roleModel": "Timnit Gebru (born 1983) is a computer scientist and AI ethics researcher who co-wrote one of the most important papers in AI ethics \u2014 showing that facial recognition AI was significantly less accurate for darker-skinned women than lighter-skinned men. She was fired from Google for refusing to withdraw the paper. She then founded her own independent AI ethics institute. She did not stop building technology \u2014 she insisted that building responsibly means asking hard questions about who it harms, not just who it helps.",
+      "whatToDo": [
+        "Write these five words on the board and leave them visible all lesson:",
+        "Ethics: the study of what is right, fair, and responsible",
+        "Stakeholder: anyone affected by a decision, not just the person who made it",
+        "Unintended Consequence: a result of a decision that nobody planned for",
+        "Transparency: being open and honest about how something works and why",
+        "Consent: agreeing to something after being fully informed about what it means",
+        "Write these five questions on the board \u2014 they will be used throughout the lesson:",
+        "1. Who does it help?",
+        "2. Who does it harm \u2014 including people who did not choose to use it?",
+        "3. Who decided to build it \u2014 and who did not get a say?",
+        "4. What happens if it goes wrong?",
+        "5. Who is responsible when it does?",
+        "Clear a space at the front of the room and mark one side AGREE and the other DISAGREE for the walking debate in Phase 2.",
+        "Have the Lesson 7 prototypes accessible \u2014 groups will need them in Phase 4."
+      ],
+      "tip": "Arrange the room before students arrive if possible. The walking debate works best when students can physically move freely. Remove chairs from the debate area."
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0\u20133 min",
+      "title": "Spark Question \u2014 Can Something Be Useful and Harmful at the Same Time?",
+      "colour": "violet",
+      "whatToSay": "Can something be useful and harmful at the same time? Can a technology be good for some people and bad for others \u2014 and still be worth building?",
+      "whatToDo": [
+        "Ask students to turn to the person next to them and share one example. Take 3\u20134 answers and write them on the board.",
+        "Tell them: 'Almost every powerful technology ever built has done both \u2014 helped some people and harmed others, solved one problem and created a new one. Today we are going to look at that honestly. Not to say technology is bad. Not to say it is good. But to think carefully about who it is for, who it affects, and who gets to decide.'",
+        "Real world connection: In 2018 Amazon scrapped an AI hiring tool it had been developing for four years after discovering it was systematically ranking women lower than men for technical roles \u2014 because it had been trained on 10 years of CVs from mostly male applicants. The tool was not designed to be unfair. Nobody wrote a rule saying 'rank women lower.' But the training data reflected a historical imbalance, and the AI learned it as a pattern."
+      ],
+      "tip": "Students often give examples like cars, social media, or nuclear power \u2014 all exactly right. Accept them all and keep them on the board. If students struggle, prompt: 'Think about something you use every day that has a downside you have noticed.'"
+    },
+    {
+      "id": "slide-phase2",
+      "phase": "Phase 2",
+      "time": "3\u201310 min",
+      "title": "Walking Debate \u2014 You Must Choose a Side",
+      "colour": "blue",
+      "whatToSay": "I am going to read a statement. You must physically move to the side that matches your view \u2014 AGREE or DISAGREE. You cannot stand in the middle. You must choose. Then I will ask people on each side to explain their position.",
+      "rules": [
+        "Statement 1: 'If an app is free to use, the company that makes it has the right to collect data about you and sell it to advertisers.'",
+        "Statement 2: 'If a self-driving car must choose between hitting one pedestrian or swerving and hitting five \u2014 the programmer who wrote the algorithm should be responsible for the outcome.'",
+        "Statement 3: 'Schools should be allowed to use AI to monitor students' messages and social media activity if it helps prevent bullying.'",
+        "Statement 4: 'If you design an app that most people love but a small group of people are harmed by, you should be allowed to keep the app running.'"
+      ],
+      "whatToDo": [
+        "Read each statement. After students move, ask one person from each side to give their reason. Keep it fast \u2014 60 seconds per statement.",
+        "For Statement 2 (self-driving car): draw out not just what the right answer is \u2014 but who should make the decision and when. Should the programmer decide in advance? Should there be a law? Should the AI decide in the moment? Do not resolve it.",
+        "Students who move to DISAGREE on Statement 3 but AGREE on Statement 1 should be asked to explain the apparent contradiction \u2014 that tension is exactly where ethical thinking happens."
+      ],
+      "tip": "The physical commitment to a side forces students to actually have a view rather than hedging. This is the most effective format for generating genuine ethical reasoning at this age."
+    },
+    {
+      "id": "slide-phase3",
+      "phase": "Phase 3",
+      "time": "10\u201320 min",
+      "title": "Concept Introduction \u2014 The Five Ethical Questions + Three Frameworks",
+      "colour": "violet",
+      "whatToSay": "Ethics is not about having the right answer to hard questions. It is about asking the right questions in the first place \u2014 and being honest when you cannot answer them.",
+      "whatToDo": [
+        "Point to the five questions on the board. Tell students: 'These apply to every technology ever built \u2014 from a traffic light to a social media platform. Today we apply them to technologies you know, and then to your own prototype from last week.'",
+        "Explain UNINTENDED CONSEQUENCES with the like button: 'The people who built the like button on Facebook wanted a simple way to show positivity. They did not intend to create a system where people's self-worth became tied to how many likes they got, or where outrage spread faster than calm content. Both happened \u2014 not because anyone planned it, but because a small feature interacted with human psychology in ways nobody anticipated. Unintended consequences are not excuses. They are reasons to test more carefully and be willing to change things when harm becomes visible.'",
+        "Explain STAKEHOLDERS: 'A stakeholder is anyone affected by a decision \u2014 not just the designer or the user. When a school introduces an app to track attendance, stakeholders include: students (location tracked), parents (may not be informed), teachers (must use it), the company (receives data), and students incorrectly marked absent by a bug. Good ethical design identifies all stakeholders before building \u2014 not after.'",
+        "Explain CONSENT: 'Consent means agreeing after being fully informed. Most platforms ask for consent through terms and conditions almost nobody reads. Ask: have you ever clicked I agree without reading it? If you did not read it, did you actually consent?' Leave this as an open question."
+      ],
+      "tip": "For Groep 5\u20136: focus on unintended consequences using examples from games and apps they know. For Groep 7\u20138: the stakeholder and consent frameworks are accessible and generate strong opinions. Pick the one the class responds to most strongly and spend more time there."
+    },
+    {
+      "id": "slide-phase4-part1",
+      "phase": "Phase 4 \u2014 Part 1",
+      "time": "20\u201332 min",
+      "title": "Ethics Audit \u2014 The School Data App Case Study",
+      "colour": "blue",
+      "whatToSay": "A technology company has built an app for primary schools. The app tracks how long each student spends on each exercise, how many mistakes they make, which questions they skip, and how their performance changes over the school year. This data is used to give teachers a dashboard showing which students are struggling and which are excelling. The app is free for schools because the company sells anonymised versions of the data to educational publishers and to universities doing research on learning.",
+      "rules": [
+        "1. Who does this app help, and how?",
+        "2. Who might be harmed by it \u2014 including people who are not students or teachers?",
+        "3. Who decided to build it and who did not get a say \u2014 including students themselves?",
+        "4. What could go wrong \u2014 technically, socially, or ethically?",
+        "5. What would you change to make it more ethical \u2014 or would you not build it at all?"
+      ],
+      "whatToDo": [
+        "Groups of three answer all five questions in writing. Give them 8 minutes.",
+        "Walk around and listen. Key points to listen for: students might be harmed if data labels them as 'struggling' permanently; parents did not consent to their child's learning data being shared with publishers; the company has a financial incentive to keep data, which conflicts with the school's interest in protecting students; students had no say in whether this data is collected about them.",
+        "After 8 minutes: take one answer per question from different groups. Write the most important points on the board. Do not resolve the debate \u2014 record the tension."
+      ],
+      "tip": "The most powerful answers will name specific harm to specific people, not just 'it could be misused.' Push groups who give vague answers: 'Who exactly is harmed? When? How?'"
+    },
+    {
+      "id": "slide-phase4-part2",
+      "phase": "Phase 4 \u2014 Part 2",
+      "time": "32\u201342 min",
+      "title": "Ethics Audit \u2014 Your Own Prototype",
+      "colour": "violet",
+      "whatToSay": "Now apply the same five questions to the prototype you designed last week. Every design choice has an ethical dimension \u2014 even if it seems small.",
+      "rules": [
+        "1. Who does your app help? Is it equally helpful for all of them, or more helpful for some users than others?",
+        "2. Does your app collect any information about users? If yes \u2014 who sees it, where is it stored, and could it be used in a way you did not intend?",
+        "3. Who did you think about when you designed this? Who did you not think about \u2014 and would your app still work for them?",
+        "4. What is the worst realistic thing that could happen if your app had a bug, was hacked, or was used in a way you did not plan for?",
+        "5. Is there anything about your design you would change now, after thinking about these questions?"
+      ],
+      "whatToDo": [
+        "Groups work on their own prototype from Lesson 7. Write answers on a separate sheet and attach it to the prototype \u2014 this document is called an ethics audit.",
+        "Connect to Lesson 7: 'Look at your stakeholder list from last week. Did you think about all of those people when you designed your three screens? Which ones got left out?'",
+        "If groups find this uncomfortable \u2014 they may realise their prototype collects data they had not thought about, or would not work for students with disabilities \u2014 tell them: 'Noticing a problem in your own design is not a failure. It is exactly what this stage is for.'"
+      ],
+      "tip": "Some of the most important learning in this lesson happens when groups find a genuine problem in their own design. Watch for it and call it out positively: 'This group just identified something really important about their own app.'"
+    },
+    {
+      "id": "slide-phase5",
+      "phase": "Phase 5",
+      "time": "42\u201347 min",
+      "title": "Discussion",
+      "colour": "violet",
+      "whatToDo": [
+        "For Question 3: this is the most important question of the lesson. Do not rush it.",
+        "Students who say 'it is someone else's job' are worth engaging further \u2014 not to correct them, but to ask: 'What if the lawyer and the regulator do not understand the technology well enough to know what questions to ask?'"
+      ],
+      "discussionQuestions": [
+        "In Part 1, the company said the data was anonymised before being sold. Does anonymising data make it ethical to sell? What would you need to know about the anonymisation before you trusted that claim? (In 2019 a major tech company claimed location data was anonymised \u2014 but researchers showed they could identify individuals from the patterns alone, even without names.)",
+        "You applied the ethics audit to your own prototype. Did any of your answers surprise you \u2014 did you find a problem you had not noticed before? If you found a problem \u2014 is the right response to fix it, add a warning, limit who can use it, or not build it? Are those all equally good responses?",
+        "We have spent eight weeks learning to build things with technology. Should learning to build things come with a responsibility to think about the consequences? Or is that someone else's job \u2014 a lawyer, a regulator, a politician? Timnit Gebru was fired for raising ethical concerns about a technology her employer was building. Does that change your answer?"
+      ],
+      "tip": "Question 3 is arguably the most important question in the entire program. The answer students give to 'whose responsibility is it?' shapes whether they will raise ethical concerns in future workplaces or communities."
+    },
+    {
+      "id": "slide-exercise1",
+      "phase": "Exercise 1",
+      "time": "47\u201355 min",
+      "title": "The Responsible Design Checklist",
+      "colour": "blue",
+      "whatToSay": "Create your own ethical checklist \u2014 not by copying one from the board, but by writing the five questions you think matter most based on everything we have discussed today.",
+      "rules": [
+        "Exactly five questions",
+        "Each question must be answerable with yes or no",
+        "At least one question must be about people who are NOT the primary user",
+        "At least one question must be about what happens if something goes wrong"
+      ],
+      "whatToDo": [
+        "Students work individually. After writing their checklist, they apply it to their own prototype.",
+        "For any NO answer, they write one sentence explaining what they would change to turn it into a YES.",
+        "Look for: questions that are specific rather than vague ('Does the app store personal data about users under 13?' not 'Is the app safe?'); checklists that reflect consent, stakeholders, and unintended consequences; genuine NOs with specific actionable fixes rather than vague improvements."
+      ],
+      "tip": "Students who write five vague safety questions have not met the criterion. Ask them: 'Could you answer this question with a yes or no for a specific app you named? If not, make it more specific.'",
+      "exerciseId": "exercise-8-1"
+    },
+    {
+      "id": "slide-exercise2",
+      "phase": "Exercise 2",
+      "time": "47\u201357 min",
+      "title": "The Unintended Consequences Game",
+      "colour": "blue",
+      "whatToSay": "For each of these three technologies, identify one unintended consequence the original designers probably did not plan for. Write your answer as: 'The designers wanted [X], but an unintended consequence was [Y], which affected [Z].'",
+      "rules": [
+        "Technology 1 \u2014 the school canteen app from Lesson 7: designed to show menus and warn when items run out.",
+        "Technology 2 \u2014 autocorrect on a phone keyboard: designed to fix spelling mistakes and speed up typing.",
+        "Technology 3 \u2014 a fitness tracker that counts daily steps: designed to encourage people to move more and be healthier."
+      ],
+      "whatToDo": [
+        "Groups of three. 7 minutes. Share answers after.",
+        "Strong answers: canteen app \u2014 students without phones are excluded, creating a two-tier information system. Autocorrect \u2014 reduces how often users notice and fix their own spelling errors, potentially reducing spelling ability over time. Fitness tracker \u2014 people who use wheelchairs or have mobility conditions cannot use step counting meaningfully; seeing zero steps each day may feel exclusionary."
+      ],
+      "discussionClose": "The best answers identify consequences that are specific, plausible, and affect a group the original designers probably did not think about carefully enough \u2014 disabled users, students without devices, younger children.",
+      "exerciseId": "exercise-8-2"
+    },
+    {
+      "id": "slide-extension",
+      "phase": "Extension",
+      "time": "Fast finishers",
+      "title": "Write the Ethical Brief",
+      "colour": "violet",
+      "whatToSay": "Before a technology company builds a new product, some companies now require an ethical brief \u2014 a short document identifying the ethical questions the team must answer before launching. Write a one-page ethical brief for one of these three products.",
+      "task": "Choose one: (A) An AI tutor for primary school students that adapts to each student's learning pace and style, and sends weekly reports to parents and teachers. (B) A social media platform designed for children aged 8\u201312 with games, messaging, and the ability to share photos with approved friends. (C) A smart school bag that tracks the student's location in real time and sends alerts to parents if the student leaves the building without permission.",
+      "challengeQuestions": [
+        "Your brief must cover: who the product is designed for; who else it affects; what data it collects and who sees it; three ethical questions the team must answer before launch; one scenario where the product could cause harm even if it works perfectly as designed.",
+        "This mirrors real practice at technology companies that take ethics seriously. Students who complete it are thinking at a level many professional developers do not reach until years into their careers."
+      ],
+      "tip": "If a student asks which option is easiest, tell them: 'Choose the one you have the strongest opinion about \u2014 that will produce the best brief.'",
+      "exerciseId": "exercise-8-3"
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share and Reflect",
+      "time": "52\u201357 min",
+      "title": "Close the Lesson",
+      "colour": "violet",
+      "whatToDo": [
+        "Ask each group to share one item from their responsible design checklist \u2014 just one question, read aloud.",
+        "After all groups have shared, look at the full set and ask: 'Is there anything important we missed? Any ethical question that nobody wrote?'",
+        "Then ask every student \u2014 verbally or on a sticky note \u2014 to complete this sentence."
+      ],
+      "exitReflection": "Before I build something, I will always ask _______.",
+      "whatToSay": "Write the most important three responses on the board alongside the vocabulary wall. These are the ethical commitments the class is making \u2014 not to a teacher, but to each other and to the people who will use what they build in the future.",
+      "watchFor": "Did students find genuine ethical problems in their own prototypes during the audit \u2014 or only in the case study? The willingness to apply critical thinking to your own work is significantly harder than applying it to someone else's. Did any student argue that responsibility lies entirely with regulators or lawyers \u2014 and were they able to engage with the counterargument? Did the unintended consequences exercise produce consequences affecting groups the original designers probably overlooked?"
+    }
+  ],
   "title": "Who Is Technology For? Ethics, Fairness, and Responsibility",
   "description": "Students evaluate technology ethics, audit stakeholders and harms, and apply responsible-design thinking to their own prototypes.",
   "duration": 60,

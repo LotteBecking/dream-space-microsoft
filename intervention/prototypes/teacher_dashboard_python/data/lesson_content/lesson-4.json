@@ -132,6 +132,249 @@
       ]
     }
   ],
+  "vocabulary": [
+    {
+      "word": "Variable",
+      "def": "A named container that stores a value which can change"
+    },
+    {
+      "word": "Value",
+      "def": "The thing stored inside the variable at any moment"
+    },
+    {
+      "word": "Assign",
+      "def": "To put a value into a variable"
+    },
+    {
+      "word": "Update",
+      "def": "To change the value stored in a variable"
+    },
+    {
+      "word": "State",
+      "def": "The current snapshot of all variables in a program at one moment"
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "indigo",
+      "whatToDo": [
+        "Write these five words on the board and leave them visible all lesson:",
+        "Variable \u2014 a named container that stores a value which can change",
+        "Value \u2014 the thing stored inside the variable at any moment",
+        "Assign \u2014 to put a value into a variable",
+        "Update \u2014 to change the value stored in a variable",
+        "State \u2014 the current snapshot of all variables in a program at one moment",
+        "Draw three large labelled boxes on the board with these names and starting values: SCORE = 0 / LIVES = 3 / LEVEL = 1 \u2014 you will use these in Phase 2.",
+        "If you have small cardboard boxes or envelopes, label them the same way and use sticky notes as the values inside. Either approach works.",
+        "Have a wastepaper bin at the front and 10 scrunched-up paper balls ready for Phase 4. If no bin, mark an X on the floor with tape."
+      ],
+      "roleModel": "Radia Perlman (born 1951) is a computer scientist who invented the algorithm that makes the internet stable \u2014 called the Spanning Tree Protocol. Her work means that when data travels across the internet, it does not get lost in infinite loops. Her algorithm uses variables to track which paths are open and which are blocked, updating them in real time as the network changes. She is sometimes called 'the mother of the internet' \u2014 though she finds that title too simple for what she actually did. Today students will use variables the same way she did: to keep track of changing information.",
+      "tip": "This lesson ties all four building blocks together for the first time. By the end, students should see how sequences give computers their steps, loops give them efficiency, conditionals give them decisions, and variables give them memory. Phrase it that way at the end of Phase 3."
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0 \u2013 3 min",
+      "title": "Spark Question",
+      "colour": "yellow",
+      "whatToSay": "\"When you play a video game and turn it off, how does it remember your score, your level, and where you were when you come back?\"",
+      "whatToDo": [
+        "Ask students to turn to the person next to them and share one idea.",
+        "Take 3\u20134 answers and write the most interesting ones on the board.",
+        "Then say: 'The answer is that every piece of information the game needs to remember is stored in something called a variable \u2014 a labelled container that holds a value. Today we are going to open those containers and find out how they work.'"
+      ],
+      "tip": "Students often say 'it saves to the cloud' or 'it goes to the memory card.' Both are correct at a hardware level \u2014 acknowledge them. Then redirect: 'But before it saves anywhere, the game needs somewhere to hold that information while it is running. That is what a variable is. It is the scratchpad the program uses while it is thinking.'",
+      "realWorldConnection": "When a doctor measures your temperature, they note it on a chart. That note is a variable \u2014 it has a label ('temperature') and a value ('38.2 degrees'). If they measure again an hour later and the value has changed, they update it. The label stays the same. The value changes. That is exactly how a variable works in code."
+    },
+    {
+      "id": "slide-phase2",
+      "phase": "Phase 2",
+      "time": "3 \u2013 10 min",
+      "title": "The Box Game",
+      "colour": "blue",
+      "whatToSay": "\"These are the variables for a simple game. I am going to describe what happens during the game. Every time I describe an event, tell me which variable changes, what it changes to, and what all three variables look like after the change.\"",
+      "whatToDo": [
+        "Point to the three boxes on the board: SCORE = 0, LIVES = 3, LEVEL = 1.",
+        "Read these events one at a time and pause after each for the class to respond:",
+        "1. 'The player collects a coin worth 10 points.' \u2192 SCORE goes from 0 to 10. LIVES and LEVEL stay the same.",
+        "2. 'The player collects another coin worth 10 points.' \u2192 SCORE goes from 10 to 20.",
+        "3. 'The player falls into a pit.' \u2192 LIVES goes from 3 to 2. SCORE stays at 20.",
+        "4. 'The player reaches the end of the level.' \u2192 LEVEL goes from 1 to 2. Ask: does SCORE reset? Do LIVES reset? Tell them: 'In this game, score carries over but lives reset to 3 at each new level. How would you write that?'",
+        "5. 'The player falls into a pit two more times.' \u2192 LIVES goes from 3 to 2, then to 1.",
+        "6. 'The player falls in once more.' \u2192 LIVES goes to 0. Ask: 'What happens now?'"
+      ],
+      "tip": "After LIVES reaches 0, write the answer together on the board: IF LIVES = 0 / THEN game over / ELSE continue. This is the key moment \u2014 variables give conditionals something to check. Say it explicitly: 'Without a variable storing lives, this conditional cannot function. That is why variables matter.'"
+    },
+    {
+      "id": "slide-phase3",
+      "phase": "Phase 3",
+      "time": "10 \u2013 20 min",
+      "title": "What Is a Variable?",
+      "colour": "purple",
+      "whatToSay": "\"A variable is like a labelled box with a sticky note inside. The label never changes \u2014 that is the variable's name. The sticky note can be replaced at any time \u2014 that is the variable's value.\"",
+      "whatToDo": [
+        "Draw this on the board: a rectangle labelled SCORE at the top, with the value 20 inside.",
+        "Explain the three types of value a variable can hold:",
+        "Numbers \u2014 score, health, speed, time remaining. You can do maths on them: add 10, subtract 1, multiply by 2.",
+        "Text \u2014 a player's name, a username. These are called strings. You cannot do maths on them \u2014 you cannot multiply 'Angela' by 3.",
+        "True or False \u2014 whether the shield is active, whether the door is locked. These are Boolean variables \u2014 the same Boolean from Lesson 3. Always either true or false, nothing else.",
+        "Write one example of each on the board: SCORE = 20 (number) / PLAYER_NAME = 'Noel' (text) / SHIELD_ACTIVE = true (true/false)",
+        "Now show how a variable connects to a loop. Write on the board: SCORE = 0 / LOOP 5 TIMES: / add 10 to SCORE. Ask: 'What is SCORE after the loop?' Walk through each iteration together \u2014 10, 20, 30, 40, 50.",
+        "Then show how a variable connects to a conditional: IF SCORE > 100 / THEN unlock the bonus level / ELSE keep playing normally.",
+        "Close with: 'Sequences give computers their steps. Loops give them efficiency. Conditionals give them decisions. Variables give them memory. All four work together.'"
+      ],
+      "tip": "For age 8\u201310, focus on the number variable and the box metaphor. For age 10\u201312, spend more time on the true/false variable \u2014 ask: 'Can you think of five true/false variables a game might need?' Strong answers: HAS_KEY, DOOR_LOCKED, GAME_OVER, SOUND_ON, LEVEL_COMPLETE. Every one of those is a real variable in a real game.",
+      "realWorldConnection": "Ask: 'When you use a streaming app, how does it know you have already watched something?' There is a variable \u2014 probably called WATCHED \u2014 that is set to true the moment you finish. The little tick on a completed show is just the program reading that variable and displaying it. Every tick on every show you have ever watched is a true/false variable stored somewhere."
+    },
+    {
+      "id": "slide-phase4-setup",
+      "phase": "Phase 4",
+      "time": "20 \u2013 22 min",
+      "title": "Arcade Scoreboard \u2014 Setup",
+      "colour": "orange",
+      "whatToSay": "\"I am going to take 10 shots at the bin. Your job is to keep track of all three variables after every single shot. At the end, every group should have the same final values \u2014 if they do not, someone made a variable error.\"",
+      "whatToDo": [
+        "Each group draws three boxes on their paper and labels them: SCORE = 0 / SHOTS_LEFT = 10 / MULTIPLIER = 1",
+        "Read out the rules before starting:",
+        "Every shot that goes in: add 10 to SCORE, then multiply by MULTIPLIER.",
+        "Every shot that misses: SCORE does not change.",
+        "After every 3 successful shots in a row: MULTIPLIER increases by 1.",
+        "SHOTS_LEFT decreases by 1 after every shot, whether it goes in or not.",
+        "For age 8\u201310: simplify \u2014 remove MULTIPLIER and just track SCORE and SHOTS_LEFT."
+      ],
+      "tip": "Have the paper balls ready. Make some shots on purpose and miss some on purpose. Speed up after the fifth shot \u2014 students who are keeping accurate variables will start to fall behind. That is intentional: it shows that computers update variables instantly and accurately, and that a single missed update corrupts everything that follows."
+    },
+    {
+      "id": "slide-phase4-round1",
+      "phase": "Phase 4 \u2014 Round 1",
+      "time": "22 \u2013 35 min",
+      "title": "Take the Shots \u2014 Track Every Update",
+      "colour": "orange",
+      "whatToDo": [
+        "Take all 10 shots at a steady pace, increasing speed after shot 5.",
+        "After all shots are done, ask each group to call out their final SCORE.",
+        "If any groups have different values, work backwards together to find where the divergence happened.",
+        "Ask: 'At which shot did your values first differ? What did you record differently?' This is a live debugging session \u2014 finding the exact moment a variable was updated incorrectly."
+      ],
+      "tip": "Students will often miss the MULTIPLIER update or apply it at the wrong moment. Walk around between shots and ask any group that looks uncertain: 'What is your current MULTIPLIER? When does it change?' Do not correct \u2014 just prompt."
+    },
+    {
+      "id": "slide-phase4-round2",
+      "phase": "Phase 4 \u2014 Round 2",
+      "time": "35 \u2013 42 min",
+      "title": "Add a Conditional",
+      "colour": "orange",
+      "whatToSay": "\"Now I want to add a rule. Before each shot, check this conditional: IF SHOTS_LEFT is an even number THEN the shot is worth double points if it goes in. ELSE the shot is worth normal points.\"",
+      "whatToDo": [
+        "Run 5 more shots.",
+        "Walk around and check whether groups are evaluating the conditional before updating the score \u2014 the condition must be checked first, then the score updated.",
+        "After the 5 shots, compare results across groups again.",
+        "Ask: 'What would go wrong if you checked SHOTS_LEFT after updating the score instead of before?' The order of operations changes the result."
+      ],
+      "tip": "This round connects back to Lesson 3. The conditional reads a variable (SHOTS_LEFT) to decide what happens. Students who have understood both lessons will make this connection themselves. Acknowledge it if they do."
+    },
+    {
+      "id": "slide-phase5",
+      "phase": "Phase 5",
+      "time": "42 \u2013 47 min",
+      "title": "Discussion",
+      "colour": "teal",
+      "whatToDo": [
+        "Pick the question that feels most alive based on how the class went.",
+        "One strong discussion is better than three rushed ones.",
+        "Give students a moment to think before taking answers."
+      ],
+      "discussionQuestions": [
+        "\"In the warm-up game, the programmer decided that LIVES resets to 3 at each new level, but SCORE carries over. What would change about the experience if it was the other way \u2014 SCORE resets but LIVES carries over?\" Follow-up: \"Which version is more fun? Which is fairer? Who gets to decide \u2014 the programmer or the player?\"",
+        "\"We had three variables: SCORE, SHOTS_LEFT, and MULTIPLIER. Which one was most important? What would break if you removed each one?\" Follow-up: \"Is a variable that is always 1 and never changes still a variable? What would you call it instead?\" (The answer is a constant \u2014 a named value that never changes. Students do not need the term, but the concept is worth planting.)",
+        "\"Think about a variable called MOOD in a social media app. What value would it have? Who would update it? Who would read it?\" Follow-up: \"Do you think apps track how you feel \u2014 what you click, how long you pause \u2014 and store that as a variable? What rules should there be about that?\" Note: this question is designed for Groep 7\u20138. For Groep 5\u20136 use instead: \"If a robot pet had variables for HUNGER, HAPPINESS, and ENERGY \u2014 what rules would you write to make it feel real?\""
+      ],
+      "tip": "Question 3 is the first moment in the program where students encounter the ethical dimension of data. It connects directly to Lesson 5 on data and Lesson 6 on designing technology responsibly. If it generates strong reactions, note which students engage \u2014 they are the ones to stretch in those later lessons."
+    },
+    {
+      "id": "slide-exercise1",
+      "phase": "Exercise 1",
+      "time": "47 \u2013 55 min",
+      "title": "Track the Variables",
+      "colour": "green",
+      "whatToDo": [
+        "Write this program on the board. Students read through it step by step and write the value of each variable after every line.",
+        "Starting values: HEALTH = 100 / SHIELD = false / POTIONS = 3",
+        "Step 1: character walks into fire \u2192 subtract 20 from HEALTH",
+        "Step 2: character picks up a shield \u2192 set SHIELD to true",
+        "Step 3: walks into fire \u2192 IF SHIELD = true THEN subtract 0 from HEALTH / ELSE subtract 20 from HEALTH",
+        "Step 4: uses a potion \u2192 add 30 to HEALTH / subtract 1 from POTIONS",
+        "Step 5: walks into fire \u2192 IF SHIELD = true THEN subtract 0 / ELSE subtract 20",
+        "Correct final state: HEALTH = 110, SHIELD = true, POTIONS = 2",
+        "When done, students swap papers and check every single value. If they disagree, they must agree on the correct answer before moving on."
+      ],
+      "tip": "Watch for students who reduce HEALTH in Steps 3 and 5 despite the shield being active. Ask: 'What is the value of SHIELD at the moment you reach Step 3? If SHIELD is true, which branch of the conditional fires?' That question usually resolves it. The most common error is forgetting to subtract from POTIONS in Step 4 \u2014 they add to HEALTH but miss the second update.",
+      "exerciseId": "exercise-4-1"
+    },
+    {
+      "id": "slide-exercise2",
+      "phase": "Exercise 2",
+      "time": "47 \u2013 57 min",
+      "title": "Design the Virtual Pet",
+      "colour": "green",
+      "whatToSay": "\"Working in pairs, design the variable system for a simple virtual pet.\"",
+      "rules": [
+        "Define exactly three variables with starting values \u2014 for example: HUNGER = 5, HAPPINESS = 8, ENERGY = 10",
+        "Write three events that change the variables \u2014 for example: the pet eats a meal, plays a game, or sleeps",
+        "Write two conditionals that use the variables \u2014 for example: IF HUNGER > 8 THEN the pet cries",
+        "At least one event must change more than one variable"
+      ],
+      "whatToDo": [
+        "Pairs work together to design their system on paper.",
+        "When done, swap with another pair and test whether their rules produce believable pet behaviour.",
+        "Walk around and watch for variables that interact \u2014 where one event changes multiple variables, or where one variable affects a conditional that triggers another. That interconnection is what makes the system feel alive."
+      ],
+      "tip": "A pet where every variable is independent feels flat. A pet where feeding affects both HUNGER and HAPPINESS, and playing affects both HAPPINESS and ENERGY, starts to feel like a real system. If a pair's variables are completely isolated from each other, ask: 'Does feeding your pet make it happier? How would you add that?'",
+      "exerciseId": "exercise-4-2"
+    },
+    {
+      "id": "slide-extension",
+      "phase": "Extension",
+      "time": "Fast finishers",
+      "title": "The Broken Vending Machine",
+      "colour": "amber",
+      "whatToDo": [
+        "Write the starting variables on the board: STOCK_CRISPS = 5 / STOCK_WATER = 0 / STOCK_CHOCOLATE = 3 / COINS_INSERTED = 0 / CHANGE_DUE = 0",
+        "A customer inserts \u20ac2.00. Crisps cost \u20ac1.50, water costs \u20ac1.00, chocolate costs \u20ac1.80.",
+        "The customer selects crisps. Students write out every variable update step by step."
+      ],
+      "challengeQuestions": [
+        "What should the machine do if STOCK_WATER = 0 and the customer selects water?",
+        "What if the customer inserts \u20ac2.00 but the machine has no coins to give back as change?",
+        "What if the customer selects chocolate but has only inserted \u20ac1.50?",
+        "After three customers, what do all five variables look like?",
+        "What would happen if COINS_INSERTED was never reset to 0 after a purchase? Walk through what the next customer's experience would be."
+      ],
+      "tip": "The last challenge question describes a real class of software bug called a state persistence error \u2014 data from one session bleeding into the next. Students who identify it and describe the consequences are thinking at a genuinely high level. Acknowledge it explicitly if they get there.",
+      "exerciseId": "exercise-4-3"
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share & Reflect",
+      "time": "52 \u2013 57 min",
+      "title": "Close the Lesson",
+      "colour": "pink",
+      "whatToDo": [
+        "Ask 2\u20133 pairs to share one variable from their virtual pet and one conditional they wrote for it.",
+        "After each, ask the class: 'Can you find a situation that conditional does not handle?'",
+        "Keep it short and warm \u2014 a light share, not a presentation.",
+        "Ask every student \u2014 verbally or on a sticky note \u2014 to complete this sentence:"
+      ],
+      "exitReflection": "\"A variable is like a _______ because _______.\"",
+      "whatToSay": "After collecting responses, close with: \"You now have four building blocks: sequences, loops, conditionals, and variables. Next week we use all four of them to understand something that confuses most adults \u2014 what AI actually is, how it learns, and why it makes mistakes. It is not magic. It is patterns \u2014 and you are already very good at spotting those.\"",
+      "tip": "Expect metaphors like: a scoreboard, a name tag, a locker, a sticky note on the fridge. All correct. Write the most interesting one on the board next to the exit sentences from Lessons 1\u20133. By Week 6 the class will have a gallery of their own definitions for every core concept.",
+      "watchFor": "Did students correctly track variables through the conditional branches in Exercise 1, especially in Steps 3 and 5 where the shield blocks damage? Did any pairs in Exercise 2 create variables that interact with each other rather than operating independently? Did anyone in the extension identify the state persistence bug without being told what to look for? All three together signal genuine systems thinking \u2014 the foundation the AI lesson builds on directly."
+    }
+  ],
   "studentChallenges": [
     {
       "id": "challenge-4-1",

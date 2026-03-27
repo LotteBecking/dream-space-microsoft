@@ -1,5 +1,242 @@
 {
   "id": "lesson-5",
+  "vocabulary": [
+    {
+      "word": "Artificial Intelligence (AI)",
+      "def": "A program that learns patterns from examples rather than following fixed instructions"
+    },
+    {
+      "word": "Training Data",
+      "def": "The examples the AI learns from"
+    },
+    {
+      "word": "Pattern",
+      "def": "A rule or regularity the AI identifies across many examples"
+    },
+    {
+      "word": "Bias",
+      "def": "When training data is incomplete or unbalanced, causing the AI to make unfair or wrong decisions"
+    },
+    {
+      "word": "Prediction",
+      "def": "The AI's best guess based on patterns it has seen before"
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "violet",
+      "roleModel": "Fei-Fei Li (born 1976) is a computer scientist and professor at Stanford University who built ImageNet \u2014 a database of over 14 million labelled images that became the foundation for most modern AI image recognition. Before ImageNet, AI could not reliably identify a cat in a photo. After training on her data, it could. She showed that the secret to better AI was not a smarter algorithm \u2014 it was better, more diverse training data.",
+      "whatToDo": [
+        "Write these five words on the board and leave them visible all lesson:",
+        "Artificial Intelligence (AI): a program that learns patterns from examples, not fixed rules",
+        "Training Data: the examples the AI learns from",
+        "Pattern: a rule or regularity the AI finds across many examples",
+        "Bias: when incomplete training data causes unfair or wrong decisions",
+        "Prediction: the AI's best guess based on patterns it has seen before",
+        "Prepare 12\u201316 picture cards \u2014 print or hand-draw mixed objects, animals, and people (suggestions: dog, cat, horse, bird, fish, apple, banana, chair, car, bicycle, person running, person sitting, tree, cloud).",
+        "Decide your secret rule for the warm-up. Good options: YES to all animals, YES to things that can fly, YES to things with four legs, or YES to things found outside.",
+        "Make sure you have at least one surprising card to force a model revision \u2014 e.g. a chair if your rule is 'four legs.'"
+      ],
+      "tip": "Keep all picture cards face-down until Phase 2. The reveal works best when students have no preview of what's coming."
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0\u20133 min",
+      "title": "Spark Question \u2014 How Does Your Phone Know Your Face?",
+      "colour": "violet",
+      "whatToSay": "Your phone can unlock by recognising your face. It has never taken a class in faces. Nobody programmed it with a list of rules about what your nose looks like. So how does it know it is you?",
+      "whatToDo": [
+        "Ask students to turn to the person next to them and share one idea.",
+        "Take 3\u20134 answers and write the most interesting ones on the board.",
+        "Then say: 'The answer is not that it is clever. The answer is that it has seen thousands of photos of your face from different angles, in different lighting, with different expressions \u2014 and it found the pattern.'",
+        "Ask: 'Has an app ever recommended something surprisingly right \u2014 like it somehow knew exactly what you wanted?' Then: 'Has it ever recommended something completely wrong?' Tell students both happen because of patterns in training data."
+      ],
+      "tip": "Students often say 'it memorised your face' or 'it scanned you.' Both point in the right direction. Redirect toward the word pattern. A scanner follows rules; AI finds its own rules from examples. That distinction is the conceptual core of this lesson."
+    },
+    {
+      "id": "slide-phase2",
+      "phase": "Phase 2",
+      "time": "3\u201310 min",
+      "title": "Warm-Up \u2014 You Are the AI",
+      "colour": "blue",
+      "whatToSay": "I have a secret rule in my head. I am going to show you some cards one at a time and say either YES or NO. Your job is to figure out my rule \u2014 just like an AI figuring out a pattern from training data. Do not shout out your guess. Write it down when you think you know.",
+      "whatToDo": [
+        "Hold up picture cards one at a time. Say YES or NO according to your secret rule.",
+        "After 8\u201310 cards, ask: 'How many of you think you know the rule? Don't say it yet \u2014 write it down.'",
+        "Show 2\u20133 more cards to confirm or challenge their hypothesis.",
+        "Take 3\u20134 guesses. Reveal the actual rule.",
+        "Ask: 'How many examples did you need before you were confident? Did anyone change their guess after seeing a new card that didn't fit?'",
+        "Ask: 'What if I had only shown you the first three cards? Would you have been as confident? What if those three were all very similar \u2014 what patterns might you miss?'"
+      ],
+      "tip": "Include at least one surprising card to force model revision \u2014 e.g. if your rule is 'four legs,' include a table or chair. When students see a chair get a YES, their hypothesis breaks and they revise it. Name that moment explicitly: 'What just happened to your theory when you saw the chair? That is called updating the model \u2014 and AI does exactly that every time it sees a new example.'"
+    },
+    {
+      "id": "slide-phase3",
+      "phase": "Phase 3",
+      "time": "10\u201320 min",
+      "title": "Concept Introduction \u2014 Traditional Programming vs Machine Learning",
+      "colour": "violet",
+      "whatToSay": "For the last four weeks, every program we wrote followed fixed instructions. A sequence runs in order. A loop repeats. A conditional checks a rule. A variable stores a value. All of that is traditional programming \u2014 a human writes the rules and the computer follows them. AI is different. In AI, the human does not write the rules. Instead, the human gives the computer thousands of examples \u2014 and the computer figures out the rules itself.",
+      "whatToDo": [
+        "Write on the board: TRADITIONAL PROGRAMMING: Human writes rules \u2192 Computer follows rules \u2192 Output",
+        "Write underneath: MACHINE LEARNING (a type of AI): Human gives examples \u2192 Computer finds rules \u2192 Output",
+        "Give the cat example: 'You want to teach an AI to recognise cats. You don't write rules. You show it one million photos labelled cat and one million labelled not cat. The AI finds the patterns itself.'",
+        "Ask: 'What is the AI doing when it makes a prediction?' \u2014 it is checking whether a new photo matches patterns from training data. It is running a very complex conditional \u2014 but one it wrote itself.",
+        "Introduce bias: 'What if all one million cat photos were taken in sunny California in the daytime? Then someone shows it a cat in the dark, or in the snow, or photographed from above \u2014 what happens?'",
+        "Write on the board: BETTER TRAINING DATA \u2192 BETTER AI | INCOMPLETE TRAINING DATA \u2192 BIASED AI",
+        "Connect back to the warm-up: 'If I had shown you only outdoor-animal cards, you might have guessed the wrong rule. That is training data bias happening in real time.'"
+      ],
+      "realWorldConnection": "Fei-Fei Li's insight was that AI image recognition was bad not because the algorithms were weak, but because the training data was too small and too narrow. When she built ImageNet with 14 million diverse images, AI accuracy jumped from roughly 70% to over 95% in just a few years. The data was the breakthrough, not the algorithm.",
+      "tip": "When you write the two programming models on the board, leave them there for the rest of the lesson. Students will refer back to them during exercises."
+    },
+    {
+      "id": "slide-phase4-round1",
+      "phase": "Phase 4 \u2014 Round 1",
+      "time": "20\u201330 min",
+      "title": "Train the Class Recommender",
+      "colour": "blue",
+      "whatToSay": "You are going to train a class AI to predict what kind of content a student likes to watch. I am the student. You are the AI \u2014 and you start knowing nothing about me.",
+      "whatToDo": [
+        "Draw two columns on the board: WATCH \u2713  |  SKIP \u2717",
+        "Read out these 12 titles and sort them yourself \u2014 do not explain why:",
+        "Minecraft Let's Play \u2192 WATCH",
+        "A cooking tutorial \u2192 SKIP",
+        "Dog learns to skateboard \u2192 WATCH",
+        "Football match highlights \u2192 SKIP",
+        "Cat knocks things off a table \u2192 WATCH",
+        "How to bake a cake \u2192 SKIP",
+        "Goat climbs a tree \u2192 WATCH",
+        "Basketball trick shots \u2192 SKIP",
+        "Parrot sings a song \u2192 WATCH",
+        "Travel vlog in Japan \u2192 SKIP",
+        "Hamster runs a maze \u2192 WATCH",
+        "Science experiment explosion \u2192 SKIP",
+        "After all 12, ask pairs to study the pattern and write their prediction of the rule. Take answers \u2014 correct rule: 'animals doing funny or unusual things.'",
+        "Then test on three new titles: 'Horse learns to open a gate' (WATCH), 'How to make pizza' (SKIP), 'Penguin steals a fish from a market' (WATCH). Students predict, then you confirm."
+      ],
+      "tip": "After the reveal, say explicitly: 'You just did what a recommendation AI does. You found the pattern in the training data and used it to make predictions about new content.'"
+    },
+    {
+      "id": "slide-phase4-round2",
+      "phase": "Phase 4 \u2014 Round 2",
+      "time": "30\u201338 min",
+      "title": "Find the Bias",
+      "colour": "blue",
+      "whatToSay": "Here is a new title: 'Man runs a marathon in world record time.' WATCH or SKIP?",
+      "whatToDo": [
+        "Students say SKIP \u2014 no animal. Confirm: SKIP.",
+        "Say: 'A year later, the student gets a dog and starts running with it. Now marathon videos are suddenly interesting. But the AI still predicts SKIP \u2014 because its training data is from a year ago.' Ask: 'What is the problem?' (Training data is outdated.)",
+        "Introduce demographic bias: 'The same AI is used for all students in a school. But the training data came only from 11-year-old boys. A 9-year-old girl starts using the app. What might go wrong?'",
+        "Students suggest: recommendations won't match her. Say: 'That is demographic bias \u2014 the training data did not represent all types of people who use the system.'",
+        "Ask pairs to write down two things that would make this AI better. Accept: more diverse data, more recent data, letting users correct wrong recommendations \u2014 all are real techniques."
+      ],
+      "tip": "Write 'outdated data' and 'demographic bias' on the board as two named types of bias. Naming them precisely is the skill the exercise is testing."
+    },
+    {
+      "id": "slide-phase4-round3",
+      "phase": "Phase 4 \u2014 Round 3",
+      "time": "38\u201342 min",
+      "title": "The Hard Question \u2014 Optimisation vs Harm",
+      "colour": "violet",
+      "whatToSay": "The AI on a social media app has been trained to maximise watch time \u2014 to show you whatever keeps you watching the longest. It has found a pattern: angry or shocking content keeps people watching longer than calm or happy content. So it recommends more angry and shocking content. Is that a bias? Is it a bug? Or is it working exactly as intended?",
+      "whatToDo": [
+        "Do not answer this question. Write the range of responses on the board.",
+        "Tell students: 'This is one of the most important debates happening in technology right now \u2014 and you have just understood it well enough to have an opinion.'"
+      ],
+      "tip": "Round 3 is optional for Groep 5\u20136 and recommended for Groep 7\u20138. If the class is young or time is tight, skip it and spend the extra five minutes on the discussion phase."
+    },
+    {
+      "id": "slide-phase5",
+      "phase": "Phase 5",
+      "time": "42\u201347 min",
+      "title": "Discussion",
+      "colour": "violet",
+      "whatToDo": [
+        "Take 2\u20133 volunteer answers per question. Write key phrases on the board.",
+        "Do not rush to correct \u2014 let students argue positions and challenge each other."
+      ],
+      "discussionQuestions": [
+        "In Round 1 you figured out my watching pattern from 12 examples. How many examples do you think a real YouTube AI uses? If it uses billions, does that mean it is always right? What could it still get wrong?",
+        "We said AI finds the rules itself from the data. Does that mean nobody is responsible when the AI makes a mistake? Or is someone still responsible \u2014 the company that built it, the people who collected the data, or the people who decided what the AI was trying to predict?",
+        "Think about an AI that helps decide whether a student should get extra support in school \u2014 based on past test scores, attendance, and behaviour. If the training data came mostly from schools in wealthy neighbourhoods, what patterns might it learn that don't apply to other students? What would that mean for a student it gets wrong?"
+      ],
+      "tip": "Question 3 is the most important and most challenging. For Groep 5\u20136, replace it with: 'If an AI was trained only on photos of cats from Europe, would it recognise a cat in Brazil? Why or why not?' The concept is identical but the stakes feel lower."
+    },
+    {
+      "id": "slide-exercise1",
+      "phase": "Exercise 1",
+      "time": "47\u201355 min",
+      "title": "Spot the Bias",
+      "colour": "blue",
+      "whatToSay": "I am going to describe three AI systems and their training data. For each one, your job is to identify the specific bias and suggest how to fix it.",
+      "rules": [
+        "AI System 1 \u2014 face unlock: 500,000 photos from one Dutch university, 80% aged 18\u201325. What group is missing? What would go wrong for a grandparent or a child?",
+        "AI System 2 \u2014 spelling correction: 10 million sentences from Dutch newspapers published 1990\u20132005. What has changed about language since then? What would it flag as errors that aren't?",
+        "AI System 3 \u2014 predicts which students will struggle in secondary school: five years of data from 10 primary schools in one wealthy Amsterdam neighbourhood. Who is missing? What patterns might it learn that only apply to that neighbourhood?"
+      ],
+      "whatToDo": [
+        "Students work individually. For each case, write the specific bias dimension (age, time, location, demographic) and one concrete fix.",
+        "For Case 3 only, also answer: should this AI exist at all? Give a reason for your position."
+      ],
+      "tip": "Students who write 'the data is bad' without naming the dimension are not yet at the success criterion. Prompt them: 'What specific thing is missing \u2014 age? Time? Location? Who is not represented?'",
+      "exerciseId": "exercise-5-1"
+    },
+    {
+      "id": "slide-exercise2",
+      "phase": "Exercise 2",
+      "time": "47\u201357 min",
+      "title": "Design the Training Data",
+      "colour": "blue",
+      "whatToSay": "You are going to build a simple AI that can tell the difference between a sunny day and a rainy day based on what students wear to school. Working in pairs, you need to design the training data.",
+      "whatToDo": [
+        "Pairs answer these questions in writing:",
+        "1. What training data would you collect? Name at least five things you would look for and record about what students are wearing.",
+        "2. How many examples would you need to be confident? Give a number and explain why.",
+        "3. Name two types of student your training data might not represent well \u2014 and what the AI might get wrong as a result.",
+        "4. Write one rule the AI might learn from the data. Write it in IF/THEN format (using what you learned in Lesson 3).",
+        "5. What is one way you would improve your dataset after the first test results?"
+      ],
+      "discussionClose": "A student who wears a coat every day regardless of weather would confuse the AI \u2014 the data point that usually signals 'cold/rainy' is no longer reliable. If a pair identifies this on their own, that is the best possible answer.",
+      "tip": "Watch for pairs who identify a gap in their own training data proposal without being prompted. Students who connect their IF/THEN rule back to Lesson 3 are demonstrating that the four concepts are integrating in their thinking \u2014 note those students.",
+      "exerciseId": "exercise-5-2"
+    },
+    {
+      "id": "slide-extension",
+      "phase": "Extension",
+      "time": "Fast finishers",
+      "title": "The Fairness Test \u2014 Hospital AI",
+      "colour": "violet",
+      "whatToSay": "A hospital uses an AI to help decide which patients should be prioritised for a medical appointment. The AI was trained on 10 years of hospital records.",
+      "task": "Answer these four questions in writing: (1) What patterns might the AI have learned that are useful \u2014 things that genuinely predict which patients need help most urgently? (2) What patterns might it have learned that are unfair \u2014 things that predict who got prioritised in the past, not who most needs help? (3) If the hospital's records from 10 years ago show that certain groups were seen faster than others, what will the AI learn from that? (4) Should this AI be used? If yes, what safeguards would you put in place? If no, what would you use instead?",
+      "challengeQuestions": [
+        "If the AI is 90% accurate overall but only 60% accurate for elderly patients, is that acceptable? Why or why not?",
+        "Who should be legally responsible if the AI causes a patient to wait too long and their condition gets worse?",
+        "If you were a patient, would you want an AI involved in your prioritisation? Would your answer change if you knew your demographic group was underrepresented in the training data?"
+      ],
+      "tip": "There is no correct answer to the final question. Students who argue 'it depends' and then explain what it depends on are giving a strong answer. Students who question whether the AI should exist at all \u2014 rather than just trying to fix it \u2014 are demonstrating the highest level of ethical reasoning.",
+      "exerciseId": "exercise-5-3"
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share and Reflect",
+      "time": "52\u201357 min",
+      "title": "Close the Lesson",
+      "colour": "violet",
+      "whatToDo": [
+        "Ask 2\u20133 pairs to share one bias they identified in Exercise 1 and their suggested fix.",
+        "After each, ask: 'Is the fix enough? Could the fixed version still have a bias?'",
+        "Then ask every student \u2014 verbally or on a sticky note \u2014 to complete this sentence and collect responses."
+      ],
+      "exitReflection": "AI is not magic \u2014 it is just _______.",
+      "whatToSay": "The best answers will include: patterns, data, examples, guessing, trained, learning from mistakes. Write the most precise one on the board next to the previous exit sentences. You now have five statements \u2014 one from each lesson \u2014 written entirely in the students' own words. Together they form a complete, student-authored definition of the foundations of computing.",
+      "watchFor": "Did students identify specific bias dimensions (age, time, location, demographic) rather than just 'the data is bad'? Did any pair identify a gap in their own training data proposal without prompting? Did any student question whether the hospital AI should exist at all rather than just trying to fix it? That last signal \u2014 treating technology as a social and ethical choice, not just a technical problem \u2014 is the most significant. Note those students by name."
+    }
+  ],
   "title": "Teaching the Machine - What AI Actually Is",
   "description": "Students learn that AI finds patterns from training examples, and examine how bias and mistakes emerge from data.",
   "duration": 60,

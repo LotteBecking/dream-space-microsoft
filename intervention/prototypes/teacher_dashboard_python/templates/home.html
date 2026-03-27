@@ -388,8 +388,6 @@ function toggleForm(event) {
             <div class="relative h-40 md:h-44 rounded-xl overflow-hidden bg-gray-900 mb-4">
                 {% if featured_lesson_cover %}
                 <img src="{{ featured_lesson_cover }}" alt="{{ featured_lesson.title }}" class="w-full h-full object-cover">
-                {% elif featured_lesson.imageUrl %}
-                <img src="{{ featured_lesson.imageUrl }}" alt="{{ featured_lesson.title }}" class="w-full h-full object-cover">
                 {% else %}
                 <div class="w-full h-full bg-gradient-to-br from-slate-900 via-indigo-900 to-cyan-900 text-white flex items-center justify-center p-8">
                     <div class="text-center">

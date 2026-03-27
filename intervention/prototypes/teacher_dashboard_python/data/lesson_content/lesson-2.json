@@ -130,6 +130,252 @@
       ]
     }
   ],
+  "vocabulary": [
+    {
+      "word": "Loop",
+      "def": "An instruction that repeats a set of steps a set number of times"
+    },
+    {
+      "word": "Iteration",
+      "def": "One single run through the loop"
+    },
+    {
+      "word": "Bug",
+      "def": "An error in the code that causes the wrong output"
+    },
+    {
+      "word": "Debug",
+      "def": "Finding and fixing a bug"
+    },
+    {
+      "word": "Efficient",
+      "def": "Doing the most with the least effort"
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "indigo",
+      "whatToDo": [
+        "Write these five words on the board and leave them visible all lesson:",
+        "Loop \u2014 an instruction that repeats a set of steps a certain number of times",
+        "Iteration \u2014 one single run through the loop",
+        "Bug \u2014 an error in the code that causes the wrong output",
+        "Debug \u2014 finding and fixing a bug",
+        "Efficient \u2014 doing the most with the least effort",
+        "Clear a space at the front of the room large enough for students to stand and move \u2014 you will need this for Phase 2 and Phase 4.",
+        "Have paper and pencils ready for the exercise phase."
+      ],
+      "roleModel": "Grace Hopper (1906\u20131992) was a computer scientist and US Navy admiral who helped invent one of the first programming languages. She is also the person who found the very first real computer bug \u2014 a moth stuck inside a computer causing errors. She taped it into her notebook and wrote 'First actual case of bug being found.' The words bug and debug come directly from her. Today students will debug their first loop, just like she did. Mention this when you introduce the lesson or at any natural moment.",
+      "tip": "This lesson builds directly on Lesson 1. Students already know what an algorithm is and why sequence matters. You do not need to re-teach that. Just briefly connect the two when you reach Phase 3."
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0 \u2013 3 min",
+      "title": "Spark Question",
+      "colour": "yellow",
+      "whatToSay": "\"If I asked you to write down every single step of brushing your teeth for an entire year \u2014 every stroke, every rinse, every spit \u2014 how many lines would you need to write?\"",
+      "whatToDo": [
+        "Ask students to turn to the person next to them and make a guess.",
+        "Take 3\u20134 answers from the class.",
+        "Write the biggest and smallest guesses on the board.",
+        "Then reveal: 'A dentist recommends 2 minutes of brushing twice a day. That is roughly 2 strokes per second \u2014 240 strokes per session, 480 per day, 175,200 per year. Imagine writing 175,200 lines of code just for brushing teeth. There has to be a better way. Today we are going to find it.'"
+      ],
+      "tip": "Do not calculate this precisely in class \u2014 the point is the scale, not the exact number. Students finding it absurd is exactly the right reaction. That absurdity is the motivation for loops. If students say 'that is impossible to write out' \u2014 tell them they are exactly right, and that is why loops were invented."
+    },
+    {
+      "id": "slide-phase2",
+      "phase": "Phase 2",
+      "time": "3 \u2013 10 min",
+      "title": "The Human Loop",
+      "colour": "blue",
+      "whatToDo": [
+        "Ask the whole class to stand up.",
+        "Write these three steps on the board: Clap once / Stamp your foot / Say 'beep'",
+        "Tell the class to run through the three steps once together. They do it.",
+        "Then say: 'Now do it again. And again. And again.' Let them run it a few times, then suddenly shout STOP.",
+        "Ask: 'How many times did you do those three steps?' They probably lost count.",
+        "Now erase the board and rewrite it as: LOOP 5 TIMES: / Clap once / Stamp your foot / Say beep",
+        "Run it again. Students count the iterations themselves and stop at 5.",
+        "After they stop, ask: 'What was different that time? Why did you know when to stop?'"
+      ],
+      "whatToSay": "\"That instruction \u2014 do this set of steps exactly X number of times \u2014 is a loop. The number five is how many iterations you run. One full run through the three steps is one iteration.\"",
+      "tip": "Do not skip this activity. Students are literally executing a loop with their bodies. The moment they count iterations and stop at exactly 5 is the moment the concept locks in. It takes only 3 minutes and makes the rest of the lesson much easier.",
+      "shyStudentsNote": "If the class is very energetic, have students mime the actions at their seats rather than moving around. The concept lands just as well seated."
+    },
+    {
+      "id": "slide-phase2b",
+      "phase": "Phase 2 \u2014 Follow-up",
+      "time": "7 \u2013 10 min",
+      "title": "What Is a Forever Loop?",
+      "colour": "blue",
+      "whatToSay": "\"What would happen if I wrote LOOP FOREVER instead of LOOP 5 TIMES?\"",
+      "whatToDo": [
+        "Let students answer \u2014 they will immediately say they would never stop.",
+        "Tell them: 'That is exactly what happens when a program has a bug in its loop. It runs forever and crashes the computer. That is called an infinite loop.'",
+        "Write LOOP FOREVER on the board next to LOOP 5 TIMES so both are visible.",
+        "Ask: 'Can you think of anything in real life that loops forever? When does it stop?' (Heartbeat, clock ticking, a game running in the background.)"
+      ],
+      "realWorldConnection": "Every time your phone plays music, it does not have a separate instruction for each beat. Every time a game character runs, it does not have a separate instruction for each footstep. Repetition is everywhere in technology, and loops are how programmers handle it without writing the same line hundreds of times."
+    },
+    {
+      "id": "slide-phase3",
+      "phase": "Phase 3",
+      "time": "10 \u2013 20 min",
+      "title": "Loop Types \u2014 Count, Until, Forever",
+      "colour": "purple",
+      "whatToSay": "\"Remember last week's sandwich algorithm? Some of you wrote something like 'spread the peanut butter across the bread, left to right, covering the whole surface.' How many spreading strokes would that actually be \u2014 maybe 8 or 10? A programmer would not write Stroke 1, Stroke 2, Stroke 3 all the way to Stroke 10. They would write: LOOP 10 TIMES: Move knife one stroke across the bread. Same result. Ten times fewer lines of code. That is what loops do \u2014 they make code efficient.\"",
+      "whatToDo": [
+        "Write LOOP 10 TIMES: / Move knife one stroke across the bread on the board.",
+        "Now write and explain each loop type \u2014 one at a time:",
+        "COUNT LOOP \u2014 repeat exactly X times. Example: do 10 jumping jacks. You know exactly when it ends.",
+        "UNTIL LOOP \u2014 repeat until something changes. Example: keep stirring until the sugar dissolves. You do not know how many times \u2014 you stop when the condition is met.",
+        "FOREVER LOOP \u2014 repeat indefinitely. Example: a clock ticking, a game running in the background waiting for you to press a button.",
+        "Give one real-world example for each: Count loop: a washing machine spin cycle \u2014 spins exactly 800 times. Until loop: a self-driving car braking \u2014 keeps applying brakes until speed reaches zero. Forever loop: your phone screen checking every second whether you have a new notification."
+      ],
+      "tip": "You do not need to go deep on until loops today. The count loop and the forever loop are enough for this age group. The until loop is introduced here so students have the vocabulary, but the challenge focuses on count loops and debugging a forever loop. Keep it brief and move on.",
+      "realWorldConnection": "Ask students: 'When does a video game loop? When does it stop?' They will usually say the game loops forever while you play, but stops when you turn it off or lose all your lives. That is exactly right \u2014 games are forever loops with a stop condition buried inside them."
+    },
+    {
+      "id": "slide-phase4-round1",
+      "phase": "Phase 4 \u2014 Round 1",
+      "time": "20 \u2013 28 min",
+      "title": "The Fortnite Dance \u2014 Working Loop",
+      "colour": "orange",
+      "whatToSay": "\"Imagine a game programmer has written a dance emote for a Fortnite character. Here is their code.\"",
+      "whatToDo": [
+        "Write this on the board: LOOP 3 TIMES: / Dab / Spin / Jump",
+        "Have the whole class stand up.",
+        "Count the iterations out loud together as students run the code.",
+        "After three complete loops, everyone sits down.",
+        "Ask: 'Did it work? Did you do exactly what the code said?' (Yes.) 'That is a working loop.'"
+      ],
+      "tip": "This activity comes directly from the Dream Space Unplugged Explorers curriculum and has been tested with this age group. It is physical and funny. Let students enjoy it \u2014 the contrast between this working loop and the broken one in Round 2 is what makes the bug concept land."
+    },
+    {
+      "id": "slide-phase4-round2",
+      "phase": "Phase 4 \u2014 Round 2",
+      "time": "28 \u2013 35 min",
+      "title": "The Fortnite Dance \u2014 Buggy Loop",
+      "colour": "orange",
+      "whatToSay": "\"The programmer updated the dance but accidentally introduced a bug. Here is the new code.\"",
+      "whatToDo": [
+        "Erase the board and write: LOOP FOREVER: / Dab / Spin / Touch your toes",
+        "Have students stand and begin running the code.",
+        "After the first iteration, they will be bent over touching their toes.",
+        "Now try to spin from that position \u2014 they cannot. They are stuck.",
+        "Let the chaos run for about 30 seconds, then call stop.",
+        "Ask: 'What went wrong?' Let students identify the problems themselves \u2014 do not give the answer yet."
+      ],
+      "tip": "Students will identify two problems: the loop runs forever with no stop condition, and step 3 leaves them in a position where step 2 in the next iteration is physically impossible. Wait for them to find both. If they only find one, ask: 'After you touch your toes, can you spin? What position are you starting the next iteration from?'"
+    },
+    {
+      "id": "slide-phase4-round3",
+      "phase": "Phase 4 \u2014 Round 3",
+      "time": "35 \u2013 42 min",
+      "title": "Debug It in Pairs",
+      "colour": "orange",
+      "whatToSay": "\"Your job is to fix the code. You must keep all three dance moves, fix the loop so it ends, and fix the sequence so each step flows into the next.\"",
+      "whatToDo": [
+        "Give pairs 5 minutes to write their corrected version on paper.",
+        "Walk around and ask: 'After step 3, what position are you in? Can you do step 2 from that position?' That question is usually enough to unlock it without giving the answer.",
+        "Take 3\u20134 pairs to share their solution and explain why their fix works.",
+        "Accept any solution that works. The simplest correct answer is: LOOP 3 TIMES: Dab, Spin, Jump \u2014 because jump returns you to standing for the next iteration.",
+        "Some students may add a step 4: Stand up straight, before the loop repeats. That is a perfectly valid debug."
+      ],
+      "tip": "Do not give the answer before students have tried. The 5 minutes of pair work is where the learning happens. Celebrate creative fixes \u2014 there is more than one correct solution. You can name the concept: 'What you are doing right now is called debugging. Professional programmers spend a lot of their time doing exactly this.'"
+    },
+    {
+      "id": "slide-phase5",
+      "phase": "Phase 5",
+      "time": "42 \u2013 47 min",
+      "title": "Discussion",
+      "colour": "teal",
+      "whatToDo": [
+        "Pick the question below that feels most alive based on how the class went.",
+        "One strong discussion is better than three rushed ones.",
+        "Give students a moment to think before taking answers."
+      ],
+      "discussionQuestions": [
+        "\"In Round 1 the loop worked perfectly. In Round 2 it broke. What was the difference between those two programs?\" Follow-up: \"It was not just the forever loop that broke it \u2014 the sequence inside the loop was also wrong. What does that tell us about how loops and sequences work together?\"",
+        "\"Where in real life does something loop forever \u2014 and what stops it?\" Follow-up: \"A heartbeat loops forever \u2014 what stops it? A washing machine loops \u2014 what stops it? A YouTube video autoplays forever \u2014 what stops it? Are all forever loops bad, or are some of them useful?\"",
+        "\"Last week we said computers are precise. Today we said they are also efficient. Can something be both precise and efficient at the same time?\" Note: this is the hardest question. For Groep 5\u20136, use instead: \"If loops make code shorter, why do not programmers just use loops for everything?\""
+      ],
+      "tip": "Question 2 \u2014 forever loops in real life \u2014 is the most accessible and usually generates the best discussion across all ages. The connection between forever loops and everyday cycles (heartbeats, seasons, school timetables) surprises students and makes the concept feel much bigger than coding."
+    },
+    {
+      "id": "slide-exercise1",
+      "phase": "Exercise 1",
+      "time": "47 \u2013 55 min",
+      "title": "Rewrite It with a Loop",
+      "colour": "green",
+      "whatToDo": [
+        "Write this algorithm on the board \u2014 tell students it is a robot brushing someone's hair:",
+        "Move brush from top of head to bottom (written out 10 times, one per line)",
+        "Students work individually to rewrite it as one count loop that produces the same result.",
+        "Then ask them to write a second, more complex version: brush left side, brush right side, brush back \u2014 and loop through all three sections three times each.",
+        "When students finish, they swap papers with a partner.",
+        "The partner checks whether the loop version produces the same output as the original long version. If not, they suggest a fix."
+      ],
+      "tip": "Watch for students who correctly identify the repeated unit (the single brushstroke) and wrap it in a count loop. Students who attempt the complex version and correctly nest the section changes inside the count are showing strong understanding \u2014 that is the beginning of nested loops, which appears in later weeks. You do not need to name it now.",
+      "exerciseId": "exercise-2-1"
+    },
+    {
+      "id": "slide-exercise2",
+      "phase": "Exercise 2",
+      "time": "47 \u2013 57 min",
+      "title": "Spot the Bug",
+      "colour": "green",
+      "whatToDo": [
+        "Present these three buggy loops on the board one at a time. Students work in pairs to find the bug and write a fix.",
+        "Buggy loop 1: LOOP 5 TIMES: Stand up / Sit down / Lie on the floor \u2014 Ask: is this a logic bug or a sequence bug? Students should argue their case.",
+        "Buggy loop 2: LOOP FOREVER: Add one sugar to the coffee / Stir \u2014 This loop never stops. Students must add a stop condition. Most will suggest LOOP UNTIL coffee tastes sweet enough. Then ask: how does a machine know when coffee tastes sweet enough? That is the hard question \u2014 do not resolve it.",
+        "Buggy loop 3: LOOP 3 TIMES: Open fridge / Take out juice / Pour glass \u2014 There is no close fridge step. After 3 iterations the fridge has been opened 3 times and never closed. Ask: what is the problem here beyond just being inefficient?"
+      ],
+      "tip": "Buggy loop 2 is the hardest and the most interesting. The question of how a machine knows when something is good enough is genuinely difficult and connects directly to AI and sensor-based computing in later weeks. Leave the question open and write it on the board \u2014 do not give an answer. The fridge bug introduces the idea of a resource leak without needing to name it.",
+      "exerciseId": "exercise-2-2"
+    },
+    {
+      "id": "slide-extension",
+      "phase": "Extension",
+      "time": "Fast finishers",
+      "title": "Write a Loop for Your Life",
+      "colour": "amber",
+      "whatToSay": "\"Choose any repeated activity from your own life and write it as a loop.\"",
+      "rules": [
+        "Name the activity and the type of loop: count, until, or forever.",
+        "Write out the steps inside the loop.",
+        "Describe what stops the loop \u2014 or explain why it never stops.",
+        "Find one possible bug and write the fix."
+      ],
+      "challengeQuestions": [
+        "Can you write a loop that has another loop inside it? Think about a weekly school timetable \u2014 each week repeats, and inside each week, each day repeats.",
+        "If you are stuck on a topic, try one of these: a dog wagging its tail when it hears a noise, a traffic light changing colours, a vending machine dispensing a snack, a teacher marking homework."
+      ],
+      "tip": "The nested loop challenge (a loop inside a loop) is introduced here informally. Do not over-explain. Students who get there on their own are showing exactly the kind of extended thinking this program is designed to build.",
+      "exerciseId": "exercise-2-3"
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share & Reflect",
+      "time": "52 \u2013 57 min",
+      "title": "Close the Lesson",
+      "colour": "pink",
+      "whatToDo": [
+        "Ask 2\u20133 pairs to read their corrected loop from Exercise 1 or their bug fix from Exercise 2.",
+        "After each one, ask the class: 'Would that work? Is it efficient? Is there still a bug hiding in there?'",
+        "Keep it short and warm \u2014 this is a light share, not a formal presentation.",
+        "Ask every student \u2014 verbally or on a sticky note \u2014 to complete this sentence:"
+      ],
+      "exitReflection": "\"A loop is useful when _______ and dangerous when _______.\"",
+      "whatToSay": "After collecting responses or hearing 3\u20134 answers, close with: \"Next week we look at how computers make decisions \u2014 not just following a sequence and not just repeating, but actually choosing what to do next based on what is happening. And the tool they use for that is something you already understand: if this, then that.\"",
+      "watchFor": "Did students identify the bug in Round 2 without being told what to look for? Did they connect the physical impossibility \u2014 stuck bent over \u2014 to the concept of a loop error? In Exercise 2, did students engage with the sugar loop question: how does a machine know when to stop? Students who wrestle genuinely with that question are showing exactly the kind of critical thinking this program is designed to build. Note which students push back on the idea that machines can sense quality \u2014 they are the ones to stretch in Lesson 3."
+    }
+  ],
   "studentChallenges": [
     {
       "id": "challenge-2-1",

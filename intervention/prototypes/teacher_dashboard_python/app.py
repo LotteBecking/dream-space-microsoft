@@ -200,14 +200,7 @@ def home():
         )[:5]
     ]
 
-    lesson_covers = {
-        'lesson-1': '/static/images/lesson-1-cover.jpg',
-        'lesson-2': '/static/images/lesson-2-cover.jpg',
-        'lesson-3': '/static/images/lesson-3-cover.jpg',
-        'lesson-4': '/static/images/lesson-4-cover.jpg',
-        'lesson-5': '/static/images/lesson-5-cover.jpg',
-        'lesson-6': '/static/images/lesson-6-cover.jpg'
-    }
+    lesson_covers = {f'lesson-{i}': f'/static/images/lesson-{i}-cover.jpg' for i in range(1, 17)}
 
     featured_lesson_cover = None
     if featured_lesson:
@@ -564,4 +557,4 @@ def logout():
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001, use_reloader=False)
