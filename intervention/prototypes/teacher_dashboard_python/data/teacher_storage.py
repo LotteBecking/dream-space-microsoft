@@ -322,7 +322,7 @@ def user_exists(username):
     users = get_users()
     return username.lower() in users
 
-def register_user(username, password, school):
+def register_user(username, password, school, class_group='', email=''):
     """Register a new user"""
     if user_exists(username):
         return False, "Username already taken"
@@ -333,28 +333,38 @@ def register_user(username, password, school):
     # Simple password hashing (in production, use bcrypt or argon2)
     password_hash = hashlib.sha256(password.encode()).hexdigest()
     
-    users[username.lower()] = {
+    # Ensure email is always included
+    user_entry = {
         'username': username,
+        'email': email if email else '',
         'school': school,
+        'class': class_group,
         'password_hash': password_hash,
         'created_at': datetime.now().isoformat()
     }
     
+    users[username.lower()] = user_entry
     save_users(users)
     return True, "User registered successfully"
 
 def verify_user(username, password):
-    """Verify user credentials"""
+    """Verify user credentials and return user data"""
     users = get_users()
     user = users.get(username.lower())
     
     if not user:
-        return False, "Invalid username or password"
+        return False, None
     
     import hashlib
     password_hash = hashlib.sha256(password.encode()).hexdigest()
     
     if user['password_hash'] != password_hash:
-        return False, "Invalid username or password"
+        return False, None
     
-    return True, user
+    # Return user data (without password hash)
+    return True, {
+        'username': user.get('username'),
+        'email': user.get('email', ''),
+        'school': user.get('school', ''),
+        'class': user.get('class', '')
+    }

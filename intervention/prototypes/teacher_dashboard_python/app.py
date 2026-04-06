@@ -216,7 +216,7 @@ def home():
 
     teacher_name = session.get('user_username') or teacher_profile.get('name') or 'Teacher'
     teacher_school = session.get('user_school') or teacher_profile.get('school') or 'School not set'
-    teacher_class_label = 'Groep 7-8' # placeholder until we implement class level in sign up
+    teacher_class_label = session.get('user_class') or teacher_profile.get('class') or 'Class not set'
     
     # Calculate totals
     total_students = sum(c['studentCount'] for c in classes)
@@ -423,11 +423,12 @@ def profile():
     stored_profile = get_teacher_profile() or {}
     username = session.get('user_username', '')
     school = session.get('user_school', '')
+    email = session.get('user_email', '')
 
     profile = {
         'name': username or stored_profile.get('name', ''),
         'school': school or stored_profile.get('school', ''),
-        'email': stored_profile.get('email', ''),
+        'email': email or stored_profile.get('email', ''),
         'avatar': (username[:2].upper() if username else stored_profile.get('avatar', 'TD'))
     }
 
@@ -481,48 +482,70 @@ def api_update_student_avatar(student_id):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    """User registration page"""
-    # Redirect GET requests to home (which shows the modal)
+    """User registration via modal"""
+    # Redirect GET requests back to home
     if request.method == 'GET':
         return redirect(url_for('home'))
     
     if request.method == 'POST':
-        username = request.form.get('username', '').strip()
-        school = request.form.get('school', '').strip()
-        password = request.form.get('password', '').strip()
-        confirm_password = request.form.get('confirm_password', '').strip()
-        
-        # Validation
-        if not username:
-            session['auth_error'] = 'Username is required'
-            return redirect(url_for('home'))
-        
-        if not school:
-            session['auth_error'] = 'School is required'
-            return redirect(url_for('home'))
-        
-        if not password:
-            session['auth_error'] = 'Password is required'
-            return redirect(url_for('home'))
-        
-        if len(password) < 8:
-            session['auth_error'] = 'Password must be at least 8 characters'
-            return redirect(url_for('home'))
-        
-        if password != confirm_password:
-            session['auth_error'] = 'Passwords do not match'
-            return redirect(url_for('home'))
-        
-        # Register user
-        success, message = register_user(username, password, school)
-        
-        if success:
-            # Auto-login after registration
-            session['user_username'] = username
-            session['user_school'] = school
-            return redirect(url_for('home'))
-        else:
-            session['auth_error'] = message
+        try:
+            username = request.form.get('username', '').strip()
+            school = request.form.get('school', '').strip()
+            class_group = request.form.get('class', '').strip()
+            email = request.form.get('email', '').strip()
+            password = request.form.get('password', '').strip()
+            confirm_password = request.form.get('confirm_password', '').strip()
+            
+            # Debug: Print what we're receiving
+            print(f"DEBUG Registration - Email received: '{email}' (length: {len(email)})")
+            print(f"DEBUG Form data keys: {list(request.form.keys())}")
+            
+            # Validation
+            if not username:
+                session['auth_error'] = 'Username is required'
+                return redirect(url_for('home'))
+            
+            if not school:
+                session['auth_error'] = 'School is required'
+                return redirect(url_for('home'))
+            
+            if not class_group:
+                session['auth_error'] = 'Age group is required'
+                return redirect(url_for('home'))
+            
+            if not email:
+                session['auth_error'] = 'Email is required'
+                return redirect(url_for('home'))
+            
+            if not password:
+                session['auth_error'] = 'Password is required'
+                return redirect(url_for('home'))
+            
+            if len(password) < 8:
+                session['auth_error'] = 'Password must be at least 8 characters'
+                return redirect(url_for('home'))
+            
+            if password != confirm_password:
+                session['auth_error'] = 'Passwords do not match'
+                return redirect(url_for('home'))
+            
+            # Register user
+            success, message = register_user(username, password, school, class_group, email)
+            
+            if success:
+                # Auto-login after registration and store user info
+                session['user_username'] = username
+                session['user_email'] = email
+                session['user_school'] = school
+                session['user_class'] = class_group
+                # Show success message
+                session['auth_success'] = f'Welcome, {username}! You are now logged in.'
+                return redirect(url_for('home'))
+            else:
+                session['auth_error'] = message
+                return redirect(url_for('home'))
+        except Exception as e:
+            session['auth_error'] = f'An error occurred: {str(e)}'
             return redirect(url_for('home'))
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -540,14 +563,18 @@ def login():
             session['auth_error'] = 'Username and password are required'
             return redirect(url_for('home'))
         
-        success, result = verify_user(username, password)
+        success, user_data = verify_user(username, password)
         
-        if success:
-            session['user_username'] = username
-            session['user_school'] = result.get('school', '')
+        if success and user_data:
+            # Store user data in session
+            session['user_username'] = user_data.get('username', username)
+            session['user_email'] = user_data.get('email', '')
+            session['user_school'] = user_data.get('school', '')
+            session['user_class'] = user_data.get('class', '')
+            session['is_logged_in'] = True
             return redirect(url_for('home'))
         else:
-            session['auth_error'] = result
+            session['auth_error'] = 'Invalid username or password'
             return redirect(url_for('home'))
 
 @app.route('/logout')
