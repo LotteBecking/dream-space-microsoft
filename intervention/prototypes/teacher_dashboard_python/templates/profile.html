@@ -2,163 +2,489 @@
 
 {% block title %}Settings - Teacher Dashboard{% endblock %}
 
+{% block head %}
+<style>
+    /* Modern gradient and glassmorphism */
+    .settings-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .settings-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        filter: blur(40px);
+    }
+
+    .settings-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -5%;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        filter: blur(40px);
+    }
+
+    /* Glass card effect */
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(102, 126, 234, 0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-panel:hover {
+        border-color: rgba(102, 126, 234, 0.2);
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Sidebar nav buttons */
+    .settings-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.875rem 1rem;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #6b7280;
+        font-weight: 500;
+        border: 2px solid transparent;
+    }
+
+    .settings-nav-item:hover {
+        background: rgba(102, 126, 234, 0.05);
+        color: #667eea;
+        border-color: rgba(102, 126, 234, 0.1);
+    }
+
+    .settings-nav-item.active {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.05));
+        color: #667eea;
+        border-color: #667eea;
+    }
+
+    .settings-nav-item i {
+        font-size: 1.125rem;
+    }
+
+    /* Form inputs */
+    .settings-input {
+        background: rgba(255, 255, 255, 0.8);
+        border: 2px solid rgba(102, 126, 234, 0.1);
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        font-size: 0.95rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: inherit;
+    }
+
+    .settings-input:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.95);
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .settings-input:disabled,
+    .settings-input[readonly] {
+        background: rgba(249, 250, 251, 0.8);
+        color: #6b7280;
+        cursor: not-allowed;
+    }
+
+    /* Form labels */
+    .settings-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.3px;
+    }
+
+    /* Avatar section */
+    .avatar-section {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+        border-radius: 1rem;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .avatar-circle {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        flex-shrink: 0;
+    }
+
+    .avatar-info h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 0.25rem;
+    }
+
+    .avatar-info p {
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:active {
+        transform: translateY(0px);
+    }
+
+    .btn-secondary {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        border: 2px solid rgba(102, 126, 234, 0.2);
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(102, 126, 234, 0.15);
+        border-color: rgba(102, 126, 234, 0.3);
+    }
+
+    /* Form groups */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    /* Divider */
+    .divider {
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(102, 126, 234, 0.2), transparent);
+        margin: 1.5rem 0;
+    }
+
+    /* Settings section */
+    .settings-section {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .settings-section.hidden {
+        display: none;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Info box */
+    .info-box {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(99, 102, 241, 0.05));
+        border: 2px solid rgba(59, 130, 246, 0.2);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        font-size: 0.875rem;
+        color: #1e40af;
+    }
+
+    /* Checkbox styling */
+    .settings-checkbox {
+        appearance: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid rgba(102, 126, 234, 0.3);
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .settings-checkbox:checked {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: transparent;
+    }
+
+    .settings-checkbox:checked::after {
+        content: '✓';
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+    }
+
+    /* Preference items */
+    .preference-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.05);
+        transition: background 0.3s ease;
+    }
+
+    .preference-item:last-child {
+        border-bottom: none;
+    }
+
+    .preference-item:hover {
+        background: rgba(102, 126, 234, 0.03);
+    }
+
+    .preference-label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .preference-label strong {
+        color: #1f2937;
+        font-weight: 600;
+    }
+
+    .preference-label small {
+        color: #9ca3af;
+        font-size: 0.8125rem;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="space-y-6">
-    <!-- Header -->
-    <div>
-        <h1 class="text-3xl font-bold text-gray-900">Settings</h1>
-        <p class="text-gray-600 mt-2">Manage your profile and preferences</p>
+<div class="space-y-8">
+    <!-- Hero Section -->
+    <div class="settings-hero rounded-2xl p-8 md:p-12 text-white relative">
+        <div class="relative z-10">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-16 h-16 bg-white bg-opacity-20 backdrop-blur-md rounded-full flex items-center justify-center font-bold text-2xl text-white border border-white border-opacity-30">
+                    {% if profile %}{{ profile.avatar }}{% else %}SJ{% endif %}
+                </div>
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold">Profile Settings</h1>
+                    <p class="text-white text-opacity-90 mt-1">Manage your account and preferences</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Left Sidebar - Navigation -->
-        <div class="bg-white rounded-lg p-4 card-shadow h-fit">
-            <div class="space-y-2">
-                <button onclick="showTab('profile')" class="settings-nav w-full text-left px-4 py-2 rounded-lg bg-purple-50 text-purple-600 font-medium">
-                    <i class="fas fa-user mr-2"></i> Profile
-                </button>
-                <button onclick="showTab('password')" class="settings-nav w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-50">
-                    <i class="fas fa-lock mr-2"></i> Password
-                </button>
-                <button onclick="showTab('notifications')" class="settings-nav w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-50">
-                    <i class="fas fa-bell mr-2"></i> Notifications
-                </button>
-                <button onclick="showTab('preferences')" class="settings-nav w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-50">
-                    <i class="fas fa-cogs mr-2"></i> Preferences
-                </button>
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Sidebar Navigation -->
+        <div class="lg:col-span-1">
+            <div class="glass-panel rounded-xl p-4 sticky top-6">
+                <nav class="space-y-2">
+                    <button onclick="showTab('profile')" class="settings-nav-item active w-full text-left">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </button>
+                    <button onclick="showTab('password')" class="settings-nav-item w-full text-left">
+                        <i class="fas fa-lock"></i>
+                        <span>Password</span>
+                    </button>
+                    <button onclick="showTab('notifications')" class="settings-nav-item w-full text-left">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </button>
+                    <button onclick="showTab('preferences')" class="settings-nav-item w-full text-left">
+                        <i class="fas fa-cogs"></i>
+                        <span>Preferences</span>
+                    </button>
+                </nav>
             </div>
         </div>
 
-        <!-- Right Content Area -->
-        <div class="lg:col-span-2">
+        <!-- Main Content -->
+        <div class="lg:col-span-3 space-y-4">
             <!-- Profile Tab -->
-            <div id="profile-tab" class="settings-tab bg-white rounded-lg p-6 card-shadow">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Profile Information</h2>
+            <div id="profile-tab" class="settings-section glass-panel rounded-xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <i class="fas fa-user text-purple-600"></i> Profile Information
+                </h2>
                 
                 <form onsubmit="saveProfile(event)" class="space-y-6">
-                    <div class="flex items-center gap-4 pb-6 border-b border-gray-200">
-                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center font-bold text-2xl text-purple-600">
+                    <!-- Avatar Section -->
+                    <div class="avatar-section">
+                        <div class="avatar-circle">
                             {% if profile %}{{ profile.avatar }}{% else %}SJ{% endif %}
                         </div>
-                        <button type="button" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
-                            Change Avatar
+                        <div class="avatar-info flex-1">
+                            <h3>{{ session.get('user_username', 'Teacher') }}</h3>
+                            <p>Your profile avatar</p>
+                        </div>
+                        <button type="button" class="btn-secondary">
+                            <i class="fas fa-image"></i> Change
                         </button>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
-                        <input type="text" value="{{ session.get('user_username', '') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" readonly>
+                    <div class="divider"></div>
+
+                    <!-- Form Fields -->
+                    <div class="form-group">
+                        <label class="settings-label">Username</label>
+                        <input type="text" value="{{ session.get('user_username', '') }}" class="settings-input" readonly>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                        <input type="email" value="{{ session.get('user_email', '') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" readonly>
+                    <div class="form-group">
+                        <label class="settings-label">Email Address</label>
+                        <input type="email" value="{{ session.get('user_email', '') }}" class="settings-input" readonly>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">School/Institution</label>
-                        <input type="text" value="{{ session.get('user_school', '') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" readonly>
+                    <div class="form-group">
+                        <label class="settings-label">School/Institution</label>
+                        <input type="text" value="{{ session.get('user_school', '') }}" class="settings-input" readonly>
                     </div>
 
                     <div class="flex gap-3 justify-end pt-4">
-                        <button type="button" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
-                            Cancel
-                        </button>
-                        <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium">
-                            Save Changes
+                        <button type="button" class="btn-secondary">Cancel</button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> Save Changes
                         </button>
                     </div>
                 </form>
             </div>
 
             <!-- Password Tab -->
-            <div id="password-tab" class="settings-tab hidden bg-white rounded-lg p-6 card-shadow">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Change Password</h2>
+            <div id="password-tab" class="settings-section hidden glass-panel rounded-xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <i class="fas fa-lock text-purple-600"></i> Change Password
+                </h2>
                 
                 <form onsubmit="changePassword(event)" class="space-y-6 max-w-md">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
-                        <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="form-group">
+                        <label class="settings-label">Current Password</label>
+                        <input type="password" class="settings-input" placeholder="Enter your current password">
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
-                        <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="form-group">
+                        <label class="settings-label">New Password</label>
+                        <input type="password" class="settings-input" placeholder="Enter new password">
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
-                        <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="form-group">
+                        <label class="settings-label">Confirm Password</label>
+                        <input type="password" class="settings-input" placeholder="Confirm new password">
                     </div>
 
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-700">
-                        <i class="fas fa-info-circle mr-2"></i> Password must be at least 8 characters long
+                    <div class="info-box">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Password must be at least 8 characters long
                     </div>
 
-                    <div class="flex gap-3 justify-end">
-                        <button type="button" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
-                            Cancel
-                        </button>
-                        <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium">
-                            Update Password
+                    <div class="flex gap-3 justify-end pt-4">
+                        <button type="button" class="btn-secondary">Cancel</button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-key"></i> Update Password
                         </button>
                     </div>
                 </form>
             </div>
 
             <!-- Notifications Tab -->
-            <div id="notifications-tab" class="settings-tab hidden bg-white rounded-lg p-6 card-shadow">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Notification Preferences</h2>
+            <div id="notifications-tab" class="settings-section hidden glass-panel rounded-xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <i class="fas fa-bell text-purple-600"></i> Notification Preferences
+                </h2>
                 
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between border-b border-gray-200 pb-4">
-                        <div>
-                            <p class="font-medium text-gray-900">Student Progress Updates</p>
-                            <p class="text-sm text-gray-600">Get notified when students complete lessons</p>
+                <div class="space-y-0">
+                    <div class="preference-item">
+                        <div class="preference-label">
+                            <strong>Student Progress Updates</strong>
+                            <small>Get notified when students complete lessons</small>
                         </div>
-                        <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                        <input type="checkbox" checked class="settings-checkbox">
                     </div>
 
-                    <div class="flex items-center justify-between border-b border-gray-200 pb-4">
-                        <div>
-                            <p class="font-medium text-gray-900">Assignment Reminders</p>
-                            <p class="text-sm text-gray-600">Remind me about upcoming assignment due dates</p>
+                    <div class="preference-item">
+                        <div class="preference-label">
+                            <strong>Assignment Reminders</strong>
+                            <small>Remind me about upcoming assignment due dates</small>
                         </div>
-                        <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                        <input type="checkbox" checked class="settings-checkbox">
                     </div>
 
-                    <div class="flex items-center justify-between border-b border-gray-200 pb-4">
-                        <div>
-                            <p class="font-medium text-gray-900">Weekly Reports</p>
-                            <p class="text-sm text-gray-600">Receive weekly class progress reports</p>
+                    <div class="preference-item">
+                        <div class="preference-label">
+                            <strong>Weekly Reports</strong>
+                            <small>Receive weekly class progress reports</small>
                         </div>
-                        <input type="checkbox" class="w-5 h-5 text-purple-600 rounded">
+                        <input type="checkbox" class="settings-checkbox">
                     </div>
 
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="font-medium text-gray-900">New Features</p>
-                            <p class="text-sm text-gray-600">Be notified about new features and updates</p>
+                    <div class="preference-item">
+                        <div class="preference-label">
+                            <strong>New Features</strong>
+                            <small>Be notified about new features and updates</small>
                         </div>
-                        <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                        <input type="checkbox" checked class="settings-checkbox">
                     </div>
                 </div>
 
-                <div class="mt-6 flex gap-3 justify-end">
-                    <button class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium">
-                        Save Preferences
+                <div class="divider mt-6 mb-6"></div>
+
+                <div class="flex gap-3 justify-end">
+                    <button class="btn-secondary">Cancel</button>
+                    <button class="btn-primary">
+                        <i class="fas fa-check"></i> Save Preferences
                     </button>
                 </div>
             </div>
 
             <!-- Preferences Tab -->
-            <div id="preferences-tab" class="settings-tab hidden bg-white rounded-lg p-6 card-shadow">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Preferences</h2>
+            <div id="preferences-tab" class="settings-section hidden glass-panel rounded-xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <i class="fas fa-sliders-h text-purple-600"></i> Preferences
+                </h2>
                 
                 <form onsubmit="savePreferences(event)" class="space-y-6 max-w-md">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
-                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="form-group">
+                        <label class="settings-label">Language</label>
+                        <select class="settings-input">
                             <option>English</option>
                             <option>Dutch</option>
                             <option>Spanish</option>
@@ -166,18 +492,18 @@
                         </select>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Theme</label>
-                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="form-group">
+                        <label class="settings-label">Theme</label>
+                        <select class="settings-input">
                             <option>Light</option>
                             <option>Dark</option>
                             <option>Auto</option>
                         </select>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Items Per Page</label>
-                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="form-group">
+                        <label class="settings-label">Items Per Page</label>
+                        <select class="settings-input">
                             <option>10</option>
                             <option selected>25</option>
                             <option>50</option>
@@ -185,12 +511,10 @@
                         </select>
                     </div>
 
-                    <div class="flex gap-3 justify-end">
-                        <button type="button" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
-                            Cancel
-                        </button>
-                        <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium">
-                            Save Preferences
+                    <div class="flex gap-3 justify-end pt-4">
+                        <button type="button" class="btn-secondary">Cancel</button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-cog"></i> Save Preferences
                         </button>
                     </div>
                 </form>
@@ -199,43 +523,37 @@
     </div>
 </div>
 
-{% endblock %}
-
-{% block scripts %}
 <script>
-function showTab(tabName) {
-    // Hide all tabs
-    document.querySelectorAll('.settings-tab').forEach(tab => {
-        tab.classList.add('hidden');
-    });
-    
-    // Show selected tab
-    document.getElementById(tabName + '-tab').classList.remove('hidden');
-    
-    // Update nav buttons
-    document.querySelectorAll('.settings-nav').forEach(nav => {
-        nav.classList.remove('bg-purple-50', 'text-purple-600', 'font-medium');
-        nav.classList.add('text-gray-700', 'hover:bg-gray-50');
-    });
-    
-    // Highlight active nav
-    event.target.closest('button').classList.add('bg-purple-50', 'text-purple-600', 'font-medium');
-    event.target.closest('button').classList.remove('text-gray-700', 'hover:bg-gray-50');
-}
+    function showTab(tabName) {
+        // Hide all tabs
+        const tabs = document.querySelectorAll('.settings-section');
+        tabs.forEach(tab => tab.classList.add('hidden'));
 
-function saveProfile(event) {
-    event.preventDefault();
-    alert('Profile updated successfully!');
-}
+        // Show selected tab
+        document.getElementById(tabName + '-tab').classList.remove('hidden');
 
-function changePassword(event) {
-    event.preventDefault();
-    alert('Password changed successfully!');
-}
+        // Update nav active state
+        const navItems = document.querySelectorAll('.settings-nav-item');
+        navItems.forEach(item => item.classList.remove('active'));
+        
+        // Add active class to clicked button
+        event.target.closest('.settings-nav-item').classList.add('active');
+    }
 
-function savePreferences(event) {
-    event.preventDefault();
-    alert('Preferences saved!');
-}
+    function saveProfile(event) {
+        event.preventDefault();
+        // Profile fields are readonly, so no actual changes
+        alert('Profile information cannot be modified at this time.');
+    }
+
+    function changePassword(event) {
+        event.preventDefault();
+        alert('Password change functionality coming soon!');
+    }
+
+    function savePreferences(event) {
+        event.preventDefault();
+        alert('Preferences saved successfully!');
+    }
 </script>
 {% endblock %}
