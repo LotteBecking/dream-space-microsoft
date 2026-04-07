@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Teacher Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            display: flex;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .form-container {
+            background: white;
+            width: 100%;
+            display: flex;
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .illustration {
+            flex: 0 0 45%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .illustration-content {
+            text-align: center;
+            color: white;
+        }
+
+        .illustration-icon {
+            width: 180px;
+            height: 180px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            margin: 0 auto 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+
+        .progress-bar {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .progress-segment {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+            position: relative;
+        }
+
+        .progress-segment::after {
+            content: '';
+            height: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .progress-segment.completed::after {
+            background: white;
+        }
+
+        .progress-segment.active::after {
+            background: white;
+        }
+
+        .progress-segment.progress-last::after {
+            width: 0;
+        }
+
+        .progress-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .progress-segment.active .progress-number {
+            background: white;
+            color: #667eea;
+        }
+
+        .progress-segment.completed .progress-number {
+            background: white;
+            color: #667eea;
+        }
+
+        @media (max-width: 480px) {
+            .progress-bar {
+                gap: 1rem;
+                margin-bottom: 1.25rem;
+            }
+        }
+
+        .progress-segment {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+            position: relative;
+        }
+
+        .progress-segment::after {
+            content: '';
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .progress-segment.active::after {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            box-shadow: 0 0 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .progress-segment.completed::after {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .progress-number {
+            box-sizing: border-box;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #9ca3af;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .progress-segment.active .progress-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .progress-segment.completed .progress-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .progress-last::after {
+            display: none !important;
+        }
+
+        .selection-card {
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            background: #f9fafb;
+        }
+
+        .selection-card:hover {
+            border-color: #667eea;
+            background: #f0f9ff;
+        }
+
+        .selection-card.selected {
+            background: #1f2937;
+            border-color: #667eea;
+            color: white;
+        }
+
+        .selection-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #667eea;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            letter-spacing: 0;
+            margin-top: 1.5rem;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 480px) {
+            .btn-primary {
+                padding: 0.7rem 1.25rem;
+                font-size: 0.9rem;
+                border-radius: 10px;
+            }
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            width: auto;
+            padding: 0.65rem 1.5rem;
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0;
+        }
+
+        .btn-secondary:hover {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .label-text {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            color: white;
+            font-size: 0.85rem;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.65rem 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1f2937;
+        }
+
+        .input-field::placeholder {
+            color: #9ca3af;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        }
+            box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-header {
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+
+        .form-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.8px;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .form-header {
+                margin-bottom: 1rem;
+            }
+            .form-header h1 {
+                font-size: 1.5rem;
+            }
+            .form-header p {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-header {
+                margin-bottom: 0.85rem;
+            }
+            .form-header h1 {
+                font-size: 1.2rem;
+            }
+            .form-header p {
+                font-size: 0.75rem;
+            }
+        }
+
+        .step-title {
+            display: flex;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .step-title::before {
+            content: '';
+            width: 3px;
+            height: 20px;
+            background: linear-gradient(180deg, white, rgba(255, 255, 255, 0.7));
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .step-title {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+            .step-title::before {
+                height: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .step-title {
+                font-size: 1.1rem;
+                margin-bottom: 0.85rem;
+            }
+            .step-title::before {
+                height: 20px;
+                width: 3px;
+            }
+        }
+
+        .step-title::before {
+            content: '';
+            width: 4px;
+            height: 32px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .divider {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 1.2rem 0;
+            position: relative;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1.5px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        @media (max-width: 480px) {
+            .divider {
+                margin: 0.85rem 0;
+                font-size: 0.75rem;
+            }
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 42%;
+            height: 1.5px;
+            background: linear-gradient(to right, transparent, #d1d5db, transparent);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .oauth-button {
+            padding: 0.6rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+        .oauth-button:hover {
+            border-color: #667eea;
+            background: #f3f4f6;
+        }
+
+        .oauth-buttons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 0;
+        }
+
+        .buttons-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .mode-toggle {
+            display: none;
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .toggle-btn:hover {
+            color: white;
+        }
+
+        .hidden-form {
+            display: none;
+        }
+
+        .hidden-form.active {
+            display: block;
+        }
+
+        .signin-link {
+            text-align: center;
+            margin-top: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .signin-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signin-link a:hover {
+            text-decoration: underline;
+        }
+
+        .legal-text {
+            text-align: center;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 1rem;
+            line-height: 1.4;
+        }
+
+        .legal-text a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .legal-text a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .signin-link {
+                margin-top: 0.75rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        .signin-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .signin-link a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .signin-link a:hover::after {
+            width: 100%;
+        }
+
+        .age-group-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .age-group-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
+            }
+        }
+
+        .age-group-card {
+            padding: 0.8rem 0.6rem;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .age-group-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: white;
+        }
+
+        .age-group-card.selected {
+            background: white;
+            border-color: white;
+        }
+
+        .age-group-card.selected .age-group-label {
+            color: #667eea;
+        }
+
+        .age-group-card.selected .age-group-value {
+            color: #667eea;
+        }
+
+        @media (max-width: 1024px) {
+            .age-group-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .age-group-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .age-group-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.35rem;
+            }
+        }
+
+        .age-group-card {
+            padding: 0.25rem 0.15rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .age-group-card {
+                padding: 0.6rem 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .age-group-card {
+                padding: 0.5rem 0.35rem;
+            }
+        }
+
+        .age-group-card:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .age-group-card.selected {
+            border-color: #667eea;
+            border-width: 2.5px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.05));
+            font-weight: 700;
+            color: #1f2937;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .age-group-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .age-group-label {
+                font-size: 0.65rem;
+                letter-spacing: 0.3px;
+            }
+        }
+
+        .age-group-card.selected {
+            border-color: #667eea;
+            border-width: 2.5px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.08));
+            font-weight: 700;
+            color: #1f2937;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .age-group-label {
+            font-size: 0.4rem;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 0.08px;
+            margin-bottom: 0.03rem;
+            font-weight: 600;
+        }
+
+        .age-group-value {
+            font-size: 0.45rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        @media (max-width: 480px) {
+            .age-group-label {
+                font-size: 0.55rem;
+                letter-spacing: 0.2px;
+                margin-bottom: 0.15rem;
+            }
+            .age-group-value {
+                font-size: 0.65rem;
+            }
+        }
+
+        .form-step {
+            display: none !important;
+        }
+
+        .form-step.active {
+            display: block !important;
+            animation: fadeInForm 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeInForm {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .illustration {
+            display: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .illustration {
+                min-height: 350px;
+            }
+        }
+
+        .illustration::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .illustration::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -15%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .illustration-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .form-side {
+            padding: 2.5rem 2.5rem;
+            flex: 1;
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        @media (max-width: 1024px) {
+            .illustration {
+                display: none;
+            }
+
+            .form-side {
+                flex: 1 1 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-side {
+                padding: 1.5rem 1.75rem;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-side {
+                padding: 1.25rem 1.25rem;
+                max-width: 100%;
+            }
+        }
+
+        .autocomplete-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #667eea;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .autocomplete-dropdown.active {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.95rem;
+            color: #1f2937;
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item:hover {
+            background: #f0fdf4;
+            padding-left: 1.25rem;
+        }
+
+        .autocomplete-item.selected {
+            background: #f0fdf4;
+            border-left: 4px solid #667eea;
+            padding-left: calc(1rem - 4px);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="form-container">
+            <!-- Illustration Side -->
+            <div class="illustration hidden md:flex flex-col">
+                <div class="illustration-content">
+                    <div class="illustration-icon">
+                        <img src="{{ url_for('static', filename='images/mascot.png') }}" alt="Dreaming in Space Mascot" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    </div>
+                    <h2 style="color: white; font-size: 2.5rem; font-weight: 800; letter-spacing: -0.5px; text-align: center;">Teacher Dashboard</h2>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.2rem; font-weight: 600; text-align: center; margin-top: 0.5rem;">Dreaming in Space</p>
+                </div>
+            </div>
+
+            <!-- Form Side -->
+            <div class="form-side">
+                <!-- Mode Toggle -->
+                <div class="mode-toggle">
+                    <button type="button" class="toggle-btn active" id="signupTab" onclick="switchMode('signup')">
+                        Create Account
+                    </button>
+                    <button type="button" class="toggle-btn" id="loginTab" onclick="switchMode('login')">
+                        Log In
+                    </button>
+                </div>
+
+                <!-- Header -->
+                <div class="form-header">
+                    <h1 id="headerTitle">Start Teaching Today</h1>
+                    <p id="headerSubtitle">Join thousands of educators using our platform</p>
+                </div>
+
+                <!-- Progress Bar (Signup only) -->
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-segment active" id="progress-1">
+                        <div class="progress-number">1</div>
+                    </div>
+                    <div class="progress-segment progress-last" id="progress-2">
+                        <div class="progress-number">2</div>
+                    </div>
+                </div>
+
+                <!-- Flash Messages -->
+                {% if session.get('auth_error') %}
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-lg">
+                        <p class="font-bold">Error</p>
+                        <p>{{ session.pop('auth_error') }}</p>
+                    </div>
+                {% endif %}
+
+                <!-- Form -->
+                <form method="POST" action="{{ url_for('register') }}" id="signupForm">
+                    <!-- Step 1: Account Details -->
+                    <div class="form-step active" id="step1">
+                        <h2 class="step-title">Email & Password</h2>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label class="label-text" for="email">Email Address</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="input-field"
+                                placeholder="your@email.com"
+                                required
+                            >
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label class="label-text" for="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="input-field"
+                                placeholder="At least 8 characters"
+                                required
+                                minlength="8"
+                            >
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-group">
+                            <label class="label-text" for="confirm_password">Confirm Password</label>
+                            <input
+                                type="password"
+                                id="confirm_password"
+                                name="confirm_password"
+                                class="input-field"
+                                placeholder="Re-enter your password"
+                                required
+                                minlength="8"
+                            >
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="divider">or sign up with</div>
+
+                        <!-- OAuth Buttons -->
+                        <div class="oauth-buttons-grid">
+                            <button type="button" class="oauth-button" title="Google">
+                                <i class="fab fa-google" style="font-size: 1.25rem;"></i>
+                            </button>
+                            <button type="button" class="oauth-button" title="Microsoft">
+                                <i class="fab fa-microsoft" style="font-size: 1.25rem;"></i>
+                            </button>
+                            <button type="button" class="oauth-button" title="GitHub">
+                                <i class="fab fa-github" style="font-size: 1.25rem;"></i>
+                            </button>
+                        </div>
+
+                        <!-- Continue Button (Go to Step 2) -->
+                        <button type="button" onclick="goToStep(2)" class="btn-primary">
+                            Continue
+                        </button>
+
+                        <!-- Legal Text -->
+                        <div class="legal-text">
+                            By creating an account you agree to Teacher Dashboard's 
+                            <a href="#">Terms of Services</a> and <a href="#">Privacy Policy</a>.
+                        </div>
+
+                        <!-- Login Link -->
+                        <div class="signin-link">
+                            Have an account? <a href="#" onclick="switchMode('login'); return false;">Log in</a>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Profile Details -->
+                    <div class="form-step" id="step2">
+
+                        <!-- Username -->
+                        <div class="form-group">
+                            <label class="label-text" for="username">Your Name</label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="input-field"
+                                placeholder="John Doe"
+                                required
+                            >
+                        </div>
+
+                        <!-- School Name -->
+                        <div class="form-group">
+                            <label class="label-text">School Name</label>
+                            <div class="autocomplete-container">
+                                <input
+                                    type="text"
+                                    id="school"
+                                    name="school"
+                                    class="input-field"
+                                    placeholder="e.g. Lincoln High School"
+                                    required
+                                    autocomplete="off"
+                                >
+                                <div class="autocomplete-dropdown" id="schoolDropdown"></div>
+                            </div>
+                        </div>
+
+                        <!-- Age Group / Class -->
+                        <div class="form-group">
+                            <label class="label-text">Welke groep geef jij les?</label>
+                            <div class="age-group-grid">
+                                <div class="age-group-card" onclick="selectAgeGroup(this, 'PO Groep 1-2')">
+                                    <div class="age-group-label">PO</div>
+                                    <div class="age-group-value">Groep 1-2</div>
+                                </div>
+                                <div class="age-group-card" onclick="selectAgeGroup(this, 'PO Groep 3-4')">
+                                    <div class="age-group-label">PO</div>
+                                    <div class="age-group-value">Groep 3-4</div>
+                                </div>
+                                <div class="age-group-card" onclick="selectAgeGroup(this, 'PO Groep 5-6')">
+                                    <div class="age-group-label">PO</div>
+                                    <div class="age-group-value">Groep 5-6</div>
+                                </div>
+                                <div class="age-group-card" onclick="selectAgeGroup(this, 'PO Groep 7-8')">
+                                    <div class="age-group-label">PO</div>
+                                    <div class="age-group-value">Groep 7-8</div>
+                                </div>
+                                <div class="age-group-card" onclick="selectAgeGroup(this, 'VO Klas 1-2')">
+                                    <div class="age-group-label">VO</div>
+                                    <div class="age-group-value">Klas 1-2</div>
+                                </div>
+                                <div class="age-group-card" onclick="selectAgeGroup(this, 'VO Klas 3-4')">
+                                    <div class="age-group-label">VO</div>
+                                    <div class="age-group-value">Klas 3-4</div>
+                                </div>
+                                <div class="age-group-card" onclick="selectAgeGroup(this, 'VO Klas 5-6')">
+                                    <div class="age-group-label">VO</div>
+                                    <div class="age-group-value">Klas 5-6</div>
+                                </div>
+                                <div class="age-group-card" onclick="selectAgeGroup(this, 'MBO 1-4')">
+                                    <div class="age-group-label">MBO</div>
+                                    <div class="age-group-value">MBO 1-4</div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="class" name="class" required>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="buttons-row">
+                            <button type="button" onclick="goToStep(1)" class="btn-secondary">
+                                Back
+                            </button>
+                            <button type="submit" class="btn-primary" style="width: 100%;">
+                                Create Account
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Login Form -->
+                <form method="POST" action="{{ url_for('login') }}" id="loginForm" class="hidden-form">
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="label-text" for="login-email">Email Address</label>
+                        <input
+                            type="email"
+                            id="login-email"
+                            name="email"
+                            class="input-field"
+                            placeholder="your@email.com"
+                            required
+                        >
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label class="label-text" for="login-password">Password</label>
+                        <input
+                            type="password"
+                            id="login-password"
+                            name="password"
+                            class="input-field"
+                            placeholder="Enter your password"
+                            required
+                        >
+                    </div>
+
+                    <!-- Login Button -->
+                    <button type="submit" class="btn-primary">
+                        Log In
+                    </button>
+                </form>
+
+                <!-- Mode Switch Link -->
+                <div class="signin-link">
+                    <span id="modeText">Don't have an account? <a href="#" onclick="switchMode('signup'); return false;">Sign up</a></span>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        // Mode switching (Signup vs Login)
+        function switchMode(mode) {
+            const signupForm = document.getElementById('signupForm');
+            const loginForm = document.getElementById('loginForm');
+            const signupTab = document.getElementById('signupTab');
+            const loginTab = document.getElementById('loginTab');
+            const progressBar = document.getElementById('progressBar');
+            const headerTitle = document.getElementById('headerTitle');
+            const headerSubtitle = document.getElementById('headerSubtitle');
+            const modeText = document.getElementById('modeText');
+
+            if (mode === 'signup') {
+                // Show signup
+                signupForm.classList.remove('hidden-form');
+                loginForm.classList.add('hidden-form');
+                signupTab.classList.add('active');
+                loginTab.classList.remove('active');
+                progressBar.style.display = 'flex';
+                headerTitle.textContent = 'Start Teaching Today';
+                headerSubtitle.textContent = 'Join thousands of educators using our platform';
+                modeText.innerHTML = 'Have an account? <a href="#" onclick="switchMode(\'login\'); return false;">Log in</a>';
+            } else if (mode === 'login') {
+                // Show login
+                signupForm.classList.add('hidden-form');
+                loginForm.classList.remove('hidden-form');
+                signupTab.classList.remove('active');
+                loginTab.classList.add('active');
+                progressBar.style.display = 'none';
+                headerTitle.textContent = 'Welcome Back';
+                headerSubtitle.textContent = 'Log in to continue teaching';
+                modeText.innerHTML = 'Don\'t have an account? <a href="#" onclick="switchMode(\'signup\'); return false;">Sign up</a>';
+            }
+        }
+
+        // Autocomplete functionality
+        console.log('Script loaded');
+        
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM ready');
+            
+            // Check if we should show login form (e.g., after failed login attempt)
+            {% if session.pop('show_login_form', None) %}
+            switchMode('login');
+            {% endif %}
+            
+            initializeAutocomplete();
+        });
+        
+        function initializeAutocomplete() {
+            const schoolInput = document.getElementById('school');
+            const schoolDropdown = document.getElementById('schoolDropdown');
+            
+            console.log('schoolInput:', schoolInput);
+            console.log('schoolDropdown:', schoolDropdown);
+            
+            if (!schoolInput) {
+                console.error('School input not found!');
+                return;
+            }
+            if (!schoolDropdown) {
+                console.error('School dropdown not found!');
+                return;
+            }
+            
+            let currentFocusIndex = -1;
+
+        schoolInput.addEventListener('input', async function(e) {
+            const query = this.value.trim();
+            console.log('Input changed:', query);
+            
+            if (query.length === 0) {
+                schoolDropdown.classList.remove('active');
+                schoolDropdown.innerHTML = '';
+                return;
+            }
+
+            try {
+                console.log('Fetching schools for query:', query);
+                const response = await fetch(`/api/schools?q=${encodeURIComponent(query)}`);
+                const schools = await response.json();
+                console.log('Schools received:', schools);
+
+                if (schools.length === 0) {
+                    schoolDropdown.classList.remove('active');
+                    schoolDropdown.innerHTML = '';
+                    return;
+                }
+
+                schoolDropdown.innerHTML = schools.map((school, index) => 
+                    `<div class="autocomplete-item" data-index="${index}" data-value="${escapeHtml(school)}">
+                        ${highlightMatch(school, query)}
+                    </div>`
+                ).join('');
+
+                schoolDropdown.classList.add('active');
+                console.log('Dropdown activated');
+                currentFocusIndex = -1;
+
+                // Add click handlers to dropdown items
+                schoolDropdown.querySelectorAll('.autocomplete-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        schoolInput.value = this.getAttribute('data-value');
+                        schoolDropdown.classList.remove('active');
+                        schoolInput.focus();
+                    });
+                });
+            } catch (error) {
+                console.error('Error fetching schools:', error);
+            }
+        });
+
+        // Keyboard navigation
+        schoolInput.addEventListener('keydown', function(e) {
+            const items = schoolDropdown.querySelectorAll('.autocomplete-item');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentFocusIndex = Math.min(currentFocusIndex + 1, items.length - 1);
+                updateFocus(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentFocusIndex = Math.max(currentFocusIndex - 1, -1);
+                updateFocus(items);
+            } else if (e.key === 'Enter') {
+                if (currentFocusIndex >= 0 && items[currentFocusIndex]) {
+                    e.preventDefault();
+                    schoolInput.value = items[currentFocusIndex].getAttribute('data-value');
+                    schoolDropdown.classList.remove('active');
+                    currentFocusIndex = -1;
+                }
+            } else if (e.key === 'Escape') {
+                schoolDropdown.classList.remove('active');
+                currentFocusIndex = -1;
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target !== schoolInput && e.target.closest('.autocomplete-container') === null) {
+                schoolDropdown.classList.remove('active');
+                currentFocusIndex = -1;
+            }
+        });
+
+        function updateFocus(items) {
+            items.forEach((item, index) => {
+                item.classList.remove('selected');
+            });
+            if (currentFocusIndex >= 0 && items[currentFocusIndex]) {
+                items[currentFocusIndex].classList.add('selected');
+                items[currentFocusIndex].scrollIntoView({ block: 'nearest' });
+            }
+        }
+
+        function highlightMatch(text, query) {
+            const regex = new RegExp(`(${escapeHtml(query)})`, 'gi');
+            return text.replace(regex, '<strong style="color: #667eea;">$1</strong>');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        }  // End of initializeAutocomplete()
+
+        function goToStep(step) {
+            // Validate current step before moving
+            if (step === 2) {
+                if (!validateStep1()) {
+                    return;
+                }
+            }
+
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Show target step
+            document.getElementById(`step${step}`).classList.add('active');
+
+            // Update progress bar
+            document.getElementById('progress-1').classList.toggle('completed', step > 1);
+            document.getElementById('progress-2').classList.toggle('active', step === 2);
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function validateStep1() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            let isValid = true;
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email');
+                isValid = false;
+            }
+
+            // Validate password
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters');
+                isValid = false;
+                return false;
+            }
+
+            // Validate password match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                isValid = false;
+                return false;
+            }
+
+            return isValid;
+        }
+
+        // Form submission validation
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            const username = document.getElementById('username').value.trim();
+            const school = document.getElementById('school').value.trim();
+            const classGroup = document.getElementById('class').value.trim();
+
+            if (!username) {
+                e.preventDefault();
+                alert('Username is required');
+                return false;
+            }
+            if (!school) {
+                e.preventDefault();
+                alert('School name is required');
+                return false;
+            }
+            if (!classGroup) {
+                e.preventDefault();
+                alert('Please select an age group');
+                return false;
+            }
+        });
+
+        function selectAgeGroup(element, value) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.age-group-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            // Add selected class to clicked card
+            element.classList.add('selected');
+            // Set the hidden input value
+            document.getElementById('class').value = value;
+        }
+
+        // OAuth buttons (placeholder)
+        document.querySelectorAll('.oauth-button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('OAuth integration coming soon!');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -324,47 +324,72 @@ def user_exists(username):
 
 def register_user(username, password, school, class_group='', email=''):
     """Register a new user"""
-    if user_exists(username):
-        return False, "Username already taken"
+    if not email:
+        return False, "Email is required"
     
+    # Check if email is already registered
     users = get_users()
+    if email.lower() in users:
+        return False, "Email already registered"
+    
     import hashlib
     
     # Simple password hashing (in production, use bcrypt or argon2)
     password_hash = hashlib.sha256(password.encode()).hexdigest()
     
-    # Ensure email is always included
+    # Store user with email as the key (primary identifier)
     user_entry = {
         'username': username,
-        'email': email if email else '',
+        'email': email,
         'school': school,
         'class': class_group,
         'password_hash': password_hash,
         'created_at': datetime.now().isoformat()
     }
     
-    users[username.lower()] = user_entry
+    print(f"DEBUG register_user: Registering user with email '{email.lower()}'")
+    print(f"DEBUG register_user: User entry: {user_entry}")
+    
+    users[email.lower()] = user_entry
     save_users(users)
+    
+    print(f"DEBUG register_user: User registered successfully")
+    print(f"DEBUG register_user: All users after save: {list(users.keys())}")
+    
     return True, "User registered successfully"
 
-def verify_user(username, password):
-    """Verify user credentials and return user data"""
+def verify_user(email, password):
+    """Verify user credentials by email and return user data"""
     users = get_users()
-    user = users.get(username.lower())
+    
+    # Debug: log what we're looking for
+    print(f"DEBUG verify_user: Looking for email '{email.lower()}'")
+    print(f"DEBUG verify_user: Available users: {list(users.keys())}")
+    
+    user = users.get(email.lower())
     
     if not user:
+        print(f"DEBUG verify_user: User not found for '{email.lower()}'")
         return False, None
+    
+    print(f"DEBUG verify_user: Found user: {user}")
     
     import hashlib
     password_hash = hashlib.sha256(password.encode()).hexdigest()
     
+    print(f"DEBUG verify_user: Provided password hash: {password_hash}")
+    print(f"DEBUG verify_user: Stored password hash: {user.get('password_hash')}")
+    
     if user['password_hash'] != password_hash:
+        print(f"DEBUG verify_user: Password mismatch")
         return False, None
+    
+    print(f"DEBUG verify_user: Password matches, logging in user")
     
     # Return user data (without password hash)
     return True, {
         'username': user.get('username'),
-        'email': user.get('email', ''),
+        'email': user.get('email', email),
         'school': user.get('school', ''),
         'class': user.get('class', '')
     }

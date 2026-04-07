@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import json
 import os
+import csv
 from datetime import datetime
 from data.teacher_storage import (
     get_teacher_profile, save_teacher_profile,
@@ -15,6 +16,32 @@ from data.lessons import lessons
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.secret_key = os.environ.get('SECRET_KEY', 'teacher-dashboard-dev-key-change-in-production')
+
+# Cache for schools data
+_schools_cache = None
+
+def load_schools():
+    """Load schools from CSV file with caching"""
+    global _schools_cache
+    if _schools_cache is not None:
+        return _schools_cache
+    
+    schools = []
+    schools_csv_path = os.path.join(os.path.dirname(__file__), 'data', 'schools.csv')
+    
+    try:
+        with open(schools_csv_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if row.get('School Name'):
+                    schools.append(row['School Name'].strip())
+    except Exception as e:
+        print(f"Error loading schools: {e}")
+        return []
+    
+    # Remove duplicates and sort
+    _schools_cache = sorted(list(set(schools)))
+    return _schools_cache
 
 def build_default_teacher_instructions(lesson):
     """Generate lesson-specific fallback instructions when teacherInstructions are missing."""
@@ -478,14 +505,30 @@ def api_update_student_avatar(student_id):
 
     return jsonify({"success": True, "studentId": student_id, "avatar": avatar})
 
+@app.route('/api/schools', methods=['GET'])
+def api_get_schools():
+    """API endpoint to get school suggestions based on search query"""
+    query = request.args.get('q', '').strip().lower()
+    
+    schools = load_schools()
+    
+    if not query:
+        return jsonify([])
+    
+    # Filter schools based on query
+    matches = [school for school in schools if query in school.lower()]
+    
+    # Return top 10 matches
+    return jsonify(matches[:10])
+
 # Authentication Routes
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    """User registration via modal"""
-    # Redirect GET requests back to home
+    """User registration page"""
+    # Show signup form on GET
     if request.method == 'GET':
-        return redirect(url_for('home'))
+        return render_template('signup.html')
     
     if request.method == 'POST':
         try:
@@ -551,31 +594,42 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """User login page"""
-    # Redirect GET requests to home (which shows the modal)
+    # Redirect GET requests to home (which shows the signup form)
     if request.method == 'GET':
         return redirect(url_for('home'))
     
     if request.method == 'POST':
-        username = request.form.get('username', '').strip()
+        email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
         
-        if not username or not password:
-            session['auth_error'] = 'Username and password are required'
-            return redirect(url_for('home'))
+        print(f"DEBUG login route: Received email: '{email}', password length: {len(password)}")
         
-        success, user_data = verify_user(username, password)
-        
-        if success and user_data:
-            # Store user data in session
-            session['user_username'] = user_data.get('username', username)
-            session['user_email'] = user_data.get('email', '')
-            session['user_school'] = user_data.get('school', '')
-            session['user_class'] = user_data.get('class', '')
-            session['is_logged_in'] = True
-            return redirect(url_for('home'))
+        if not email or not password:
+            session['auth_error'] = 'Email and password are required'
+            session['show_login_form'] = True
         else:
-            session['auth_error'] = 'Invalid username or password'
-            return redirect(url_for('home'))
+            success, user_data = verify_user(email, password)
+            
+            print(f"DEBUG login route: verify_user returned success={success}, user_data={user_data}")
+            
+            if success and user_data:
+                # Clear the show_login_form flag on successful login
+                session.pop('show_login_form', None)
+                # Store user data in session
+                session['user_username'] = user_data.get('username', user_data.get('email', ''))
+                session['user_email'] = user_data.get('email', '')
+                session['user_school'] = user_data.get('school', '')
+                session['user_class'] = user_data.get('class', '')
+                session['is_logged_in'] = True
+                print(f"DEBUG login route: User logged in successfully")
+                return redirect(url_for('home'))
+            else:
+                session['auth_error'] = 'Invalid email or password'
+                session['show_login_form'] = True
+                print(f"DEBUG login route: Login failed")
+        
+        # Render signup form with login form visible and error message
+        return render_template('signup.html')
 
 @app.route('/logout')
 def logout():
