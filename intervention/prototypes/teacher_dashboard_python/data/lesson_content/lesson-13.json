@@ -6,6 +6,37 @@
   "level": "Intermediate",
   "ageGroup": "High school (ages 12-17)",
   "imageUrl": "/static/images/highschool-placeholder.svg",
+  "roleModelOfDay": {
+    "name": "Annie Easley",
+    "years": "1933–2011",
+    "intro": "A NASA computer scientist who developed algorithms for energy systems and rocket launches — where the order in which a computer processes tasks can mean the difference between a successful mission and a disaster."
+  },
+  "vocabulary": [
+    {
+      "word": "Stack",
+      "def": "A data structure where the last item added is the first one removed (LIFO)"
+    },
+    {
+      "word": "Queue",
+      "def": "A data structure where the first item added is the first one removed (FIFO)"
+    },
+    {
+      "word": "LIFO",
+      "def": "Last In, First Out — the stack processing order"
+    },
+    {
+      "word": "FIFO",
+      "def": "First In, First Out — the queue processing order"
+    },
+    {
+      "word": "Priority Queue",
+      "def": "A queue where items are processed by importance, not arrival order"
+    },
+    {
+      "word": "Severity score",
+      "def": "A number representing how urgent or critical a case is"
+    }
+  ],
   "learningObjectives": [
     "Explain the difference between Stack and Queue processing using LIFO and FIFO behavior.",
     "Identify when FIFO is appropriate and when it becomes dangerous in high-stakes systems.",
@@ -19,20 +50,6 @@
     "Paper and pencils"
   ],
   "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students explain stack versus queue behavior and design a priority queue for emergency triage where order of importance can override order of arrival.",
-  "vocabulary": [
-    "Stack",
-    "Queue",
-    "LIFO",
-    "FIFO",
-    "Priority Queue",
-    "Severity score"
-  ],
-  "roleModel": {
-    "name": "Annie Easley",
-    "years": "1933-2011",
-    "summary": "NASA computer scientist who developed algorithms for energy and rocket systems where processing order affected mission outcomes.",
-    "whyItMatters": "Her work shows that ordering logic is both technical and ethical when resources are limited."
-  },
   "triageDataset": [
     {
       "patient": "A",
@@ -60,7 +77,7 @@
     }
   ],
   "teacherInstructions": {
-    "setup": "Write vocabulary and triage scenario on the board before class. Keep four books ready for stack demonstration.",
+    "setup": "Write vocabulary on the board and keep it visible all lesson. Write the triage scenario (patients A–D with arrival time, severity, and condition) on the board or project it. Have four books/notebooks ready at the front for the stack demonstration. Have paper and pencils ready for group work.",
     "steps": [
       "Phase 1 (0-2 min): Ask spark question about self-driving car processing three simultaneous inputs and who decides priority.",
       "Phase 1 hook: connect processor scheduling and emergency systems to real-world value-encoded prioritization.",
@@ -99,7 +116,7 @@
   "studentExercises": [
     {
       "id": "exercise-13-1",
-      "title": "Exercise 1 - Stack vs Queue Demonstration",
+      "title": "Stack vs Queue Demonstration",
       "description": "Use books and everyday examples to compare LIFO and FIFO processing behavior.",
       "type": "Unplugged simulation",
       "difficulty": "Easy",
@@ -123,7 +140,7 @@
     },
     {
       "id": "exercise-13-2",
-      "title": "Exercise 2 - Priority Queue Basics",
+      "title": "Priority Queue Basics",
       "description": "Translate triage scenario into severity-based ordering with explicit tie-breaking.",
       "type": "Algorithm design",
       "difficulty": "Medium",
@@ -149,7 +166,7 @@
     },
     {
       "id": "exercise-13-3",
-      "title": "Exercise 3 - Dynamic Reordering and Preemption",
+      "title": "Dynamic Reordering and Preemption",
       "description": "Handle new arrivals, score updates, and in-progress treatment constraints in a dynamic queue.",
       "type": "System-state reasoning",
       "difficulty": "Hard",
@@ -174,7 +191,7 @@
     },
     {
       "id": "exercise-13-4",
-      "title": "Exit Reflection - Power and Responsibility",
+      "title": "Exit Reflection — Power and Responsibility",
       "description": "Write one sentence connecting priority queue power to accountability in weight-setting.",
       "type": "Reflection",
       "difficulty": "Easy",
@@ -243,6 +260,297 @@
         "Student differentiates critical and non-critical components.",
         "Student assigns governance responsibility clearly."
       ]
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "indigo",
+      "whatToDo": [
+        "Write these six words on the board — leave them visible all lesson:",
+        "Stack: a data structure where the last item added is the first one removed (LIFO)",
+        "Queue: a data structure where the first item added is the first one removed (FIFO)",
+        "LIFO: Last In, First Out — the stack processing order",
+        "FIFO: First In, First Out — the queue processing order",
+        "Priority Queue: a queue where items are processed by importance, not arrival order",
+        "Severity score: a number representing how urgent or critical a case is",
+        "Write or project the triage scenario on the board:",
+        "Patient A — arrived 9:00, severity 2, sprained ankle",
+        "Patient B — arrived 9:05, severity 9, chest pain",
+        "Patient C — arrived 9:10, severity 5, broken arm",
+        "Patient D — arrived 9:15, severity 10, cannot breathe",
+        "Have four books or notebooks stacked at the front for the stack demo.",
+        "Have paper and pencils ready for group work."
+      ]
+    },
+    {
+      "id": "slide-rolemodel",
+      "phase": "Role Model of the Day",
+      "time": "Before class begins",
+      "title": "Annie Easley",
+      "colour": "indigo",
+      "roleModel": "Annie Easley (1933–2011) was a computer scientist at NASA for over 34 years. She started as a 'human computer' — manually computing math for researchers — and transitioned to programming when NASA adopted electronic computers. She developed code for energy-conversion systems and the Centaur rocket stage, which was used to launch communication satellites and interplanetary probes including the Cassini mission to Saturn. In her work, processing order was not a convenience — it was a safety requirement. The wrong sequence of computations in a rocket engine could mean the difference between a successful launch and a catastrophic failure. Annie also faced significant racial discrimination throughout her career — she was one of only four African American employees when she started at NASA's predecessor, NACA. She persevered, became a leading programmer, and mentored younger engineers. Her career demonstrates that the logic behind ordering and prioritisation is never just technical — it shapes real outcomes for real people.",
+      "whatToSay": "Introduce Annie simply: 'Today's role model worked at NASA for 34 years. Her name is Annie Easley. She wrote code that helped launch rockets and satellites — including missions to Saturn. In her work, the order in which a computer processed tasks was not a small detail. Getting it wrong could destroy a rocket. Today, you are going to learn about the same thing — how systems decide what to process first, and why that matters.'",
+      "whatToDo": [
+        "Keep the intro to about 60 seconds — the rocket detail is vivid and memorable.",
+        "You can return to Annie naturally at these moments in the lesson:",
+        "Phase 2 (stack vs queue): 'Annie Easley worked on systems where one wrong processing order destroyed a mission. Stack and queue are not abstract — they are how real systems make real decisions.'",
+        "Phase 3 (priority queue): 'Annie's rocket code had to prioritise which computations happened first — fuel flow, thrust angle, navigation — because doing them in the wrong order meant failure. That is a priority queue in action.'",
+        "Phase 4 Round 2 (preemption): 'In Annie's systems, a critical alert could interrupt everything else. That is preemption — and the rules for when it triggers had to be decided by humans, not guessed by machines.'",
+        "Exit reflection: 'Annie Easley spent 34 years making sure computers processed the right thing at the right time. You just designed a system that does the same thing for patients.'"
+      ],
+      "realWorldConnection": "Annie Easley's work on the Centaur rocket is still in use today — updated versions of the stage she programmed continue to launch missions. Her career also highlights that technical excellence does not protect against systemic discrimination. She had to fight for equal treatment while doing work that literally launched spacecraft. When students think about who sets the priorities in a system, Annie's story reminds them that the people behind the code matter as much as the code itself."
+    },
+    {
+      "id": "slide-rolemodel-integration",
+      "phase": "Role Model — Using Her in Class",
+      "time": "Reference throughout",
+      "title": "Bringing Annie Into the Lesson",
+      "colour": "indigo",
+      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Annie in:",
+      "whatToDo": [
+        "LESSON INTRO — right now: One fact. 'She wrote code for rockets at NASA. If the computer processed things in the wrong order, the rocket could explode.' That's enough.",
+        "PHASE 2 — when demonstrating stack vs queue: 'Annie Easley's systems had to decide: which calculation runs first? Fuel flow or thrust angle? A stack says most recent first. A queue says oldest first. Her systems needed something more flexible — a priority queue.'",
+        "PHASE 3 — when introducing priority queue: 'Annie's rocket code prioritised computations by urgency. Fuel calculations before status reports. Navigation updates before logging. That is exactly what you are about to design — but for patients instead of rockets.'",
+        "PHASE 4 Round 2 — when discussing preemption: 'In Annie's systems, a critical sensor reading could interrupt everything. That is preemption. But someone had to decide: which readings are critical enough to interrupt? That is a human decision, not a technical one.'",
+        "PHASE 5 — discussion: 'Annie faced discrimination at NASA for decades — she was one of four African American employees when she started. She built systems that launched satellites despite that. Who gets to set the priorities matters — in code and in organisations.'",
+        "EXIT REFLECTION — as the final word: 'Annie Easley spent 34 years making sure computers processed the right thing at the right time. You just designed a system that does the same.'"
+      ],
+      "realWorldConnection": "Annie is not just a historical figure. The Centaur rocket stage she worked on is still used today. Her code helped launch Cassini to Saturn, and modern successors launch GPS satellites. When students design priority logic, they are working on the same class of problem Annie solved — just with patients instead of propulsion systems."
+    },
+    {
+      "id": "slide-overview",
+      "phase": "Lesson Intro",
+      "time": "0 min",
+      "title": "What We're Doing Today",
+      "colour": "violet",
+      "whatToSay": "Welcome the class and set the frame: 'Today we are going to learn how computers decide what to do first — and why that decision is more important than most people realise. You are going to learn three data structures: a stack, a queue, and a priority queue. Then you are going to use one of them to design an emergency triage system — where the order in which patients are treated can save or cost lives.'",
+      "whatToDo": [
+        "Point to the vocabulary on the board: 'These six words are what we're working with today. By the end you will use all of them.'",
+        "Point to the triage scenario: 'Those four patients are waiting in an emergency room. You are going to decide the order they are treated in — and justify why.'",
+        "Let the weight of the scenario land. This is not abstract — students understand that hospitals make life-and-death ordering decisions.",
+        "This lesson is 30 minutes. Keep transitions sharp."
+      ]
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0 – 2 min",
+      "title": "Spark Question",
+      "colour": "yellow",
+      "whatToSay": "Ask the class: 'A self-driving car is approaching a junction. At the same moment, three things happen: a traffic light turns red, a pedestrian steps into the road, and the car behind brakes suddenly. The car's computer can only process one thing at a time. Which one does it handle first — and who decided that?'",
+      "whatToDo": [
+        "Give students 15 seconds to think.",
+        "Take 2–3 quick answers.",
+        "Most will say the pedestrian — push: 'Why? Because a human life matters more than a traffic rule? That is a priority decision. Someone programmed that priority. Someone decided that a pedestrian outranks a red light.'",
+        "Say: 'Every computer makes ordering decisions — which task first, which email first, which patient first. Today we are going to learn the structures that make those decisions, and who controls them.'"
+      ],
+      "conversationStarter": "If the class is quiet, try: 'Think about your phone. Right now it is doing dozens of things — checking for messages, updating the clock, listening for notifications. Which task gets priority? Who decided? You never set those rules — but someone did.'"
+    },
+    {
+      "id": "slide-phase2-stack",
+      "phase": "Phase 2",
+      "time": "2 – 6 min",
+      "title": "What Is a Stack?",
+      "colour": "blue",
+      "whatToSay": "'I am going to show you the first data structure. It is called a stack. Watch carefully.'",
+      "whatToDo": [
+        "Pick up four books. Stack them on the table one by one, saying the title or colour of each.",
+        "Say: 'Now I need the first book I put down — the one at the bottom. Can I get it without moving the others?'",
+        "Demonstrate: you have to remove the top books one by one to reach the bottom.",
+        "Say: 'This is a stack. The last item you add is the first one you remove. We call this LIFO — Last In, First Out.'",
+        "Write STACK and LIFO on the board.",
+        "Ask: 'Where do you use a stack in everyday life?'",
+        "Guide to: the Undo button (Ctrl+Z) — the last action you did is the first one undone. And the browser Back button — the last page you visited is the first one you go back to.",
+        "Say: 'Stacks are useful when you need to reverse order or undo actions. But they have a problem — if something urgent is buried at the bottom, you cannot reach it quickly.'"
+      ],
+      "conversationStarter": "If students look blank on real-world stacks, try: 'Think about a stack of plates in a cupboard. You always take the one on top. The one at the bottom — the one you put there first — might sit there for months. That is LIFO.'"
+    },
+    {
+      "id": "slide-phase2-queue",
+      "phase": "Phase 2",
+      "time": "6 – 10 min",
+      "title": "What Is a Queue?",
+      "colour": "blue",
+      "whatToSay": "'Now the second structure. This one you already know — you use it every day. It is called a queue.'",
+      "whatToDo": [
+        "Say: 'Think about a queue at the supermarket. Who gets served first?'",
+        "Students: 'The person who arrived first.'",
+        "Say: 'Exactly. A queue processes items in the order they arrive. The first item in is the first one out. We call this FIFO — First In, First Out.'",
+        "Write QUEUE and FIFO on the board.",
+        "Give examples: 'A printer queue prints in the order you send documents. A message queue delivers messages in the order they arrive.'",
+        "Now the critical question: 'FIFO seems fair. Everyone waits their turn. But is it always safe?'",
+        "Pause. Then: 'Imagine you are in a hospital waiting room. You arrived at 9:00 with a sprained ankle. At 9:15, someone arrives who cannot breathe. Should they wait behind you because you arrived first?'",
+        "Students will say no.",
+        "Say: 'That is the problem with FIFO in high-stakes systems. Fairness of arrival order is not the same as fairness of urgency. We need something more sophisticated.'"
+      ],
+      "conversationStarter": "If students say FIFO is always fair, push: 'Is it fair that a person with chest pain waits 45 minutes because 20 people with minor injuries arrived before them? FIFO treats everyone equally — but equal treatment is not always fair treatment.'"
+    },
+    {
+      "id": "slide-phase3",
+      "phase": "Phase 3",
+      "time": "10 – 15 min",
+      "title": "What Is a Priority Queue?",
+      "colour": "purple",
+      "whatToSay": "'We need a structure that does not just process things in arrival order. We need one that processes by importance. That structure is called a priority queue.'",
+      "whatToDo": [
+        "Write PRIORITY QUEUE on the board.",
+        "Say: 'In a priority queue, every item has a score — a number that says how urgent or important it is. The item with the highest score gets processed first, regardless of when it arrived.'",
+        "Point to the triage scenario on the board:",
+        "Patient A: severity 2 (sprained ankle) — arrived first at 9:00",
+        "Patient D: severity 10 (cannot breathe) — arrived last at 9:15",
+        "Say: 'In a FIFO queue, Patient A goes first. In a priority queue, Patient D goes first — because severity 10 beats severity 2, even though D arrived 15 minutes later.'",
+        "Ask: 'What happens when two patients have the same severity score?'",
+        "Guide: 'You need a tie-breaking rule. The most common one: if severity is equal, use arrival time — whoever arrived first goes first. But you could also use age, condition type, or any other rule. The tie-breaker is a policy choice.'",
+        "Ask: 'What happens if a new patient arrives with severity 10 while you are treating a severity-5 patient? Do you stop treating the 5 and switch to the 10?'",
+        "Say: 'That is called preemption — interrupting a current task for a higher-priority one. In hospitals, sometimes yes. In rocket systems — Annie Easley's world — absolutely yes. In a printer queue? Probably not. Whether to preempt is a design decision.'"
+      ],
+      "realWorldConnection": "Emergency rooms worldwide use triage systems based on priority queues. The Manchester Triage System assigns every patient a colour-coded urgency level. Red (immediate) always goes before yellow (urgent), which goes before green (standard). Arrival time only matters within the same colour. The weights and categories are set by medical consensus — but they are still human decisions encoded into an algorithm."
+    },
+    {
+      "id": "slide-exercise1",
+      "exerciseId": "exercise-13-1",
+      "phase": "Exercise 1",
+      "time": "2 – 10 min",
+      "title": "Stack vs Queue Demonstration",
+      "colour": "green",
+      "whatToSay": "'Let's make sure you understand both structures. Stack: LIFO. Queue: FIFO. Give me one real-world example of each — and one case where FIFO fairness becomes dangerous.'",
+      "whatToDo": [
+        "This exercise runs during Phase 2.",
+        "Use the physical book stack to anchor LIFO before moving to abstract examples.",
+        "Push students to find the dangerous FIFO case — that transition motivates Phase 3."
+      ]
+    },
+    {
+      "id": "slide-phase4-round1",
+      "phase": "Phase 4 — Round 1",
+      "time": "15 – 18 min",
+      "title": "Triage Challenge — Initial Ordering",
+      "colour": "orange",
+      "whatToSay": "'Now it is your turn. In groups of three, look at the four patients on the board. Using severity scores, put them in the correct treatment order. You have 3 minutes.'",
+      "whatToDo": [
+        "Form groups of three.",
+        "Groups should produce the order: D (10), B (9), C (5), A (2).",
+        "After 2 minutes, check answers. Most groups will get this right.",
+        "Push the fairness question: 'Patient A arrived at 9:00. Patient D arrived at 9:15. Patient A has been waiting the longest — but they are treated last. Is that fair?'",
+        "Guide: 'It depends on what you mean by fair. Fair-by-arrival says A goes first. Fair-by-urgency says D goes first. They cannot both be satisfied. A priority queue makes a choice — and that choice has consequences for Patient A.'",
+        "Say: 'Patient A has a sprained ankle and waits the longest. That is the cost of a priority queue. Someone always waits longer than they would under FIFO. The question is: is that cost justified?'"
+      ],
+      "conversationStarter": "If groups disagree about fairness, that is good. Ask: 'Who thinks Patient A is being treated unfairly? Who thinks the system is correct? Both positions are valid — that is why this is a design question, not a math question.'"
+    },
+    {
+      "id": "slide-exercise2",
+      "exerciseId": "exercise-13-2",
+      "phase": "Exercise 2",
+      "time": "15 – 18 min",
+      "title": "Priority Queue Basics",
+      "colour": "green",
+      "whatToSay": "'Order patients A to D by severity. Define your tie-break rule. Explain why Patient D goes first despite arriving last.'",
+      "rules": [
+        "Order by severity score — highest first.",
+        "Define a tie-break rule for equal severity scores.",
+        "Justify why arrival order is overridden.",
+        "Write one sentence on the fairness cost for Patient A."
+      ],
+      "whatToDo": [
+        "This exercise runs during Phase 4 Round 1.",
+        "See the Phase 4 Round 1 slide for full facilitation instructions."
+      ]
+    },
+    {
+      "id": "slide-phase4-round2",
+      "phase": "Phase 4 — Round 2",
+      "time": "18 – 23 min",
+      "title": "Dynamic Update — Patient E",
+      "colour": "orange",
+      "whatToSay": "'New situation. A new patient arrives. And then things change.'",
+      "whatToDo": [
+        "Write on the board: Patient E — arrived 9:20, severity 7, deep cut with heavy bleeding.",
+        "Say: 'Insert Patient E into your queue. Where does she go?'",
+        "Give groups 1 minute. E should go after B (9) and before C (5): order is D (10), B (9), E (7), C (5), A (2).",
+        "Now the twist: 'Patient E's bleeding gets worse. The doctor re-assesses her severity from 7 to 10. What happens to your queue?'",
+        "Give groups 2 minutes.",
+        "There are now two severity-10 patients: D and E. Groups need a tie-break. If tie-break is arrival time, D stays first (arrived 9:15 vs E at 9:20).",
+        "Now the hard question: 'Patient B is currently being treated — severity 9. Patient E is now severity 10. Do you stop treating B and switch to E?'",
+        "Say: 'That is called preemption. In a hospital, stopping treatment mid-procedure can be dangerous. But ignoring a severity-10 patient can also be fatal. There is no clean answer — only a policy that you design and defend.'",
+        "Walk around. Push groups to write a clear preemption rule: under what conditions is preemption allowed?"
+      ],
+      "conversationStarter": "If groups avoid the preemption question, force it: 'Patient B is having a blood test taken. Patient E cannot breathe. Do you stop the blood test? What if Patient B is mid-surgery? Does the answer change? Where is the line?'"
+    },
+    {
+      "id": "slide-exercise3",
+      "exerciseId": "exercise-13-3",
+      "phase": "Exercise 3",
+      "time": "18 – 23 min",
+      "title": "Dynamic Reordering and Preemption",
+      "colour": "green",
+      "whatToSay": "'Insert Patient E. Handle the severity update. Decide your preemption policy. Write it down clearly — a vague rule is a dangerous rule.'",
+      "whatToDo": [
+        "This exercise runs during Phase 4 Round 2.",
+        "See the Phase 4 Round 2 slide for full facilitation instructions."
+      ]
+    },
+    {
+      "id": "slide-phase4-round3",
+      "phase": "Phase 4 — Round 3",
+      "time": "23 – 24 min",
+      "title": "Tie-Break Stress Test",
+      "colour": "orange",
+      "whatToSay": "'Final round. Six new patients arrive at exactly the same time — 9:25. All of them are severity 8. Your algorithm must decide who goes first. How?'",
+      "whatToDo": [
+        "Give groups 2 minutes to define a tie-breaking rule.",
+        "Push: 'Arrival time is the same for all six. You cannot use it. What else?'",
+        "Possible tie-breakers: age (youngest first?), condition type (breathing over bleeding?), random assignment, alphabetical (arbitrary but deterministic).",
+        "Ask: 'Every tie-break rule is a value judgment. If you choose youngest-first, you are saying children's lives are worth more. If you choose random, you are saying fairness means equal chance. None of these are neutral.'",
+        "Close: 'An algorithm without a defined tie-break is an algorithm with a bug. Unspecified behavior means inconsistent outcomes — and in a hospital, that is dangerous.'"
+      ],
+      "conversationStarter": "If groups pick 'random', ask: 'Is random fair? What if one of the six patients is a 90-year-old and another is a 5-year-old? Should their chances really be equal? Or should age matter? That is not a technical question — it is a moral one.'"
+    },
+    {
+      "id": "slide-phase5",
+      "phase": "Phase 5",
+      "time": "24 – 28 min",
+      "title": "Discussion",
+      "colour": "teal",
+      "whatToDo": [
+        "Pick the question below that feels most alive based on how the class went.",
+        "One strong discussion is better than two rushed ones.",
+        "Give students a moment to think before taking answers."
+      ],
+      "discussionQuestions": [
+        "'Where is preemption clearly the right decision — and where is it dangerous?' Follow-up: 'A 999 call interrupts a non-emergency police task. That is preemption. But what if a social media platform preempts your feed to show you an ad? Same mechanism — different ethics.'",
+        "'Instagram, TikTok, and YouTube all use priority queues to decide what you see next. Who sets the weights? Is engagement a good priority score — or does it prioritise the wrong things?'",
+        "'What is the difference between a hospital triage queue and a social media feed? Both use priority scoring. Both affect people's lives. Are they ethically the same?'"
+      ],
+      "conversationStarter": "If discussion is slow, try: 'Your social media feed is a priority queue. The algorithm decides: this post goes first, this one goes last. The weights are set by the company. You never agreed to those weights. Is that acceptable?'"
+    },
+    {
+      "id": "slide-exercise4",
+      "exerciseId": "exercise-13-4",
+      "phase": "Exercise 4",
+      "time": "28 – 30 min",
+      "title": "Exit Reflection — Power and Responsibility",
+      "colour": "green",
+      "whatToSay": "'Final task. On your own, complete this sentence: A priority queue is more powerful than a standard queue, but that power comes with the responsibility to _______.'"
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share & Reflect",
+      "time": "28 – 30 min",
+      "title": "Close the Lesson",
+      "colour": "pink",
+      "whatToDo": [
+        "Ask every student to write and complete the sentence on paper or sticky note.",
+        "They must include who sets the weights and how outcomes should be checked.",
+        "Collect papers or stick them on the board.",
+        "Read 2–3 strong responses aloud."
+      ],
+      "exitReflection": "A priority queue is more powerful than a standard queue, but that power comes with the responsibility to _______.",
+      "whatToSay": "Close with: 'Annie Easley spent 34 years making sure computers processed the right thing at the right time. You just designed a system that does the same. Next lesson, you will learn what happens when computers learn patterns from data — and what goes wrong when the data itself has problems.'",
+      "conversationStarter": "If reflections are shallow, push: 'Do not just say be fair. Be specific. Who sets the weights? How do you know the weights are correct? What happens when they are wrong? Who is responsible for checking?'"
     }
   ]
 }

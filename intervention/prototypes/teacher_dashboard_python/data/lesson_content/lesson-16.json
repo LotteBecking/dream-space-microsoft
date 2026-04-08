@@ -6,6 +6,53 @@
   "level": "Advanced",
   "ageGroup": "High school (ages 12-17)",
   "imageUrl": "/static/images/highschool-placeholder.svg",
+  "roleModelOfDay": {
+    "name": "Vanessa Nakate",
+    "years": "born 1996",
+    "intro": "A Ugandan climate activist who showed the world that communities most affected by technology and environmental consequences are often absent from the rooms where decisions are made."
+  },
+  "vocabulary": [
+    {
+      "word": "Algorithm",
+      "def": "A set of step-by-step instructions that solves a problem"
+    },
+    {
+      "word": "Efficiency",
+      "def": "Achieving maximum result with minimum wasted effort or resources"
+    },
+    {
+      "word": "Boolean logic",
+      "def": "Decision-making with true/false conditions (IF, AND, OR, NOT)"
+    },
+    {
+      "word": "Loop",
+      "def": "A sequence of instructions repeated until a condition is met"
+    },
+    {
+      "word": "Function",
+      "def": "A reusable block of instructions that performs a specific task"
+    },
+    {
+      "word": "Priority queue",
+      "def": "A list where the most urgent item is always handled first"
+    },
+    {
+      "word": "Machine learning",
+      "def": "A system that improves its output by learning from data patterns"
+    },
+    {
+      "word": "Proxy bias",
+      "def": "When a seemingly neutral data point unfairly stands in for a protected characteristic"
+    },
+    {
+      "word": "Audit",
+      "def": "A systematic check of whether a system works as intended and treats people fairly"
+    },
+    {
+      "word": "Systems design",
+      "def": "The process of defining the architecture, components, and data flow of a complete system"
+    }
+  ],
   "learningObjectives": [
     "Synthesize concepts from algorithms, conditionals, loops, data structures, machine learning, and bias auditing in one system design.",
     "Design and communicate a bounded technology intervention for a specific user group and problem.",
@@ -19,24 +66,6 @@
     "Timer for 60-second pitches"
   ],
   "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students design and defend a Tech for Good system that addresses a real-world problem while explicitly accounting for data risks, system dependencies, fairness impacts, and excluded users.",
-  "vocabulary": [
-    "Algorithm",
-    "Efficiency",
-    "Boolean logic",
-    "Loop",
-    "Function",
-    "Priority queue",
-    "Machine learning",
-    "Proxy bias",
-    "Audit",
-    "Systems design"
-  ],
-  "roleModel": {
-    "name": "Vanessa Nakate",
-    "years": "born 1996",
-    "summary": "Climate activist emphasizing that communities most affected by technology consequences are often absent from design rooms.",
-    "whyItMatters": "The capstone requires students to design with empathy and explicit inclusion, not just technical novelty."
-  },
   "designFramework": [
     "What problem are you solving, and for whom specifically?",
     "What logic does your system use from this program?",
@@ -45,7 +74,7 @@
     "Who is left out if the system works exactly as designed?"
   ],
   "teacherInstructions": {
-    "setup": "Write full program vocabulary and five-question design framework on the board before class.",
+    "setup": "Write the full program vocabulary on the board and keep it visible all lesson. Below the vocabulary, write the five-question design framework. Place paper, pencils, and a visible timer at the front. Have the whiteboard cleared and ready for the dependency web activity.",
     "steps": [
       "Phase 1 (0-3 min): Spark prompt asks for one problem technology could improve and one problem technology could worsen.",
       "Phase 1 framing: emphasize that strong design starts with both intended benefit and anticipated harm.",
@@ -83,7 +112,7 @@
   "studentExercises": [
     {
       "id": "exercise-16-1",
-      "title": "Exercise 1 - Problem and Harm Framing",
+      "title": "Problem and Harm Framing",
       "description": "Define one problem technology could help solve and one harm technology could amplify, then justify both.",
       "type": "Framing",
       "difficulty": "Easy",
@@ -108,7 +137,7 @@
     },
     {
       "id": "exercise-16-2",
-      "title": "Exercise 2 - Systems Dependency Map",
+      "title": "Systems Dependency Map",
       "description": "Build a dependency web for a common technology to reveal hidden infrastructure, control points, and failure risks.",
       "type": "Systems mapping",
       "difficulty": "Medium",
@@ -132,7 +161,7 @@
     },
     {
       "id": "exercise-16-3",
-      "title": "Exercise 3 - Tech for Good Design Sprint",
+      "title": "Tech for Good Design Sprint",
       "description": "Design a real-world system using the five-question framework and revise after challenge testing.",
       "type": "Capstone design",
       "difficulty": "Hard",
@@ -157,7 +186,7 @@
     },
     {
       "id": "exercise-16-4",
-      "title": "Exercise 4 - Timed Pitch and Probe",
+      "title": "Timed Pitch and Probe",
       "description": "Deliver concise 60-second system pitch and answer one probing question under time pressure.",
       "type": "Communication",
       "difficulty": "Medium",
@@ -226,6 +255,281 @@
         "Student proposes measurable policy-evaluation criteria.",
         "Student links design choice to governance responsibility."
       ]
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "indigo",
+      "whatToDo": [
+        "Write the full program vocabulary on the board — leave it visible all lesson:",
+        "Algorithm — a set of step-by-step instructions that solves a problem",
+        "Efficiency — achieving maximum result with minimum wasted effort",
+        "Boolean logic — decision-making with true/false conditions",
+        "Loop — a sequence of instructions repeated until a condition is met",
+        "Function — a reusable block of instructions for a specific task",
+        "Priority queue — a list where the most urgent item is handled first",
+        "Machine learning — a system that improves by learning from data patterns",
+        "Proxy bias — when a neutral data point unfairly stands in for a protected characteristic",
+        "Audit — a systematic check of whether a system works as intended and treats people fairly",
+        "Systems design — defining the architecture, components, and data flow of a complete system",
+        "Below the vocabulary, write the five-question design framework:",
+        "1. What problem are you solving, and for whom specifically?",
+        "2. What logic does your system use from this program?",
+        "3. What data does it use, and what bias risks follow?",
+        "4. What could go wrong technically, ethically, or at scale?",
+        "5. Who is left out if the system works exactly as designed?",
+        "Place paper and pencils on tables for group work.",
+        "Have a visible timer ready for the 60-second pitch phase.",
+        "Clear the whiteboard space for the dependency web activity."
+      ]
+    },
+    {
+      "id": "slide-rolemodel",
+      "phase": "Role Model of the Day",
+      "time": "Before class begins",
+      "title": "Vanessa Nakate",
+      "colour": "indigo",
+      "roleModel": "Vanessa Nakate (born 1996) is a Ugandan climate activist who became globally known when she was cropped out of a photo with four white activists at the World Economic Forum in Davos. That moment made visible what she had been saying all along: the people most affected by the consequences of technology, industry, and policy are often the ones left out of the conversation entirely. She has since addressed the United Nations, spoken at COP summits, and founded the Rise Up Movement to amplify African voices in the climate crisis. Her work is not about rejecting technology — it is about demanding that technology is designed with, not just for, the people it affects most.",
+      "whatToSay": "Introduce Vanessa simply and with purpose: 'Today's role model is someone who was literally cut out of a photograph — and turned that moment into a global movement. Her name is Vanessa Nakate. She is a climate activist from Uganda who fights for the voices of people most affected by big decisions to actually be heard. Today, you are going to design a system that solves a real problem. Vanessa's question — who is left out? — is the question you will have to answer too.'",
+      "whatToDo": [
+        "Keep the intro to about 60 seconds — one striking fact is enough.",
+        "The cropping incident is powerful because it is visual and concrete — students remember it.",
+        "You can return to Vanessa naturally at these moments in the lesson:",
+        "Phase 3 (design framework question 5): 'This is Vanessa's question. Who is excluded by a design that works exactly as intended?'",
+        "Phase 4 (ethical hacker challenge): 'Vanessa doesn't just ask who is missing — she asks why they are missing, and who benefits from their absence.'",
+        "Exit reflection: 'Vanessa Nakate asked one question that changed how the world saw climate activism: who is not in the room? You just asked the same question about technology.'"
+      ],
+      "realWorldConnection": "Vanessa's experience is not just a story about photography. It is a pattern that repeats in technology design: systems optimized for majority users, trained on majority data, tested in majority contexts. The students who understand this pattern — and learn to design against it — are the ones who will build technology that actually works for everyone."
+    },
+    {
+      "id": "slide-rolemodel-integration",
+      "phase": "Role Model — Using Her in Class",
+      "time": "Reference throughout",
+      "title": "Bringing Vanessa Into the Lesson",
+      "colour": "indigo",
+      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Vanessa in:",
+      "whatToDo": [
+        "LESSON INTRO — right now: Keep it to one striking fact. 'She was cropped out of a photograph at the World Economic Forum — and turned that moment into a global movement for inclusion.' That's enough. Let the curiosity sit.",
+        "PHASE 2 — when building the dependency web: 'Vanessa asks: who depends on this system but had no say in how it was built? Look at your dependency web — who is missing from it?'",
+        "PHASE 3 — when you present design framework question 5: 'This is Vanessa's question. Not who uses the system — who is left out by it. That is the hardest design question, and it is the one most teams skip.'",
+        "PHASE 4 — during the ethical hacker challenge: 'Vanessa doesn't just ask who is missing. She asks: who benefits from their absence? That is the challenge question you need to answer now.'",
+        "PHASE 4 — during pitches, if a team skips exclusion analysis: 'Vanessa would ask: your system works perfectly — for whom? And who does it not work for?'",
+        "EXIT REFLECTION — as the final word: 'Vanessa Nakate asked one question that changed how the world saw climate activism. You just asked the same question about technology. Take that question with you.'"
+      ],
+      "realWorldConnection": "Vanessa is not a technologist — she is someone who experienced what happens when design decisions exclude the people they affect most. Her cropping incident is a literal metaphor for proxy bias, training data gaps, and user exclusion. When students name who is left out, they are doing what Vanessa did: making the invisible visible."
+    },
+    {
+      "id": "slide-overview",
+      "phase": "Lesson Intro",
+      "time": "0 min",
+      "title": "What We're Doing Today",
+      "colour": "violet",
+      "whatToSay": "Welcome the class and set the scene directly: 'This is the capstone lesson. Everything you have learned in this program — algorithms, loops, conditionals, data structures, machine learning, bias — comes together today. You are going to design a real system that solves a real problem. But here is the catch: it is not enough for the system to work. You also have to answer who it works for, who it leaves out, and what could go wrong.'",
+      "whatToDo": [
+        "Point to the vocabulary on the board: 'These are the concepts from the entire program. You will use at least two of them in your design today.'",
+        "Point to the five-question design framework: 'Every system you design today must answer all five of these questions. No exceptions. Question five — who is left out — is the one most teams try to skip. You will not skip it.'",
+        "Let the weight of the task settle for a moment. This is a 30-minute lesson — energy matters more than extended setup.",
+        "This is the final lesson in the program. Students should feel ownership: they have the tools, and now they are going to use them."
+      ]
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0 – 3 min",
+      "title": "Spark Prompt",
+      "colour": "yellow",
+      "whatToSay": "Show this question on the board or read it aloud: 'Name one problem technology could genuinely improve — and one problem technology could make worse if poorly designed.'",
+      "whatToDo": [
+        "Ask students to think individually for 30 seconds.",
+        "Take 3–4 answers from the class — one 'improve' and one 'worsen' each.",
+        "Write the two most interesting answers on the board — you will return to these during pitches.",
+        "After collecting answers, frame the lesson: 'Strong design starts in both places — intended benefit AND anticipated harm. Today you will work with both.'"
+      ],
+      "conversationStarter": "If the class is quiet, try: 'Think about something you use every day — your phone, a search engine, a streaming service. What does it make easier? Now: who does it make things harder for? Has it ever shown you something you didn't want, or hidden something you needed?' Wait for a few hands before taking answers."
+    },
+    {
+      "id": "slide-phase2",
+      "phase": "Phase 2",
+      "time": "3 – 8 min",
+      "title": "Systems-Thinking Warm-Up: Dependency Web",
+      "colour": "blue",
+      "whatToSay": "'We are going to map what a smartphone actually depends on. Not just apps — everything underneath. I am going to write SMARTPHONE in the centre of the board. You are going to tell me what it depends on to work — and we will keep going until we run out of ideas or time.'",
+      "whatToDo": [
+        "Write SMARTPHONE in the centre of the whiteboard and draw a circle around it.",
+        "Ask for the first dependency. Students will likely say 'battery' or 'wifi' — draw a line and write it.",
+        "Keep asking: 'What does THAT depend on?' Push past the obvious.",
+        "After about 2 minutes, you should have 10–15 nodes. Stop adding and start marking.",
+        "Ask: 'Which of these has a high environmental cost?' Mark it with a green dot.",
+        "Ask: 'Which of these would be hard to access if you lived in a rural area or a developing country?' Mark it with a red dot.",
+        "Ask: 'If one of these dependencies goes down — say, the cell tower — what else breaks?' Draw the cascade.",
+        "Debrief in 30 seconds: 'Every system depends on infrastructure, and infrastructure is not equally distributed. That is the invisible layer of every technology design.'"
+      ],
+      "conversationStarter": "If students only name surface-level dependencies (apps, screen), push: 'Your phone needs wifi. What does wifi need? A router. What does the router need? Electricity. What does electricity need? A power grid. What does the grid need? Fuel, infrastructure, maintenance workers, government regulation. How deep does this go?'"
+    },
+    {
+      "id": "slide-phase3",
+      "phase": "Phase 3",
+      "time": "8 – 13 min",
+      "title": "The Five-Question Design Framework",
+      "colour": "purple",
+      "whatToSay": "Point to the five questions on the board: 'Every system you design today must answer these five questions. I am going to walk you through them using an example you already know — a navigation app like Google Maps.'",
+      "whatToDo": [
+        "Read each question and model the answer using a navigation app:",
+        "Question 1 — What problem are you solving, and for whom? 'Getting from A to B efficiently. For drivers, cyclists, pedestrians.'",
+        "Question 2 — What logic does your system use? 'Algorithms for shortest path. Loops to recalculate when you miss a turn. Conditionals for traffic, road closures, time of day.'",
+        "Question 3 — What data does it use, and what bias risks follow? 'GPS location, traffic data, user history, road databases. Bias risk: roads in wealthy areas are mapped better. Rural and informal settlements may have incomplete data.'",
+        "Question 4 — What could go wrong? 'Sends traffic through residential streets. Relies on connectivity. Wrong routing in areas with poor data. Could be used to track someone without consent.'",
+        "Question 5 — Who is left out? 'People without smartphones. People in areas with poor mapping data. People with disabilities who need accessible routes. People without data plans.'",
+        "Pause after question 5. Say: 'This is the question most teams skip. Today, you will not skip it. This is Vanessa Nakate's question — who is not in the room when the design decisions are made?'"
+      ],
+      "realWorldConnection": "Navigation apps are a perfect example because students use them daily but rarely think about the infrastructure, data, and exclusions behind them. The mapping bias is real — Google Maps has significantly better coverage in high-income areas, and routing algorithms prioritize speed over community impact."
+    },
+    {
+      "id": "slide-exercise1",
+      "exerciseId": "exercise-16-1",
+      "phase": "Exercise 1",
+      "time": "0 – 3 min",
+      "title": "Problem and Harm Framing",
+      "colour": "green",
+      "whatToSay": "'Before we get into design, I want you to practice framing. On your own, write down one problem technology can genuinely help solve — and one problem technology could make worse. Be specific: name who benefits and who could be harmed.'",
+      "whatToDo": [
+        "Give students 2 minutes to write individually.",
+        "Ask 2–3 students to share their examples.",
+        "Push for specificity: 'You said technology can worsen mental health. For whom specifically? Through what mechanism? What kind of technology?'",
+        "This is intentionally quick — it sets the framing mindset for the design sprint."
+      ]
+    },
+    {
+      "id": "slide-exercise2",
+      "exerciseId": "exercise-16-2",
+      "phase": "Exercise 2",
+      "time": "3 – 8 min",
+      "title": "Systems Dependency Map",
+      "colour": "green",
+      "whatToSay": "'Now we are going to map what a smartphone actually depends on — and find out what breaks when one piece goes missing.'",
+      "whatToDo": [
+        "Run the dependency web activity on the whiteboard as described in Phase 2.",
+        "This exercise IS Phase 2 — the slide above has the full instructions.",
+        "The goal is to make students see the invisible infrastructure under everyday technology."
+      ]
+    },
+    {
+      "id": "slide-phase4-setup",
+      "phase": "Phase 4",
+      "time": "13 – 15 min",
+      "title": "Design Sprint — Setup",
+      "colour": "orange",
+      "whatToSay": "'Now it is your turn. In groups of three, you are going to design a real system that solves a real problem. You have 7 minutes to draft your design and answer all five framework questions. Then you will pitch it in 60 seconds — and the class will challenge you.'",
+      "whatToDo": [
+        "Form groups of three. If numbers don't divide evenly, allow one group of two.",
+        "Point to the five-question framework on the board: 'Your design must answer all five. I will be walking around acting as an ethical hacker — I will challenge your assumptions.'",
+        "Give two constraints to keep designs bounded:",
+        "Constraint 1: Your system must solve a problem you can describe in one sentence.",
+        "Constraint 2: You must name your specific target users — not 'everyone.'",
+        "Say: 'If your problem is vague, your design will be vague. Start specific.'"
+      ],
+      "conversationStarter": "If groups struggle to choose a problem, offer these starter prompts: 'A system that helps students in your school find study partners.' 'A system that reduces food waste in a school canteen.' 'A system that helps elderly neighbours request help from local volunteers.' 'A system that detects bullying in online chat.' — but push them to define their own."
+    },
+    {
+      "id": "slide-phase4-design",
+      "phase": "Phase 4 — Design Sprint",
+      "time": "15 – 20 min",
+      "title": "Groups Draft Their System",
+      "colour": "orange",
+      "whatToDo": [
+        "Walk around the room. Your job is to be the ethical hacker.",
+        "At each group, pick ONE of these challenge prompts:",
+        "'What data does your system collect? How long do you keep it? Who can see it?'",
+        "'Your system scores or ranks people. What happens to someone with a low score? Is that fair?'",
+        "'Your training data comes from the first three months. What bias does that introduce?'",
+        "'Your system requires internet. What happens in a school with no reliable wifi?'",
+        "'Your system works perfectly for your target users. Who else is affected but not served?'",
+        "After challenging a group, say: 'You have 2 minutes to revise one part of your design based on what I just asked. That revision is mandatory.'",
+        "Require at least one visible design change per group before pitches begin.",
+        "Push teams that lead with technology ('we use AI to...') to lead with the problem ('the problem is that...')."
+      ],
+      "conversationStarter": "If a group says 'our system is for everyone', push back: 'No system is for everyone. A system designed for everyone is optimized for no one. Who specifically are your first 100 users? What do they have in common? What do they need that they are not getting right now?'"
+    },
+    {
+      "id": "slide-exercise3",
+      "exerciseId": "exercise-16-3",
+      "phase": "Exercise 3",
+      "time": "13 – 20 min",
+      "title": "Tech for Good Design Sprint",
+      "colour": "green",
+      "whatToSay": "'You are designing a real system. Answer all five framework questions. Use at least two concepts from the program. You have 7 minutes — then you pitch.'",
+      "rules": [
+        "Your system must solve a problem you can describe in one sentence.",
+        "You must name your specific target users — not 'everyone.'",
+        "You must answer all five framework questions.",
+        "You must name at least two program concepts used in your system logic.",
+        "You must revise your design after the ethical hacker challenge."
+      ],
+      "whatToDo": [
+        "This exercise runs during Phase 4 — groups draft on paper while the teacher challenges.",
+        "Walk around acting as ethical hacker (see Phase 4 slides for challenge prompts).",
+        "Every group must make at least one visible revision before pitching."
+      ]
+    },
+    {
+      "id": "slide-phase4-pitch",
+      "phase": "Phase 4 — Pitches",
+      "time": "20 – 28 min",
+      "title": "60-Second Pitches",
+      "colour": "orange",
+      "whatToSay": "'Time is up. Each group gets 60 seconds to pitch your system. Cover all five questions. After your pitch, the class gets 60 seconds to ask one probing question — and you have to answer it.'",
+      "whatToDo": [
+        "Set the timer visibly — 60 seconds per pitch, strict.",
+        "After each pitch, open the floor for one probing question from the class.",
+        "Coach the class on strong questions: 'Ask questions that use our vocabulary. Not just what does it do — ask who it excludes, what data it needs, what happens when it fails.'",
+        "After each Q&A, ask the pitching team: 'Based on that question — what is one thing you would change?'",
+        "If a team skips question 5 (who is left out), stop them: 'You have not answered who is excluded. That is mandatory. Who does your system not work for?'",
+        "Track which teams lead with the problem vs. which lead with the technology. Reward problem-first framing.",
+        "Keep energy high — this should feel like a real pitch session, not a classroom presentation."
+      ],
+      "conversationStarter": "If questions from the class are weak, model one: 'Your system collects location data to match study partners. What happens if a student does not want to share their location? Are they excluded from the system entirely, or is there a fallback?'"
+    },
+    {
+      "id": "slide-exercise4",
+      "exerciseId": "exercise-16-4",
+      "phase": "Exercise 4",
+      "time": "20 – 28 min",
+      "title": "Timed Pitch and Probe",
+      "colour": "green",
+      "whatToSay": "'Pitch your system in 60 seconds. Cover all five framework questions. Then answer one probing question from the class.'",
+      "rules": [
+        "60 seconds per pitch — timer is strict.",
+        "All five framework questions must be addressed.",
+        "Class asks one probing question using program vocabulary.",
+        "Team answers in 60 seconds with specific evidence.",
+        "Team states one improvement after feedback."
+      ],
+      "whatToDo": [
+        "This exercise runs during the pitch phase — see Phase 4 Pitches slide for full facilitation.",
+        "After all pitches, ask students to note the strongest 'problem-first' pitch they saw."
+      ]
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share & Reflect",
+      "time": "28 – 30 min",
+      "title": "Close the Lesson",
+      "colour": "pink",
+      "whatToDo": [
+        "Ask every student to write two things on a piece of paper or sticky note:",
+        "1. One sentence about the most important thing they learned — not just today, but across the entire program.",
+        "2. One unresolved question they will carry forward — something they are still thinking about.",
+        "Collect the papers or stick them on the board.",
+        "Read 2–3 strong reflections aloud if time allows.",
+        "Treat open questions as a sign of mature thinking, not a gap to fill."
+      ],
+      "exitReflection": "The strongest technology design is not the one that works best — it is the one that answers: who is this for, who is left out, and what happens when it fails.",
+      "whatToSay": "Close with: 'You started this program learning that a computer follows instructions exactly. Today you designed entire systems. The question is no longer just whether the code works — it is whether the design is fair, inclusive, and accountable. That question does not end here. Take it with you.'",
+      "conversationStarter": "If the reflection feels flat, try: 'Think about the first lesson in this program — writing instructions for a sandwich. Compare that to what you just did: designing a system with data, users, risks, and trade-offs. What changed in how you think about technology? That change is the point.'"
     }
   ]
 }

@@ -6,6 +6,45 @@
   "level": "Intermediate",
   "ageGroup": "High school (ages 12-17)",
   "imageUrl": "/static/images/highschool-placeholder.svg",
+  "roleModelOfDay": {
+    "name": "Claude Shannon",
+    "years": "1916–2001",
+    "intro": "A mathematician who connected George Boole's true/false logic to electrical on/off switches — proving that circuits could make decisions. Every computer, phone, and firewall in the world runs on the architecture he established."
+  },
+  "vocabulary": [
+    {
+      "word": "Boolean logic",
+      "def": "A system of logic where every value is either true or false"
+    },
+    {
+      "word": "Conditional",
+      "def": "A rule that checks a condition and takes different actions depending on whether it is true or false"
+    },
+    {
+      "word": "AND",
+      "def": "Both conditions must be true for the result to be true"
+    },
+    {
+      "word": "OR",
+      "def": "At least one condition must be true for the result to be true"
+    },
+    {
+      "word": "NOT",
+      "def": "Reverses a value — true becomes false, false becomes true"
+    },
+    {
+      "word": "Firewall",
+      "def": "A system that filters incoming data and decides what to allow and what to block"
+    },
+    {
+      "word": "False positive",
+      "def": "When the system blocks something that was actually safe"
+    },
+    {
+      "word": "False negative",
+      "def": "When the system allows something that was actually a threat"
+    }
+  ],
   "learningObjectives": [
     "Explain how Boolean logic operators AND, OR, and NOT combine in conditional rules.",
     "Apply IF/THEN/ELSE logic to realistic cybersecurity firewall decisions.",
@@ -19,96 +58,20 @@
     "Packet card details prepared before class"
   ],
   "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students explain how computers use Boolean logic to build conditional security rules and apply this to a hospital firewall scenario where both blocking threats and allowing legitimate traffic matter.",
-  "vocabulary": [
-    "Boolean logic",
-    "Conditional",
-    "AND",
-    "OR",
-    "NOT",
-    "Firewall",
-    "False positive",
-    "False negative"
-  ],
-  "roleModel": {
-    "name": "Claude Shannon",
-    "years": "1916-2001",
-    "summary": "Mapped George Boole's true/false logic onto electrical on/off switches, establishing the logical foundation of modern computing.",
-    "whyItMatters": "Every conditional rule students write in this lesson depends on Shannon's architecture."
-  },
   "packetCards": [
-    {
-      "card": 1,
-      "origin": "Unknown",
-      "fileType": ".exe",
-      "size": "15MB",
-      "otherDetail": "Sent at 3am"
-    },
-    {
-      "card": 2,
-      "origin": "Trusted doctor",
-      "fileType": ".pdf",
-      "size": "2MB",
-      "otherDetail": "Normal hours"
-    },
-    {
-      "card": 3,
-      "origin": "Unknown",
-      "fileType": ".pdf",
-      "size": "1MB",
-      "otherDetail": "Normal hours"
-    },
-    {
-      "card": 4,
-      "origin": "Trusted device",
-      "fileType": ".exe",
-      "size": "8MB",
-      "otherDetail": "Software update"
-    },
-    {
-      "card": 5,
-      "origin": "Unknown",
-      "fileType": ".jpg",
-      "size": "500KB",
-      "otherDetail": "Normal hours"
-    },
-    {
-      "card": 6,
-      "origin": "Trusted doctor",
-      "fileType": ".exe",
-      "size": "8MB",
-      "otherDetail": "New device"
-    },
-    {
-      "card": 7,
-      "origin": "Unknown",
-      "fileType": ".docx",
-      "size": "3MB",
-      "otherDetail": "Normal hours"
-    },
-    {
-      "card": 8,
-      "origin": "Hacker IP",
-      "fileType": ".pdf",
-      "size": "2MB",
-      "otherDetail": "Normal hours"
-    },
-    {
-      "card": 9,
-      "origin": "Trusted device",
-      "fileType": ".pdf",
-      "size": "4MB",
-      "otherDetail": "Normal hours"
-    },
-    {
-      "card": 10,
-      "origin": "Unknown",
-      "fileType": ".exe",
-      "size": "2MB",
-      "otherDetail": "Normal hours"
-    }
+    { "card": 1, "origin": "Unknown", "fileType": ".exe", "size": "15MB", "otherDetail": "Sent at 3am" },
+    { "card": 2, "origin": "Trusted doctor", "fileType": ".pdf", "size": "2MB", "otherDetail": "Normal hours" },
+    { "card": 3, "origin": "Unknown", "fileType": ".pdf", "size": "1MB", "otherDetail": "Normal hours" },
+    { "card": 4, "origin": "Trusted device", "fileType": ".exe", "size": "8MB", "otherDetail": "Software update" },
+    { "card": 5, "origin": "Unknown", "fileType": ".jpg", "size": "500KB", "otherDetail": "Normal hours" },
+    { "card": 6, "origin": "Trusted doctor", "fileType": ".exe", "size": "8MB", "otherDetail": "New device" },
+    { "card": 7, "origin": "Unknown", "fileType": ".docx", "size": "3MB", "otherDetail": "Normal hours" },
+    { "card": 8, "origin": "Hacker IP", "fileType": ".pdf", "size": "2MB", "otherDetail": "Normal hours" },
+    { "card": 9, "origin": "Trusted device", "fileType": ".pdf", "size": "4MB", "otherDetail": "Normal hours" },
+    { "card": 10, "origin": "Unknown", "fileType": ".exe", "size": "2MB", "otherDetail": "Normal hours" }
   ],
   "teacherInstructions": {
-    "setup": "Write vocabulary before class and prepare 10 packet cards. Tell students they are making real allow-or-block decisions with consequences.",
+    "setup": "Write vocabulary on the board and keep it visible all lesson. Prepare 10 index cards with packet details before class — one card per packet. Tell students they are the cybersecurity team for a hospital and every decision they make has consequences.",
     "steps": [
       "Phase 1 (0-2 min): Ask spark question about whether passwords will still exist in 30 years. Collect short pair ideas and frame that all future systems still reduce to decision logic.",
       "Phase 1 hook: Explain that firewalls silently evaluate data in milliseconds using conditional rules similar to what students will write.",
@@ -146,7 +109,7 @@
   "studentExercises": [
     {
       "id": "exercise-10-1",
-      "title": "Exercise 1 - Human Logic Gates",
+      "title": "Human Logic Gates",
       "description": "Model IF, AND, OR, and NOT physically by standing for True and sitting for False, then combine operators in mixed conditions.",
       "type": "Unplugged simulation",
       "difficulty": "Easy",
@@ -170,7 +133,7 @@
     },
     {
       "id": "exercise-10-2",
-      "title": "Exercise 2 - Firewall Round 1",
+      "title": "Firewall Round 1",
       "description": "Create one simple rule to block obvious threats, then diagnose why simple rules fail in real systems.",
       "type": "Rule testing",
       "difficulty": "Medium",
@@ -195,7 +158,7 @@
     },
     {
       "id": "exercise-10-3",
-      "title": "Exercise 3 - Firewall Round 2 Ruleset",
+      "title": "Firewall Round 2 Ruleset",
       "description": "Design at least three connected firewall rules using Boolean logic to reduce both false positives and false negatives across all packets.",
       "type": "Group design",
       "difficulty": "Hard",
@@ -221,7 +184,7 @@
     },
     {
       "id": "exercise-10-4",
-      "title": "Exit Reflection - Security Rule Quality",
+      "title": "Exit Reflection — Security Rule Quality",
       "description": "Write one sentence defining what makes a good security rule and why.",
       "type": "Reflection",
       "difficulty": "Easy",
@@ -271,7 +234,7 @@
     },
     {
       "id": "challenge-10-2",
-      "title": "Fast Finisher - Zero-Day Scenario",
+      "title": "Zero-Day Scenario",
       "description": "Reason about what a firewall can do when it encounters a brand-new exploit that matches no known rule.",
       "type": "Challenge",
       "difficulty": "Hard",
@@ -291,6 +254,272 @@
         "Student proposes at least one adaptive defense concept.",
         "Student avoids claiming impossible perfect protection."
       ]
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "indigo",
+      "whatToDo": [
+        "Write these eight words on the board — leave them visible all lesson:",
+        "Boolean logic: a system of logic where every value is either true or false",
+        "Conditional: a rule that checks a condition and takes different actions depending on true or false",
+        "AND: both conditions must be true for the result to be true",
+        "OR: at least one condition must be true for the result to be true",
+        "NOT: reverses a value — true becomes false, false becomes true",
+        "Firewall: a system that filters incoming data and decides what to allow and what to block",
+        "False positive: the system blocks something that was actually safe",
+        "False negative: the system allows something that was actually a threat",
+        "Prepare 10 index cards — one per packet. Write on each card: card number, origin, file type, size, and other detail.",
+        "Card 1: Unknown, .exe, 15MB, sent at 3am",
+        "Card 2: Trusted doctor, .pdf, 2MB, normal hours",
+        "Card 3: Unknown, .pdf, 1MB, normal hours",
+        "Card 4: Trusted device, .exe, 8MB, software update",
+        "Card 5: Unknown, .jpg, 500KB, normal hours",
+        "Card 6: Trusted doctor, .exe, 8MB, new device",
+        "Card 7: Unknown, .docx, 3MB, normal hours",
+        "Card 8: Hacker IP, .pdf, 2MB, normal hours",
+        "Card 9: Trusted device, .pdf, 4MB, normal hours",
+        "Card 10: Unknown, .exe, 2MB, normal hours"
+      ]
+    },
+    {
+      "id": "slide-rolemodel",
+      "phase": "Role Model of the Day",
+      "time": "Before class begins",
+      "title": "Claude Shannon",
+      "colour": "indigo",
+      "roleModel": "Claude Shannon (1916–2001) was a mathematician and electrical engineer who wrote what is considered the most important master's thesis in history. In 1937, at age 21, he proved that George Boole's century-old true/false logic system could be implemented using on/off electrical switches. This single insight — that circuits could perform logical operations — became the foundation of every digital computer ever built. Before Shannon, people thought of electrical switches as physical things that turned lights on and off. Shannon saw something no one else had: switches could represent ideas, make decisions, solve logic problems. He later founded information theory, the mathematical framework behind data compression, encryption, and every digital communication system. Every conditional rule students write today — IF this THEN that — runs on the architecture Shannon established. Every firewall, every password check, every spam filter uses Boolean logic implemented in circuits, exactly as he described in 1937.",
+      "whatToSay": "Introduce Claude Shannon simply: 'Today's role model made a connection that no one else saw. His name is Claude Shannon. In 1937, when he was 21 years old, he proved that electrical switches — on and off — could be used to solve logical problems — true and false. That one idea is the reason computers exist. Every time a computer makes a decision — allow or block, true or false, yes or no — it is using the system Shannon described. Today, you are going to use that exact system to build a firewall.'",
+      "whatToDo": [
+        "Keep the intro to about 60 seconds — the 21-year-old detail is memorable.",
+        "You can return to Shannon naturally at these moments in the lesson:",
+        "Phase 2 (human logic gates): 'You are standing for true and sitting for false. Claude Shannon proved that an electrical switch does the same thing — on for true, off for false. Every computer chip contains billions of these switches.'",
+        "Phase 3 (IF/THEN/ELSE): 'Every IF statement you write is Shannon's architecture in action. The computer checks a condition — true or false — and takes an action. Billions of times per second.'",
+        "Phase 4 Round 2 (combining rules with AND/OR/NOT): 'Shannon proved that you can combine true/false switches using AND, OR, and NOT to make any logical decision. Your firewall rules are doing exactly that.'",
+        "Exit reflection: 'Claude Shannon proved that all decisions — no matter how complex — reduce to true or false. You just used that to protect a hospital.'"
+      ],
+      "realWorldConnection": "Claude Shannon's thesis is the foundation of the entire digital age. Every processor, every circuit board, every conditional check in every piece of software is built on his architecture. He also invented information theory — the mathematics behind how data is compressed, encrypted, and transmitted. When students write IF/THEN rules, they are using a system that a 21-year-old graduate student proved could work, 89 years ago."
+    },
+    {
+      "id": "slide-rolemodel-integration",
+      "phase": "Role Model — Using Him in Class",
+      "time": "Reference throughout",
+      "title": "Bringing Claude Shannon Into the Lesson",
+      "colour": "indigo",
+      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Shannon in:",
+      "whatToDo": [
+        "LESSON INTRO — right now: One fact. 'He proved at age 21 that on/off switches could solve logical problems. That is why computers exist.' That's enough.",
+        "PHASE 2 — when students stand/sit for true/false: 'You are a Shannon switch right now. On = true = standing. Off = false = sitting. A computer chip has billions of you, running billions of times per second.'",
+        "PHASE 3 — when writing IF/THEN/ELSE: 'Every IF statement is Shannon's system. The computer checks: is this condition true or false? Then it acts. That is the only thing computers do — but they do it billions of times per second, which is why they seem intelligent.'",
+        "PHASE 4 Round 1 — when the first rule fails: 'Shannon's system is perfectly precise. The problem is never the logic — it is the rules you write. Your rule blocked a safe software update. The Boolean logic worked perfectly. Your rule was wrong.'",
+        "PHASE 4 Round 2 — when groups combine AND/OR/NOT: 'Shannon proved these three operators — AND, OR, NOT — are enough to make any logical decision. Any. Your firewall uses three operators. A modern processor uses billions of them.'",
+        "EXIT REFLECTION — as the final word: 'Claude Shannon proved that all decisions reduce to true or false. You just used that system to protect a hospital. Same logic — different stakes.'"
+      ],
+      "realWorldConnection": "Shannon did not just write a thesis. He also juggled on a unicycle in the hallways of Bell Labs, built a flame-throwing trumpet, and designed a mechanical mouse that could solve mazes. He was a playful genius who saw connections others missed. When students play the human logic gate game, they are experiencing Shannon's core insight in exactly the spirit he would have appreciated."
+    },
+    {
+      "id": "slide-overview",
+      "phase": "Lesson Intro",
+      "time": "0 min",
+      "title": "What We're Doing Today",
+      "colour": "violet",
+      "whatToSay": "Welcome the class: 'Today you are going to learn how computers make security decisions — and you are going to build a firewall for a hospital. A firewall decides what data gets in and what gets blocked. Every decision is based on one thing: true or false. That is Boolean logic — and it is how every computer in the world works.'",
+      "whatToDo": [
+        "Point to the vocabulary on the board: 'These eight words are what we're working with today. By the end you will use all of them.'",
+        "Hold up the packet cards: 'These 10 cards represent data packets arriving at a hospital network. Some are safe. Some are threats. You are going to write the rules that decide which ones get in.'",
+        "Say: 'But here is the problem: if you block too much, doctors cannot access patient files. If you block too little, hackers get in. You have to find the balance.'",
+        "This lesson is 30 minutes. Keep the energy high."
+      ]
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0 – 2 min",
+      "title": "Spark Question",
+      "colour": "yellow",
+      "whatToSay": "Ask the class: 'Do you think passwords will still exist in 30 years?'",
+      "whatToDo": [
+        "Give students 20 seconds to think. Take 2–3 answers.",
+        "Students may say: biometrics, face scan, brain scan, no passwords.",
+        "Say: 'Maybe passwords will disappear. Maybe we will use fingerprints or face scans. But here is what will NOT change: every security system — no matter how futuristic — still needs to make a decision. Is this person allowed in? True or false. Is this data safe? True or false. That decision logic is what you are going to learn today.'",
+        "Connect: 'Right now, while we are talking, the school's network firewall is silently checking every piece of data that arrives — emails, websites, file downloads. Each one gets a decision: allow or block. Those decisions are made in milliseconds using the exact logic you are about to learn.'"
+      ],
+      "conversationStarter": "If the class is quiet, try: 'Have you ever been blocked from a website at school? That was a firewall rule. Someone wrote a condition: IF this website is on the blocked list, THEN deny access. You experienced Boolean logic — you just did not know the name for it.'"
+    },
+    {
+      "id": "slide-phase2",
+      "phase": "Phase 2",
+      "time": "2 – 8 min",
+      "title": "Human Logic Gates",
+      "colour": "blue",
+      "whatToSay": "'You are about to become a computer. I am going to give you conditions — and you respond instantly. Standing = true. Sitting = false. No thinking. No hesitation. Like a machine.'",
+      "whatToDo": [
+        "Everyone stands up. Say: 'IF you are wearing sneakers — stand. If not — sit.'",
+        "Students respond. Point out: 'The computer did not think about it. It checked one condition and acted. That is a conditional.'",
+        "Now AND: 'IF you are wearing sneakers AND you have a watch — stand. Both must be true.'",
+        "Some students who were standing now sit. Ask one: 'Why did you sit?' Answer: 'I have sneakers but no watch.' Say: 'AND means BOTH conditions must be true. One true is not enough.'",
+        "Now OR: 'IF you are wearing sneakers OR you have a phone — stand.'",
+        "More students stand. Say: 'OR means at least one condition must be true. Even if only one is true, the result is true.'",
+        "Now NOT: 'IF you are wearing sneakers AND NOT wearing a watch — stand.'",
+        "Say: 'NOT flips the value. If you have a watch, NOT makes it false. If you do not have a watch, NOT makes it true.'",
+        "Run 2–3 more combinations fast. Speed matters — computers do this billions of times per second.",
+        "Close: 'You just modelled Boolean logic. AND, OR, NOT. Those three operations are enough to make any logical decision. Claude Shannon proved that in 1937. Every computer chip uses exactly these three.'"
+      ],
+      "conversationStarter": "If students make mistakes, use them: 'You hesitated. A computer never hesitates — it checks the condition and acts in nanoseconds. The difference is: a computer does not interpret. It does not guess. It follows the rule exactly. If the rule is wrong, the answer is wrong — but the logic is perfect.'"
+    },
+    {
+      "id": "slide-exercise1",
+      "exerciseId": "exercise-10-1",
+      "phase": "Exercise 1",
+      "time": "2 – 8 min",
+      "title": "Human Logic Gates",
+      "colour": "green",
+      "whatToSay": "'Stand for true, sit for false. No thinking — respond like a machine. AND means both. OR means at least one. NOT flips the value.'",
+      "whatToDo": [
+        "This exercise runs during Phase 2.",
+        "Run it fast — speed is part of the lesson. Computers do this billions of times per second."
+      ]
+    },
+    {
+      "id": "slide-phase3",
+      "phase": "Phase 3",
+      "time": "8 – 13 min",
+      "title": "IF / THEN / ELSE",
+      "colour": "purple",
+      "whatToSay": "'Now that you understand true and false, let's build decision rules. Every security system uses this structure: IF (condition) THEN (action) ELSE (different action).'",
+      "whatToDo": [
+        "Write on the board: IF (condition) THEN (action) ELSE (action)",
+        "Example 1 — Login security: 'IF password is correct THEN grant access ELSE show error message.'",
+        "Ask: 'What Boolean value does the system check?' Answer: password correct = true or false.",
+        "Example 2 — Content moderation: 'IF post contains flagged words AND account is less than 7 days old THEN hide post for review ELSE publish post.'",
+        "Ask: 'Why AND? Why not just check for flagged words?' Answer: 'Because established accounts might use those words legitimately. The AND reduces false positives.'",
+        "Example 3 — Banking fraud: 'IF transaction is overseas AND amount > €1000 AND time is between midnight and 5am THEN flag for review.'",
+        "Say: 'Three conditions combined with AND. All three must be true to trigger the action. If any one is false, the transaction goes through.'",
+        "Close: 'These are the building blocks of every firewall, every spam filter, every security system. Now you are going to build one.'"
+      ],
+      "realWorldConnection": "Every time a student logs into a school computer, their credentials are checked by an IF/THEN rule. Every email they receive has been scanned by multiple IF/THEN rules checking for spam, phishing, and malware. The school's firewall is running thousands of these rules silently, right now.",
+      "conversationStarter": "If students seem passive, make it personal: 'Your phone unlocks with a fingerprint. That is an IF statement: IF fingerprint matches stored data THEN unlock ELSE stay locked. What happens if the sensor is wet and misreads your fingerprint? False negative — you are locked out of your own phone.'"
+    },
+    {
+      "id": "slide-phase4-round1",
+      "phase": "Phase 4 — Round 1",
+      "time": "13 – 16 min",
+      "title": "Build Your First Rule",
+      "colour": "orange",
+      "whatToSay": "'You are now the cybersecurity team for a hospital. Data packets are arriving at the network. You need to decide: ALLOW or BLOCK. Your first task: write one simple rule.'",
+      "whatToDo": [
+        "Say: 'Look at the packet cards. What is the most obvious threat pattern?'",
+        "Students will likely suggest: 'Block all .exe files.'",
+        "Write on the board: Rule 1: IF file type = .exe THEN BLOCK.",
+        "Say: 'Let's test it. Hand me card 1.' Card 1: Unknown, .exe, 15MB, 3am. 'It is .exe. BLOCK. Correct — that looks like a threat.'",
+        "Now: 'Card 4.' Card 4: Trusted device, .exe, 8MB, software update. 'It is .exe. BLOCK.'",
+        "Pause. 'But card 4 is a legitimate software update from a trusted device. You just blocked it. A doctor cannot update their system. That is a false positive — you blocked something safe.'",
+        "Now: 'Card 8.' Card 8: Hacker IP, .pdf, 2MB, normal hours. 'It is .pdf. Not .exe. ALLOW.'",
+        "Pause. 'But card 8 is from a known hacker IP. You just let a threat through. That is a false negative — you allowed something dangerous.'",
+        "Close: 'One simple rule. One false positive. One false negative. This is why real firewalls need multiple rules using AND, OR, and NOT.'"
+      ],
+      "conversationStarter": "If students protest that the rule was too simple, say: 'Exactly. One condition is not enough. Real systems use dozens of conditions combined with AND, OR, and NOT. Your job in Round 2 is to build something better.'"
+    },
+    {
+      "id": "slide-exercise2",
+      "exerciseId": "exercise-10-2",
+      "phase": "Exercise 2",
+      "time": "13 – 16 min",
+      "title": "Firewall Round 1",
+      "colour": "green",
+      "whatToSay": "'Propose one simple rule. Test it. Find the false positive and the false negative. Explain why one rule is not enough.'",
+      "whatToDo": [
+        "This exercise runs during Phase 4 Round 1.",
+        "See Phase 4 Round 1 slide for full facilitation."
+      ]
+    },
+    {
+      "id": "slide-phase4-round2",
+      "phase": "Phase 4 — Round 2",
+      "time": "16 – 24 min",
+      "title": "Build a Multi-Rule Firewall",
+      "colour": "orange",
+      "whatToSay": "'Round 2. In groups of three, write at least three connected rules using AND, OR, and NOT. Your goal: reduce false positives AND false negatives. You have 8 minutes.'",
+      "whatToDo": [
+        "Form groups of three. Hand each group a copy of the 10 packet cards (or list them on the board).",
+        "Walk around. Push for Boolean operators:",
+        "'Your rule says block .exe. Can you add AND to make it smarter? Block .exe AND origin = Unknown?'",
+        "'Card 8 gets through everything. How do you catch a hacker IP with a .pdf? You need an OR or a separate rule.'",
+        "'Card 6 is tricky — trusted doctor, but .exe on a new device. How do you handle that?'",
+        "After 6 minutes, pick one group's ruleset. Test it against all 10 cards on the board.",
+        "Count false positives and false negatives together as a class.",
+        "Ask: 'Is zero false positives and zero false negatives possible with 3 rules? Probably not. That is the fundamental trade-off in security: the more you block, the more legitimate traffic you catch. The less you block, the more threats get through.'",
+        "Close: 'No ruleset is perfect. A good security team designs rules, tests them, counts the errors, and improves. That is exactly what you just did.'"
+      ],
+      "conversationStarter": "If groups finish early, throw the edge case: 'Card 6 — a trusted doctor is sending an .exe from a new device. Is that a software update or a compromised account? How does your rule handle it without knowing the doctor's intent?'"
+    },
+    {
+      "id": "slide-exercise3",
+      "exerciseId": "exercise-10-3",
+      "phase": "Exercise 3",
+      "time": "16 – 24 min",
+      "title": "Firewall Round 2 Ruleset",
+      "colour": "green",
+      "whatToSay": "'Write at least three connected rules using AND, OR, and NOT. Test against all 10 cards. Count your errors.'",
+      "rules": [
+        "At least three rules using AND, OR, or NOT.",
+        "Test every rule against all 10 packet cards.",
+        "Count false positives and false negatives.",
+        "Handle the edge case: trusted doctor on a new device.",
+        "Propose one refinement for any remaining failure."
+      ],
+      "whatToDo": [
+        "This exercise runs during Phase 4 Round 2.",
+        "See Phase 4 Round 2 slide for full facilitation."
+      ]
+    },
+    {
+      "id": "slide-phase5",
+      "phase": "Phase 5",
+      "time": "24 – 28 min",
+      "title": "Discussion",
+      "colour": "teal",
+      "whatToDo": [
+        "Pick the question below that feels most alive based on how the class went.",
+        "One strong discussion is better than two rushed ones.",
+        "Give students a moment to think before taking answers."
+      ],
+      "discussionQuestions": [
+        "'For a hospital, which is worse right now: a false positive or a false negative?' Follow-up: 'If you block a doctor's patient file — the patient cannot be treated. If you allow a hacker in — patient data is stolen. Which costs more? Does it depend on the moment?'",
+        "'Zero-Trust says no person or device is automatically trusted — even a trusted doctor must re-verify every time. Is that good security? What does it cost in usability?'",
+        "'What happens when a brand-new type of attack appears — one that does not match any of your rules? That is called a Zero-Day exploit. Can any static ruleset protect against something it has never seen?'"
+      ],
+      "conversationStarter": "If discussion is slow, try: 'Imagine a hospital firewall blocks a surgeon's access to patient scans during an operation — because the surgeon logged in from a new device. The security rule worked perfectly. The patient is in danger. Whose fault is that?'"
+    },
+    {
+      "id": "slide-exercise4",
+      "exerciseId": "exercise-10-4",
+      "phase": "Exercise 4",
+      "time": "28 – 30 min",
+      "title": "Exit Reflection — Security Rule Quality",
+      "colour": "green",
+      "whatToSay": "'Final task. On your own, complete this sentence: A good security rule needs to be _______ because _______.'"
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share & Reflect",
+      "time": "28 – 30 min",
+      "title": "Close the Lesson",
+      "colour": "pink",
+      "whatToDo": [
+        "Ask every student to write and complete the sentence on paper or sticky note.",
+        "They must use at least one concept: precision, edge case, false positive, false negative, or update frequency.",
+        "Share with a partner and tighten the wording.",
+        "Capture the strongest class sentence on the board.",
+        "Read 2–3 strong responses aloud."
+      ],
+      "exitReflection": "A good security rule needs to be _______ because _______.",
+      "whatToSay": "Close with: 'Claude Shannon proved that all decisions reduce to true or false. You just used that system to protect a hospital. Your rules were not perfect — and that is normal. Real security teams test, count errors, and improve, every day. Next lesson, you will learn how computers handle massive amounts of data using loops — and what happens when the data is about the climate crisis.'",
+      "conversationStarter": "If reflections are shallow, push: 'Do not just say a rule needs to be precise. Be specific. Precise about what? What happens when it is not precise enough? What happens when it is too precise? Use the words false positive and false negative.'"
     }
   ]
 }

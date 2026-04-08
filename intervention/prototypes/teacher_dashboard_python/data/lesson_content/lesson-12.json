@@ -6,6 +6,37 @@
   "level": "Intermediate",
   "ageGroup": "High school (ages 12-17)",
   "imageUrl": "/static/images/highschool-placeholder.svg",
+  "roleModelOfDay": {
+    "name": "Adele Goldberg",
+    "years": "born 1945",
+    "intro": "A computer scientist who co-developed Smalltalk — one of the first programming languages designed around reusable, modular components. Her ideas shaped how every modern app is built: from independent, interchangeable parts that teams can work on separately."
+  },
+  "vocabulary": [
+    {
+      "word": "Function",
+      "def": "A named, reusable block of instructions that takes an input and produces an output"
+    },
+    {
+      "word": "Abstraction",
+      "def": "Hiding internal complexity so a user only needs to know what goes in and what comes out"
+    },
+    {
+      "word": "Module",
+      "def": "An independent, self-contained component of a larger system"
+    },
+    {
+      "word": "Input",
+      "def": "The data or information a function receives to do its job"
+    },
+    {
+      "word": "Output",
+      "def": "The result a function produces after processing its input"
+    },
+    {
+      "word": "Black box",
+      "def": "A component where you can see what goes in and what comes out, but not how it works inside"
+    }
+  ],
   "learningObjectives": [
     "Explain how abstraction and functions help teams build complex software from independent components.",
     "Describe function interfaces using clear inputs and outputs while hiding internal logic.",
@@ -18,22 +49,8 @@
     "Paper and pencils"
   ],
   "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students can explain how abstraction and functions allow large teams to build complex software through independent, reusable components, then apply this to design a food redistribution app architecture.",
-  "vocabulary": [
-    "Function",
-    "Abstraction",
-    "Module",
-    "Input",
-    "Output",
-    "Black box"
-  ],
-  "roleModel": {
-    "name": "Adele Goldberg",
-    "years": "born 1945",
-    "summary": "Co-developed Smalltalk and helped establish modular, reusable component-based software design.",
-    "whyItMatters": "Her ideas underpin modern app architecture where large systems are assembled from independent interchangeable parts."
-  },
   "teacherInstructions": {
-    "setup": "Write vocabulary on board and prepare space for interface diagrams and architecture maps.",
+    "setup": "Write vocabulary on the board and keep it visible all lesson. Prepare whiteboard space for interface diagrams and architecture maps. Have paper and pencils ready for group work.",
     "steps": [
       "Phase 1 (0-2 min): Ask spark question about how many lines of code and engineers are behind a share action in a social app.",
       "Phase 1 hook: compare Apollo Guidance Computer scale to modern mobile systems and explain why componentization enables both reliability and team velocity.",
@@ -72,7 +89,7 @@
   "studentExercises": [
     {
       "id": "exercise-12-1",
-      "title": "Exercise 1 - Human Function Machine",
+      "title": "Human Function Machine",
       "description": "Model functions as named black boxes to demonstrate invocation, sequencing, and reuse without knowing internal logic.",
       "type": "Unplugged simulation",
       "difficulty": "Easy",
@@ -96,7 +113,7 @@
     },
     {
       "id": "exercise-12-2",
-      "title": "Exercise 2 - Interface Contract Practice",
+      "title": "Interface Contract Practice",
       "description": "Define robust input and output contracts for core app functions.",
       "type": "Specification",
       "difficulty": "Medium",
@@ -121,7 +138,7 @@
     },
     {
       "id": "exercise-12-3",
-      "title": "Exercise 3 - Architecture Dependency Map",
+      "title": "Architecture Dependency Map",
       "description": "Map function dependencies, identify critical paths, and add missing modules for real-time capacity changes.",
       "type": "System design",
       "difficulty": "Hard",
@@ -146,7 +163,7 @@
     },
     {
       "id": "exercise-12-4",
-      "title": "Exit Reflection - Power and Risk of Abstraction",
+      "title": "Exit Reflection — Power and Risk of Abstraction",
       "description": "Write one sentence on how abstraction helps and where it can become dangerous.",
       "type": "Reflection",
       "difficulty": "Easy",
@@ -215,6 +232,285 @@
         "Student proposes at least one concrete governance mechanism.",
         "Student links governance omission to practical harm."
       ]
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "indigo",
+      "whatToDo": [
+        "Write these six words on the board — leave them visible all lesson:",
+        "Function: a named, reusable block of instructions that takes an input and produces an output",
+        "Abstraction: hiding internal complexity so a user only needs to know what goes in and what comes out",
+        "Module: an independent, self-contained component of a larger system",
+        "Input: the data or information a function receives to do its job",
+        "Output: the result a function produces after processing its input",
+        "Black box: a component where you can see what goes in and what comes out, but not how it works inside",
+        "Clear whiteboard space — you will need room for interface diagrams and architecture maps.",
+        "Have paper and pencils ready for group work.",
+        "Identify three students you can use for the human function machine demo in Phase 2."
+      ]
+    },
+    {
+      "id": "slide-rolemodel",
+      "phase": "Role Model of the Day",
+      "time": "Before class begins",
+      "title": "Adele Goldberg",
+      "colour": "indigo",
+      "roleModel": "Adele Goldberg (born 1945) is a computer scientist who worked at Xerox PARC — the research lab that invented the graphical user interface, the mouse, and ethernet. She co-developed Smalltalk, one of the first object-oriented programming languages. Smalltalk was revolutionary because it was built around a simple idea: software should be made of independent, reusable components that communicate through clear interfaces. Each component is a black box — you tell it what to do through its interface, and it gives you a result. You do not need to know how it works inside. This idea — modular, component-based design — is the foundation of every modern app, website, and operating system. When Steve Jobs visited Xerox PARC in 1979, he saw Smalltalk running and was so impressed that it influenced the design of the Macintosh. Adele initially resisted showing the technology to Apple, recognising its commercial value. She was right — the ideas she helped create went on to shape the entire computing industry.",
+      "whatToSay": "Introduce Adele simply: 'Today's role model helped invent how modern software is built. Her name is Adele Goldberg. She worked at Xerox PARC — the lab that invented the mouse, the graphical interface, and the way computers look today. She co-created a programming language called Smalltalk, based on one powerful idea: build software from independent, reusable parts that communicate through clear contracts. Today, you are going to use that exact idea to design a real app.'",
+      "whatToDo": [
+        "Keep the intro to about 60 seconds — the Xerox PARC context is vivid.",
+        "The Steve Jobs detail is optional but memorable if time allows.",
+        "You can return to Adele naturally at these moments in the lesson:",
+        "Phase 2 (human function machine): 'Adele Goldberg's key idea was exactly this: you should be able to call a function by name, give it input, and get output — without knowing how it works inside. That is the black box.'",
+        "Phase 3 (interface contracts): 'Adele built Smalltalk around contracts between components. If two teams agree on inputs and outputs, they can build their parts independently. If they disagree — the system breaks.'",
+        "Phase 4 (architecture challenge): 'Every function in your food app is a Smalltalk-style component. Adele proved that complex systems only work when each part has a clear interface.'",
+        "Exit reflection: 'Adele Goldberg proved that the hardest part of building software is not writing the code — it is agreeing on how the parts connect.'"
+      ],
+      "realWorldConnection": "Adele Goldberg's Smalltalk influenced Java, Python, Ruby, and Swift. Every app students use — from Instagram to Google Maps — is built from modular components that communicate through interfaces. The architecture challenge students do today uses exactly the design principles she pioneered."
+    },
+    {
+      "id": "slide-rolemodel-integration",
+      "phase": "Role Model — Using Her in Class",
+      "time": "Reference throughout",
+      "title": "Bringing Adele Into the Lesson",
+      "colour": "indigo",
+      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Adele in:",
+      "whatToDo": [
+        "LESSON INTRO — right now: One fact. 'She helped invent how all modern software is built — from independent, reusable parts.' That's enough.",
+        "PHASE 2 — when students act as functions: 'Adele Goldberg designed a language where every part of the system works like these students — you call it by name, give it input, get output. You never look inside.'",
+        "PHASE 3 — when drawing interface diagrams: 'Adele's key insight: if two teams agree on the contract — the input and output format — they can build their parts completely independently. The interface IS the agreement.'",
+        "PHASE 4 Step 2 — when groups map dependencies: 'Adele proved that the diagram you are drawing right now — the dependency map — is more important than the code inside any single function. If the connections are wrong, the system fails even when every part works.'",
+        "PHASE 4 Step 3 — when groups find missing modules: 'Finding a gap in your architecture is not failure. Adele designed Smalltalk to make these gaps visible — so you can fix them before they become bugs.'",
+        "EXIT REFLECTION — as the final word: 'Adele Goldberg proved that the hardest part of software is not writing the code — it is agreeing on how the parts connect. You just experienced that.'"
+      ],
+      "realWorldConnection": "Adele is not a historical footnote. The component-based design she pioneered is how Netflix, Spotify, Uber, and every major tech company builds software today. Microservices, APIs, and modular architecture all trace back to the principles she established in Smalltalk."
+    },
+    {
+      "id": "slide-overview",
+      "phase": "Lesson Intro",
+      "time": "0 min",
+      "title": "What We're Doing Today",
+      "colour": "violet",
+      "whatToSay": "Welcome the class: 'Today we are going to learn how large teams build software — because no one person writes an entire app alone. You are going to learn about functions, abstraction, and black boxes. Then you are going to use them to design the architecture of a real app — one that routes surplus food from supermarkets and restaurants to shelters that need it.'",
+      "whatToDo": [
+        "Point to the vocabulary on the board: 'These six words are what we're working with today. By the end you will use all of them.'",
+        "Say: 'The app you are going to design is not imaginary. Apps like this exist — Too Good To Go, OLIO, FoodCloud. They all solve the same problem: food is wasted in one place while people go hungry in another. Your job is to design the system that connects them.'",
+        "This lesson is 30 minutes. Keep the energy high and transitions sharp."
+      ]
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0 – 2 min",
+      "title": "Spark Question",
+      "colour": "yellow",
+      "whatToSay": "Ask the class: 'When you tap the share button on Instagram, how many lines of code do you think run behind the scenes? And how many engineers do you think worked on that one feature?'",
+      "whatToDo": [
+        "Take 2–3 guesses.",
+        "Say: 'The Instagram app has millions of lines of code. Thousands of engineers work on it. But no single person understands all of it. So how does it work?'",
+        "Answer: 'Because it is built from parts — independent components that each do one job. Each component is a black box: you give it input, it gives you output. You do not need to know how it works inside. That is how large teams build software — and that is what you are going to learn today.'",
+        "Optional hook: 'The Apollo Guidance Computer that landed on the moon had about 145,000 lines of code. Your phone has billions. The only reason that is possible is because of the idea we are learning today: break the problem into parts.'"
+      ],
+      "conversationStarter": "If the class is quiet, try: 'Think about sending a message on WhatsApp. What happens? Your phone encrypts the message, sends it to a server, the server finds the recipient, delivers it, shows a tick. Each of those is a separate component. If one breaks, the message fails — but the others keep working.'"
+    },
+    {
+      "id": "slide-phase2",
+      "phase": "Phase 2",
+      "time": "2 – 8 min",
+      "title": "The Human Function Machine",
+      "colour": "blue",
+      "whatToSay": "'I am going to turn three of you into functions. Each of you has one job. I am the caller — I will call you by name, give you input, and you give me output. Ready?'",
+      "whatToDo": [
+        "Pick three students. Give each one a simple, fixed task:",
+        "Student A — function name: DOUBLE. Input: a number. Output: the number times two. Example: DOUBLE(5) → 10.",
+        "Student B — function name: GREET. Input: a name. Output: 'Hello [name]!' Example: GREET('Sam') → 'Hello Sam!'",
+        "Student C — function name: REVERSE. Input: a word. Output: the word backwards. Example: REVERSE('cat') → 'tac'.",
+        "Stand at the front. Call functions in different orders: 'DOUBLE(7)!' Student A answers: '14.' 'GREET(Maria)!' Student B answers: 'Hello Maria!' 'REVERSE(code)!' Student C answers: 'edoc.'",
+        "Now chain them: 'GREET(REVERSE(dog))!' — Student C goes first: 'god'. Then Student B: 'Hello god!'",
+        "Ask the class: 'Did I need to know HOW they reversed the word or doubled the number? No. I only needed to know three things: the function name, what input to give, and what output to expect. That is the interface.'",
+        "Write on the board: FUNCTION = name + input → output. BLACK BOX = you see what goes in and comes out, not how it works inside.",
+        "Say: 'This is abstraction. Hiding the complexity inside and only exposing the interface. Every app on your phone works this way.'"
+      ],
+      "conversationStarter": "If students are shy, make it fun: deliberately give wrong input. 'DOUBLE(banana)!' Student A: 'I don't know what to do with that.' Say: 'Exactly! The function only works if you give it the right input. That is why contracts matter — you have to agree on what goes in.'"
+    },
+    {
+      "id": "slide-exercise1",
+      "exerciseId": "exercise-12-1",
+      "phase": "Exercise 1",
+      "time": "2 – 8 min",
+      "title": "Human Function Machine",
+      "colour": "green",
+      "whatToSay": "'What did the caller need to know to use each function? Name, input, output. That is the contract. That is the black box.'",
+      "whatToDo": [
+        "This exercise runs during Phase 2.",
+        "After the demo, ask the class to name two everyday abstractions: a vending machine (input: money + choice → output: snack), a light switch (input: flip → output: light).",
+        "Push: 'You don't need to know how electricity works to use a light switch. That is abstraction.'"
+      ]
+    },
+    {
+      "id": "slide-phase3",
+      "phase": "Phase 3",
+      "time": "8 – 13 min",
+      "title": "Interface Contracts and Team Workflow",
+      "colour": "purple",
+      "whatToSay": "'Now let's see how this works in a real team. Imagine three teams building one app. Team A builds the login. Team B builds the search. Team C builds the notifications. How do they work together without stepping on each other's code?'",
+      "whatToDo": [
+        "Draw three boxes on the board: LOGIN, SEARCH, NOTIFY.",
+        "For LOGIN, write: Input: username, password → Output: user object (name, role, permissions).",
+        "Say: 'Team B needs to call LOGIN before showing search results. But Team B does not build LOGIN — Team A does. So they agree on a contract: Team A promises that LOGIN will take username and password and return a user object. Team B writes their code trusting that contract.'",
+        "Now the failure mode: 'What if Team A changes the output format — they rename user to account — without telling Team B?'",
+        "Answer: 'Team B's code breaks. Not because Team B made a mistake, but because the contract was broken. This happens in real software all the time.'",
+        "Say: 'The NASA Mars Climate Orbiter crashed because one team used metric units and another used imperial. Each team's code worked perfectly. The interface contract was wrong. The spacecraft was destroyed.'",
+        "Close: 'Contracts are not paperwork. They are the glue that holds a system together. If the contracts are wrong, the system fails — even if every part works.'"
+      ],
+      "realWorldConnection": "The Mars Climate Orbiter cost $327 million and was lost because of a unit mismatch between teams. Lockheed Martin sent thrust data in pound-force. NASA's navigation software expected newtons. Each team's code was correct. The interface was wrong. This is the single most famous example of why interface contracts matter."
+    },
+    {
+      "id": "slide-phase4-setup",
+      "phase": "Phase 4",
+      "time": "13 – 14 min",
+      "title": "Architecture Challenge — Setup",
+      "colour": "orange",
+      "whatToSay": "'Now it is your turn. In groups of three, you are going to design the architecture for a real app: a surplus-food routing system. Supermarkets and restaurants have food they cannot sell. Shelters and food banks need it. Your app connects them.'",
+      "whatToDo": [
+        "Form groups of three.",
+        "Say: 'You are not writing code. You are designing the system — the functions, their inputs and outputs, and how they connect. Think of it as the blueprint.'",
+        "Give the scenario: 'A supermarket has 50 sandwiches expiring today. A shelter 3 km away needs food for 40 people. A restaurant has leftover soup. A food bank across town has space. Your app must match supply to need — fast.'",
+        "Say: 'Step 1: define at least five functions your app needs. Step 2: map how they connect. Step 3: find what is missing.'"
+      ]
+    },
+    {
+      "id": "slide-phase4-step1",
+      "phase": "Phase 4 — Step 1",
+      "time": "14 – 18 min",
+      "title": "Define Your Functions",
+      "colour": "orange",
+      "whatToSay": "'Step 1: write at least five functions your app needs. For each one, give the function name, input, and output. Be specific — another team should be able to build it from your contract alone.'",
+      "whatToDo": [
+        "Walk around. Push for specificity.",
+        "Common functions groups will define: listSurplusFood, findNearestShelter, claimFood, routeDriver, notifyShelter.",
+        "If a group writes 'match food to shelter' as one function, push: 'How does that function work? Does it need to know where shelters are? Does it need to know what food is available? That is probably two or three functions, not one.'",
+        "Push for precise inputs: 'findNearestShelter needs a location. What format? GPS coordinates? Postcode? City name? Be specific — the contract must be clear.'",
+        "Push for precise outputs: 'claimFood — what does it return? A confirmation? A pickup time? A driver assignment? Specify it.'",
+        "After 4 minutes, ask one group to share their function names. Class comments."
+      ],
+      "conversationStarter": "If groups struggle to start, give a seed: 'Every app starts with a login. Function: authenticateUser. Input: email, password. Output: user profile with role (donor, driver, shelter). Now — what function comes next?'"
+    },
+    {
+      "id": "slide-exercise2",
+      "exerciseId": "exercise-12-2",
+      "phase": "Exercise 2",
+      "time": "14 – 18 min",
+      "title": "Interface Contract Practice",
+      "colour": "green",
+      "whatToSay": "'Write at least five function names with precise input and output contracts. Could another team build each function from your contract alone?'",
+      "rules": [
+        "At least five functions — each with a clear name.",
+        "Each function has specific input fields and output fields.",
+        "Contracts must be precise enough for independent implementation.",
+        "Mark one contract that could cause integration bugs if underspecified."
+      ],
+      "whatToDo": [
+        "This exercise runs during Phase 4 Step 1.",
+        "See the Phase 4 Step 1 slide for full facilitation instructions."
+      ]
+    },
+    {
+      "id": "slide-phase4-step2",
+      "phase": "Phase 4 — Step 2",
+      "time": "18 – 23 min",
+      "title": "Map the Dependencies",
+      "colour": "orange",
+      "whatToSay": "'Step 2: draw your architecture map. Show which functions call which — the data flow through your system. Use arrows.'",
+      "whatToDo": [
+        "Walk around. Ask key questions:",
+        "'Which function runs first? What triggers it?'",
+        "'Which function depends on the output of another? Draw an arrow.'",
+        "'What happens if findNearestShelter fails? What breaks downstream?'",
+        "Push groups to trace failure: 'If the driver notification function fails, does the shelter still expect food? What happens to the donor's inventory? A failure in one component can cascade through the system.'",
+        "After dependency maps are drawn, ask each group: 'Which function is your single point of failure — the one that, if it breaks, takes down the most other functions?'",
+        "Most groups will identify login or findNearestShelter as critical.",
+        "Say: 'A single point of failure is a design risk. Real systems build redundancy for these components — backup servers, fallback logic.'"
+      ],
+      "conversationStarter": "If groups draw flat lists instead of maps, push: 'You drew five functions. But which ones talk to each other? Does notifyShelter need output from claimFood? Draw the connection. If there is no connection, your system has no flow.'"
+    },
+    {
+      "id": "slide-phase4-step3",
+      "phase": "Phase 4 — Step 3",
+      "time": "23 – 24 min",
+      "title": "Find the Missing Module",
+      "colour": "orange",
+      "whatToSay": "'Final step. Here is the problem you did not anticipate: a shelter claims 50 sandwiches. A driver is dispatched. But while the driver is en route, the shelter fills up — another delivery arrived first. Your system does not know. What happens?'",
+      "whatToDo": [
+        "Let the problem sink in.",
+        "Say: 'Your system needs a function you did not design: one that checks or updates shelter capacity in real time — between claim and arrival.'",
+        "Give groups 2 minutes to define this missing function: name, input, output, where it connects.",
+        "Example: checkCapacity — Input: shelterId, claimedQuantity → Output: confirmed/rejected, remainingCapacity.",
+        "Say: 'Finding a gap in your design is not failure. It is exactly what real architects do — they test their system with scenarios and patch the gaps before they become bugs.'",
+        "Close: 'Adele Goldberg designed Smalltalk to make these gaps visible. A modular system lets you add a new component without rewriting everything else. That is the power of abstraction.'"
+      ]
+    },
+    {
+      "id": "slide-exercise3",
+      "exerciseId": "exercise-12-3",
+      "phase": "Exercise 3",
+      "time": "13 – 24 min",
+      "title": "Architecture Dependency Map",
+      "colour": "green",
+      "whatToSay": "'Map your function dependencies. Trace failures. Find your single point of failure. Then add the missing module.'",
+      "whatToDo": [
+        "This exercise spans Phase 4 Steps 2 and 3.",
+        "See the Phase 4 Step 2 and Step 3 slides for full facilitation instructions."
+      ]
+    },
+    {
+      "id": "slide-phase5",
+      "phase": "Phase 5",
+      "time": "24 – 28 min",
+      "title": "Discussion",
+      "colour": "teal",
+      "whatToDo": [
+        "Pick the question below that feels most alive based on how the class went.",
+        "One strong discussion is better than two rushed ones.",
+        "Give students a moment to think before taking answers."
+      ],
+      "discussionQuestions": [
+        "'Can a system fail even when every single part works correctly?' Follow-up: 'The Mars orbiter crashed because both teams' code was correct — but they used different units. That is an interface failure, not a code failure. Where could that happen in your food app?'",
+        "'Your food-routing app generates data as a byproduct: which shelters need food most, when donors have surplus, driver routes. Who owns that data? What happens if someone sells it?'",
+        "'Your architecture does not have a delete-data function or a consent-management module. Is that an oversight — or a choice? What are the consequences?'"
+      ],
+      "conversationStarter": "If discussion is slow, try: 'Imagine a food company sponsors your app. They want access to the data — which neighbourhoods are food-insecure, what shelters are under-resourced. Is that helpful or exploitative? Can it be both?'"
+    },
+    {
+      "id": "slide-exercise4",
+      "exerciseId": "exercise-12-4",
+      "phase": "Exercise 4",
+      "time": "28 – 30 min",
+      "title": "Exit Reflection — Power and Risk of Abstraction",
+      "colour": "green",
+      "whatToSay": "'Final task. On your own, complete this sentence: Abstraction is useful because ______, but dangerous when ______.'"
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share & Reflect",
+      "time": "28 – 30 min",
+      "title": "Close the Lesson",
+      "colour": "pink",
+      "whatToDo": [
+        "Ask every student to write and complete the sentence on paper or sticky note.",
+        "They must include one concrete example from today's architecture challenge.",
+        "The danger clause must reference interface clarity or system-wide understanding.",
+        "Collect papers or stick them on the board.",
+        "Read 2–3 strong responses aloud."
+      ],
+      "exitReflection": "Abstraction is useful because ______, but dangerous when ______.",
+      "whatToSay": "Close with: 'Adele Goldberg proved that the hardest part of building software is not writing the code — it is agreeing on how the parts connect. You just experienced that. Next lesson, you will learn about a different kind of structure — one that decides what gets processed first, and why that decision matters more than most people think.'",
+      "conversationStarter": "If reflections are shallow, push: 'Do not just say abstraction helps with big projects. Be specific. What did abstraction let you do today that you could not do without it? And what went wrong — or almost went wrong — because of it?'"
     }
   ]
 }
