@@ -6,6 +6,29 @@
   "level": "Intermediate",
   "ageGroup": "High school (ages 12-17)",
   "imageUrl": "/static/images/highschool-placeholder.svg",
+  "roleModelOfDay": {
+    "name": "Grace Hopper",
+    "years": "1906–1992",
+    "intro": "A mathematician, computer scientist, and US Navy Rear Admiral who invented the first compiler — a program that translates human-readable instructions into machine code. She famously said: 'The most dangerous phrase in the language is we've always done it this way.'"
+  },
+  "vocabulary": [
+    {
+      "word": "Algorithm",
+      "def": "A set of step-by-step instructions that solves a problem"
+    },
+    {
+      "word": "Efficiency",
+      "def": "How well an algorithm uses time and resources — a faster solution is more efficient"
+    },
+    {
+      "word": "Trade-off",
+      "def": "A compromise where improving one thing makes another thing worse"
+    },
+    {
+      "word": "Scale",
+      "def": "What happens when you increase the input size — from 10 items to 10 million"
+    }
+  ],
   "learningObjectives": [
     "Explain the difference between a working algorithm and an efficient algorithm.",
     "Describe how scale changes whether an algorithm is practical.",
@@ -18,33 +41,20 @@
     "Five sticky notes with numbers: 47, 8, 93, 21, 64",
     "Paper and pencils"
   ],
-  "fullDescription": "Age group: 12-17. Duration: 30 minutes. No prior knowledge assumed. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students can explain the difference between a working algorithm and an efficient one, and connect this to technology decisions that affect daily life. Role model: Grace Hopper (1906-1992), mathematician, computer scientist, and US Navy Rear Admiral. She invented the first compiler and challenged inefficient legacy practice with: 'The most dangerous phrase in the language is we've always done it this way.'",
-  "vocabulary": [
-    "Algorithm",
-    "Efficiency",
-    "Trade-off",
-    "Scale"
-  ],
-  "roleModel": {
-    "name": "Grace Hopper",
-    "years": "1906-1992",
-    "summary": "Invented the first compiler, enabling human-readable instructions to be translated into machine code.",
-    "quote": "The most dangerous phrase in the language is we've always done it this way."
-  },
+  "fullDescription": "Age group: 12-17. Duration: 30 minutes. No prior knowledge assumed. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students can explain the difference between a working algorithm and an efficient one, and connect this to technology decisions that affect daily life.",
   "teacherInstructions": {
-    "setup": "Write vocabulary before class: Algorithm, Efficiency, Trade-off, Scale. Prepare five volunteers and numeric sticky notes.",
+    "setup": "Write vocabulary on the board and keep it visible all lesson: Algorithm, Efficiency, Trade-off, Scale. Prepare five sticky notes with numbers 47, 8, 93, 21, 64. Draw the delivery map on the board: A-B 12, A-C 8, B-C 5, B-D 9, C-D 7, D-E 11. Have paper and pencils ready for group work.",
     "steps": [
       "Phase 1 (0-2 min): Put spark question on board: 'Your phone has billions of calculations happening every second. So why does it still freeze, lag, and run out of battery too fast?' Collect pair ideas, acknowledge hardware explanations, then reframe: software instructions matter as much as hardware.",
       "Phase 1 hook: Use Amazon fulfilment example. At massive scale, a 1% algorithm improvement can save hundreds of millions of euros and fuel cost, while a 1% degradation cascades into delays.",
       "Phase 2 (2-12 min), Round 1 Bubble Sort: Five volunteers stand as 47, 8, 93, 21, 64. Adjacent comparisons and swaps only. Count swaps aloud. Record scale intuition: 5 items ~10 swaps, 1,000 items ~500,000 swaps, 1,000,000 items ~500,000,000,000 swaps.",
       "Phase 2 (2-12 min), Round 2 Merge Sort: Reset order, split into groups of two and three, sort small groups, then merge by comparing front values. Record scale intuition: 1,000 items ~10,000 comparisons, 1,000,000 items ~20,000,000 comparisons.",
       "Phase 2 visual: Draw two curves on board, steep Bubble Sort and flatter Merge Sort. Label x-axis list size and y-axis work required. Emphasize: same output, very different cost.",
-      "Phase 3 (12-24 min): Delivery drone challenge on board map with travel times: A-B 12, A-C 8, B-C 5, B-D 9, C-D 7, D-E 11. Groups write deterministic rules for visiting every warehouse once and returning to A.",
+      "Phase 3 (12-24 min): Delivery drone challenge on board map with travel times. Groups write deterministic rules for visiting every warehouse once and returning to A.",
       "Testing (4 min): Execute one group's rules exactly as written. Typical nearest-unvisited strategy yields A to C to B to D to E and fails because no direct route from E back to A.",
-      "Debrief: Name greedy algorithm only after students diagnose failure. Add look-ahead rule: before committing to next step, ensure remaining nodes still allow path back to A.",
-      "Phase 4 (24-29 min): Choose discussion path based on class momentum - local rationality versus collective harm, or efficiency by business metric versus human/user metric.",
-      "Exit reflection (29-30 min): Students complete sentence: 'The difference between a working algorithm and a good algorithm is _______.' Read 2-3 answers and keep strongest on board for next lesson bridge.",
-      "Fast finisher: Introduce Travelling Salesman growth and P vs NP prompt: if fast perfect solutions existed for this class of problems, what systems would improve and which would become vulnerable?"
+      "Debrief: Name greedy algorithm only after students diagnose failure. Add look-ahead rule.",
+      "Phase 4 (24-29 min): Choose discussion path based on class momentum.",
+      "Exit reflection (29-30 min): Students complete sentence: 'The difference between a working algorithm and a good algorithm is _______.'"
     ],
     "discussionPrompts": [
       "Your algorithm made the best local decision at each step and still produced a bad global result. Where else does that happen outside computing?",
@@ -67,11 +77,11 @@
     "Algorithmic Efficiency and Scale",
     "Systems Thinking in Technology"
   ],
-  "teacherGuide": "Core message: correctness is necessary but not sufficient. A computer doing the wrong thing very fast is worse than a computer doing the right thing slightly slower. Move students from 'does it work?' to 'does it still work well at scale, under constraints, and for the right objective?'\n\nBoard setup before class: write vocabulary (Algorithm, Efficiency, Trade-off, Scale) and prepare sticky-note volunteers.\n\nPhase logic:\n1) Spark with phone performance paradox to surface everyday relevance.\n2) Contrast Bubble Sort and Merge Sort to show same output with radically different growth in work required.\n3) Use drone routing task to expose greedy local-optimum failure and introduce look-ahead.\n4) Discuss responsibility when optimized objectives conflict with social good.\n\nExit outcome: students should articulate that good algorithms are judged by scaling behavior, future-state consequences, and whose interests are encoded in the objective function.",
+  "teacherGuide": "Core message: correctness is necessary but not sufficient. A computer doing the wrong thing very fast is worse than a computer doing the right thing slightly slower. Move students from 'does it work?' to 'does it still work well at scale, under constraints, and for the right objective?'",
   "studentExercises": [
     {
       "id": "exercise-9-1",
-      "title": "Exercise 1 - Two Ways to Sort",
+      "title": "Two Ways to Sort",
       "description": "Compare Bubble Sort and Merge Sort with operation counts, then interpret why both produce correct output but only one remains practical at scale.",
       "type": "Unplugged simulation",
       "difficulty": "Medium",
@@ -96,7 +106,7 @@
     },
     {
       "id": "exercise-9-2",
-      "title": "Exercise 2 - Delivery Drone Route Rules",
+      "title": "Delivery Drone Route Rules",
       "description": "Write and test deterministic route rules, then diagnose why nearest-next-step strategy can fail globally.",
       "type": "Algorithm design",
       "difficulty": "Medium",
@@ -122,7 +132,7 @@
     },
     {
       "id": "exercise-9-3",
-      "title": "Exit Reflection - Working vs Good",
+      "title": "Exit Reflection — Working vs Good",
       "description": "Write and defend one sentence distinguishing algorithm correctness from algorithm quality.",
       "type": "Reflection",
       "difficulty": "Easy",
@@ -133,7 +143,7 @@
         "Pencil"
       ],
       "instructions": [
-        "Complete: 'The difference between a working algorithm and a good algorithm is _______.'.",
+        "Complete: 'The difference between a working algorithm and a good algorithm is _______.'",
         "Include at least one concept: scale, consequences, trade-off, or future-state checking.",
         "Share with partner and revise once for precision.",
         "Volunteer strongest class phrasing for board capture."
@@ -174,7 +184,7 @@
     },
     {
       "id": "challenge-9-2",
-      "title": "Fast Finisher - P vs NP Prompt",
+      "title": "P vs NP Prompt",
       "description": "Explore implications if hard search problems became easy, including optimization and security consequences.",
       "type": "Challenge",
       "difficulty": "Hard",
@@ -194,6 +204,243 @@
         "Reasoning connects hardness to practical system behavior.",
         "Response reflects uncertainty responsibly rather than overclaiming."
       ]
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "indigo",
+      "whatToDo": [
+        "Write these four words on the board — leave them visible all lesson:",
+        "Algorithm: a set of step-by-step instructions that solves a problem",
+        "Efficiency: how well an algorithm uses time and resources",
+        "Trade-off: a compromise where improving one thing makes another worse",
+        "Scale: what happens when you increase the input size — from 10 to 10 million",
+        "Prepare five sticky notes with numbers: 47, 8, 93, 21, 64.",
+        "Draw the delivery map on the board with travel times:",
+        "A—B: 12 min, A—C: 8 min, B—C: 5 min, B—D: 9 min, C—D: 7 min, D—E: 11 min",
+        "Draw five circles for warehouses A through E and label each route with its time.",
+        "Have paper and pencils ready for group work.",
+        "Identify five students you can use as sorting volunteers in Phase 2."
+      ]
+    },
+    {
+      "id": "slide-rolemodel",
+      "phase": "Role Model of the Day",
+      "time": "Before class begins",
+      "title": "Grace Hopper",
+      "colour": "indigo",
+      "roleModel": "Grace Hopper (1906–1992) was a mathematician, computer scientist, and US Navy Rear Admiral. She was one of the first programmers of the Harvard Mark I computer in 1944, and she invented the first compiler — a program that translates human-readable instructions into machine code. Before her compiler, every programmer had to write instructions in raw machine language — sequences of numbers that were nearly impossible to read, debug, or maintain. Grace saw that this was an efficiency problem: not just for computers, but for humans. Her compiler let people write in something closer to English and have the computer translate it. She was told it would never work — that computers could only do arithmetic, not understand language. She built it anyway and proved them wrong. She is also credited with popularising the term 'debugging' after a moth was found inside the Harvard Mark II computer causing a malfunction. Her most famous quote captures the spirit of this lesson: 'The most dangerous phrase in the language is: we've always done it this way.' She spent her career challenging inefficiency — in code, in processes, and in organisations.",
+      "whatToSay": "Introduce Grace simply: 'Today's role model changed how every programmer in the world works. Her name is Grace Hopper. She was a mathematician, a Navy officer, and one of the first people to program a computer. She invented the compiler — a tool that lets humans write instructions in words instead of numbers. Before her, programming was impossibly slow and error-prone. She made it efficient. Her famous quote is: The most dangerous phrase in the language is we've always done it this way. Today, you are going to learn why she was right.'",
+      "whatToDo": [
+        "Keep the intro to about 60 seconds — the compiler story is vivid.",
+        "You can return to Grace naturally at these moments in the lesson:",
+        "Phase 2 (sorting): 'Grace Hopper saw that writing machine code by hand was like Bubble Sort — it worked, but it was brutally slow. Her compiler was like Merge Sort — same result, radically more efficient.'",
+        "Phase 3 (greedy failure): 'Grace said: we've always done it this way is dangerous. Your greedy algorithm took the best next step every time — and failed. That is what she was warning about.'",
+        "Phase 4 (discussion): 'Grace fought organisations that preferred slow, familiar processes over faster, better ones. Efficiency is not just technical — it is cultural.'",
+        "Exit reflection: 'Grace Hopper proved that the way you write instructions matters as much as what those instructions do. That is the difference between working and good.'"
+      ],
+      "realWorldConnection": "Grace Hopper's compiler was rejected by experts who said computers could only do arithmetic. She built it anyway, and it became the foundation of every programming language used today — Java, Python, JavaScript, all of them ultimately descend from her insight that humans should write for humans and let the computer translate. When students compare Bubble Sort to Merge Sort, they are experiencing exactly the kind of efficiency leap Grace fought for."
+    },
+    {
+      "id": "slide-rolemodel-integration",
+      "phase": "Role Model — Using Her in Class",
+      "time": "Reference throughout",
+      "title": "Bringing Grace Into the Lesson",
+      "colour": "indigo",
+      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Grace in:",
+      "whatToDo": [
+        "LESSON INTRO — right now: Her quote. 'The most dangerous phrase in the language is: we've always done it this way.' Write it on the board if you like.",
+        "PHASE 2 Round 1 — after counting Bubble Sort swaps: 'Grace Hopper saw exactly this problem. Programmers were writing instructions the slow way because that was how they had always done it. She invented a tool that did the same job in a fraction of the time.'",
+        "PHASE 2 Round 2 — after Merge Sort comparison: 'Grace's compiler was the Merge Sort of programming — same result, radically less effort. She proved that how you do something matters as much as what you do.'",
+        "PHASE 3 — when the greedy algorithm fails: 'Grace warned about this. Doing what seems best right now — we've always done it this way — can lead to failure. Your algorithm took the best local step every time and got stuck.'",
+        "PHASE 4 — during discussion: 'Grace did not just fight bad algorithms. She fought organisations that resisted change because change was uncomfortable. Efficiency is not just code — it is culture.'",
+        "EXIT REFLECTION — as the final word: 'Grace Hopper proved that a working solution is not the same as a good solution. You just experienced that yourselves.'"
+      ],
+      "realWorldConnection": "Grace Hopper served in the US Navy until age 79 — she was the oldest active-duty commissioned officer in the US at the time. She was awarded the Presidential Medal of Freedom posthumously in 2016. A US Navy destroyer is named after her. When students talk about efficiency, they are talking about the principle she spent her career fighting for."
+    },
+    {
+      "id": "slide-overview",
+      "phase": "Lesson Intro",
+      "time": "0 min",
+      "title": "What We're Doing Today",
+      "colour": "violet",
+      "whatToSay": "Welcome the class: 'Today we are going to answer a question you have probably asked yourself: why does your phone freeze? It has billions of calculations per second — more power than the computers that landed on the Moon. So why does it still lag, stutter, and run out of battery? The answer is not just hardware. It is software — specifically, how efficiently the instructions are written. Today, you are going to see the difference between a working algorithm and a good one.'",
+      "whatToDo": [
+        "Point to the vocabulary on the board: 'These four words are what we're working with today.'",
+        "Point to the sticky notes: 'Those numbers are going to help us see the difference between two sorting methods — one fast, one brutally slow.'",
+        "Point to the map: 'And that map is going to show you why the obvious best choice at each step can lead to total failure.'",
+        "This lesson is 30 minutes. Keep transitions sharp."
+      ]
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0 – 2 min",
+      "title": "Spark Question",
+      "colour": "yellow",
+      "whatToSay": "Put the question on the board or read it aloud: 'Your phone has billions of calculations happening every second. So why does it still freeze, lag, and run out of battery too fast?'",
+      "whatToDo": [
+        "Give students 20 seconds to think. Take 2–3 answers.",
+        "Students will say: too many apps, old phone, bad wifi, small memory.",
+        "Acknowledge the hardware answers: 'Those are real factors. But here is what most people miss: the software matters just as much. If the instructions your phone runs are inefficient — if they do more work than necessary — the phone slows down even with powerful hardware.'",
+        "Hook with scale: 'Amazon processes hundreds of millions of orders per day. A 1% improvement in their routing algorithm saves hundreds of millions of euros and thousands of tonnes of fuel. A 1% degradation cascades into delays for millions of people. At scale, efficiency is not a nice-to-have — it is survival.'",
+        "Close: 'Today you are going to see exactly what that means — by comparing two ways of doing the same thing.'"
+      ],
+      "conversationStarter": "If the class is quiet, try: 'Have you ever waited for a search result that took five seconds instead of one? That was probably an efficiency problem — the algorithm did more work than it needed to. Now imagine that delay multiplied by a billion users.'"
+    },
+    {
+      "id": "slide-phase2-bubble",
+      "phase": "Phase 2 — Round 1",
+      "time": "2 – 7 min",
+      "title": "Bubble Sort — The Slow Way",
+      "colour": "blue",
+      "whatToSay": "'I need five volunteers. You are going to become a sorting algorithm.'",
+      "whatToDo": [
+        "Five students stand at the front. Give each one a sticky note: 47, 8, 93, 21, 64.",
+        "Say: 'Your job is to get into order — smallest on the left, largest on the right. But you can only compare with the person next to you, and you can only swap with them. No jumping. No skipping.'",
+        "Start from the left. Compare the first pair: 47 and 8. 8 is smaller — swap. Count: 'Swap 1.'",
+        "Continue comparing adjacent pairs. After one full pass, the largest number (93) is at the end.",
+        "Keep going until fully sorted. Count every swap aloud.",
+        "After sorting, say: 'That took about 10 swaps for 5 numbers. Now imagine 1,000 numbers. Bubble Sort would need about 500,000 swaps. A million numbers? About 500 billion swaps. That is why your phone freezes.'",
+        "Write on the board: Bubble Sort — 5 items: ~10 swaps. 1,000 items: ~500,000. 1,000,000 items: ~500,000,000,000.",
+        "Say: 'This algorithm works. It gives the correct answer. But is it good?'"
+      ],
+      "conversationStarter": "If students think 10 swaps is fine, escalate: 'Your music app has 10,000 songs. If it sorted them with Bubble Sort every time you opened it, it would take 100 million operations. Your phone would freeze for seconds. That is the difference between working and efficient.'"
+    },
+    {
+      "id": "slide-phase2-merge",
+      "phase": "Phase 2 — Round 2",
+      "time": "7 – 12 min",
+      "title": "Merge Sort — The Fast Way",
+      "colour": "blue",
+      "whatToSay": "'Same numbers. Same goal. Different method. Let's see what happens.'",
+      "whatToDo": [
+        "Reset to original order: 47, 8, 93, 21, 64.",
+        "Split into two groups: (47, 8) and (93, 21, 64).",
+        "Sort each small group internally — that takes very few swaps.",
+        "Now merge: compare the front of each sorted group. The smaller one goes first. Repeat.",
+        "Count comparisons during the merge. It will be significantly fewer than Bubble Sort.",
+        "Write on the board: Merge Sort — 1,000 items: ~10,000 comparisons. 1,000,000 items: ~20,000,000 comparisons.",
+        "Draw two curves on the board: Bubble Sort curves steeply upward. Merge Sort rises much more gently.",
+        "Label x-axis: 'list size.' Label y-axis: 'work required.'",
+        "Say: 'Same input. Same output. Radically different cost. Bubble Sort grows explosively. Merge Sort grows gently. At a million items, Merge Sort is 25,000 times faster.'",
+        "Close: 'Grace Hopper saw this exact problem. Programmers were writing code the slow way because that was familiar. She invented a tool — the compiler — that did the same job in a fraction of the effort. Same principle: working is not the same as good.'"
+      ],
+      "conversationStarter": "If students ask why anyone would use Bubble Sort, say: 'Good question. For 5 items, it does not matter. For 50, it is a bit slow. For 5 million, it is impossible. The algorithm did not change — the scale did. That is why efficiency matters.'"
+    },
+    {
+      "id": "slide-exercise1",
+      "exerciseId": "exercise-9-1",
+      "phase": "Exercise 1",
+      "time": "2 – 12 min",
+      "title": "Two Ways to Sort",
+      "colour": "green",
+      "whatToSay": "'Compare what you just saw: same result, different cost. Write one sentence explaining why both algorithms are correct but only one is practical at scale.'",
+      "whatToDo": [
+        "This exercise spans Phase 2 Rounds 1 and 2.",
+        "After both sorts, students write their summary sentence."
+      ]
+    },
+    {
+      "id": "slide-phase3-setup",
+      "phase": "Phase 3",
+      "time": "12 – 14 min",
+      "title": "Delivery Drone Challenge — Setup",
+      "colour": "orange",
+      "whatToSay": "'Now you are going to design an algorithm for a real problem. A delivery drone has to visit five warehouses — A, B, C, D, and E — and return to A. The map is on the board. Each route has a travel time. Your job: write rules that visit every warehouse exactly once and get back to A.'",
+      "whatToDo": [
+        "Point to the map on the board: A—B: 12, A—C: 8, B—C: 5, B—D: 9, C—D: 7, D—E: 11.",
+        "Form groups of three.",
+        "Say: 'Write deterministic rules — rules so precise that a robot with no common sense could follow them. If two options tie, your rules must say what to do. No guessing.'",
+        "Say: 'You have 8 minutes to write your rules. Then we will test one group's algorithm — literally executing it step by step.'"
+      ],
+      "conversationStarter": "If groups are stuck on where to start, say: 'Most people start with a simple rule: go to the nearest warehouse you have not visited yet. Try that. See what happens. But write it precisely — every step.'"
+    },
+    {
+      "id": "slide-phase3-test",
+      "phase": "Phase 3 — Testing",
+      "time": "22 – 24 min",
+      "title": "Test the Algorithm",
+      "colour": "orange",
+      "whatToSay": "'Time is up. Let's test one group's algorithm — exactly as written. I am the robot. I follow the rules literally. No interpreting, no helping.'",
+      "whatToDo": [
+        "Pick one group. Have them read their rules aloud, step by step.",
+        "Execute literally on the board map. Trace the path.",
+        "Most groups will use a nearest-unvisited strategy: A → C (8 min) → B (5 min) → D (9 min) → E (11 min).",
+        "Now: 'The algorithm says go to nearest unvisited warehouse. All warehouses visited. Return to A.'",
+        "Problem: there is no direct route from E back to A on the map.",
+        "Let the failure land. Do NOT rescue. Say: 'The algorithm worked at every step. Every decision was locally optimal — it chose the shortest route available. But the final outcome failed. Why?'",
+        "Students: 'It did not check whether it could get back.'",
+        "Say: 'Exactly. This is called a greedy algorithm — it makes the best choice right now without checking the future. And greedy algorithms can fail when local optimum does not equal global optimum.'",
+        "Say: 'Grace Hopper warned about this: doing what we've always done — taking the obvious next step — can lead to failure. The fix? Look ahead. Before committing to a step, check: can I still complete the full route from here?'"
+      ]
+    },
+    {
+      "id": "slide-exercise2",
+      "exerciseId": "exercise-9-2",
+      "phase": "Exercise 2",
+      "time": "12 – 24 min",
+      "title": "Delivery Drone Route Rules",
+      "colour": "green",
+      "whatToSay": "'Write exact routing rules. Test them. Find the failure. Propose a fix.'",
+      "rules": [
+        "Visit every warehouse exactly once and return to A.",
+        "Rules must be deterministic — no guessing.",
+        "If two options tie, rules must specify what to do.",
+        "Test by literal execution — no interpretation allowed."
+      ],
+      "whatToDo": [
+        "This exercise spans Phase 3 setup and testing.",
+        "See Phase 3 slides for full facilitation."
+      ]
+    },
+    {
+      "id": "slide-phase4",
+      "phase": "Phase 4",
+      "time": "24 – 29 min",
+      "title": "Discussion",
+      "colour": "teal",
+      "whatToDo": [
+        "Pick the question below that feels most alive based on how the class went.",
+        "One strong discussion is better than two rushed ones.",
+        "Give students a moment to think before taking answers."
+      ],
+      "discussionQuestions": [
+        "'Your algorithm made the best choice at every step and still failed overall. Where else does that happen outside computing?' Follow-up: 'Every driver takes the fastest route for themselves. The result? Everyone takes the same road and it jams. Local optimum, global failure. Same pattern.'",
+        "'If an app uses extra battery to maximize your engagement — keeping you scrolling — is that efficient or inefficient? Efficient for whom?'",
+        "'If an algorithm does its job perfectly but the job itself is harmful — recommending extreme content, maximising screen time — who should change the objective? The company? The regulator? The user?'"
+      ],
+      "conversationStarter": "If discussion is slow, try: 'Think about social media algorithms. They are extremely efficient at one thing: keeping you on the platform. But is that the right thing to be efficient at? What if efficiency at engagement means inefficiency at wellbeing?'"
+    },
+    {
+      "id": "slide-exercise3",
+      "exerciseId": "exercise-9-3",
+      "phase": "Exercise 3",
+      "time": "29 – 30 min",
+      "title": "Exit Reflection — Working vs Good",
+      "colour": "green",
+      "whatToSay": "'Final task. Complete this sentence: The difference between a working algorithm and a good algorithm is _______.'"
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share & Reflect",
+      "time": "29 – 30 min",
+      "title": "Close the Lesson",
+      "colour": "pink",
+      "whatToDo": [
+        "Ask every student to write and complete the sentence on paper or sticky note.",
+        "They must include at least one concept: scale, consequences, trade-off, or future-state checking.",
+        "Share with a partner and revise for precision.",
+        "Capture the strongest class sentence on the board.",
+        "Read 2–3 strong responses aloud."
+      ],
+      "exitReflection": "The difference between a working algorithm and a good algorithm is _______.",
+      "whatToSay": "Close with: 'Grace Hopper proved that the way you write instructions matters as much as what those instructions do. You just saw two sorting algorithms with the same output but radically different cost. You designed a routing algorithm that was perfect at every step and failed at the end. Working is not the same as good. Next lesson, you will learn how computers make security decisions — and why getting true and false right can protect or endanger a hospital.'",
+      "conversationStarter": "If reflections are shallow, push: 'Do not just say a good algorithm is faster. Be specific. Faster at what scale? What happens if it is not? What trade-off does efficiency require? Use the sorting or the drone example.'"
     }
   ]
 }

@@ -6,6 +6,37 @@
   "level": "Intermediate",
   "ageGroup": "High school (ages 12-17)",
   "imageUrl": "/static/images/highschool-placeholder.svg",
+  "roleModelOfDay": {
+    "name": "Joy Buolamwini",
+    "years": "born 1989",
+    "intro": "An MIT researcher who proved that facial-recognition systems had dramatically higher error rates for darker-skinned women — and forced the biggest tech companies in the world to change their products."
+  },
+  "vocabulary": [
+    {
+      "word": "AI bias",
+      "def": "When an AI system produces unfair outcomes because of flawed data or assumptions"
+    },
+    {
+      "word": "Training data",
+      "def": "The dataset a machine learning model learns from — its patterns become the model's patterns"
+    },
+    {
+      "word": "Proxy variable",
+      "def": "A seemingly neutral feature that indirectly stands in for a protected characteristic like race or gender"
+    },
+    {
+      "word": "Algorithmic fairness",
+      "def": "The practice of ensuring automated decisions do not systematically disadvantage particular groups"
+    },
+    {
+      "word": "Audit",
+      "def": "A systematic check of whether a system works as intended and treats people fairly"
+    },
+    {
+      "word": "Filter bubble",
+      "def": "When an algorithm only shows you content it thinks you want, narrowing your view of the world"
+    }
+  ],
   "learningObjectives": [
     "Identify hidden bias in a dataset and explain how it can affect model outcomes.",
     "Explain how proxy variables transfer discriminatory patterns without explicitly naming protected characteristics.",
@@ -18,74 +49,45 @@
     "Paper and pencils"
   ],
   "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students can audit data for bias, detect proxy-variable mechanisms, and design practical policy interventions while recognizing trade-offs between predictive performance and fairness.",
-  "vocabulary": [
-    "AI bias",
-    "Training data",
-    "Proxy variable",
-    "Algorithmic fairness",
-    "Audit",
-    "Filter bubble"
-  ],
-  "roleModel": {
-    "name": "Joy Buolamwini",
-    "years": "born 1989",
-    "summary": "MIT researcher who documented major facial-recognition error gaps across demographic groups and catalyzed product and policy changes.",
-    "whyItMatters": "Her work established bias auditing as core engineering practice, not optional ethics add-on."
-  },
   "auditDataset": [
     {
       "employee": "A",
       "postcode": "1071",
       "commute": "Car",
       "graduationYear": 2021,
-      "hobbies": [
-        "golf",
-        "sailing"
-      ]
+      "hobbies": ["golf", "sailing"]
     },
     {
       "employee": "B",
       "postcode": "1072",
       "commute": "Car",
       "graduationYear": 2020,
-      "hobbies": [
-        "tennis",
-        "travel"
-      ]
+      "hobbies": ["tennis", "travel"]
     },
     {
       "employee": "C",
       "postcode": "1071",
       "commute": "Car",
       "graduationYear": 2022,
-      "hobbies": [
-        "skiing",
-        "sailing"
-      ]
+      "hobbies": ["skiing", "sailing"]
     },
     {
       "employee": "D",
       "postcode": "1071",
       "commute": "Car",
       "graduationYear": 2021,
-      "hobbies": [
-        "cycling",
-        "golf"
-      ]
+      "hobbies": ["cycling", "golf"]
     },
     {
       "employee": "E",
       "postcode": "1073",
       "commute": "Car",
       "graduationYear": 2019,
-      "hobbies": [
-        "golf",
-        "reading"
-      ]
+      "hobbies": ["golf", "reading"]
     }
   ],
   "teacherInstructions": {
-    "setup": "Write vocabulary and spark question on the board. Prepare hiring-audit dataset for Phase 4.",
+    "setup": "Write vocabulary on the board and keep it visible all lesson. Write the spark question on the board: 'Can AI trained on historical data avoid repeating historical mistakes?' Prepare the hiring-audit dataset (employees A–E) on a handout or project it for Phase 4.",
     "steps": [
       "Phase 1 (0-2 min): Ask whether AI trained on historical data can avoid repeating historical mistakes. Capture both sides quickly.",
       "Phase 1 hook: discuss Amazon hiring-model case where gender was not explicit but historical hiring patterns were learned.",
@@ -125,7 +127,7 @@
   "studentExercises": [
     {
       "id": "exercise-15-1",
-      "title": "Exercise 1 - Proxy Variable Detection",
+      "title": "Proxy Variable Detection",
       "description": "Analyze simple feature sets to identify hidden selection criteria and explain the mechanism behind proxy bias.",
       "type": "Concept audit",
       "difficulty": "Easy",
@@ -149,7 +151,7 @@
     },
     {
       "id": "exercise-15-2",
-      "title": "Exercise 2 - Hiring Dataset Audit",
+      "title": "Hiring Dataset Audit",
       "description": "Audit feature risks and representation gaps in a small hiring dataset used to train a model.",
       "type": "Dataset review",
       "difficulty": "Medium",
@@ -174,7 +176,7 @@
     },
     {
       "id": "exercise-15-3",
-      "title": "Exercise 3 - Data Policy Draft",
+      "title": "Data Policy Draft",
       "description": "Write an actionable policy with excluded variables, rationale mechanisms, and required data additions.",
       "type": "Policy design",
       "difficulty": "Hard",
@@ -199,7 +201,7 @@
     },
     {
       "id": "exercise-15-4",
-      "title": "Exit Reflection - Unintended Bias",
+      "title": "Exit Reflection — Unintended Bias",
       "description": "Write one sentence explaining how algorithmic bias can emerge without explicit intent.",
       "type": "Reflection",
       "difficulty": "Easy",
@@ -268,6 +270,282 @@
         "Student proposes measurable evaluation criteria.",
         "Student recognizes that technical and governance choices are coupled."
       ]
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "indigo",
+      "whatToDo": [
+        "Write these six words on the board — leave them visible all lesson:",
+        "AI bias: when an AI system produces unfair outcomes because of flawed data or assumptions",
+        "Training data: the dataset a machine learning model learns from — its patterns become the model's patterns",
+        "Proxy variable: a seemingly neutral feature that indirectly stands in for a protected characteristic",
+        "Algorithmic fairness: ensuring automated decisions do not systematically disadvantage particular groups",
+        "Audit: a systematic check of whether a system works as intended and treats people fairly",
+        "Filter bubble: when an algorithm only shows you content it thinks you want, narrowing your world view",
+        "Write the spark question on the board: 'Can AI trained on historical data avoid repeating historical mistakes?'",
+        "Prepare the hiring-audit dataset (employees A–E) — either on a handout, on the board, or projected.",
+        "Have paper and pencils ready for group work in Phase 4."
+      ]
+    },
+    {
+      "id": "slide-rolemodel",
+      "phase": "Role Model of the Day",
+      "time": "Before class begins",
+      "title": "Joy Buolamwini",
+      "colour": "indigo",
+      "roleModel": "Joy Buolamwini (born 1989) is an MIT researcher and founder of the Algorithmic Justice League. While working on a class project, she discovered that a commercial facial-recognition system could not detect her face — but worked perfectly on a white mask. She investigated further and proved that three major tech companies' facial-recognition systems had error rates up to 34% higher for darker-skinned women compared to lighter-skinned men. Her 2018 research paper, co-authored with Timnit Gebru, forced IBM, Microsoft, and Amazon to re-examine their products. IBM withdrew its facial-recognition product from general-purpose use. Her work established that auditing AI systems for bias is not an optional ethics add-on — it is core engineering practice.",
+      "whatToSay": "Introduce Joy simply and with impact: 'Today's role model is a computer scientist who tried to use facial recognition — and the software could not see her face. Her name is Joy Buolamwini. She did not accept that. She tested three of the biggest tech companies' systems and proved that they worked well for light-skinned men but failed badly for dark-skinned women. Her research changed products used by millions of people. Today, you are going to do what she did — audit a system for bias.'",
+      "whatToDo": [
+        "Keep the intro to about 60 seconds — the mask detail is vivid and memorable.",
+        "The key detail: the system worked on a white mask but not on her face. Let that sit.",
+        "You can return to Joy naturally at these moments in the lesson:",
+        "Phase 2 (proxy variables): 'Joy showed that the problem was not one line of bad code — it was the training data. The system learned what faces look like from datasets that were mostly white and mostly male.'",
+        "Phase 3 (ML bias remediation): 'Joy proved you cannot fix this by changing one rule. You have to change the data the system learned from — and then retrain the entire model.'",
+        "Phase 4 Round 2 (data policy): 'Joy did not just find the bias — she published a methodology. That is what an audit is: a repeatable process for checking fairness.'",
+        "Exit reflection: 'Joy Buolamwini proved that a system can be biased without anyone writing a single discriminatory line of code. You just proved the same thing with a hiring dataset.'"
+      ],
+      "realWorldConnection": "Joy's work is not just an academic paper. IBM withdrew a commercial product. Amazon paused police use of its facial-recognition system. Cities and countries passed legislation restricting facial recognition. One researcher's audit changed global policy. When students audit data today, they are practising the same discipline."
+    },
+    {
+      "id": "slide-rolemodel-integration",
+      "phase": "Role Model — Using Her in Class",
+      "time": "Reference throughout",
+      "title": "Bringing Joy Into the Lesson",
+      "colour": "indigo",
+      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Joy in:",
+      "whatToDo": [
+        "LESSON INTRO — right now: Keep it to the mask. 'The facial-recognition system worked on a white mask but could not see her face. That is where this lesson begins.'",
+        "PHASE 2 — when explaining proxy variables: 'Joy showed that the problem was in the training data. The system did not have a rule saying ignore dark-skinned faces. It just learned from data that was overwhelmingly light-skinned. The data was the proxy.'",
+        "PHASE 3 — when explaining why you cannot just delete one rule: 'Joy proved that bias in machine learning is not like a typo you can fix. It is woven into thousands of learned patterns. You have to change the data and retrain.'",
+        "PHASE 4 Round 1 — when groups start their feature audit: 'Joy's first step was the same as yours right now: look at the data and ask — what patterns is this system learning, and who is missing?'",
+        "PHASE 4 Round 2 — when groups write data policies: 'Joy did not just find the problem. She published a methodology — a repeatable audit. That is what you are writing now.'",
+        "EXIT REFLECTION — as the final word: 'Joy Buolamwini proved that a system can be biased without anyone writing a single discriminatory line of code. You just proved the same thing.'"
+      ],
+      "realWorldConnection": "Joy is not just a researcher — she is a practitioner of exactly the discipline students are learning today. Her audit methodology is now the standard approach used by companies and regulators worldwide. When students audit a dataset, they are doing what Joy proved is necessary: checking the data before trusting the system."
+    },
+    {
+      "id": "slide-overview",
+      "phase": "Lesson Intro",
+      "time": "0 min",
+      "title": "What We're Doing Today",
+      "colour": "violet",
+      "whatToSay": "Welcome the class and set the tone: 'Today we are going to ask a question that matters more than most people realise: can data be unfair? You already know that computers follow instructions exactly. But what happens when the instructions come from data — and the data itself has a problem? Today you are going to audit a real dataset, find the hidden bias, and write a policy to fix it.'",
+      "whatToDo": [
+        "Point to the vocabulary on the board: 'These six words are what we're working with today. By the end you will use all of them.'",
+        "Point to the spark question: 'We will start with this question in a moment.'",
+        "This lesson moves fast — 30 minutes. Keep energy up and transitions crisp.",
+        "Students may feel uncomfortable discussing bias. Frame it as an engineering problem: 'We are not asking who is a bad person. We are asking: where is the system failing, and how do we fix it?'"
+      ]
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0 – 2 min",
+      "title": "Spark Question",
+      "colour": "yellow",
+      "whatToSay": "Point to the question on the board and read it aloud: 'Can AI trained on historical data avoid repeating historical mistakes?'",
+      "whatToDo": [
+        "Give students 20 seconds to think.",
+        "Take 2–3 quick answers — one 'yes' and one 'no' if possible.",
+        "Do not correct anyone. Let the tension sit.",
+        "Then add the hook: 'In 2018, Amazon built a hiring AI. It was trained on 10 years of résumés. The system learned which candidates got hired. The problem? For 10 years, Amazon had mostly hired men. The AI learned that pattern and started penalising résumés that mentioned women's colleges or women's sports teams. Gender was never in the data as a field. But the system found it anyway.'",
+        "Pause. Say: 'That is what this lesson is about. How does bias get into a system when nobody put it there on purpose?'"
+      ],
+      "conversationStarter": "If students look uncertain, try: 'Think about it this way. If I gave you a recipe book and every recipe used butter, and I asked you to invent a new recipe — would you use butter? Probably. Not because you decided butter is best, but because that is all you learned from. AI works the same way.'"
+    },
+    {
+      "id": "slide-phase2",
+      "phase": "Phase 2",
+      "time": "2 – 8 min",
+      "title": "What Is a Proxy Variable?",
+      "colour": "blue",
+      "whatToSay": "'I am going to show you three facts about someone applying for a job. Tell me: what do these facts tell you about the person?' Write on the board: Hobby: polo. Reads: sailing magazine. Owns: a second home.",
+      "whatToDo": [
+        "Ask: 'What kind of person might this be? Be honest — what picture forms in your head?'",
+        "Students will likely say: wealthy, upper class, privileged.",
+        "Say: 'None of those three facts mention income, race, gender, or class directly. But they imply it. That is a proxy variable — a piece of information that seems neutral but indirectly reveals something protected.'",
+        "Now escalate. Write on the board: Postcode: 1071 (Amsterdam South).",
+        "Ask: 'If a hiring algorithm used postcode as one of its features — could that be unfair?'",
+        "Guide the answer: 'Postcodes in many countries correlate strongly with income, race, and immigration status. If a model learns that people from certain postcodes are more likely to be hired — it is learning socioeconomic and potentially racial patterns disguised as geography.'",
+        "Ask: 'How would you detect this? The algorithm does not say I am discriminating by race. It says I am using postcode. But the effect is the same.'",
+        "Close Phase 2: 'This is why auditing is hard. The bias is not visible in the code. It is hidden in the relationship between the data and the real world.'"
+      ],
+      "realWorldConnection": "Postcode discrimination is a well-documented issue. Insurance, lending, and hiring systems in multiple countries have been found to use postcode as a proxy for race and income. In the Netherlands, the Toeslagenaffaire (child benefit scandal) showed how algorithmic profiling based on nationality and neighbourhood indicators led to systemic discrimination against immigrant families.",
+      "conversationStarter": "If students are not engaged, try: 'Imagine two identical CVs — same school, same grades, same experience. One lives in a wealthy suburb. One lives in a social housing neighbourhood. If the algorithm uses postcode — who gets the interview? Is that the algorithm's fault or the data's fault?'"
+    },
+    {
+      "id": "slide-phase3",
+      "phase": "Phase 3",
+      "time": "8 – 13 min",
+      "title": "Why You Cannot Just Delete One Rule",
+      "colour": "purple",
+      "whatToSay": "'Here is the problem. In an old-fashioned program — like the IF/ELSE rules we learned before — if a rule is unfair, you can find it and delete it. But machine learning does not work that way.'",
+      "whatToDo": [
+        "Draw two columns on the board: RULE-BASED vs MACHINE LEARNING.",
+        "Under RULE-BASED write: 'IF postcode = 1071 THEN score +10.' Say: 'This is easy to find and easy to fix. You delete the rule.'",
+        "Under MACHINE LEARNING write: 'Bias is spread across thousands of learned weights. There is no single rule to delete.'",
+        "Explain: 'A machine learning model learns patterns from data — thousands of them. The bias is not in one place. It is distributed. Removing the postcode feature might not fix the problem if other features — like commute type, hobby, or graduation year — carry the same signal.'",
+        "Ask the pressure question: 'Imagine you are a company. You spent €2 million building a hiring model. Your audit finds it is biased. Fixing it means throwing away the model and starting over with new data. What do you do?'",
+        "Take 2–3 answers. Do not resolve it — this tension is the point.",
+        "Close: 'Joy Buolamwini faced exactly this. The companies knew the data was biased. Fixing it was expensive and time-consuming. She published the audit anyway — and the world changed.'"
+      ],
+      "conversationStarter": "If students think deletion is enough, try: 'Say we delete postcode from the dataset. But commute type is still there — 'car' correlates with suburban postcodes. And hobby is still there — golf and sailing correlate with wealth. The proxy bias moves. How do you audit for something that keeps shifting?'"
+    },
+    {
+      "id": "slide-phase4-setup",
+      "phase": "Phase 4",
+      "time": "13 – 14 min",
+      "title": "Dataset Audit Challenge — Setup",
+      "colour": "orange",
+      "whatToSay": "'Now it is your turn. You are going to audit a real dataset — the kind of data a company might use to train a hiring model. In groups of three, you are going to find the bias, write a policy to fix it, and then face a hard question about trade-offs.'",
+      "whatToDo": [
+        "Form groups of three.",
+        "Display or hand out the hiring-audit dataset (employees A–E).",
+        "Explain the dataset: 'This dataset shows five employees who were hired. Each has a postcode, commute type, graduation year, and hobbies. A company wants to train a model on this data to predict which future applicants to hire.'",
+        "Say: 'Your job is to audit this dataset — before the model is trained. Find the problems before they become the model's problems.'"
+      ]
+    },
+    {
+      "id": "slide-phase4-round1",
+      "phase": "Phase 4 — Round 1",
+      "time": "14 – 18 min",
+      "title": "Feature Audit",
+      "colour": "orange",
+      "whatToSay": "'Round 1: inspect every feature in this dataset. For each one, ask: could this act as a proxy for something protected? You have 4 minutes.'",
+      "whatToDo": [
+        "Walk around the room. Push groups to go beyond the obvious.",
+        "Ask: 'Postcode — what could that be a proxy for?'",
+        "Ask: 'Commute type — all five drive a car. What does that tell the model about people who take public transport?'",
+        "Ask: 'Hobbies — golf, sailing, skiing. Are these hobbies equally accessible to everyone?'",
+        "Ask: 'Graduation year — could that discriminate against older or younger candidates?'",
+        "The critical question: 'How many employees are in this dataset? Five. Can a model trained on five people generalise fairly to thousands of applicants?'",
+        "After 4 minutes, take one finding per group quickly."
+      ],
+      "conversationStarter": "If a group says 'we don't see any bias', push: 'Every single employee drives a car. If the model trains on this data, what does it learn about people who cycle or take the bus? Are they less likely to be hired? Is that fair?'"
+    },
+    {
+      "id": "slide-exercise1",
+      "exerciseId": "exercise-15-1",
+      "phase": "Exercise 1",
+      "time": "2 – 8 min",
+      "title": "Proxy Variable Detection",
+      "colour": "green",
+      "whatToSay": "'Look at the three hiring features on the board — polo, sailing magazine, second home. Your job: name what protected characteristic each one acts as a proxy for, and explain the mechanism.'",
+      "rules": [
+        "Name the protected characteristic each proxy indirectly reveals.",
+        "Explain the mechanism — not just 'it's biased' but HOW it creates unfairness.",
+        "Provide one real-world proxy candidate beyond these examples.",
+        "State one way to test whether a feature is acting as a proxy."
+      ],
+      "whatToDo": [
+        "This exercise runs during Phase 2 — the proxy variable analysis.",
+        "After the discussion, push students to name one proxy they encounter in their own lives."
+      ]
+    },
+    {
+      "id": "slide-phase4-round2",
+      "phase": "Phase 4 — Round 2",
+      "time": "18 – 23 min",
+      "title": "Write a Data Policy",
+      "colour": "orange",
+      "whatToSay": "'Round 2: based on your audit, write a data policy. Which features should be excluded? Which new data should be added? And for every exclusion, you must explain why — the causal mechanism, not just a feeling. You have 5 minutes.'",
+      "whatToDo": [
+        "Walk around pushing for causal mechanisms: 'You want to exclude postcode. Why specifically? What is the pathway from postcode to unfair hiring?'",
+        "Push for additions: 'You have excluded three features. But now the model has less data to work with. What should you add instead to make the model fairer AND useful?'",
+        "Ask: 'Who is missing from this dataset entirely? All five employees look similar. What populations are not represented? How would that affect the model?'",
+        "Require one monitoring metric: 'After the model is deployed with your policy — how will you check if it is actually fairer? What will you measure?'",
+        "After 5 minutes, ask one group to share their exclusion list and one required addition."
+      ],
+      "conversationStarter": "If a group struggles with additions, try: 'You removed postcode and hobbies. Now the model has almost nothing to learn from. What data would actually be relevant to job performance? Skills assessments? Work samples? Structured interviews? What data measures ability, not background?'"
+    },
+    {
+      "id": "slide-exercise2",
+      "exerciseId": "exercise-15-2",
+      "phase": "Exercise 2",
+      "time": "14 – 18 min",
+      "title": "Hiring Dataset Audit",
+      "colour": "green",
+      "whatToSay": "'Audit every feature in the dataset. Flag proxy risks, representation gaps, and sample-size problems. Rank your top three findings by potential harm.'",
+      "whatToDo": [
+        "This exercise runs during Phase 4 Round 1 — groups audit the dataset.",
+        "See Phase 4 Round 1 slide for full facilitation instructions."
+      ]
+    },
+    {
+      "id": "slide-exercise3",
+      "exerciseId": "exercise-15-3",
+      "phase": "Exercise 3",
+      "time": "18 – 23 min",
+      "title": "Data Policy Draft",
+      "colour": "green",
+      "whatToSay": "'Write a data policy: which features are excluded and why, which data is added, and how you will monitor fairness after deployment.'",
+      "whatToDo": [
+        "This exercise runs during Phase 4 Round 2 — groups write their data policy.",
+        "See Phase 4 Round 2 slide for full facilitation instructions."
+      ]
+    },
+    {
+      "id": "slide-phase4-round3",
+      "phase": "Phase 4 — Round 3",
+      "time": "23 – 24 min",
+      "title": "The Fairness-vs-Accuracy Dilemma",
+      "colour": "orange",
+      "whatToSay": "'Here is the hard part. You removed proxy features to make the model fairer. But now the model is less accurate — it has fewer signals to learn from. The company says: our fairer model is 15% less accurate at predicting good hires. What do you do?'",
+      "whatToDo": [
+        "Let the tension land. Do not resolve it quickly.",
+        "Take 2–3 positions from the class.",
+        "Push both sides: 'If you accept less accuracy — real hiring mistakes increase. If you keep the biased features — discrimination continues. There is no clean answer.'",
+        "Say: 'This is exactly the dilemma Joy Buolamwini surfaced. The companies knew fixing the system would cost accuracy and money. She published the audit anyway, because the alternative was continued harm.'",
+        "Close: 'The point is not to find the perfect answer. The point is to make the trade-off visible and decide transparently — not pretend it does not exist.'"
+      ]
+    },
+    {
+      "id": "slide-phase5",
+      "phase": "Phase 5",
+      "time": "24 – 28 min",
+      "title": "Discussion",
+      "colour": "teal",
+      "whatToDo": [
+        "Pick the question below that feels most alive based on how the class went.",
+        "One strong discussion is better than two rushed ones.",
+        "Give students a moment to think before taking answers."
+      ],
+      "discussionQuestions": [
+        "'How do we distinguish harmful proxy use from contextually valid signal use?' Follow-up: 'Is postcode always unfair? What if you are a delivery company optimising routes — is postcode relevant then?'",
+        "'If a deployed model is biased, should it be shut down immediately or run during replacement? Who decides — the company, the regulator, or the people affected?'",
+        "'What obligation does a company have to tell people they were rejected by a biased model? Should past decisions be reviewed?'"
+      ],
+      "conversationStarter": "If discussion is slow, try: 'Imagine you applied for a job and were rejected by an AI. Later you find out the AI was trained on biased data. Should the company tell you? Should they re-review your application? What if thousands of people were affected — who pays for that?'"
+    },
+    {
+      "id": "slide-exercise4",
+      "exerciseId": "exercise-15-4",
+      "phase": "Exercise 4",
+      "time": "28 – 30 min",
+      "title": "Exit Reflection — Unintended Bias",
+      "colour": "green",
+      "whatToSay": "'Final task. On your own, complete this sentence: An algorithm can be biased without anyone intending it to be, because _______.'"
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share & Reflect",
+      "time": "28 – 30 min",
+      "title": "Close the Lesson",
+      "colour": "pink",
+      "whatToDo": [
+        "Ask every student to write and complete the sentence on paper or sticky note.",
+        "They must reference training data, proxy variables, or representation gaps — not just say 'computers make mistakes.'",
+        "Collect papers or stick them on the board.",
+        "Read 2–3 strong responses aloud."
+      ],
+      "exitReflection": "An algorithm can be biased without anyone intending it to be, because _______.",
+      "whatToSay": "Close with: 'Joy Buolamwini proved that a system can be biased without anyone writing a single discriminatory line of code. You just proved the same thing with a hiring dataset. Next lesson, you will take everything you have learned and design a system of your own — and you will have to answer the hardest question of all: who does your system leave out?'",
+      "conversationStarter": "If reflections are shallow, push: 'Do not just say computers make mistakes. Be specific. Which part of the process created the bias? Was it the data collection? The feature selection? The missing populations? Name the mechanism.'"
     }
   ]
 }

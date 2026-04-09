@@ -6,6 +6,37 @@
   "level": "Intermediate",
   "ageGroup": "High school (ages 12-17)",
   "imageUrl": "/static/images/highschool-placeholder.svg",
+  "roleModelOfDay": {
+    "name": "Margaret Hamilton",
+    "years": "born 1936",
+    "intro": "The lead software engineer for NASA's Apollo guidance computer — she wrote the code that landed humans on the Moon, and her software had to process streams of real-time data without ever crashing."
+  },
+  "vocabulary": [
+    {
+      "word": "Loop",
+      "def": "An instruction that repeats a set of steps multiple times"
+    },
+    {
+      "word": "FOR loop",
+      "def": "A loop that repeats a fixed number of times (you know the count in advance)"
+    },
+    {
+      "word": "WHILE loop",
+      "def": "A loop that repeats as long as a condition is true (you do not know when it will stop)"
+    },
+    {
+      "word": "Array",
+      "def": "An ordered list of values stored together so a loop can process them one by one"
+    },
+    {
+      "word": "Data parsing",
+      "def": "Reading through data and extracting the information you need"
+    },
+    {
+      "word": "Redundancy",
+      "def": "Unnecessary repetition in code that makes it harder to maintain and more likely to contain errors"
+    }
+  ],
   "learningObjectives": [
     "Explain what a loop is and why loops reduce redundancy in code.",
     "Distinguish when to use a FOR loop versus a WHILE loop.",
@@ -19,34 +50,9 @@
     "Pre-written dataset of 10 ocean temperature anomaly readings"
   ],
   "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students explain loops, distinguish FOR and WHILE behavior, and write plain-language instructions that process data for climate risk detection.",
-  "vocabulary": [
-    "Loop",
-    "FOR loop",
-    "WHILE loop",
-    "Array",
-    "Data parsing",
-    "Redundancy"
-  ],
-  "roleModel": {
-    "name": "Margaret Hamilton",
-    "years": "born 1936",
-    "summary": "Lead software engineer for NASA Apollo guidance software that processed large real-time data streams during Moon missions.",
-    "whyItMatters": "Her work showed that software quality and loop efficiency are engineering-critical, not optional."
-  },
-  "climateDataset": [
-    -2,
-    4,
-    1,
-    -5,
-    8,
-    3.2,
-    0,
-    6,
-    -1,
-    5
-  ],
+  "climateDataset": [-2, 4, 1, -5, 8, 3.2, 0, 6, -1, 5],
   "teacherInstructions": {
-    "setup": "Write the vocabulary and the 10 anomaly readings on the board before students arrive.",
+    "setup": "Write vocabulary on the board and keep it visible all lesson. Write the 10 ocean temperature anomaly readings on the board: −2, 4, 1, −5, 8, 3.2, 0, 6, −1, 5. Have paper and pencils ready for group work.",
     "steps": [
       "Phase 1 (0-2 min): Ask spark question about 3.5 billion climate data points and what happens if instructions are wrong.",
       "Phase 1 hook: connect loops to hurricane, heatwave, and flood forecasting pipelines that no human can parse manually.",
@@ -83,7 +89,7 @@
   "studentExercises": [
     {
       "id": "exercise-11-1",
-      "title": "Exercise 1 - Human Loop Simulation",
+      "title": "Human Loop Simulation",
       "description": "Experience redundancy versus looping by comparing repeated manual instructions with a repeat rule.",
       "type": "Unplugged simulation",
       "difficulty": "Easy",
@@ -108,7 +114,7 @@
     },
     {
       "id": "exercise-11-2",
-      "title": "Exercise 2 - FOR vs WHILE Decisions",
+      "title": "FOR vs WHILE Decisions",
       "description": "Classify scenarios by loop type and justify stop behavior.",
       "type": "Classification",
       "difficulty": "Medium",
@@ -132,7 +138,7 @@
     },
     {
       "id": "exercise-11-3",
-      "title": "Exercise 3 - Climate Data Parsing Loop",
+      "title": "Climate Data Parsing Loop",
       "description": "Write and trace loop logic that flags anomalies above threshold and extends to early-stop and averaging behavior.",
       "type": "Data parsing",
       "difficulty": "Hard",
@@ -159,7 +165,7 @@
     },
     {
       "id": "exercise-11-4",
-      "title": "Exit Reflection - Choosing Loop Types",
+      "title": "Exit Reflection — Choosing Loop Types",
       "description": "Write one sentence explaining when FOR is preferable and when WHILE is preferable.",
       "type": "Reflection",
       "difficulty": "Easy",
@@ -228,6 +234,262 @@
         "Student links data assumptions to decision quality.",
         "Student recognizes governance responsibility in technical systems."
       ]
+    }
+  ],
+  "lessonSlides": [
+    {
+      "id": "slide-prep",
+      "phase": "Before You Start",
+      "time": "Preparation",
+      "title": "Get the Room Ready",
+      "colour": "indigo",
+      "whatToDo": [
+        "Write these six words on the board — leave them visible all lesson:",
+        "Loop: an instruction that repeats a set of steps multiple times",
+        "FOR loop: a loop that repeats a fixed number of times (you know the count in advance)",
+        "WHILE loop: a loop that repeats as long as a condition is true (you do not know when it will stop)",
+        "Array: an ordered list of values stored together so a loop can process them one by one",
+        "Data parsing: reading through data and extracting the information you need",
+        "Redundancy: unnecessary repetition in code that makes it harder to maintain",
+        "Write the 10 ocean temperature anomaly readings on the board:",
+        "−2, 4, 1, −5, 8, 3.2, 0, 6, −1, 5",
+        "Label them: 'Ocean Temperature Anomaly Readings (°C above/below average)'",
+        "Have paper and pencils ready for group work."
+      ]
+    },
+    {
+      "id": "slide-rolemodel",
+      "phase": "Role Model of the Day",
+      "time": "Before class begins",
+      "title": "Margaret Hamilton",
+      "colour": "indigo",
+      "roleModel": "Margaret Hamilton (born 1936) was the lead software engineer for NASA's Apollo guidance computer — the system that landed humans on the Moon. She and her team at MIT wrote the software that processed real-time navigation data, engine instructions, and astronaut commands simultaneously during spaceflight. During the Apollo 11 landing, minutes before touchdown, the computer was overloaded with data — too many tasks were running at once. The software Margaret wrote had been designed to handle exactly this situation: it prioritised the critical landing tasks and discarded the less important ones. The landing succeeded because the software's loop and priority logic was robust enough to handle a crisis autonomously. Margaret Hamilton is also credited with coining the term 'software engineering' — she argued that building software should be taken as seriously as building bridges or aircraft. Before her, programming was often dismissed as clerical work. She proved it was an engineering discipline where mistakes could cost lives.",
+      "whatToSay": "Introduce Margaret simply: 'Today's role model wrote the software that landed humans on the Moon. Her name is Margaret Hamilton. During the Apollo 11 landing — minutes before touchdown — the computer was overwhelmed with data. Her software handled it: it figured out which tasks were critical and dropped the rest. The landing succeeded because her loops and priorities worked under pressure. Today, you are going to learn about the same thing — loops — and how they process large amounts of data.'",
+      "whatToDo": [
+        "Keep the intro to about 60 seconds — the Apollo 11 overload moment is the hook.",
+        "You can return to Margaret naturally at these moments in the lesson:",
+        "Phase 2 (human loop demo): 'Margaret Hamilton's code had to process navigation data over and over — every second, in a loop. If the loop failed once, the spacecraft was lost.'",
+        "Phase 3 (FOR vs WHILE): 'Margaret's software had WHILE loops monitoring sensor data: keep checking oxygen levels while astronauts are in space. If the stop condition failed, the loop would run forever and consume all the computer's resources.'",
+        "Phase 4 Round 2 (early-stop logic): 'During Apollo 11, Margaret's software stopped processing non-critical tasks when the computer was overloaded. That is an early-stop condition — exactly what you are adding to your loop now.'",
+        "Exit reflection: 'Margaret Hamilton proved that loops are not just about repetition — they are about safety. She designed loops that worked under the most extreme conditions in human history.'"
+      ],
+      "realWorldConnection": "Margaret Hamilton's Apollo software processed real-time data streams using the same loop concepts students learn today. The 1202 alarm during Apollo 11 — which could have aborted the landing — was resolved by her priority and loop logic. Every modern system that processes sensor data in real time — from weather stations to self-driving cars — uses the same principles she pioneered."
+    },
+    {
+      "id": "slide-rolemodel-integration",
+      "phase": "Role Model — Using Her in Class",
+      "time": "Reference throughout",
+      "title": "Bringing Margaret Into the Lesson",
+      "colour": "indigo",
+      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Margaret in:",
+      "whatToDo": [
+        "LESSON INTRO — right now: One fact. 'She wrote the code that landed humans on the Moon — and it worked because her loops were bulletproof.' That's enough.",
+        "PHASE 2 — when drawing repeated stars: 'Margaret's navigation code had to run the same calculation thousands of times per second. Writing it out line by line was impossible. Loops made it possible — and reliable.'",
+        "PHASE 3 — when introducing WHILE loops: 'Margaret's software had WHILE loops monitoring life-critical data: keep checking oxygen while astronauts are breathing. If the sensor broke and the WHILE condition never updated, the loop would run forever. She planned for that.'",
+        "PHASE 4 Round 1 — when students trace their first FOR loop: 'You are processing 10 readings. Margaret's software processed thousands per second — same logic, bigger scale.'",
+        "PHASE 4 Round 2 — when students add early-stop: 'During Apollo 11, Margaret's code stopped non-essential tasks when the computer was overwhelmed. That is exactly what you are doing: adding a stop condition to protect the system.'",
+        "EXIT REFLECTION — as the final word: 'Margaret Hamilton proved that loops are not just about saving time — they are about saving lives. You just wrote loop logic for climate data. She wrote it for the Moon landing.'"
+      ],
+      "realWorldConnection": "Margaret Hamilton coined the term 'software engineering.' Before her, programming was often seen as typing, not engineering. She proved that software is safety-critical infrastructure — and that the quality of a loop can determine whether a mission succeeds or fails."
+    },
+    {
+      "id": "slide-overview",
+      "phase": "Lesson Intro",
+      "time": "0 min",
+      "title": "What We're Doing Today",
+      "colour": "violet",
+      "whatToSay": "Welcome the class: 'Today we are going to learn about loops — how computers repeat instructions to process massive amounts of data. You are going to use loops to analyse real climate data — ocean temperature readings that tell us whether the planet is warming dangerously. By the end, you will know two types of loop, when to use each one, and why getting a loop wrong can have serious consequences.'",
+      "whatToDo": [
+        "Point to the vocabulary on the board: 'These six words are what we're working with today.'",
+        "Point to the dataset: 'These 10 numbers are ocean temperature anomaly readings — how far above or below average each measurement is. You are going to write instructions that process all 10 automatically.'",
+        "This lesson is 30 minutes. Keep transitions sharp."
+      ]
+    },
+    {
+      "id": "slide-phase1",
+      "phase": "Phase 1",
+      "time": "0 – 2 min",
+      "title": "Spark Question",
+      "colour": "yellow",
+      "whatToSay": "Ask the class: 'Climate scientists collect about 3.5 billion data points per day — from satellites, ocean buoys, weather stations, and sensors around the world. No human can read 3.5 billion numbers. So how do they find the dangerous ones?'",
+      "whatToDo": [
+        "Take 2–3 quick answers.",
+        "Students may say: 'computers', 'AI', 'algorithms.'",
+        "Say: 'Yes — but specifically, they use loops. A loop is an instruction that says: go through every data point, one by one, and check whether it crosses a danger threshold. If it does — flag it. If it doesn't — move on. That is exactly what you are going to build today.'",
+        "Connect to consequences: 'If the loop logic is wrong — if it misses a dangerous reading or flags too many safe ones — forecasts fail. Hurricane warnings are late. Flood defences are triggered too early or too late. The loop matters.'"
+      ],
+      "conversationStarter": "If the class is quiet, try: 'Think about checking the temperature of a swimming pool. You dip a thermometer in once. Now imagine checking the temperature of every square metre of every ocean on Earth, every hour. That is 3.5 billion readings. You cannot do it by hand. You need a loop.'"
+    },
+    {
+      "id": "slide-phase2",
+      "phase": "Phase 2",
+      "time": "2 – 8 min",
+      "title": "The Human Loop Demo",
+      "colour": "blue",
+      "whatToSay": "'I am going to show you why loops exist. Watch what happens when I do NOT use a loop.'",
+      "whatToDo": [
+        "Go to the whiteboard. Say: 'I am going to draw five stars.'",
+        "Write out, line by line: 'Step 1: Draw a star. Step 2: Draw a star. Step 3: Draw a star. Step 4: Draw a star. Step 5: Draw a star.'",
+        "Draw each star as you go. Then ask: 'What if I need 1,000 stars? Do I write 1,000 lines?'",
+        "Say: 'That is redundancy — the same instruction copied over and over. If I want to change stars to circles, I have to change 1,000 lines. If I miss one, the output is wrong.'",
+        "Now rewrite: 'REPEAT 5 TIMES: Draw a star.'",
+        "Say: 'One line. Same result. If I need 1,000, I change the number to 1,000. If I want circles, I change one word. That is what a loop does — it removes redundancy.'",
+        "Ask: 'What if I add 50 more sensors to a climate station? With repeated lines, I update 50 instructions. With a loop, I change one number.'",
+        "Close: 'Loops are not just convenient. They are safer, easier to maintain, and the only way to process large datasets. Margaret Hamilton's code processed navigation data in loops — thousands of calculations per second. Same idea, higher stakes.'"
+      ],
+      "conversationStarter": "If students seem unimpressed, escalate: 'What if one of those 1,000 lines had a typo? How would you find it? With a loop, there is only one line to check. With 1,000 copies, the bug could be anywhere. That is why loops are a safety feature, not just a shortcut.'"
+    },
+    {
+      "id": "slide-exercise1",
+      "exerciseId": "exercise-11-1",
+      "phase": "Exercise 1",
+      "time": "2 – 8 min",
+      "title": "Human Loop Simulation",
+      "colour": "green",
+      "whatToSay": "'Compare the two approaches: 5 separate lines vs one loop. Which is safer? Which is easier to update? Write one sentence explaining why loops reduce redundancy.'",
+      "whatToDo": [
+        "This exercise runs during Phase 2.",
+        "After the demo, push students to connect loops to large-scale scenarios: 'If you had 10,000 sensors, would you write 10,000 lines?'"
+      ]
+    },
+    {
+      "id": "slide-phase3",
+      "phase": "Phase 3",
+      "time": "8 – 13 min",
+      "title": "FOR Loop vs WHILE Loop",
+      "colour": "purple",
+      "whatToSay": "'There are two types of loop — and knowing which one to use is a critical engineering decision.'",
+      "whatToDo": [
+        "Write FOR LOOP on the left side of the board and WHILE LOOP on the right.",
+        "FOR LOOP: 'A FOR loop repeats a fixed number of times. You know in advance how many times it will run.'",
+        "Example 1: 'Check each student's homework — FOR each student in the class, check their homework. You know how many students there are. The loop runs exactly that many times.'",
+        "Example 2: 'Process 10 temperature readings — FOR each reading in the dataset, check if it is above threshold. You know there are 10 readings.'",
+        "WHILE LOOP: 'A WHILE loop repeats as long as a condition is true. You do NOT know in advance when it will stop.'",
+        "Example 1: 'A heater — WHILE room temperature is below 20°C, keep heating. It stops when the temperature reaches 20. But you do not know in advance how many minutes that will take.'",
+        "Example 2: 'A ventilator — WHILE the patient is breathing below safe levels, keep pumping. It stops when levels are safe. You do not know when that will be.'",
+        "Now the danger: 'What happens if the thermostat breaks and always reads 15°C? The WHILE loop never stops. The heater runs forever. That is an infinite loop — and in a hospital ventilator or a car's braking system, it can be lethal.'",
+        "Say: 'A FOR loop is predictable — it always stops. A WHILE loop is flexible — but it only stops if the condition can actually change. If it cannot, you have a disaster.'",
+        "Ask: 'Who is responsible for making sure a WHILE-loop stop condition is reachable? The programmer? The sensor manufacturer? The hospital?'"
+      ],
+      "realWorldConnection": "The Boeing 737 MAX crashes involved feedback loops in the MCAS system. The system repeatedly pushed the nose down based on sensor input. The sensor was faulty, but the loop kept running — pilots could not override it fast enough. The loop logic worked as designed. The design was unsafe. 346 people died.",
+      "conversationStarter": "If FOR vs WHILE feels abstract, try: 'A FOR loop is like a washing machine cycle — 30 minutes, then it stops. A WHILE loop is like a smoke alarm — it keeps checking while smoke is detected. What happens if the smoke detector breaks and always detects smoke?'"
+    },
+    {
+      "id": "slide-exercise2",
+      "exerciseId": "exercise-11-2",
+      "phase": "Exercise 2",
+      "time": "8 – 13 min",
+      "title": "FOR vs WHILE Decisions",
+      "colour": "green",
+      "whatToSay": "'Classify each scenario: is it a FOR loop or a WHILE loop? For each WHILE loop, name the stop condition — and predict what happens if it breaks.'",
+      "whatToDo": [
+        "This exercise runs during Phase 3.",
+        "Push students to always name the stop condition for WHILE loops.",
+        "If students classify everything as FOR, challenge: 'Can you use a FOR loop for a heater? How many times should it run? You do not know — that is why it needs WHILE.'"
+      ]
+    },
+    {
+      "id": "slide-phase4-round1",
+      "phase": "Phase 4 — Round 1",
+      "time": "13 – 16 min",
+      "title": "Climate Data — FOR Loop",
+      "colour": "orange",
+      "whatToSay": "'Now you are going to write a real loop. Look at the 10 readings on the board. Your task: write a FOR loop that checks every reading and flags a WARNING if it is above 3 degrees.'",
+      "whatToDo": [
+        "Point to the dataset: −2, 4, 1, −5, 8, 3.2, 0, 6, −1, 5",
+        "Say: 'Write this in plain language — not code. FOR each reading in the dataset: IF reading > 3, print WARNING. OTHERWISE print SAFE.'",
+        "Give students 2 minutes to trace through all 10 readings on paper.",
+        "Expected results:",
+        "−2 → SAFE, 4 → WARNING, 1 → SAFE, −5 → SAFE, 8 → WARNING, 3.2 → WARNING, 0 → SAFE, 6 → WARNING, −1 → SAFE, 5 → WARNING",
+        "Ask: 'How many warnings?' Answer: 5 (readings: 4, 8, 3.2, 6, 5).",
+        "Close: 'You just processed 10 readings with one instruction. Climate scientists use the same logic on 3.5 billion readings. Same loop — bigger array.'"
+      ],
+      "conversationStarter": "If students make errors tracing, slow down: 'Go reading by reading. −2: is it above 3? No. SAFE. 4: is it above 3? Yes. WARNING. Keep going — the loop works the same way every time.'"
+    },
+    {
+      "id": "slide-phase4-round2",
+      "phase": "Phase 4 — Round 2",
+      "time": "16 – 22 min",
+      "title": "Early Stop and Averaging",
+      "colour": "orange",
+      "whatToSay": "'Your monitoring system does not need to process all 10 readings. It needs to raise an alert after three warnings. Modify your loop to stop after three warnings — and compute the average of those three flagged readings.'",
+      "whatToDo": [
+        "Form groups of three.",
+        "Say: 'You need two new things: a counter that tracks how many warnings you have found, and a running total to calculate the average.'",
+        "Walk around. Key questions to ask groups:",
+        "'Where does your loop store the warning count? It needs a variable.'",
+        "'When do you stop? After the counter reaches 3.'",
+        "'What type of loop is this now? You started with FOR — but now you need to stop early based on a condition. Is that still a FOR loop?'",
+        "Guide: 'Strictly, this is now a WHILE loop — WHILE warning count < 3 AND there are readings left. But many languages let you break out of a FOR loop early.'",
+        "Expected first three warnings: reading 4 (index 2), reading 8 (index 5), reading 3.2 (index 6). Total: 15.2. Average: 15.2 ÷ 3 ≈ 5.07°C.",
+        "After most groups finish, verify the answer together: 'The first three flagged readings are 4, 8, and 3.2. Average: about 5.07 degrees above normal.'",
+        "Close: 'Margaret Hamilton's Apollo software did exactly this — it stopped non-essential tasks when the computer was overloaded. That is an early-stop condition. You just built one.'"
+      ],
+      "conversationStarter": "If groups forget the counter, push: 'Your loop has no memory right now. It checks readings but does not remember how many warnings it has found. How does it know when to stop? You need a variable — a piece of information the loop carries with it.'"
+    },
+    {
+      "id": "slide-exercise3",
+      "exerciseId": "exercise-11-3",
+      "phase": "Exercise 3",
+      "time": "13 – 22 min",
+      "title": "Climate Data Parsing Loop",
+      "colour": "green",
+      "whatToSay": "'Write a FOR loop to flag readings above 3°C. Then modify it: stop after three warnings and compute their average.'",
+      "rules": [
+        "Write in plain language — not code syntax.",
+        "Trace every reading and mark WARNING or SAFE.",
+        "Add a warning counter and a running total.",
+        "Stop after three warnings.",
+        "Compute and verify the average: approximately 5.07°C."
+      ],
+      "whatToDo": [
+        "This exercise spans Phase 4 Rounds 1 and 2.",
+        "See the Phase 4 slides for full facilitation instructions."
+      ]
+    },
+    {
+      "id": "slide-phase5",
+      "phase": "Phase 5",
+      "time": "24 – 28 min",
+      "title": "Discussion",
+      "colour": "teal",
+      "whatToDo": [
+        "Pick the question below that feels most alive based on how the class went.",
+        "One strong discussion is better than two rushed ones.",
+        "Give students a moment to think before taking answers."
+      ],
+      "discussionQuestions": [
+        "'Your loop uses a threshold of 3 degrees. Who decided that number? What if the ocean baseline shifts — should the threshold change? Who authorises that change, and how often should it be reviewed?'",
+        "'In critical infrastructure — hospitals, aircraft, power grids — WHILE loops monitor sensor data continuously. Who is responsible if the stop condition becomes unreachable? The programmer? The sensor manufacturer? The operator?'",
+        "'The Boeing 737 MAX had a feedback loop that worked as designed — but the design was unsafe. 346 people died. Is the loop the problem, or the people who approved the design?'"
+      ],
+      "conversationStarter": "If discussion is slow, try: 'You set a threshold of 3 degrees for today. But what if ocean temperatures rise so much that 3 degrees above average becomes the new normal? Your loop would flag every single reading. Is the threshold wrong — or has the planet changed? Who updates the number?'"
+    },
+    {
+      "id": "slide-exercise4",
+      "exerciseId": "exercise-11-4",
+      "phase": "Exercise 4",
+      "time": "28 – 30 min",
+      "title": "Exit Reflection — Choosing Loop Types",
+      "colour": "green",
+      "whatToSay": "'Final task. On your own, complete this sentence: A FOR loop is better when ______, and a WHILE loop is better when ______.'"
+    },
+    {
+      "id": "slide-reflect",
+      "phase": "Share & Reflect",
+      "time": "28 – 30 min",
+      "title": "Close the Lesson",
+      "colour": "pink",
+      "whatToDo": [
+        "Ask every student to write and complete the sentence on paper or sticky note.",
+        "They must use one concrete classroom example for each blank.",
+        "They must check that their WHILE example has a reachable stop condition.",
+        "Collect papers or stick them on the board.",
+        "Read 2–3 strong responses aloud."
+      ],
+      "exitReflection": "A FOR loop is better when ______, and a WHILE loop is better when ______.",
+      "whatToSay": "Close with: 'Margaret Hamilton proved that loops are not just about saving time — they are about saving lives. You wrote loop logic for climate data today. She wrote it for the Moon landing. The principle is the same: repeat carefully, stop safely, and know what happens if the data changes. Next lesson, you will learn how large teams build software by breaking problems into independent parts — functions and modules.'",
+      "conversationStarter": "If reflections are shallow, push: 'Do not just say FOR is for counting and WHILE is for conditions. Use your examples. FOR checking 10 climate readings — you know there are 10. WHILE heating a room — you do not know when it reaches 20 degrees. Be concrete.'"
     }
   ]
 }
