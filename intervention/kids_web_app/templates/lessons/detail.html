@@ -59,6 +59,50 @@
         {% endfor %}
       </div>
       {% endif %}
+
+      {# ── Interactive exercise widget ───────────────────────────── #}
+      {% if ex.type == 'Written' %}
+      <div class="ex-widget ex-written mt-4" id="widget-{{ ex.id }}" data-ex-id="{{ ex.id }}">
+        <div class="form-group">
+          <label class="form-label" for="task-select-{{ ex.id }}">Choose your task:</label>
+          <select class="form-select" id="task-select-{{ ex.id }}">
+            <option value="">-- Pick a task --</option>
+            <option value="school">Getting ready for school</option>
+            <option value="milk">Making chocolate milk</option>
+            <option value="pet">Feeding a pet</option>
+          </select>
+        </div>
+        <div class="text-xs mb-2" style="color:var(--text-muted)">Steps written: <span class="step-count" style="font-weight:700">0</span></div>
+        <div class="steps-list" id="steps-{{ ex.id }}"></div>
+        <div class="flex gap-2 mt-3">
+          <button class="btn btn-outline btn-sm add-step-btn" data-target="{{ ex.id }}">+ Add Step</button>
+          <button class="btn btn-primary btn-sm submit-steps-btn" data-target="{{ ex.id }}">Submit Algorithm</button>
+        </div>
+        <div class="submit-confirmation text-sm mt-2" style="color:#4CAF50;display:none">Saved! Your algorithm has been saved to this device.</div>
+      </div>
+
+      {% elif ex.type == 'Sorting' %}
+      <div class="ex-widget ex-sorting mt-4" id="widget-{{ ex.id }}" data-ex-id="{{ ex.id }}"
+           data-items='{{ (ex.sortableItems or []) | tojson }}'>
+        <div class="sort-list" id="sort-list-{{ ex.id }}"></div>
+        <div class="flex gap-2 mt-3">
+          <button class="btn btn-primary btn-sm check-sort-btn" data-target="{{ ex.id }}">Check my answer</button>
+          <button class="btn btn-secondary btn-sm reset-sort-btn" data-target="{{ ex.id }}">Shuffle again</button>
+        </div>
+        <div class="sort-score mt-2 text-sm" style="display:none"></div>
+      </div>
+
+      {% elif ex.type == 'Extension' %}
+      <div class="ex-widget ex-extension mt-4" id="widget-{{ ex.id }}" data-ex-id="{{ ex.id }}"
+           data-sections='{{ (ex.sections or []) | tojson }}'>
+        <div class="sections-list" id="sections-{{ ex.id }}"></div>
+        <div class="flex gap-2 mt-3">
+          <button class="btn btn-primary btn-sm submit-steps-btn" data-target="{{ ex.id }}">Save Extension</button>
+        </div>
+        <div class="submit-confirmation text-sm mt-2" style="color:#4CAF50;display:none">Saved! Your robot chef algorithm has been saved.</div>
+      </div>
+      {% endif %}
+
     </div>
     {% endfor %}
     {% endif %}
@@ -115,4 +159,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/exercises.js') }}"></script>
 {% endblock %}
