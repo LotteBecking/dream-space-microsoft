@@ -29,7 +29,7 @@
       "time": "Preparation",
       "title": "Get the Room Ready",
       "colour": "violet",
-      "roleModel": "Hedy Lamarr (1914\u20132000) was a film actress and inventor who co-invented a radio communication system during World War II that changed signals rapidly so enemies could not intercept them. Her invention \u2014 frequency hopping \u2014 was ignored during her lifetime but became the foundation for modern Wi-Fi, Bluetooth, and GPS encryption. Today every phone call, every Wi-Fi connection, and every Bluetooth device uses a descendant of her idea.",
+      "roleModel": "Hedy Lamarr (1914–2000) was a film actress and inventor who co-invented a radio communication system during World War II that changed signals rapidly so enemies could not intercept them. Her invention — frequency hopping — was ignored during her lifetime but became the foundation for modern Wi-Fi, Bluetooth, and GPS encryption. Today every phone call, every Wi-Fi connection, and every Bluetooth device uses a descendant of her idea.",
       "whatToDo": [
         "Write these five words on the board and leave them visible all lesson:",
         "Encryption: scrambling information so only the intended person can read it",
@@ -43,64 +43,65 @@
         "Have paper and pencils ready for every student.",
         "Optional: prepare one envelope per group for the message-passing game in Phase 4."
       ],
-      "tip": "Do not reveal the Caesar shift amount before Phase 2 \u2014 the warm-up only works if students have to discover the rule themselves."
+      "tip": "Do not reveal the Caesar shift amount before Phase 2 — the warm-up only works if students have to discover the rule themselves."
     },
     {
       "id": "slide-phase1",
       "phase": "Phase 1",
-      "time": "0\u20133 min",
-      "title": "Spark Question \u2014 How Does WhatsApp Keep Your Messages Private?",
+      "time": "0–3 min",
+      "title": "Spark Question — How Does WhatsApp Keep Your Messages Private?",
       "colour": "violet",
       "whatToSay": "When you send a message to a friend on WhatsApp, it travels through dozens of computers before it arrives. Any of those computers could read it. So how does WhatsApp make sure nobody except your friend can understand it?",
       "whatToDo": [
         "Ask students to turn to the person next to them and share one idea.",
-        "Take 3\u20134 answers. Write the most interesting ones on the board.",
-        "Tell them: 'The answer is encryption \u2014 scrambling the message in a way that only the person with the right key can unscramble it. Today we are going to encrypt messages ourselves, try to hack each other's messages, and find out why some codes are much harder to break than others.'",
+        "Take 3–4 answers. Write the most interesting ones on the board.",
+        "Tell them: 'The answer is encryption — scrambling the message in a way that only the person with the right key can unscramble it. Today we are going to encrypt messages ourselves, try to hack each other's messages, and find out why some codes are much harder to break than others.'",
         "Real world connection: Every time you see a small padlock in your browser's address bar, that means the website is using encryption. Every message you send on WhatsApp or iMessage is encrypted before it leaves your phone. Even the people who run WhatsApp cannot read your messages."
       ],
-      "tip": "Some students will know the term 'end-to-end encryption' \u2014 acknowledge it and tell them that is exactly what they are learning about today. The fact that they have heard it but may not understand it is a perfect entry point."
+      "tip": "Some students will know the term 'end-to-end encryption' — acknowledge it and tell them that is exactly what they are learning about today. The fact that they have heard it but may not understand it is a perfect entry point."
     },
     {
       "id": "slide-phase2",
       "phase": "Phase 2",
-      "time": "3\u201310 min",
-      "title": "Warm-Up \u2014 Can You Crack It?",
+      "time": "3–10 min",
+      "title": "Warm-Up — Can You Crack It?",
       "colour": "blue",
-      "whatToSay": "These three words are all encrypted using the same rule. Your job is to figure out the rule before working out what the words say. Work in pairs \u2014 do not shout out your answer.",
+      "whatToSay": "These three words are all encrypted using the same rule. Your job is to figure out the rule before working out what the words say. Work in pairs — do not shout out your answer.",
       "whatToDo": [
         "Write these three encrypted words on the board one at a time: KHOOR / ZRUOG / FRGH",
         "Give students 2 minutes in pairs to work out the rule.",
         "After 2 minutes, give a hint: 'The first word is a greeting.'",
-        "Most pairs will now get it: KHOOR = HELLO. The rule is Caesar+3 \u2014 each letter shifted 3 forward. H\u2192K, E\u2192H, L\u2192O, L\u2192O, O\u2192R.",
+        "Most pairs will now get it: KHOOR = HELLO. The rule is Caesar+3 — each letter shifted 3 forward. H→K, E→H, L→O, L→O, O→R.",
         "Confirm: ZRUOG = WORLD, FRGH = CODE.",
-        "Ask: 'How did knowing the first word was a greeting help you crack it faster?' Tell them: 'That is called a known-plaintext attack \u2014 one of the most common ways real hackers crack encryption. If you know what the message is supposed to say, you can work backwards to find the rule.'"
+        "Ask: 'How did knowing the first word was a greeting help you crack it faster?' Tell them: 'That is called a known-plaintext attack — one of the most common ways real hackers crack encryption. If you know what the message is supposed to say, you can work backwards to find the rule.'"
       ],
       "tip": "Fast finishers: give them AOPZ (shift of 7, answer: THIS). Keep them busy while the rest of the class works. Always have at least one harder challenge ready."
     },
     {
       "id": "slide-phase3",
       "phase": "Phase 3",
-      "time": "10\u201320 min",
-      "title": "Concept Introduction \u2014 Encryption, Keys, and Passwords",
+      "time": "10–20 min",
+      "title": "Concept Introduction — Encryption, Keys, and Passwords",
       "colour": "violet",
-      "whatToSay": "The Caesar cipher is one of the oldest encryption algorithms \u2014 Julius Caesar used it to send military messages over 2,000 years ago. The shift amount is the key. Without the key, you have to try every possible shift \u2014 that is 25 possibilities. A human takes a few minutes. A computer tries all 25 in less than a millisecond.",
+      "whatToSay": "The Caesar cipher is one of the oldest encryption algorithms — Julius Caesar used it to send military messages over 2,000 years ago. The shift amount is the key. Without the key, you have to try every possible shift — that is 25 possibilities. A human takes a few minutes. A computer tries all 25 in less than a millisecond.",
       "whatToDo": [
         "Write on the board: MESSAGE + KEY = ENCRYPTED MESSAGE",
         "Write underneath: ENCRYPTED MESSAGE + KEY = ORIGINAL MESSAGE",
-        "Connect to Lesson 1: 'This is the same structure as an algorithm \u2014 input, process, output. To reverse it, you run the algorithm backwards using the same key.'",
+        "Connect to Lesson 1: 'This is the same structure as an algorithm — input, process, output. To reverse it, you run the algorithm backwards using the same key.'",
         "Ask: 'If the Caesar cipher is so easy to crack, why do we still use encryption today?' Answer: modern encryption uses mathematical problems so hard that even the fastest computer would take longer than the age of the universe to crack them by brute force.",
-        "Write on the board: 'ninja123' \u2192 a computer cracks this in 0.5 seconds | 'Tr0ub4dor&3' \u2192 a computer would take centuries",
+        "Write on the board: 'ninja123' → a computer cracks this in 0.5 seconds | 'Tr0ub4dor&3' → a computer would take centuries",
         "Ask: 'What makes the second one harder?' Students say: symbols, numbers, mixed capitals. Tell them: 'All of those increase the number of possible combinations. Length is actually more important than complexity.'",
-        "Write the passphrase example: 'I love playing football on Tuesdays with 5 friends!' \u2192 IlpfoTw5f!",
-        "Connect to Lessons 2 and 4: 'Brute-force hacking is just a loop \u2014 try one password, check if it works, if not try the next one. The variable updating each loop might be called CURRENT_GUESS or ATTEMPTS. More length means more iterations before the loop finds the right answer.'"
+        "Write the passphrase example: 'I love playing football on Tuesdays with 5 friends!' → IlpfoTw5f!",
+        "Connect to Lessons 2 and 4: 'Brute-force hacking is just a loop — try one password, check if it works, if not try the next one. The variable updating each loop might be called CURRENT_GUESS or ATTEMPTS. More length means more iterations before the loop finds the right answer.'"
       ],
-      "tip": "Ask students: 'If a computer is trying to crack a password by trying every possibility, what variable is it updating?' They will suggest ATTEMPTS or CURRENT_GUESS. Naming it makes the connection to Lesson 4 concrete."
+      "tip": "Ask students: 'If a computer is trying to crack a password by trying every possibility, what variable is it updating?' They will suggest ATTEMPTS or CURRENT_GUESS. Naming it makes the connection to Lesson 4 concrete.",
+      "roleModelMoment": "Hedy Lamarr had the same challenge: how do you send a secret that the enemy cannot crack? Her answer became the foundation of Wi-Fi and Bluetooth."
     },
     {
       "id": "slide-phase4-round1",
-      "phase": "Phase 4 \u2014 Round 1",
-      "time": "20\u201330 min",
-      "title": "Hacker Intercept Game \u2014 Public Key (Mission Fails)",
+      "phase": "Phase 4 — Round 1",
+      "time": "20–30 min",
+      "title": "Hacker Intercept Game — Public Key (Mission Fails)",
       "colour": "blue",
       "whatToSay": "Your team needs to send a secret 3-word message to another team across the room. But I am a hacker sitting in the middle. If I intercept your message and can read it, your mission fails. You need to encrypt your message before you send it.",
       "whatToDo": [
@@ -112,70 +113,71 @@
         "The teacher (hacker) reads the message aloud before passing it to the receiving team. Since the key is on the board and everyone uses the same one, the teacher can read every message.",
         "Ask: 'Why did this fail?' Answer: because everyone was using the same key and it was written on the board. Encryption only works if the key is secret."
       ],
-      "tip": "Make a show of reading each message aloud before passing it \u2014 the students need to feel the failure viscerally to understand why key secrecy matters."
+      "tip": "Make a show of reading each message aloud before passing it — the students need to feel the failure viscerally to understand why key secrecy matters."
     },
     {
       "id": "slide-phase4-round2",
-      "phase": "Phase 4 \u2014 Round 2",
-      "time": "30\u201340 min",
-      "title": "Hacker Intercept Game \u2014 Secret Key (Mission Succeeds)",
+      "phase": "Phase 4 — Round 2",
+      "time": "30–40 min",
+      "title": "Hacker Intercept Game — Secret Key (Mission Succeeds)",
       "colour": "blue",
-      "whatToSay": "This time, each team chooses their own shift number between 1 and 25 \u2014 and shares it only with the team they are sending to by whispering it. Do not write it down. I, the hacker, will not know any team's key.",
+      "whatToSay": "This time, each team chooses their own shift number between 1 and 25 — and shares it only with the team they are sending to by whispering it. Do not write it down. I, the hacker, will not know any team's key.",
       "whatToDo": [
         "Teams encrypt a new 3-word message using their chosen shift. Pass messages via the teacher as before.",
-        "The teacher tries to crack each message \u2014 but without knowing the shift, must try multiple options. With only 3 words and no hint about content, this is genuinely hard in 30 seconds.",
+        "The teacher tries to crack each message — but without knowing the shift, must try multiple options. With only 3 words and no hint about content, this is genuinely hard in 30 seconds.",
         "After all messages are passed, receiving teams decrypt their message and confirm whether it arrived correctly.",
         "Ask: 'What made Round 2 harder to hack than Round 1?' Answer: the key was secret and different for every team.",
         "Ask: 'What would make it even harder?' Students suggest: longer messages, more complex cipher rules, changing the key for every message."
       ],
-      "tip": "Struggle visibly with trying to crack one or two messages \u2014 making the teacher look genuinely stuck is more effective than pretending it is impossible."
+      "tip": "Struggle visibly with trying to crack one or two messages — making the teacher look genuinely stuck is more effective than pretending it is impossible.",
+      "roleModelMoment": "This is Hedy Lamarr's idea in action — change the channel and the enemy cannot keep up. She called it frequency hopping. We now call it encryption."
     },
     {
       "id": "slide-phase4-round3",
-      "phase": "Phase 4 \u2014 Round 3",
-      "time": "40\u201342 min",
-      "title": "Known-Plaintext Attack \u2014 How Ciphers Get Cracked",
+      "phase": "Phase 4 — Round 3",
+      "time": "40–42 min",
+      "title": "Known-Plaintext Attack — How Ciphers Get Cracked",
       "colour": "violet",
-      "whatToSay": "In Round 2, the hacker knew that all messages were 3 words. I also know that common 3-word English messages often start with 'meet' or 'the.' If I assume the first encrypted word decrypts to 'meet', I can work out the shift and decrypt the whole message. That is a known-plaintext attack \u2014 exactly how many real ciphers have been cracked throughout history.",
+      "whatToSay": "In Round 2, the hacker knew that all messages were 3 words. I also know that common 3-word English messages often start with 'meet' or 'the.' If I assume the first encrypted word decrypts to 'meet', I can work out the shift and decrypt the whole message. That is a known-plaintext attack — exactly how many real ciphers have been cracked throughout history.",
       "whatToDo": [
         "Take one team's encrypted message from Round 2.",
         "Ask the sending team to confirm the first word of their original message.",
         "Work backwards live in front of the class: find the shift, then decrypt the full message.",
         "Ask: 'How could you protect against a known-plaintext attack?' Students suggest: avoid predictable first words, add random padding (meaningless extra characters), use a more complex cipher. All three are real techniques used in modern cryptography."
       ],
-      "tip": "Round 3 is optional \u2014 skip it if time is short. Rounds 1 and 2 are sufficient to meet the learning goal. Round 3 is for classes moving quickly and Groep 7\u20138."
+      "tip": "Round 3 is optional — skip it if time is short. Rounds 1 and 2 are sufficient to meet the learning goal. Round 3 is for classes moving quickly and Groep 7–8."
     },
     {
       "id": "slide-phase5",
       "phase": "Phase 5",
-      "time": "42\u201347 min",
+      "time": "42–47 min",
       "title": "Discussion",
       "colour": "violet",
       "whatToDo": [
-        "Take 2\u20133 volunteer answers per question. Write key ideas on the board.",
-        "For Question 3: ask every student to write their initial position before the class discussion starts \u2014 this gives quieter students something to say."
+        "Take 2–3 volunteer answers per question. Write key ideas on the board.",
+        "For Question 3: ask every student to write their initial position before the class discussion starts — this gives quieter students something to say."
       ],
       "discussionQuestions": [
-        "In Round 1, encryption failed because the key was public. In Round 2 it worked because the key was secret. But how did the two teams agree on the key without the hacker finding out? In real life, how do two computers agree on a key when they have never communicated before and the hacker might be listening to everything? (This was only solved in the 1970s \u2014 the solution is called public-key cryptography.)",
-        "The Caesar cipher has 25 possible keys. A 10-character password using letters, numbers, and symbols has over 59 trillion combinations. A laptop can try 1 billion passwords per second \u2014 how long would that take? (59 trillion \u00f7 1 billion = 59,000 seconds = about 16 hours.) What if the hacker used 1,000 computers at once?",
+        "In Round 1, encryption failed because the key was public. In Round 2 it worked because the key was secret. But how did the two teams agree on the key without the hacker finding out? In real life, how do two computers agree on a key when they have never communicated before and the hacker might be listening to everything? (This was only solved in the 1970s — the solution is called public-key cryptography.)",
+        "The Caesar cipher has 25 possible keys. A 10-character password using letters, numbers, and symbols has over 59 trillion combinations. A laptop can try 1 billion passwords per second — how long would that take? (59 trillion ÷ 1 billion = 59,000 seconds = about 16 hours.) What if the hacker used 1,000 computers at once?",
         "Should the police be allowed to break into encrypted messages if they think someone is planning something dangerous? Or should everyone's messages be private, no exceptions? Is there a difference between being able to break encryption and choosing to?"
       ],
-      "tip": "Question 3 generates strong opinions fast \u2014 especially in Groep 7\u20138. Written position first, then open discussion. This way every student has a voice, not just the loudest ones."
+      "tip": "Question 3 generates strong opinions fast — especially in Groep 7–8. Written position first, then open discussion. This way every student has a voice, not just the loudest ones."
     },
     {
       "id": "slide-exercise1",
       "phase": "Exercise 1",
-      "time": "47\u201355 min",
+      "time": "47–55 min",
       "title": "Encrypt and Decrypt",
       "colour": "blue",
-      "whatToSay": "Three tasks \u2014 work individually. Check your own work by decrypting after you encrypt. If the decryption does not give back the original, find your error.",
+      "whatToSay": "Three tasks — work individually. Check your own work by decrypting after you encrypt. If the decryption does not give back the original, find your error.",
       "rules": [
-        "Task A \u2014 Encrypt this message using Caesar shift +6: DREAM SPACE IS FUN (answer: JXKGS YVEGI OY LAT). Decrypt it back to check.",
-        "Task B \u2014 Crack this message. The shift is unknown but between 1 and 25. The original is a common English greeting: YJQQT BTWQI (answer: shift 17, HELLO WORLD). Hint: try common greetings first rather than working through all 25 shifts.",
-        "Task C \u2014 Design a better cipher. The Caesar cipher only shifts letters. Design one that also changes word order or adds fake letters between real ones. Write the rule clearly enough that a partner could use it."
+        "Task A — Encrypt this message using Caesar shift +6: DREAM SPACE IS FUN (answer: JXKGS YVEGI OY LAT). Decrypt it back to check.",
+        "Task B — Crack this message. The shift is unknown but between 1 and 25. The original is a common English greeting: YJQQT BTWQI (answer: shift 17, HELLO WORLD). Hint: try common greetings first rather than working through all 25 shifts.",
+        "Task C — Design a better cipher. The Caesar cipher only shifts letters. Design one that also changes word order or adds fake letters between real ones. Write the rule clearly enough that a partner could use it."
       ],
       "whatToDo": [
-        "Walk around while students work. Look for: students who work systematically through the alphabet on Task A rather than guessing; students who use the known-plaintext approach on Task B (trying HELLO first); students who design a Task C cipher that is genuinely harder than Caesar \u2014 e.g. adding a null letter every 3 characters, or reversing word order after encryption."
+        "Walk around while students work. Look for: students who work systematically through the alphabet on Task A rather than guessing; students who use the known-plaintext approach on Task B (trying HELLO first); students who design a Task C cipher that is genuinely harder than Caesar — e.g. adding a null letter every 3 characters, or reversing word order after encryption."
       ],
       "tip": "Students who just say 'I changed some letters' on Task C have not met the criterion. Push them: 'Write the exact rule so someone else could use it without asking you.'",
       "exerciseId": "exercise-6-1"
@@ -183,7 +185,7 @@
     {
       "id": "slide-exercise2",
       "phase": "Exercise 2",
-      "time": "47\u201357 min",
+      "time": "47–57 min",
       "title": "Password Audit",
       "colour": "blue",
       "whatToSay": "Here are six passwords. Working in pairs, rank them from weakest to strongest and write a reason for each one.",
@@ -196,12 +198,12 @@
         "6. Xk#9mP$2qL"
       ],
       "whatToDo": [
-        "Expected ranking weakest to strongest: 1, 2, 3, 4, 6, 5 \u2014 though debate about 4, 5, and 6 is valuable.",
-        "Password 5 is a passphrase \u2014 four random common words \u2014 and is very strong because of its length despite looking simple.",
+        "Expected ranking weakest to strongest: 1, 2, 3, 4, 6, 5 — though debate about 4, 5, and 6 is valuable.",
+        "Password 5 is a passphrase — four random common words — and is very strong because of its length despite looking simple.",
         "Password 6 looks strong but is shorter and harder to remember.",
-        "Look for: students who understand length matters as much as complexity; students who spot that 'Angela2014' is weak because it is a real name plus a real year (a hacker tries those first); students who question why 'password' is weak \u2014 not just because it is short but because it is the most commonly used password in the world."
+        "Look for: students who understand length matters as much as complexity; students who spot that 'Angela2014' is weak because it is a real name plus a real year (a hacker tries those first); students who question why 'password' is weak — not just because it is short but because it is the most commonly used password in the world."
       ],
-      "discussionClose": "The debate about whether length or complexity matters more is exactly the right conversation \u2014 let it run. There is no single correct answer, but students should be able to justify their ranking with a reason beyond 'it has symbols.'",
+      "discussionClose": "The debate about whether length or complexity matters more is exactly the right conversation — let it run. There is no single correct answer, but students should be able to justify their ranking with a reason beyond 'it has symbols.'",
       "exerciseId": "exercise-6-2"
     },
     {
@@ -210,30 +212,30 @@
       "time": "Fast finishers",
       "title": "Build an Unbreakable Two-Layer System",
       "colour": "violet",
-      "whatToSay": "The Caesar cipher has one fatal weakness \u2014 if the hacker knows which cipher you are using, they only need to try 25 keys. Design a two-layer encryption system that is harder to crack.",
-      "task": "Design a system with two steps \u2014 for example: Step 1: reverse the message. Step 2: apply a Caesar shift of your choice. Encrypt a short message using your system. Write down the rule clearly and pass the encrypted message (not the rule) to the teacher, who passes it to another student to try to crack.",
+      "whatToSay": "The Caesar cipher has one fatal weakness — if the hacker knows which cipher you are using, they only need to try 25 keys. Design a two-layer encryption system that is harder to crack.",
+      "task": "Design a system with two steps — for example: Step 1: reverse the message. Step 2: apply a Caesar shift of your choice. Encrypt a short message using your system. Write down the rule clearly and pass the encrypted message (not the rule) to the teacher, who passes it to another student to try to crack.",
       "challengeQuestions": [
         "How many possible combinations does your two-step system have compared to a single Caesar cipher?",
         "If a hacker knows you are using a two-step system but not which two steps, does that help them? Why or why not?",
-        "Modern encryption uses mathematical operations that are easy to do one way and nearly impossible to reverse \u2014 like multiplying two huge prime numbers. The product is public, but nobody can factor it back fast enough. How is that different from what you designed?"
+        "Modern encryption uses mathematical operations that are easy to do one way and nearly impossible to reverse — like multiplying two huge prime numbers. The product is public, but nobody can factor it back fast enough. How is that different from what you designed?"
       ],
-      "tip": "This introduces one-way functions \u2014 the mathematical foundation of modern encryption \u2014 without requiring any maths beyond age 8\u201312 level. The intuition is enough.",
+      "tip": "This introduces one-way functions — the mathematical foundation of modern encryption — without requiring any maths beyond age 8–12 level. The intuition is enough.",
       "exerciseId": "exercise-6-3"
     },
     {
       "id": "slide-reflect",
       "phase": "Share and Reflect",
-      "time": "52\u201357 min",
+      "time": "52–57 min",
       "title": "Close the Lesson",
       "colour": "violet",
       "whatToDo": [
-        "Ask 2\u20133 students to share their Task C cipher design from Exercise 1.",
+        "Ask 2–3 students to share their Task C cipher design from Exercise 1.",
         "After each, the class has 60 seconds to try to spot the rule. If they cannot, the designer explains it.",
-        "Then ask every student \u2014 verbally or on a sticky note \u2014 to complete this sentence."
+        "Then ask every student — verbally or on a sticky note — to complete this sentence."
       ],
       "exitReflection": "Encryption works because _______.",
       "whatToSay": "Best answers include: only the person with the key can decrypt it / it turns information into something unreadable without the rule / it makes brute force take too long to be worth it. Write the clearest one on the board next to the previous five exit sentences.",
-      "watchFor": "Did students connect brute-force cracking back to loops from Lesson 2 \u2014 recognising that trying every password is just a loop? Did any student use the known-plaintext approach on Task B (trying HELLO first rather than all 25 shifts)? Did the password audit produce genuine disagreement about whether length or complexity matters more?"
+      "watchFor": "Did students connect brute-force cracking back to loops from Lesson 2 — recognising that trying every password is just a loop? Did any student use the known-plaintext approach on Task B (trying HELLO first rather than all 25 shifts)? Did the password audit produce genuine disagreement about whether length or complexity matters more?"
     }
   ],
   "title": "Secrets and Codes - How Computers Keep Information Safe",

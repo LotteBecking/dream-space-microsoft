@@ -149,7 +149,7 @@
     },
     {
       "word": "Boolean",
-      "def": "A value that is either true or false \u2014 nothing in between"
+      "def": "A value that is either true or false — nothing in between"
     }
   ],
   "lessonSlides": [
@@ -161,38 +161,38 @@
       "colour": "indigo",
       "whatToDo": [
         "Write these five words on the board and leave them visible all lesson:",
-        "Conditional \u2014 a rule that only runs if a certain condition is true",
-        "IF \u2014 the condition being checked",
-        "THEN \u2014 what happens if the condition is true",
-        "ELSE \u2014 what happens if the condition is not true",
-        "Boolean \u2014 a value that is either true or false, nothing in between",
-        "Place one red, one blue, and one green sheet of paper on the floor at the front of the room \u2014 spaced slightly apart. These are the sensor tiles for Phase 4.",
+        "Conditional — a rule that only runs if a certain condition is true",
+        "IF — the condition being checked",
+        "THEN — what happens if the condition is true",
+        "ELSE — what happens if the condition is not true",
+        "Boolean — a value that is either true or false, nothing in between",
+        "Place one red, one blue, and one green sheet of paper on the floor at the front of the room — spaced slightly apart. These are the sensor tiles for Phase 4.",
         "Also write the IF/THEN/ELSE syntax block on the board and leave it up all lesson: IF (condition is true) / THEN (do this) / ELSE (do this instead)",
         "Have paper and pencils ready for the exercise phase."
       ],
-      "roleModel": "Katherine Johnson (1918\u20132020) was a mathematician at NASA whose conditional calculations determined whether Apollo 11 would safely reach the Moon and return. She wrote the equations that told the spacecraft: IF you are on this trajectory AND within this speed range, THEN fire the engine for exactly this many seconds, ELSE abort. Without her conditionals, the Moon landing does not happen. Today students will write their own conditional logic \u2014 the same kind of thinking that got humans to the Moon.",
-      "tip": "This lesson builds on Lesson 1 (sequences) and Lesson 2 (loops). At the start of Phase 3, briefly connect all three on the board: Sequence \u2192 Loop \u2192 Conditional. It takes 30 seconds and helps students see the bigger picture."
+      "roleModel": "Katherine Johnson (1918–2020) was a mathematician at NASA whose conditional calculations determined whether Apollo 11 would safely reach the Moon and return. She wrote the equations that told the spacecraft: IF you are on this trajectory AND within this speed range, THEN fire the engine for exactly this many seconds, ELSE abort. Without her conditionals, the Moon landing does not happen. Today students will write their own conditional logic — the same kind of thinking that got humans to the Moon.",
+      "tip": "This lesson builds on Lesson 1 (sequences) and Lesson 2 (loops). At the start of Phase 3, briefly connect all three on the board: Sequence → Loop → Conditional. It takes 30 seconds and helps students see the bigger picture."
     },
     {
       "id": "slide-phase1",
       "phase": "Phase 1",
-      "time": "0 \u2013 3 min",
+      "time": "0 – 3 min",
       "title": "Spark Question",
       "colour": "yellow",
-      "whatToSay": "\"Have you ever noticed that your phone screen turns off by itself? Or that a game character takes damage when they walk into fire? How does the device know to do that \u2014 nobody pressed a button?\"",
+      "whatToSay": "\"Have you ever noticed that your phone screen turns off by itself? Or that a game character takes damage when they walk into fire? How does the device know to do that — nobody pressed a button?\"",
       "whatToDo": [
         "Ask students to turn to the person next to them and share one idea.",
-        "Take 3\u20134 answers from the class.",
+        "Take 3–4 answers from the class.",
         "Write the most interesting ones on the board.",
-        "Then say: 'Those things happen because someone wrote a rule. Not a sequence, not a loop \u2014 a different kind of instruction. A rule that says: IF something specific happens, THEN do this. Today we are going to learn how to write those rules.'"
+        "Then say: 'Those things happen because someone wrote a rule. Not a sequence, not a loop — a different kind of instruction. A rule that says: IF something specific happens, THEN do this. Today we are going to learn how to write those rules.'"
       ],
-      "tip": "Students often guess 'sensors' or 'the camera' \u2014 those are partly right, and worth acknowledging. The key point: the sensor just provides data. It is the conditional rule written by a programmer that decides what to do with that data. A sensor alone does nothing.",
-      "realWorldConnection": "Every time you walk through automatic doors at a supermarket, a sensor detects your presence \u2014 but it is a conditional that decides what to do: IF something is within 1 metre of the sensor, THEN open the doors, ELSE keep them closed. The sensor provides the data; the conditional makes the decision."
+      "tip": "Students often guess 'sensors' or 'the camera' — those are partly right, and worth acknowledging. The key point: the sensor just provides data. It is the conditional rule written by a programmer that decides what to do with that data. A sensor alone does nothing.",
+      "realWorldConnection": "Every time you walk through automatic doors at a supermarket, a sensor detects your presence — but it is a conditional that decides what to do: IF something is within 1 metre of the sensor, THEN open the doors, ELSE keep them closed. The sensor provides the data; the conditional makes the decision."
     },
     {
       "id": "slide-phase2",
       "phase": "Phase 2",
-      "time": "3 \u2013 10 min",
+      "time": "3 – 10 min",
       "title": "Human Conditionals",
       "colour": "blue",
       "whatToSay": "\"I am going to read out some IF/THEN rules. If the rule applies to you, do the action. If it does not apply to you, do nothing. This is exactly what a computer does when it runs a conditional.\"",
@@ -203,98 +203,100 @@
         "IF you have a pet at home, THEN wave your hand.",
         "IF you walked to school today, THEN tap your desk.",
         "After the fourth rule, ask: 'Did everyone do every action? Why not?'",
-        "Then say: 'What did you do when the condition was not true for you? Nothing. In coding, that nothing is the ELSE \u2014 the default when the condition is false.'",
-        "Reread the first rule with ELSE added: 'IF you are wearing something blue, THEN stand up. ELSE stay seated.' Ask: 'Is that different from what you did?' No \u2014 because doing nothing IS the ELSE."
+        "Then say: 'What did you do when the condition was not true for you? Nothing. In coding, that nothing is the ELSE — the default when the condition is false.'",
+        "Reread the first rule with ELSE added: 'IF you are wearing something blue, THEN stand up. ELSE stay seated.' Ask: 'Is that different from what you did?' No — because doing nothing IS the ELSE."
       ],
-      "tip": "If a student who has no pet waves anyway, use it: 'The condition was not true for you \u2014 that is a bug. You executed the wrong branch.' Students find this funny and it reinforces the precision concept from Lesson 1.",
-      "shyStudentsNote": "Some students freeze up when put on the spot. Keep the energy light \u2014 frame it as a game, not a test. If a student does the wrong action, treat it as a funny bug rather than a mistake."
+      "tip": "If a student who has no pet waves anyway, use it: 'The condition was not true for you — that is a bug. You executed the wrong branch.' Students find this funny and it reinforces the precision concept from Lesson 1.",
+      "shyStudentsNote": "Some students freeze up when put on the spot. Keep the energy light — frame it as a game, not a test. If a student does the wrong action, treat it as a funny bug rather than a mistake."
     },
     {
       "id": "slide-phase2b",
-      "phase": "Phase 2 \u2014 Follow-up",
-      "time": "8 \u2013 10 min",
-      "title": "AND / OR \u2014 Combining Conditions",
+      "phase": "Phase 2 — Follow-up",
+      "time": "8 – 10 min",
+      "title": "AND / OR — Combining Conditions",
       "colour": "blue",
       "whatToSay": "\"What if I changed the rule to: IF you are wearing blue OR you are wearing red, THEN stand up. Is that different from the original rule?\"",
       "whatToDo": [
-        "Let students answer \u2014 more people will stand up now.",
+        "Let students answer — more people will stand up now.",
         "Ask: 'What if I changed OR to AND: IF you are wearing blue AND you are wearing red, THEN stand up? How many people would that be?'",
         "Point out: 'OR means either condition is enough. AND means both conditions must be true at the same time. This idea comes up again in the exercises.'",
         "Write OR and AND on the board next to the IF/THEN/ELSE block."
       ],
-      "tip": "This is a short follow-up, not a full concept lesson. Just plant the seed \u2014 students will use AND in Exercise 2. You do not need to go deeper on Boolean operators now."
+      "tip": "This is a short follow-up, not a full concept lesson. Just plant the seed — students will use AND in Exercise 2. You do not need to go deeper on Boolean operators now."
     },
     {
       "id": "slide-phase3",
       "phase": "Phase 3",
-      "time": "10 \u2013 20 min",
-      "title": "IF / THEN / ELSE \u2014 The Decision Structure",
+      "time": "10 – 20 min",
+      "title": "IF / THEN / ELSE — The Decision Structure",
       "colour": "purple",
       "whatToSay": "\"This is one of the most important structures in all of computing. Almost every interesting thing a computer does is built on this pattern.\"",
       "whatToDo": [
         "Point to the IF/THEN/ELSE block already on the board. Explain each part:",
-        "IF is the question the computer is asking. It is always yes or no \u2014 there is no maybe. The computer checks whether something is true or false. That is a Boolean.",
+        "IF is the question the computer is asking. It is always yes or no — there is no maybe. The computer checks whether something is true or false. That is a Boolean.",
         "THEN is what happens if the answer is yes.",
-        "ELSE is what happens if the answer is no. If you do not write an ELSE, the computer does nothing when the condition is false \u2014 which is sometimes fine, but sometimes a bug.",
+        "ELSE is what happens if the answer is no. If you do not write an ELSE, the computer does nothing when the condition is false — which is sometimes fine, but sometimes a bug.",
         "Now write these three examples on the board in full IF/THEN/ELSE format:",
-        "Example 1 \u2014 street lights: IF the sky is dark THEN turn the lights on ELSE turn the lights off",
-        "Example 2 \u2014 game: IF the character touches water THEN reduce health by 10 ELSE keep health the same",
-        "Example 3 \u2014 phone: IF a new message arrives THEN vibrate the phone ELSE do nothing",
+        "Example 1 — street lights: IF the sky is dark THEN turn the lights on ELSE turn the lights off",
+        "Example 2 — game: IF the character touches water THEN reduce health by 10 ELSE keep health the same",
+        "Example 3 — phone: IF a new message arrives THEN vibrate the phone ELSE do nothing",
         "After Example 3, ask: 'Is do nothing a good ELSE? What if you are already vibrating from a previous notification?' This shows that ELSE matters just as much as THEN.",
-        "Now connect to previous lessons \u2014 write on the board: Sequence (Lesson 1) \u2192 Loop (Lesson 2) \u2192 Conditional (Lesson 3). Say: 'A real program uses all three. A game loops forever, sequences movements, and uses conditionals when you hit something.'"
+        "Now connect to previous lessons — write on the board: Sequence (Lesson 1) → Loop (Lesson 2) → Conditional (Lesson 3). Say: 'A real program uses all three. A game loops forever, sequences movements, and uses conditionals when you hit something.'"
       ],
-      "realWorldConnection": "Ask students: 'When does your school's heating turn on in the morning?' It is a conditional: IF the temperature drops below 18 degrees, THEN turn on the heating, ELSE leave it off. The same logic runs in fridges, traffic lights, fire alarms, and aircraft autopilot systems. Conditionals are not just a coding concept \u2014 they are how the entire built world works."
+      "realWorldConnection": "Ask students: 'When does your school's heating turn on in the morning?' It is a conditional: IF the temperature drops below 18 degrees, THEN turn on the heating, ELSE leave it off. The same logic runs in fridges, traffic lights, fire alarms, and aircraft autopilot systems. Conditionals are not just a coding concept — they are how the entire built world works.",
+      "roleModelMoment": "Katherine Johnson wrote conditional logic like this for the Moon landing. Every IF she wrote had to be exactly right — the astronauts' lives depended on it."
     },
     {
       "id": "slide-phase4-setup",
       "phase": "Phase 4",
-      "time": "20 \u2013 22 min",
-      "title": "The Floor Is Lava \u2014 Setup",
+      "time": "20 – 22 min",
+      "title": "The Floor Is Lava — Setup",
       "colour": "orange",
-      "whatToSay": "\"This classroom is now a video game level. The floor has sensors built into it. Each colour triggers a different rule. You are going to write the conditional logic that runs this game \u2014 and then we are going to test whether your code actually works.\"",
+      "whatToSay": "\"This classroom is now a video game level. The floor has sensors built into it. Each colour triggers a different rule. You are going to write the conditional logic that runs this game — and then we are going to test whether your code actually works.\"",
       "whatToDo": [
         "Point to the red, blue, and green papers already on the floor.",
-        "Ask the class to vote on what each colour does \u2014 write suggestions on the board.",
-        "A typical result: Red = lose 10 health points. Blue = gain a shield. Green = freeze \u2014 speed drops to zero.",
+        "Ask the class to vote on what each colour does — write suggestions on the board.",
+        "A typical result: Red = lose 10 health points. Blue = gain a shield. Green = freeze — speed drops to zero.",
         "Once agreed, tell students to write all three rules on their paper in full IF/THEN/ELSE format, including what happens if you step on plain floor (no colour)."
       ],
-      "tip": "Write ELSE IF on the board and explain it before students start writing: 'When you have more than two options \u2014 not just true or false, but three or four possibilities \u2014 you chain your conditionals using ELSE IF. The computer checks each condition in order and runs the first one that is true. After that, it skips all the others.' This is worth two clear minutes."
+      "tip": "Write ELSE IF on the board and explain it before students start writing: 'When you have more than two options — not just true or false, but three or four possibilities — you chain your conditionals using ELSE IF. The computer checks each condition in order and runs the first one that is true. After that, it skips all the others.' This is worth two clear minutes."
     },
     {
       "id": "slide-phase4-round2",
-      "phase": "Phase 4 \u2014 Round 2",
-      "time": "28 \u2013 36 min",
+      "phase": "Phase 4 — Round 2",
+      "time": "28 – 36 min",
       "title": "Execute the Code",
       "colour": "orange",
       "whatToDo": [
-        "Ask one student to be the narrator \u2014 they read the active rules aloud as you step on tiles.",
+        "Ask one student to be the narrator — they read the active rules aloud as you step on tiles.",
         "Walk around the front of the room, deliberately stepping on each colour one at a time.",
-        "The class must call out what the rule triggers \u2014 and must stay silent when you step on plain floor (the ELSE).",
+        "The class must call out what the rule triggers — and must stay silent when you step on plain floor (the ELSE).",
         "Make a deliberate mistake: step on blue immediately after red.",
-        "Ask: 'I just lost 10 health and now I gained a shield. Do I still have the shield? Does the shield cancel the damage I already took?' Students will disagree \u2014 that is intentional. It introduces rule order and state."
+        "Ask: 'I just lost 10 health and now I gained a shield. Do I still have the shield? Does the shield cancel the damage I already took?' Students will disagree — that is intentional. It introduces rule order and state."
       ],
-      "tip": "If the class becomes too loud, ask students to respond with hand signals instead of shouting \u2014 one finger for red, two for blue, three for green, flat hand for plain floor. Keeps the physical engagement manageable."
+      "tip": "If the class becomes too loud, ask students to respond with hand signals instead of shouting — one finger for red, two for blue, three for green, flat hand for plain floor. Keeps the physical engagement manageable.",
+      "roleModelMoment": "Katherine's code ran live during spaceflight with no second chances. Yours is a test run — hers was real. That is why precision matters."
     },
     {
       "id": "slide-phase4-round3",
-      "phase": "Phase 4 \u2014 Round 3",
-      "time": "36 \u2013 42 min",
+      "phase": "Phase 4 — Round 3",
+      "time": "36 – 42 min",
       "title": "Pairs Extend the Rules",
       "colour": "orange",
       "whatToSay": "\"The game designer wants to make the level harder. Add two new rules to your conditional block.\"",
       "whatToDo": [
         "Write these two new rules on the board:",
         "IF foot touches RED and the player is already at zero health, THEN the game ends",
-        "IF foot touches BLUE while already having a shield, THEN nothing happens \u2014 shield does not stack",
-        "Tell pairs they must decide where in the order these new rules go \u2014 before or after the existing ones \u2014 and explain why.",
-        "Walk around and ask: 'If you check the zero-health rule after the lose-10-health rule, is that too late? If health is already zero, losing 10 more should end the game \u2014 not reduce it to negative 10.'"
+        "IF foot touches BLUE while already having a shield, THEN nothing happens — shield does not stack",
+        "Tell pairs they must decide where in the order these new rules go — before or after the existing ones — and explain why.",
+        "Walk around and ask: 'If you check the zero-health rule after the lose-10-health rule, is that too late? If health is already zero, losing 10 more should end the game — not reduce it to negative 10.'"
       ],
-      "tip": "The order of conditionals matters, just as the order of steps in an algorithm matters. Students who discover this on their own are making a significant connection. No props needed \u2014 if you do not have floor space, draw a 4x4 coloured grid on the board and move a drawn character through it instead."
+      "tip": "The order of conditionals matters, just as the order of steps in an algorithm matters. Students who discover this on their own are making a significant connection. No props needed — if you do not have floor space, draw a 4x4 coloured grid on the board and move a drawn character through it instead."
     },
     {
       "id": "slide-phase5",
       "phase": "Phase 5",
-      "time": "42 \u2013 47 min",
+      "time": "42 – 47 min",
       "title": "Discussion",
       "colour": "teal",
       "whatToDo": [
@@ -304,23 +306,23 @@
       ],
       "discussionQuestions": [
         "\"In Round 2, we disagreed about whether the shield cancelled the red damage. In real game programming, who decides the answer? The computer or the programmer?\" Follow-up: \"What happens if the programmer forgets to decide? What does the computer do?\" The answer: the computer does whatever the code says, even if that produces a nonsensical result. A missing rule is a bug.",
-        "\"We wrote ELSE IF three times for three colours. What if there were 100 colours \u2014 would you write 100 ELSE IFs?\" Follow-up: \"Is there a smarter way?\" Students will suggest something like a lookup list \u2014 they are right. Tell them there is a structure called a SWITCH statement that handles exactly this, and they will encounter it when they write real code.",
-        "\"Think about the automatic doors from the start of the lesson. What could go wrong with the IF/THEN/ELSE rule? What edge cases did the programmer probably not think about?\" Follow-up: What if two people approach from opposite sides? What if the sensor detects a trolley but no person? What if someone stands exactly in the middle? These are edge cases \u2014 situations the programmer did not anticipate."
+        "\"We wrote ELSE IF three times for three colours. What if there were 100 colours — would you write 100 ELSE IFs?\" Follow-up: \"Is there a smarter way?\" Students will suggest something like a lookup list — they are right. Tell them there is a structure called a SWITCH statement that handles exactly this, and they will encounter it when they write real code.",
+        "\"Think about the automatic doors from the start of the lesson. What could go wrong with the IF/THEN/ELSE rule? What edge cases did the programmer probably not think about?\" Follow-up: What if two people approach from opposite sides? What if the sensor detects a trolley but no person? What if someone stands exactly in the middle? These are edge cases — situations the programmer did not anticipate."
       ],
-      "tip": "Question 3 \u2014 edge cases \u2014 is the best discussion question for this lesson. Students immediately generate examples from games they play: 'In Minecraft, what if you place a block inside another block?' or 'In FIFA, what if the ball hits the post at exactly the final whistle?' Both are real edge cases. Let the discussion run \u2014 it is valuable and connects directly to Lesson 5 on AI and bias."
+      "tip": "Question 3 — edge cases — is the best discussion question for this lesson. Students immediately generate examples from games they play: 'In Minecraft, what if you place a block inside another block?' or 'In FIFA, what if the ball hits the post at exactly the final whistle?' Both are real edge cases. Let the discussion run — it is valuable and connects directly to Lesson 5 on AI and bias."
     },
     {
       "id": "slide-exercise1",
       "phase": "Exercise 1",
-      "time": "47 \u2013 55 min",
+      "time": "47 – 55 min",
       "title": "Write the Conditional",
       "colour": "green",
-      "whatToSay": "\"Choose one of these three scenarios and write the full conditional logic in IF/THEN/ELSE format. You must write at least three connected conditions \u2014 IF, ELSE IF, and ELSE.\"",
+      "whatToSay": "\"Choose one of these three scenarios and write the full conditional logic in IF/THEN/ELSE format. You must write at least three connected conditions — IF, ELSE IF, and ELSE.\"",
       "whatToDo": [
         "Write all three options on the board:",
-        "Option A \u2014 Smart alarm clock: gentle music on weekdays, loud buzzer on Monday only, silence on weekends.",
-        "Option B \u2014 School canteen queue: pre-ordered meals first, then card, then cash. If the meal is out of stock, student goes to the back.",
-        "Option C \u2014 Game power-up: red items add 10 points, gold items double current score, grey items do nothing, black items end the game immediately.",
+        "Option A — Smart alarm clock: gentle music on weekdays, loud buzzer on Monday only, silence on weekends.",
+        "Option B — School canteen queue: pre-ordered meals first, then card, then cash. If the meal is out of stock, student goes to the back.",
+        "Option C — Game power-up: red items add 10 points, gold items double current score, grey items do nothing, black items end the game immediately.",
         "Students work individually.",
         "When done, they swap with a partner who tries to find one edge case their rules do not handle. The original writer adds a rule to cover it."
       ],
@@ -330,17 +332,17 @@
     {
       "id": "slide-exercise2",
       "phase": "Exercise 2",
-      "time": "47 \u2013 57 min",
+      "time": "47 – 57 min",
       "title": "Fix the Broken Smart Home",
       "colour": "green",
       "whatToDo": [
         "Write all three problems on the board one at a time. Students work in pairs.",
-        "Problem 1: The heating turns on when temperature drops below 18 degrees \u2014 but never turns off. Bug: no ELSE to turn it off. Fix: add ELSE IF temperature is above 20 degrees THEN turn heating off.",
-        "Problem 2: The security light turns on perfectly during the day but not at night. Bug: the condition only checks IF motion detected \u2014 it does not check darkness. Fix: IF motion detected AND it is dark THEN turn on light.",
-        "Problem 3: The fridge sends 47 milk-low notifications per minute. Bug: the conditional is inside a forever loop with no stop after the first alert. Fix: add a notified flag \u2014 IF milk is low AND notified = false THEN send notification AND set notified = true.",
-        "Ask pairs: 'Which of these three bugs involves both a loop AND a conditional?' Problem 3 \u2014 students who connect this to Lesson 2 have understood something important."
+        "Problem 1: The heating turns on when temperature drops below 18 degrees — but never turns off. Bug: no ELSE to turn it off. Fix: add ELSE IF temperature is above 20 degrees THEN turn heating off.",
+        "Problem 2: The security light turns on perfectly during the day but not at night. Bug: the condition only checks IF motion detected — it does not check darkness. Fix: IF motion detected AND it is dark THEN turn on light.",
+        "Problem 3: The fridge sends 47 milk-low notifications per minute. Bug: the conditional is inside a forever loop with no stop after the first alert. Fix: add a notified flag — IF milk is low AND notified = false THEN send notification AND set notified = true.",
+        "Ask pairs: 'Which of these three bugs involves both a loop AND a conditional?' Problem 3 — students who connect this to Lesson 2 have understood something important."
       ],
-      "tip": "Problem 3 connects directly back to Lesson 2 \u2014 a loop without a stop condition causes the bug. Acknowledge it explicitly if a student spots the connection independently. It is a significant milestone.",
+      "tip": "Problem 3 connects directly back to Lesson 2 — a loop without a stop condition causes the bug. Acknowledge it explicitly if a student spots the connection independently. It is a significant milestone.",
       "exerciseId": "exercise-3-2"
     },
     {
@@ -350,31 +352,31 @@
       "title": "Build a Smarter Traffic Light",
       "colour": "amber",
       "whatToSay": "\"A standard traffic light uses a simple loop: green 30 seconds, amber 5, red 30, repeat. But a smart traffic light uses sensor data and conditionals to decide how long each light stays on.\"",
-      "task": "Design conditional logic for a smart traffic light at a busy junction. The light has four sensors \u2014 one counting cars on each road. Write rules for: how long green stays on based on car count, what happens if an ambulance is detected, and what happens at 3am when no cars are waiting.",
+      "task": "Design conditional logic for a smart traffic light at a busy junction. The light has four sensors — one counting cars on each road. Write rules for: how long green stays on based on car count, what happens if an ambulance is detected, and what happens at 3am when no cars are waiting.",
       "challengeQuestions": [
         "Can a traffic light be so smart that it causes a jam on a different road while solving one here?",
         "If your traffic light talks to the next one down the road, what new rules become possible?",
         "Amsterdam has 2,400 traffic lights. If they all ran your algorithm, would the city flow better or worse?"
       ],
-      "tip": "These questions introduce systems thinking \u2014 how individual algorithms interact when many run together. This connects directly to Lesson 5 on data and Lesson 6 on designing for real problems. Do not over-explain; just ask the questions and let students work through them.",
+      "tip": "These questions introduce systems thinking — how individual algorithms interact when many run together. This connects directly to Lesson 5 on data and Lesson 6 on designing for real problems. Do not over-explain; just ask the questions and let students work through them.",
       "exerciseId": "exercise-3-3"
     },
     {
       "id": "slide-reflect",
       "phase": "Share & Reflect",
-      "time": "52 \u2013 57 min",
+      "time": "52 – 57 min",
       "title": "Close the Lesson",
       "colour": "pink",
       "whatToDo": [
-        "Ask 2\u20133 students to read one conditional rule from Exercise 1 aloud \u2014 just one rule, not the whole block.",
+        "Ask 2–3 students to read one conditional rule from Exercise 1 aloud — just one rule, not the whole block.",
         "After each one, ask the class: 'Can you think of an edge case that rule does not handle?'",
-        "Keep it short and warm \u2014 this is a light share, not a presentation.",
-        "Ask every student \u2014 verbally or on a sticky note \u2014 to complete this sentence:"
+        "Keep it short and warm — this is a light share, not a presentation.",
+        "Ask every student — verbally or on a sticky note — to complete this sentence:"
       ],
       "exitReflection": "\"A conditional is like a _______ because _______.\"",
-      "whatToSay": "After collecting responses, close with: \"You now know three of the most fundamental ideas in all of computing \u2014 sequences, loops, and conditionals. Almost every program ever written uses all three. Next week we are going to look at something that confused the entire world when it first appeared, but that you are now almost ready to understand: what AI actually is, and why it is not as clever as it looks.\"",
-      "tip": "The metaphor they choose reveals how they have understood the concept. Good answers: a referee (checks rules and makes a call), a traffic light (controls what happens based on what it detects), a bouncer (decides who gets in). All correct. Write the most interesting metaphor on the board next to the exit sentences from Lessons 1 and 2 \u2014 by Week 6 there will be a small gallery of the class's own definitions in their own words.",
-      "watchFor": "Did students identify that three separate IFs behave differently from a chained ELSE IF block? Did anyone independently connect Problem 3 in Exercise 2 to the loop bug from Lesson 2? Did the traffic light extension prompt students to think beyond one algorithm to the system it operates in? These three observations together are a strong signal the class is building genuine computational thinking \u2014 not just following steps, but reasoning about systems."
+      "whatToSay": "After collecting responses, close with: \"You now know three of the most fundamental ideas in all of computing — sequences, loops, and conditionals. Almost every program ever written uses all three. Next week we are going to look at something that confused the entire world when it first appeared, but that you are now almost ready to understand: what AI actually is, and why it is not as clever as it looks.\"",
+      "tip": "The metaphor they choose reveals how they have understood the concept. Good answers: a referee (checks rules and makes a call), a traffic light (controls what happens based on what it detects), a bouncer (decides who gets in). All correct. Write the most interesting metaphor on the board next to the exit sentences from Lessons 1 and 2 — by Week 6 there will be a small gallery of the class's own definitions in their own words.",
+      "watchFor": "Did students identify that three separate IFs behave differently from a chained ELSE IF block? Did anyone independently connect Problem 3 in Exercise 2 to the loop bug from Lesson 2? Did the traffic light extension prompt students to think beyond one algorithm to the system it operates in? These three observations together are a strong signal the class is building genuine computational thinking — not just following steps, but reasoning about systems."
     }
   ],
   "studentChallenges": [

@@ -50,7 +50,18 @@
     "Pre-written dataset of 10 ocean temperature anomaly readings"
   ],
   "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students explain loops, distinguish FOR and WHILE behavior, and write plain-language instructions that process data for climate risk detection.",
-  "climateDataset": [-2, 4, 1, -5, 8, 3.2, 0, 6, -1, 5],
+  "climateDataset": [
+    -2,
+    4,
+    1,
+    -5,
+    8,
+    3.2,
+    0,
+    6,
+    -1,
+    5
+  ],
   "teacherInstructions": {
     "setup": "Write vocabulary on the board and keep it visible all lesson. Write the 10 ocean temperature anomaly readings on the board: −2, 4, 1, −5, 8, 3.2, 0, 6, −1, 5. Have paper and pencils ready for group work.",
     "steps": [
@@ -265,32 +276,7 @@
       "colour": "indigo",
       "roleModel": "Margaret Hamilton (born 1936) was the lead software engineer for NASA's Apollo guidance computer — the system that landed humans on the Moon. She and her team at MIT wrote the software that processed real-time navigation data, engine instructions, and astronaut commands simultaneously during spaceflight. During the Apollo 11 landing, minutes before touchdown, the computer was overloaded with data — too many tasks were running at once. The software Margaret wrote had been designed to handle exactly this situation: it prioritised the critical landing tasks and discarded the less important ones. The landing succeeded because the software's loop and priority logic was robust enough to handle a crisis autonomously. Margaret Hamilton is also credited with coining the term 'software engineering' — she argued that building software should be taken as seriously as building bridges or aircraft. Before her, programming was often dismissed as clerical work. She proved it was an engineering discipline where mistakes could cost lives.",
       "whatToSay": "Introduce Margaret simply: 'Today's role model wrote the software that landed humans on the Moon. Her name is Margaret Hamilton. During the Apollo 11 landing — minutes before touchdown — the computer was overwhelmed with data. Her software handled it: it figured out which tasks were critical and dropped the rest. The landing succeeded because her loops and priorities worked under pressure. Today, you are going to learn about the same thing — loops — and how they process large amounts of data.'",
-      "whatToDo": [
-        "Keep the intro to about 60 seconds — the Apollo 11 overload moment is the hook.",
-        "You can return to Margaret naturally at these moments in the lesson:",
-        "Phase 2 (human loop demo): 'Margaret Hamilton's code had to process navigation data over and over — every second, in a loop. If the loop failed once, the spacecraft was lost.'",
-        "Phase 3 (FOR vs WHILE): 'Margaret's software had WHILE loops monitoring sensor data: keep checking oxygen levels while astronauts are in space. If the stop condition failed, the loop would run forever and consume all the computer's resources.'",
-        "Phase 4 Round 2 (early-stop logic): 'During Apollo 11, Margaret's software stopped processing non-critical tasks when the computer was overloaded. That is an early-stop condition — exactly what you are adding to your loop now.'",
-        "Exit reflection: 'Margaret Hamilton proved that loops are not just about repetition — they are about safety. She designed loops that worked under the most extreme conditions in human history.'"
-      ],
       "realWorldConnection": "Margaret Hamilton's Apollo software processed real-time data streams using the same loop concepts students learn today. The 1202 alarm during Apollo 11 — which could have aborted the landing — was resolved by her priority and loop logic. Every modern system that processes sensor data in real time — from weather stations to self-driving cars — uses the same principles she pioneered."
-    },
-    {
-      "id": "slide-rolemodel-integration",
-      "phase": "Role Model — Using Her in Class",
-      "time": "Reference throughout",
-      "title": "Bringing Margaret Into the Lesson",
-      "colour": "indigo",
-      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Margaret in:",
-      "whatToDo": [
-        "LESSON INTRO — right now: One fact. 'She wrote the code that landed humans on the Moon — and it worked because her loops were bulletproof.' That's enough.",
-        "PHASE 2 — when drawing repeated stars: 'Margaret's navigation code had to run the same calculation thousands of times per second. Writing it out line by line was impossible. Loops made it possible — and reliable.'",
-        "PHASE 3 — when introducing WHILE loops: 'Margaret's software had WHILE loops monitoring life-critical data: keep checking oxygen while astronauts are breathing. If the sensor broke and the WHILE condition never updated, the loop would run forever. She planned for that.'",
-        "PHASE 4 Round 1 — when students trace their first FOR loop: 'You are processing 10 readings. Margaret's software processed thousands per second — same logic, bigger scale.'",
-        "PHASE 4 Round 2 — when students add early-stop: 'During Apollo 11, Margaret's code stopped non-essential tasks when the computer was overwhelmed. That is exactly what you are doing: adding a stop condition to protect the system.'",
-        "EXIT REFLECTION — as the final word: 'Margaret Hamilton proved that loops are not just about saving time — they are about saving lives. You just wrote loop logic for climate data. She wrote it for the Moon landing.'"
-      ],
-      "realWorldConnection": "Margaret Hamilton coined the term 'software engineering.' Before her, programming was often seen as typing, not engineering. She proved that software is safety-critical infrastructure — and that the quality of a loop can determine whether a mission succeeds or fails."
     },
     {
       "id": "slide-overview",
@@ -372,7 +358,8 @@
         "Ask: 'Who is responsible for making sure a WHILE-loop stop condition is reachable? The programmer? The sensor manufacturer? The hospital?'"
       ],
       "realWorldConnection": "The Boeing 737 MAX crashes involved feedback loops in the MCAS system. The system repeatedly pushed the nose down based on sensor input. The sensor was faulty, but the loop kept running — pilots could not override it fast enough. The loop logic worked as designed. The design was unsafe. 346 people died.",
-      "conversationStarter": "If FOR vs WHILE feels abstract, try: 'A FOR loop is like a washing machine cycle — 30 minutes, then it stops. A WHILE loop is like a smoke alarm — it keeps checking while smoke is detected. What happens if the smoke detector breaks and always detects smoke?'"
+      "conversationStarter": "If FOR vs WHILE feels abstract, try: 'A FOR loop is like a washing machine cycle — 30 minutes, then it stops. A WHILE loop is like a smoke alarm — it keeps checking while smoke is detected. What happens if the smoke detector breaks and always detects smoke?'",
+      "roleModelMoment": "Margaret Hamilton's Apollo guidance computer used loop priority logic to prevent overload during flight. Choosing the right loop type was not academic — it was a live safety requirement."
     },
     {
       "id": "slide-exercise2",
@@ -425,7 +412,8 @@
         "After most groups finish, verify the answer together: 'The first three flagged readings are 4, 8, and 3.2. Average: about 5.07 degrees above normal.'",
         "Close: 'Margaret Hamilton's Apollo software did exactly this — it stopped non-essential tasks when the computer was overloaded. That is an early-stop condition. You just built one.'"
       ],
-      "conversationStarter": "If groups forget the counter, push: 'Your loop has no memory right now. It checks readings but does not remember how many warnings it has found. How does it know when to stop? You need a variable — a piece of information the loop carries with it.'"
+      "conversationStarter": "If groups forget the counter, push: 'Your loop has no memory right now. It checks readings but does not remember how many warnings it has found. How does it know when to stop? You need a variable — a piece of information the loop carries with it.'",
+      "roleModelMoment": "Hamilton's early-exit condition during Apollo 11 worked on exactly this principle: stop lower-priority processing when something critical needs the CPU. Your early-stop loop encodes the same decision."
     },
     {
       "id": "slide-exercise3",

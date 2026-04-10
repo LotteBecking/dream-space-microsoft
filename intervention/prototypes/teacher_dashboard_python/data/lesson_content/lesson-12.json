@@ -262,33 +262,7 @@
       "colour": "indigo",
       "roleModel": "Adele Goldberg (born 1945) is a computer scientist who worked at Xerox PARC — the research lab that invented the graphical user interface, the mouse, and ethernet. She co-developed Smalltalk, one of the first object-oriented programming languages. Smalltalk was revolutionary because it was built around a simple idea: software should be made of independent, reusable components that communicate through clear interfaces. Each component is a black box — you tell it what to do through its interface, and it gives you a result. You do not need to know how it works inside. This idea — modular, component-based design — is the foundation of every modern app, website, and operating system. When Steve Jobs visited Xerox PARC in 1979, he saw Smalltalk running and was so impressed that it influenced the design of the Macintosh. Adele initially resisted showing the technology to Apple, recognising its commercial value. She was right — the ideas she helped create went on to shape the entire computing industry.",
       "whatToSay": "Introduce Adele simply: 'Today's role model helped invent how modern software is built. Her name is Adele Goldberg. She worked at Xerox PARC — the lab that invented the mouse, the graphical interface, and the way computers look today. She co-created a programming language called Smalltalk, based on one powerful idea: build software from independent, reusable parts that communicate through clear contracts. Today, you are going to use that exact idea to design a real app.'",
-      "whatToDo": [
-        "Keep the intro to about 60 seconds — the Xerox PARC context is vivid.",
-        "The Steve Jobs detail is optional but memorable if time allows.",
-        "You can return to Adele naturally at these moments in the lesson:",
-        "Phase 2 (human function machine): 'Adele Goldberg's key idea was exactly this: you should be able to call a function by name, give it input, and get output — without knowing how it works inside. That is the black box.'",
-        "Phase 3 (interface contracts): 'Adele built Smalltalk around contracts between components. If two teams agree on inputs and outputs, they can build their parts independently. If they disagree — the system breaks.'",
-        "Phase 4 (architecture challenge): 'Every function in your food app is a Smalltalk-style component. Adele proved that complex systems only work when each part has a clear interface.'",
-        "Exit reflection: 'Adele Goldberg proved that the hardest part of building software is not writing the code — it is agreeing on how the parts connect.'"
-      ],
       "realWorldConnection": "Adele Goldberg's Smalltalk influenced Java, Python, Ruby, and Swift. Every app students use — from Instagram to Google Maps — is built from modular components that communicate through interfaces. The architecture challenge students do today uses exactly the design principles she pioneered."
-    },
-    {
-      "id": "slide-rolemodel-integration",
-      "phase": "Role Model — Using Her in Class",
-      "time": "Reference throughout",
-      "title": "Bringing Adele Into the Lesson",
-      "colour": "indigo",
-      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Adele in:",
-      "whatToDo": [
-        "LESSON INTRO — right now: One fact. 'She helped invent how all modern software is built — from independent, reusable parts.' That's enough.",
-        "PHASE 2 — when students act as functions: 'Adele Goldberg designed a language where every part of the system works like these students — you call it by name, give it input, get output. You never look inside.'",
-        "PHASE 3 — when drawing interface diagrams: 'Adele's key insight: if two teams agree on the contract — the input and output format — they can build their parts completely independently. The interface IS the agreement.'",
-        "PHASE 4 Step 2 — when groups map dependencies: 'Adele proved that the diagram you are drawing right now — the dependency map — is more important than the code inside any single function. If the connections are wrong, the system fails even when every part works.'",
-        "PHASE 4 Step 3 — when groups find missing modules: 'Finding a gap in your architecture is not failure. Adele designed Smalltalk to make these gaps visible — so you can fix them before they become bugs.'",
-        "EXIT REFLECTION — as the final word: 'Adele Goldberg proved that the hardest part of software is not writing the code — it is agreeing on how the parts connect. You just experienced that.'"
-      ],
-      "realWorldConnection": "Adele is not a historical footnote. The component-based design she pioneered is how Netflix, Spotify, Uber, and every major tech company builds software today. Microservices, APIs, and modular architecture all trace back to the principles she established in Smalltalk."
     },
     {
       "id": "slide-overview",
@@ -368,7 +342,8 @@
         "Say: 'The NASA Mars Climate Orbiter crashed because one team used metric units and another used imperial. Each team's code worked perfectly. The interface contract was wrong. The spacecraft was destroyed.'",
         "Close: 'Contracts are not paperwork. They are the glue that holds a system together. If the contracts are wrong, the system fails — even if every part works.'"
       ],
-      "realWorldConnection": "The Mars Climate Orbiter cost $327 million and was lost because of a unit mismatch between teams. Lockheed Martin sent thrust data in pound-force. NASA's navigation software expected newtons. Each team's code was correct. The interface was wrong. This is the single most famous example of why interface contracts matter."
+      "realWorldConnection": "The Mars Climate Orbiter cost $327 million and was lost because of a unit mismatch between teams. Lockheed Martin sent thrust data in pound-force. NASA's navigation software expected newtons. Each team's code was correct. The interface was wrong. This is the single most famous example of why interface contracts matter.",
+      "roleModelMoment": "Adele Goldberg's Smalltalk introduced exactly this: each component exposes what it does, not how it does it. The interface is the contract. That principle is in every major codebase built since the 1970s."
     },
     {
       "id": "slide-phase4-setup",
@@ -437,7 +412,8 @@
         "Most groups will identify login or findNearestShelter as critical.",
         "Say: 'A single point of failure is a design risk. Real systems build redundancy for these components — backup servers, fallback logic.'"
       ],
-      "conversationStarter": "If groups draw flat lists instead of maps, push: 'You drew five functions. But which ones talk to each other? Does notifyShelter need output from claimFood? Draw the connection. If there is no connection, your system has no flow.'"
+      "conversationStarter": "If groups draw flat lists instead of maps, push: 'You drew five functions. But which ones talk to each other? Does notifyShelter need output from claimFood? Draw the connection. If there is no connection, your system has no flow.'",
+      "roleModelMoment": "Goldberg saw this early: when modules depend on each other's internals, one change cascades and breaks everything. Your dependency map shows precisely why her abstraction principle still holds."
     },
     {
       "id": "slide-phase4-step3",

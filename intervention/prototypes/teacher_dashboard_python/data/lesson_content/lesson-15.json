@@ -55,35 +55,50 @@
       "postcode": "1071",
       "commute": "Car",
       "graduationYear": 2021,
-      "hobbies": ["golf", "sailing"]
+      "hobbies": [
+        "golf",
+        "sailing"
+      ]
     },
     {
       "employee": "B",
       "postcode": "1072",
       "commute": "Car",
       "graduationYear": 2020,
-      "hobbies": ["tennis", "travel"]
+      "hobbies": [
+        "tennis",
+        "travel"
+      ]
     },
     {
       "employee": "C",
       "postcode": "1071",
       "commute": "Car",
       "graduationYear": 2022,
-      "hobbies": ["skiing", "sailing"]
+      "hobbies": [
+        "skiing",
+        "sailing"
+      ]
     },
     {
       "employee": "D",
       "postcode": "1071",
       "commute": "Car",
       "graduationYear": 2021,
-      "hobbies": ["cycling", "golf"]
+      "hobbies": [
+        "cycling",
+        "golf"
+      ]
     },
     {
       "employee": "E",
       "postcode": "1073",
       "commute": "Car",
       "graduationYear": 2019,
-      "hobbies": ["golf", "reading"]
+      "hobbies": [
+        "golf",
+        "reading"
+      ]
     }
   ],
   "teacherInstructions": {
@@ -300,33 +315,7 @@
       "colour": "indigo",
       "roleModel": "Joy Buolamwini (born 1989) is an MIT researcher and founder of the Algorithmic Justice League. While working on a class project, she discovered that a commercial facial-recognition system could not detect her face — but worked perfectly on a white mask. She investigated further and proved that three major tech companies' facial-recognition systems had error rates up to 34% higher for darker-skinned women compared to lighter-skinned men. Her 2018 research paper, co-authored with Timnit Gebru, forced IBM, Microsoft, and Amazon to re-examine their products. IBM withdrew its facial-recognition product from general-purpose use. Her work established that auditing AI systems for bias is not an optional ethics add-on — it is core engineering practice.",
       "whatToSay": "Introduce Joy simply and with impact: 'Today's role model is a computer scientist who tried to use facial recognition — and the software could not see her face. Her name is Joy Buolamwini. She did not accept that. She tested three of the biggest tech companies' systems and proved that they worked well for light-skinned men but failed badly for dark-skinned women. Her research changed products used by millions of people. Today, you are going to do what she did — audit a system for bias.'",
-      "whatToDo": [
-        "Keep the intro to about 60 seconds — the mask detail is vivid and memorable.",
-        "The key detail: the system worked on a white mask but not on her face. Let that sit.",
-        "You can return to Joy naturally at these moments in the lesson:",
-        "Phase 2 (proxy variables): 'Joy showed that the problem was not one line of bad code — it was the training data. The system learned what faces look like from datasets that were mostly white and mostly male.'",
-        "Phase 3 (ML bias remediation): 'Joy proved you cannot fix this by changing one rule. You have to change the data the system learned from — and then retrain the entire model.'",
-        "Phase 4 Round 2 (data policy): 'Joy did not just find the bias — she published a methodology. That is what an audit is: a repeatable process for checking fairness.'",
-        "Exit reflection: 'Joy Buolamwini proved that a system can be biased without anyone writing a single discriminatory line of code. You just proved the same thing with a hiring dataset.'"
-      ],
       "realWorldConnection": "Joy's work is not just an academic paper. IBM withdrew a commercial product. Amazon paused police use of its facial-recognition system. Cities and countries passed legislation restricting facial recognition. One researcher's audit changed global policy. When students audit data today, they are practising the same discipline."
-    },
-    {
-      "id": "slide-rolemodel-integration",
-      "phase": "Role Model — Using Her in Class",
-      "time": "Reference throughout",
-      "title": "Bringing Joy Into the Lesson",
-      "colour": "indigo",
-      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Joy in:",
-      "whatToDo": [
-        "LESSON INTRO — right now: Keep it to the mask. 'The facial-recognition system worked on a white mask but could not see her face. That is where this lesson begins.'",
-        "PHASE 2 — when explaining proxy variables: 'Joy showed that the problem was in the training data. The system did not have a rule saying ignore dark-skinned faces. It just learned from data that was overwhelmingly light-skinned. The data was the proxy.'",
-        "PHASE 3 — when explaining why you cannot just delete one rule: 'Joy proved that bias in machine learning is not like a typo you can fix. It is woven into thousands of learned patterns. You have to change the data and retrain.'",
-        "PHASE 4 Round 1 — when groups start their feature audit: 'Joy's first step was the same as yours right now: look at the data and ask — what patterns is this system learning, and who is missing?'",
-        "PHASE 4 Round 2 — when groups write data policies: 'Joy did not just find the problem. She published a methodology — a repeatable audit. That is what you are writing now.'",
-        "EXIT REFLECTION — as the final word: 'Joy Buolamwini proved that a system can be biased without anyone writing a single discriminatory line of code. You just proved the same thing.'"
-      ],
-      "realWorldConnection": "Joy is not just a researcher — she is a practitioner of exactly the discipline students are learning today. Her audit methodology is now the standard approach used by companies and regulators worldwide. When students audit a dataset, they are doing what Joy proved is necessary: checking the data before trusting the system."
     },
     {
       "id": "slide-overview",
@@ -376,7 +365,8 @@
         "Close Phase 2: 'This is why auditing is hard. The bias is not visible in the code. It is hidden in the relationship between the data and the real world.'"
       ],
       "realWorldConnection": "Postcode discrimination is a well-documented issue. Insurance, lending, and hiring systems in multiple countries have been found to use postcode as a proxy for race and income. In the Netherlands, the Toeslagenaffaire (child benefit scandal) showed how algorithmic profiling based on nationality and neighbourhood indicators led to systemic discrimination against immigrant families.",
-      "conversationStarter": "If students are not engaged, try: 'Imagine two identical CVs — same school, same grades, same experience. One lives in a wealthy suburb. One lives in a social housing neighbourhood. If the algorithm uses postcode — who gets the interview? Is that the algorithm's fault or the data's fault?'"
+      "conversationStarter": "If students are not engaged, try: 'Imagine two identical CVs — same school, same grades, same experience. One lives in a wealthy suburb. One lives in a social housing neighbourhood. If the algorithm uses postcode — who gets the interview? Is that the algorithm's fault or the data's fault?'",
+      "roleModelMoment": "Joy Buolamwini's audit showed that removing race from a dataset does not remove racial bias — postcodes and surnames reintroduce it as proxies. Deleting the label does not delete the pattern."
     },
     {
       "id": "slide-phase3",
@@ -461,7 +451,8 @@
         "Require one monitoring metric: 'After the model is deployed with your policy — how will you check if it is actually fairer? What will you measure?'",
         "After 5 minutes, ask one group to share their exclusion list and one required addition."
       ],
-      "conversationStarter": "If a group struggles with additions, try: 'You removed postcode and hobbies. Now the model has almost nothing to learn from. What data would actually be relevant to job performance? Skills assessments? Work samples? Structured interviews? What data measures ability, not background?'"
+      "conversationStarter": "If a group struggles with additions, try: 'You removed postcode and hobbies. Now the model has almost nothing to learn from. What data would actually be relevant to job performance? Skills assessments? Work samples? Structured interviews? What data measures ability, not background?'",
+      "roleModelMoment": "Buolamwini did not just publish findings — she forced IBM, Microsoft, and Amazon to change products by making the audit public and impossible to ignore. A data policy without enforcement is a suggestion."
     },
     {
       "id": "slide-exercise2",

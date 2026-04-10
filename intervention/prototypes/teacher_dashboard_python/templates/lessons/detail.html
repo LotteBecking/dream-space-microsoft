@@ -470,6 +470,86 @@
 
   .rm-text { font-size: 0.95rem; line-height: 1.65; color: var(--tx); }
 
+  .rm-moment-box {
+    background: rgba(124, 58, 237, 0.05);
+    border-left: 4px solid rgba(124, 58, 237, 0.35);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 22px;
+    font-size: 0.95rem; line-height: 1.65; color: var(--tx);
+    font-style: italic;
+  }
+
+  .world-chip {
+    background: rgba(5, 150, 105, 0.06);
+    border: 1.5px solid rgba(5, 150, 105, 0.25);
+    border-radius: 10px; padding: 13px 18px;
+    display: flex; align-items: flex-start; gap: 11px;
+    font-size: 0.96rem; line-height: 1.65; color: var(--tx);
+  }
+
+  .world-chip-icon {
+    flex-shrink: 0; width: 18px; height: 18px;
+    color: #059669; margin-top: 2px;
+  }
+
+  .debrief-box {
+    background: rgba(20, 184, 166, 0.07);
+    border-left: 4px solid #14b8a6;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 22px;
+    font-size: 0.96rem; line-height: 1.65; color: var(--tx);
+    font-style: italic;
+  }
+
+  .concept-moment-box {
+    background: rgba(37, 99, 235, 0.06);
+    border: 1.5px solid rgba(37, 99, 235, 0.2);
+    border-radius: 10px; padding: 14px 18px;
+    font-size: 0.96rem; line-height: 1.65; color: var(--tx);
+  }
+
+  .discuss-chip {
+    background: rgba(5, 150, 105, 0.06);
+    border-left: 4px solid #059669;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 22px;
+    font-size: 0.96rem; line-height: 1.65; color: var(--tx);
+  }
+
+  .slide-note {
+    font-size: 0.83rem; color: var(--mu);
+    font-style: italic; padding: 6px 4px;
+    border-top: 1px solid var(--bd); margin-top: 8px;
+  }
+
+  .exit-note {
+    font-size: 0.82rem; color: var(--mu);
+    font-style: italic; margin-top: 6px; padding-left: 4px;
+  }
+
+  .dashboard-note {
+    background: var(--sf2);
+    border: 1px solid var(--bd);
+    border-radius: 10px; padding: 14px 18px;
+    font-size: 0.88rem; line-height: 1.6; color: var(--mu);
+    margin-top: 8px;
+  }
+
+  .dashboard-note-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--mu);
+    display: block; margin-bottom: 6px;
+  }
+
+  .also-need {
+    font-size: 0.88rem; color: var(--mu);
+    font-style: italic; margin-bottom: 18px;
+    padding: 8px 14px;
+    background: var(--sf2); border-radius: 8px;
+    border: 1px solid var(--bd);
+  }
+
   .starter-box {
     background: rgba(5, 150, 105, 0.06);
     border-left: 4px solid #059669;
@@ -501,9 +581,7 @@
     line-height: 1.5;
   }
 
-  .webapp-cue-icon {
-    font-size: 1.2rem; flex-shrink: 0;
-  }
+  .webapp-cue svg { flex-shrink: 0; }
 
   /* slide bottom nav */
   .ss-nav {
@@ -815,15 +893,19 @@ const LESSON_ID = {{ lesson.id | tojson }};
 let cur = 0;
 
 function buildSlideHTML(s) {
+  const globeSVG = `<svg class="world-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`;
+  const laptopSVG = `<svg style="flex-shrink:0;width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M0 20h24"/></svg>`;
+
   let h = `
     <div class="ss-phase-tag">${s.phase}</div>
     <div class="ss-title">${s.title}</div>
     ${s.time ? `<div class="ss-timing">${s.time}</div>` : ''}
-    ${s.webappCue ? `<div class="webapp-cue"><span class="webapp-cue-icon">&#128187;</span>${s.webappCue}</div>` : ''}
+    ${s.webappCue ? `<div class="webapp-cue">${laptopSVG}${s.webappCue}</div>` : ''}
     ${s.exerciseId ? `<a href="/lessons/${LESSON_ID}/exercises/${s.exerciseId}?slide=${cur + 1}" target="_blank" class="go-exercise-btn">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
       Open Exercise for Class
     </a>` : ''}
+    ${s.alsoNeed ? `<div class="also-need">You will also need: ${s.alsoNeed}</div>` : ''}
   `;
 
   if (s.roleModel) {
@@ -870,16 +952,30 @@ function buildSlideHTML(s) {
     </div>`;
   }
 
+  if (s.realWorldConnection) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Real world</div>
+      <div class="world-chip">${globeSVG}<span>${s.realWorldConnection}</span></div>
+    </div>`;
+  }
+
+  if (s.debrief) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Debrief</div>
+      <div class="debrief-box">${s.debrief}</div>
+    </div>`;
+  }
+
   if (s.rules && s.rules.length) {
     h += `<div class="ss-section">
       <div class="ss-label">Rules for students</div>
-      <ul class="bullet-list">${s.rules.map(x => `<li>${x}</li>`).join('')}</ul>
+      <ul class="step-list">${s.rules.map(x => `<li>${x}</li>`).join('')}</ul>
     </div>`;
   }
 
   if (s.discussionQuestions && s.discussionQuestions.length) {
     h += `<div class="ss-section">
-      <div class="ss-label">Discussion questions &mdash; pick one</div>
+      <div class="ss-label">Discussion &mdash; pick one</div>
       ${s.discussionQuestions.map(q => `<div class="say-box" style="margin-bottom:8px">${q}</div>`).join('')}
     </div>`;
   }
@@ -898,17 +994,17 @@ function buildSlideHTML(s) {
     </div>`;
   }
 
-  if (s.realWorldConnection) {
+  if (s.conceptMoment) {
     h += `<div class="ss-section">
-      <div class="ss-label">Real-world connection</div>
-      <div class="do-box">${s.realWorldConnection}</div>
+      <div class="ss-label">Concept moment</div>
+      <div class="concept-moment-box">${s.conceptMoment}</div>
     </div>`;
   }
 
   if (s.discussionClose) {
     h += `<div class="ss-section">
-      <div class="ss-label">To close the activity</div>
-      <div class="do-box">${s.discussionClose}</div>
+      <div class="ss-label">To discuss</div>
+      <div class="discuss-chip">${s.discussionClose}</div>
     </div>`;
   }
 
@@ -916,13 +1012,34 @@ function buildSlideHTML(s) {
     h += `<div class="ss-section">
       <div class="ss-label">Exit reflection &mdash; say this or use sticky notes</div>
       <div class="say-box" style="font-size:1.05rem;font-weight:600;font-style:normal">${s.exitReflection}</div>
+      ${s.exitNote ? `<div class="exit-note">${s.exitNote}</div>` : ''}
+    </div>`;
+  }
+
+  if (s.roleModelMoment) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Role model moment</div>
+      <div class="rm-moment-box">${s.roleModelMoment}</div>
     </div>`;
   }
 
   if (s.conversationStarter) {
     h += `<div class="ss-section">
-      <div class="ss-label">If students are stuck &mdash; try saying</div>
+      <div class="ss-label">If it goes quiet &rarr;</div>
       <div class="starter-box">${s.conversationStarter}</div>
+    </div>`;
+  }
+
+  if (s.note) {
+    h += `<div class="slide-note">${s.note}</div>`;
+  }
+
+  if (s.dashboardNote) {
+    h += `<div class="ss-section">
+      <div class="dashboard-note">
+        <span class="dashboard-note-label">After the lesson</span>
+        ${s.dashboardNote}
+      </div>
     </div>`;
   }
 

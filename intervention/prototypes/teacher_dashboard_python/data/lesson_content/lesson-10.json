@@ -59,16 +59,76 @@
   ],
   "fullDescription": "Age group: 12-17. Duration: 30 minutes. SLO alignment: Domain A (21A), Domain B (22B). Learning goal: students explain how computers use Boolean logic to build conditional security rules and apply this to a hospital firewall scenario where both blocking threats and allowing legitimate traffic matter.",
   "packetCards": [
-    { "card": 1, "origin": "Unknown", "fileType": ".exe", "size": "15MB", "otherDetail": "Sent at 3am" },
-    { "card": 2, "origin": "Trusted doctor", "fileType": ".pdf", "size": "2MB", "otherDetail": "Normal hours" },
-    { "card": 3, "origin": "Unknown", "fileType": ".pdf", "size": "1MB", "otherDetail": "Normal hours" },
-    { "card": 4, "origin": "Trusted device", "fileType": ".exe", "size": "8MB", "otherDetail": "Software update" },
-    { "card": 5, "origin": "Unknown", "fileType": ".jpg", "size": "500KB", "otherDetail": "Normal hours" },
-    { "card": 6, "origin": "Trusted doctor", "fileType": ".exe", "size": "8MB", "otherDetail": "New device" },
-    { "card": 7, "origin": "Unknown", "fileType": ".docx", "size": "3MB", "otherDetail": "Normal hours" },
-    { "card": 8, "origin": "Hacker IP", "fileType": ".pdf", "size": "2MB", "otherDetail": "Normal hours" },
-    { "card": 9, "origin": "Trusted device", "fileType": ".pdf", "size": "4MB", "otherDetail": "Normal hours" },
-    { "card": 10, "origin": "Unknown", "fileType": ".exe", "size": "2MB", "otherDetail": "Normal hours" }
+    {
+      "card": 1,
+      "origin": "Unknown",
+      "fileType": ".exe",
+      "size": "15MB",
+      "otherDetail": "Sent at 3am"
+    },
+    {
+      "card": 2,
+      "origin": "Trusted doctor",
+      "fileType": ".pdf",
+      "size": "2MB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 3,
+      "origin": "Unknown",
+      "fileType": ".pdf",
+      "size": "1MB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 4,
+      "origin": "Trusted device",
+      "fileType": ".exe",
+      "size": "8MB",
+      "otherDetail": "Software update"
+    },
+    {
+      "card": 5,
+      "origin": "Unknown",
+      "fileType": ".jpg",
+      "size": "500KB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 6,
+      "origin": "Trusted doctor",
+      "fileType": ".exe",
+      "size": "8MB",
+      "otherDetail": "New device"
+    },
+    {
+      "card": 7,
+      "origin": "Unknown",
+      "fileType": ".docx",
+      "size": "3MB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 8,
+      "origin": "Hacker IP",
+      "fileType": ".pdf",
+      "size": "2MB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 9,
+      "origin": "Trusted device",
+      "fileType": ".pdf",
+      "size": "4MB",
+      "otherDetail": "Normal hours"
+    },
+    {
+      "card": 10,
+      "origin": "Unknown",
+      "fileType": ".exe",
+      "size": "2MB",
+      "otherDetail": "Normal hours"
+    }
   ],
   "teacherInstructions": {
     "setup": "Write vocabulary on the board and keep it visible all lesson. Prepare 10 index cards with packet details before class — one card per packet. Tell students they are the cybersecurity team for a hospital and every decision they make has consequences.",
@@ -294,32 +354,7 @@
       "colour": "indigo",
       "roleModel": "Claude Shannon (1916–2001) was a mathematician and electrical engineer who wrote what is considered the most important master's thesis in history. In 1937, at age 21, he proved that George Boole's century-old true/false logic system could be implemented using on/off electrical switches. This single insight — that circuits could perform logical operations — became the foundation of every digital computer ever built. Before Shannon, people thought of electrical switches as physical things that turned lights on and off. Shannon saw something no one else had: switches could represent ideas, make decisions, solve logic problems. He later founded information theory, the mathematical framework behind data compression, encryption, and every digital communication system. Every conditional rule students write today — IF this THEN that — runs on the architecture Shannon established. Every firewall, every password check, every spam filter uses Boolean logic implemented in circuits, exactly as he described in 1937.",
       "whatToSay": "Introduce Claude Shannon simply: 'Today's role model made a connection that no one else saw. His name is Claude Shannon. In 1937, when he was 21 years old, he proved that electrical switches — on and off — could be used to solve logical problems — true and false. That one idea is the reason computers exist. Every time a computer makes a decision — allow or block, true or false, yes or no — it is using the system Shannon described. Today, you are going to use that exact system to build a firewall.'",
-      "whatToDo": [
-        "Keep the intro to about 60 seconds — the 21-year-old detail is memorable.",
-        "You can return to Shannon naturally at these moments in the lesson:",
-        "Phase 2 (human logic gates): 'You are standing for true and sitting for false. Claude Shannon proved that an electrical switch does the same thing — on for true, off for false. Every computer chip contains billions of these switches.'",
-        "Phase 3 (IF/THEN/ELSE): 'Every IF statement you write is Shannon's architecture in action. The computer checks a condition — true or false — and takes an action. Billions of times per second.'",
-        "Phase 4 Round 2 (combining rules with AND/OR/NOT): 'Shannon proved that you can combine true/false switches using AND, OR, and NOT to make any logical decision. Your firewall rules are doing exactly that.'",
-        "Exit reflection: 'Claude Shannon proved that all decisions — no matter how complex — reduce to true or false. You just used that to protect a hospital.'"
-      ],
       "realWorldConnection": "Claude Shannon's thesis is the foundation of the entire digital age. Every processor, every circuit board, every conditional check in every piece of software is built on his architecture. He also invented information theory — the mathematics behind how data is compressed, encrypted, and transmitted. When students write IF/THEN rules, they are using a system that a 21-year-old graduate student proved could work, 89 years ago."
-    },
-    {
-      "id": "slide-rolemodel-integration",
-      "phase": "Role Model — Using Him in Class",
-      "time": "Reference throughout",
-      "title": "Bringing Claude Shannon Into the Lesson",
-      "colour": "indigo",
-      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Shannon in:",
-      "whatToDo": [
-        "LESSON INTRO — right now: One fact. 'He proved at age 21 that on/off switches could solve logical problems. That is why computers exist.' That's enough.",
-        "PHASE 2 — when students stand/sit for true/false: 'You are a Shannon switch right now. On = true = standing. Off = false = sitting. A computer chip has billions of you, running billions of times per second.'",
-        "PHASE 3 — when writing IF/THEN/ELSE: 'Every IF statement is Shannon's system. The computer checks: is this condition true or false? Then it acts. That is the only thing computers do — but they do it billions of times per second, which is why they seem intelligent.'",
-        "PHASE 4 Round 1 — when the first rule fails: 'Shannon's system is perfectly precise. The problem is never the logic — it is the rules you write. Your rule blocked a safe software update. The Boolean logic worked perfectly. Your rule was wrong.'",
-        "PHASE 4 Round 2 — when groups combine AND/OR/NOT: 'Shannon proved these three operators — AND, OR, NOT — are enough to make any logical decision. Any. Your firewall uses three operators. A modern processor uses billions of them.'",
-        "EXIT REFLECTION — as the final word: 'Claude Shannon proved that all decisions reduce to true or false. You just used that system to protect a hospital. Same logic — different stakes.'"
-      ],
-      "realWorldConnection": "Shannon did not just write a thesis. He also juggled on a unicycle in the hallways of Bell Labs, built a flame-throwing trumpet, and designed a mechanical mouse that could solve mazes. He was a playful genius who saw connections others missed. When students play the human logic gate game, they are experiencing Shannon's core insight in exactly the spirit he would have appreciated."
     },
     {
       "id": "slide-overview",
@@ -369,7 +404,8 @@
         "Run 2–3 more combinations fast. Speed matters — computers do this billions of times per second.",
         "Close: 'You just modelled Boolean logic. AND, OR, NOT. Those three operations are enough to make any logical decision. Claude Shannon proved that in 1937. Every computer chip uses exactly these three.'"
       ],
-      "conversationStarter": "If students make mistakes, use them: 'You hesitated. A computer never hesitates — it checks the condition and acts in nanoseconds. The difference is: a computer does not interpret. It does not guess. It follows the rule exactly. If the rule is wrong, the answer is wrong — but the logic is perfect.'"
+      "conversationStarter": "If students make mistakes, use them: 'You hesitated. A computer never hesitates — it checks the condition and acts in nanoseconds. The difference is: a computer does not interpret. It does not guess. It follows the rule exactly. If the rule is wrong, the answer is wrong — but the logic is perfect.'",
+      "roleModelMoment": "Claude Shannon proved at 21 that on/off electrical switches could represent logical true and false. You are physically demonstrating the insight his 1937 master's thesis established."
     },
     {
       "id": "slide-exercise1",
@@ -455,7 +491,8 @@
         "Ask: 'Is zero false positives and zero false negatives possible with 3 rules? Probably not. That is the fundamental trade-off in security: the more you block, the more legitimate traffic you catch. The less you block, the more threats get through.'",
         "Close: 'No ruleset is perfect. A good security team designs rules, tests them, counts the errors, and improves. That is exactly what you just did.'"
       ],
-      "conversationStarter": "If groups finish early, throw the edge case: 'Card 6 — a trusted doctor is sending an .exe from a new device. Is that a software update or a compromised account? How does your rule handle it without knowing the doctor's intent?'"
+      "conversationStarter": "If groups finish early, throw the edge case: 'Card 6 — a trusted doctor is sending an .exe from a new device. Is that a software update or a compromised account? How does your rule handle it without knowing the doctor's intent?'",
+      "roleModelMoment": "Every AND, OR, NOT in your firewall ruleset is Shannon's Boolean algebra in application. He proved it was theoretically possible. You are building the operational version."
     },
     {
       "id": "slide-exercise3",

@@ -295,32 +295,7 @@
       "colour": "indigo",
       "roleModel": "Vanessa Nakate (born 1996) is a Ugandan climate activist who became globally known when she was cropped out of a photo with four white activists at the World Economic Forum in Davos. That moment made visible what she had been saying all along: the people most affected by the consequences of technology, industry, and policy are often the ones left out of the conversation entirely. She has since addressed the United Nations, spoken at COP summits, and founded the Rise Up Movement to amplify African voices in the climate crisis. Her work is not about rejecting technology — it is about demanding that technology is designed with, not just for, the people it affects most.",
       "whatToSay": "Introduce Vanessa simply and with purpose: 'Today's role model is someone who was literally cut out of a photograph — and turned that moment into a global movement. Her name is Vanessa Nakate. She is a climate activist from Uganda who fights for the voices of people most affected by big decisions to actually be heard. Today, you are going to design a system that solves a real problem. Vanessa's question — who is left out? — is the question you will have to answer too.'",
-      "whatToDo": [
-        "Keep the intro to about 60 seconds — one striking fact is enough.",
-        "The cropping incident is powerful because it is visual and concrete — students remember it.",
-        "You can return to Vanessa naturally at these moments in the lesson:",
-        "Phase 3 (design framework question 5): 'This is Vanessa's question. Who is excluded by a design that works exactly as intended?'",
-        "Phase 4 (ethical hacker challenge): 'Vanessa doesn't just ask who is missing — she asks why they are missing, and who benefits from their absence.'",
-        "Exit reflection: 'Vanessa Nakate asked one question that changed how the world saw climate activism: who is not in the room? You just asked the same question about technology.'"
-      ],
       "realWorldConnection": "Vanessa's experience is not just a story about photography. It is a pattern that repeats in technology design: systems optimized for majority users, trained on majority data, tested in majority contexts. The students who understand this pattern — and learn to design against it — are the ones who will build technology that actually works for everyone."
-    },
-    {
-      "id": "slide-rolemodel-integration",
-      "phase": "Role Model — Using Her in Class",
-      "time": "Reference throughout",
-      "title": "Bringing Vanessa Into the Lesson",
-      "colour": "indigo",
-      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Vanessa in:",
-      "whatToDo": [
-        "LESSON INTRO — right now: Keep it to one striking fact. 'She was cropped out of a photograph at the World Economic Forum — and turned that moment into a global movement for inclusion.' That's enough. Let the curiosity sit.",
-        "PHASE 2 — when building the dependency web: 'Vanessa asks: who depends on this system but had no say in how it was built? Look at your dependency web — who is missing from it?'",
-        "PHASE 3 — when you present design framework question 5: 'This is Vanessa's question. Not who uses the system — who is left out by it. That is the hardest design question, and it is the one most teams skip.'",
-        "PHASE 4 — during the ethical hacker challenge: 'Vanessa doesn't just ask who is missing. She asks: who benefits from their absence? That is the challenge question you need to answer now.'",
-        "PHASE 4 — during pitches, if a team skips exclusion analysis: 'Vanessa would ask: your system works perfectly — for whom? And who does it not work for?'",
-        "EXIT REFLECTION — as the final word: 'Vanessa Nakate asked one question that changed how the world saw climate activism. You just asked the same question about technology. Take that question with you.'"
-      ],
-      "realWorldConnection": "Vanessa is not a technologist — she is someone who experienced what happens when design decisions exclude the people they affect most. Her cropping incident is a literal metaphor for proxy bias, training data gaps, and user exclusion. When students name who is left out, they are doing what Vanessa did: making the invisible visible."
     },
     {
       "id": "slide-overview",
@@ -386,7 +361,8 @@
         "Question 5 — Who is left out? 'People without smartphones. People in areas with poor mapping data. People with disabilities who need accessible routes. People without data plans.'",
         "Pause after question 5. Say: 'This is the question most teams skip. Today, you will not skip it. This is Vanessa Nakate's question — who is not in the room when the design decisions are made?'"
       ],
-      "realWorldConnection": "Navigation apps are a perfect example because students use them daily but rarely think about the infrastructure, data, and exclusions behind them. The mapping bias is real — Google Maps has significantly better coverage in high-income areas, and routing algorithms prioritize speed over community impact."
+      "realWorldConnection": "Navigation apps are a perfect example because students use them daily but rarely think about the infrastructure, data, and exclusions behind them. The mapping bias is real — Google Maps has significantly better coverage in high-income areas, and routing algorithms prioritize speed over community impact.",
+      "roleModelMoment": "Question 5 — who is left out — is Vanessa Nakate's question. She was literally cropped out of a photo of climate activists. The people most affected by a decision are often the least consulted in making it."
     },
     {
       "id": "slide-exercise1",
@@ -452,7 +428,8 @@
         "Require at least one visible design change per group before pitches begin.",
         "Push teams that lead with technology ('we use AI to...') to lead with the problem ('the problem is that...')."
       ],
-      "conversationStarter": "If a group says 'our system is for everyone', push back: 'No system is for everyone. A system designed for everyone is optimized for no one. Who specifically are your first 100 users? What do they have in common? What do they need that they are not getting right now?'"
+      "conversationStarter": "If a group says 'our system is for everyone', push back: 'No system is for everyone. A system designed for everyone is optimized for no one. Who specifically are your first 100 users? What do they have in common? What do they need that they are not getting right now?'",
+      "roleModelMoment": "Before groups finalise their design: Nakate's challenge is not only about climate — it is about who the system is actually built for. Ask: whose life does this make harder? If you cannot answer, the design is not finished."
     },
     {
       "id": "slide-exercise3",

@@ -324,33 +324,7 @@
       "colour": "indigo",
       "roleModel": "Fei-Fei Li (born 1976) is a computer scientist and professor at Stanford University. She grew up in China, immigrated to the United States as a teenager, and worked in dry cleaners and restaurants to support her family while studying physics and computer science. In 2009, she created ImageNet — a dataset of over 14 million labelled images organised into more than 20,000 categories. At the time, most AI researchers focused on building cleverer algorithms. Fei-Fei Li asked a different question: what if the algorithm is not the bottleneck — what if the data is? ImageNet proved her right. Models trained on ImageNet dramatically outperformed everything before them, not because the algorithms were new, but because the data was better, larger, and more diverse. Her work launched the modern deep learning revolution and established a principle students will use today: the quality and diversity of your training data matters more than the cleverness of your model.",
       "whatToSay": "Introduce Fei-Fei Li simply: 'Today's role model is a scientist who changed AI — not by writing a better algorithm, but by building a better dataset. Her name is Fei-Fei Li. She created ImageNet — 14 million images, all labelled by hand — and proved that the data you train on matters more than how smart your code is. Today, you are going to learn why that matters, because you are going to train a model yourselves.'",
-      "whatToDo": [
-        "Keep the intro to about 60 seconds — the key insight is data quality over algorithm cleverness.",
-        "The immigrant story is powerful but optional — use it if it resonates with your class.",
-        "You can return to Fei-Fei Li naturally at these moments in the lesson:",
-        "Phase 2 (features and weights): 'Fei-Fei Li proved that choosing the right features — the right way to describe your data — matters more than the algorithm itself.'",
-        "Phase 3 Round 2 (training the model): 'You are training a model on four transactions. Fei-Fei Li trained on 14 million images. But the principle is the same: what the model learns depends entirely on what you show it.'",
-        "Phase 3 Round 3 (errors on unseen data): 'Fei-Fei Li's key insight was that small, narrow datasets produce narrow models. Your model just made errors on new transactions — same principle.'",
-        "Exit reflection: 'Fei-Fei Li proved that the data is the model. What you saw today is exactly what she showed the world.'"
-      ],
       "realWorldConnection": "ImageNet did not just improve one product. It triggered an entire revolution in AI. Every modern image recognition system — from face unlock on your phone to medical scans detecting cancer — traces back to the principle Fei-Fei Li proved: data quality and diversity determine model quality. When students train their fraud detector today on four transactions, they are experiencing the same principle at miniature scale."
-    },
-    {
-      "id": "slide-rolemodel-integration",
-      "phase": "Role Model — Using Her in Class",
-      "time": "Reference throughout",
-      "title": "Bringing Fei-Fei Li Into the Lesson",
-      "colour": "indigo",
-      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Fei-Fei Li in:",
-      "whatToDo": [
-        "LESSON INTRO — right now: One fact. 'She changed AI not by writing better code, but by building a better dataset.' That's enough.",
-        "PHASE 2 — when introducing features: 'Fei-Fei Li proved that choosing the right features matters more than the algorithm. If you describe an image badly, no algorithm can fix it. Same with fraud transactions.'",
-        "PHASE 3 Round 2 — when groups are training their model: 'You are training on four transactions. ImageNet had 14 million images. But the principle is identical: the model learns exactly what you show it. Nothing more.'",
-        "PHASE 3 Round 3 — when models fail on unseen data: 'Your model just got some wrong. That is not failure — that is the lesson. Fei-Fei Li proved that a model trained on narrow data produces narrow results.'",
-        "PHASE 4 — discussion on fairness: 'Fei-Fei Li said data determines the model. If the training data is biased — if certain groups are overrepresented or underrepresented — the model inherits that bias. That is why fairness starts with data.'",
-        "EXIT REFLECTION — as the final word: 'Fei-Fei Li proved that the data is the model. You just experienced that yourselves.'"
-      ],
-      "realWorldConnection": "Fei-Fei Li is now a leading voice on responsible AI. She co-founded Stanford's Human-Centered AI Institute, arguing that AI must be designed with human impact at the centre — not added as an afterthought. When students think about who is affected by errors, they are doing what Fei-Fei Li advocates: putting people at the centre of technical decisions."
     },
     {
       "id": "slide-overview",
@@ -448,7 +422,8 @@
         "Walk around. Push groups to justify their weights: 'Why did you give Overseas a 9? What evidence from the training data supports that?'",
         "After 8 minutes, ask two groups to share their weights and thresholds. Likely they will differ — that is the point."
       ],
-      "conversationStarter": "If a group gets stuck, try: 'Start with the clearest pattern. Both fraud transactions are overseas. Both safe transactions are local. What does that tell you about the weight for Overseas?'"
+      "conversationStarter": "If a group gets stuck, try: 'Start with the clearest pattern. Both fraud transactions are overseas. Both safe transactions are local. What does that tell you about the weight for Overseas?'",
+      "roleModelMoment": "Fei-Fei Li's core finding applies directly: label quality determines model quality. The features you weight and the labels you assign are the model's entire view of reality."
     },
     {
       "id": "slide-exercise2",
@@ -490,7 +465,8 @@
         "Ask: 'What went wrong? Your model was perfect on training data but made errors on new data. Why?'",
         "Answer: 'Because four training examples are not enough to learn every pattern. The model overfitted — it learned the specific examples, not the general rules. This is exactly what Fei-Fei Li proved: small, narrow data creates narrow models.'"
       ],
-      "conversationStarter": "If groups get everything right, push: 'You got lucky — or you built a conservative model. What if there were 100 test transactions instead of 3? Would your model still work? What patterns might appear that your four training examples never showed?'"
+      "conversationStarter": "If groups get everything right, push: 'You got lucky — or you built a conservative model. What if there were 100 test transactions instead of 3? Would your model still work? What patterns might appear that your four training examples never showed?'",
+      "roleModelMoment": "Li proved that a model trained on too narrow a dataset fails to generalise. The gap between your training accuracy and test accuracy is the exact phenomenon she documented at scale."
     },
     {
       "id": "slide-exercise3",

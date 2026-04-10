@@ -235,32 +235,7 @@
       "colour": "indigo",
       "roleModel": "Grace Hopper (1906–1992) was a mathematician, computer scientist, and US Navy Rear Admiral. She was one of the first programmers of the Harvard Mark I computer in 1944, and she invented the first compiler — a program that translates human-readable instructions into machine code. Before her compiler, every programmer had to write instructions in raw machine language — sequences of numbers that were nearly impossible to read, debug, or maintain. Grace saw that this was an efficiency problem: not just for computers, but for humans. Her compiler let people write in something closer to English and have the computer translate it. She was told it would never work — that computers could only do arithmetic, not understand language. She built it anyway and proved them wrong. She is also credited with popularising the term 'debugging' after a moth was found inside the Harvard Mark II computer causing a malfunction. Her most famous quote captures the spirit of this lesson: 'The most dangerous phrase in the language is: we've always done it this way.' She spent her career challenging inefficiency — in code, in processes, and in organisations.",
       "whatToSay": "Introduce Grace simply: 'Today's role model changed how every programmer in the world works. Her name is Grace Hopper. She was a mathematician, a Navy officer, and one of the first people to program a computer. She invented the compiler — a tool that lets humans write instructions in words instead of numbers. Before her, programming was impossibly slow and error-prone. She made it efficient. Her famous quote is: The most dangerous phrase in the language is we've always done it this way. Today, you are going to learn why she was right.'",
-      "whatToDo": [
-        "Keep the intro to about 60 seconds — the compiler story is vivid.",
-        "You can return to Grace naturally at these moments in the lesson:",
-        "Phase 2 (sorting): 'Grace Hopper saw that writing machine code by hand was like Bubble Sort — it worked, but it was brutally slow. Her compiler was like Merge Sort — same result, radically more efficient.'",
-        "Phase 3 (greedy failure): 'Grace said: we've always done it this way is dangerous. Your greedy algorithm took the best next step every time — and failed. That is what she was warning about.'",
-        "Phase 4 (discussion): 'Grace fought organisations that preferred slow, familiar processes over faster, better ones. Efficiency is not just technical — it is cultural.'",
-        "Exit reflection: 'Grace Hopper proved that the way you write instructions matters as much as what those instructions do. That is the difference between working and good.'"
-      ],
       "realWorldConnection": "Grace Hopper's compiler was rejected by experts who said computers could only do arithmetic. She built it anyway, and it became the foundation of every programming language used today — Java, Python, JavaScript, all of them ultimately descend from her insight that humans should write for humans and let the computer translate. When students compare Bubble Sort to Merge Sort, they are experiencing exactly the kind of efficiency leap Grace fought for."
-    },
-    {
-      "id": "slide-rolemodel-integration",
-      "phase": "Role Model — Using Her in Class",
-      "time": "Reference throughout",
-      "title": "Bringing Grace Into the Lesson",
-      "colour": "indigo",
-      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Grace in:",
-      "whatToDo": [
-        "LESSON INTRO — right now: Her quote. 'The most dangerous phrase in the language is: we've always done it this way.' Write it on the board if you like.",
-        "PHASE 2 Round 1 — after counting Bubble Sort swaps: 'Grace Hopper saw exactly this problem. Programmers were writing instructions the slow way because that was how they had always done it. She invented a tool that did the same job in a fraction of the time.'",
-        "PHASE 2 Round 2 — after Merge Sort comparison: 'Grace's compiler was the Merge Sort of programming — same result, radically less effort. She proved that how you do something matters as much as what you do.'",
-        "PHASE 3 — when the greedy algorithm fails: 'Grace warned about this. Doing what seems best right now — we've always done it this way — can lead to failure. Your algorithm took the best local step every time and got stuck.'",
-        "PHASE 4 — during discussion: 'Grace did not just fight bad algorithms. She fought organisations that resisted change because change was uncomfortable. Efficiency is not just code — it is culture.'",
-        "EXIT REFLECTION — as the final word: 'Grace Hopper proved that a working solution is not the same as a good solution. You just experienced that yourselves.'"
-      ],
-      "realWorldConnection": "Grace Hopper served in the US Navy until age 79 — she was the oldest active-duty commissioned officer in the US at the time. She was awarded the Presidential Medal of Freedom posthumously in 2016. A US Navy destroyer is named after her. When students talk about efficiency, they are talking about the principle she spent her career fighting for."
     },
     {
       "id": "slide-overview",
@@ -309,7 +284,8 @@
         "Write on the board: Bubble Sort — 5 items: ~10 swaps. 1,000 items: ~500,000. 1,000,000 items: ~500,000,000,000.",
         "Say: 'This algorithm works. It gives the correct answer. But is it good?'"
       ],
-      "conversationStarter": "If students think 10 swaps is fine, escalate: 'Your music app has 10,000 songs. If it sorted them with Bubble Sort every time you opened it, it would take 100 million operations. Your phone would freeze for seconds. That is the difference between working and efficient.'"
+      "conversationStarter": "If students think 10 swaps is fine, escalate: 'Your music app has 10,000 songs. If it sorted them with Bubble Sort every time you opened it, it would take 100 million operations. Your phone would freeze for seconds. That is the difference between working and efficient.'",
+      "roleModelMoment": "Grace Hopper made the same observation: the obvious approach is rarely the most efficient. Her compiler chose better paths automatically so programmers did not have to think about it."
     },
     {
       "id": "slide-phase2-merge",
@@ -414,7 +390,8 @@
         "'If an app uses extra battery to maximize your engagement — keeping you scrolling — is that efficient or inefficient? Efficient for whom?'",
         "'If an algorithm does its job perfectly but the job itself is harmful — recommending extreme content, maximising screen time — who should change the objective? The company? The regulator? The user?'"
       ],
-      "conversationStarter": "If discussion is slow, try: 'Think about social media algorithms. They are extremely efficient at one thing: keeping you on the platform. But is that the right thing to be efficient at? What if efficiency at engagement means inefficiency at wellbeing?'"
+      "conversationStarter": "If discussion is slow, try: 'Think about social media algorithms. They are extremely efficient at one thing: keeping you on the platform. But is that the right thing to be efficient at? What if efficiency at engagement means inefficiency at wellbeing?'",
+      "roleModelMoment": "Hopper's most quoted line applies directly: 'The most dangerous phrase in the language is: we've always done it this way.' Every slow algorithm in production is somebody's default that nobody questioned."
     },
     {
       "id": "slide-exercise3",

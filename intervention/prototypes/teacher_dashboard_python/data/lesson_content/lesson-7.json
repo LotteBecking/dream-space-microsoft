@@ -29,7 +29,7 @@
       "time": "Preparation",
       "title": "Get the Room Ready",
       "colour": "violet",
-      "roleModel": "Reshma Saujani (born 1975) is the founder of Girls Who Code, which has taught over 500,000 girls to code across the United States. She started it after noticing that while boys were encouraged to take risks and fail, girls were taught to be perfect \u2014 which made them afraid to try coding. Her insight was not technical. It was human: she understood the problem from the user's point of view before designing the solution. That is exactly what design thinking is.",
+      "roleModel": "Reshma Saujani (born 1975) is the founder of Girls Who Code, which has taught over 500,000 girls to code across the United States. She started it after noticing that while boys were encouraged to take risks and fail, girls were taught to be perfect — which made them afraid to try coding. Her insight was not technical. It was human: she understood the problem from the user's point of view before designing the solution. That is exactly what design thinking is.",
       "whatToDo": [
         "Write these five words on the board and leave them visible all lesson:",
         "Design Thinking: solving problems by starting with the person who has the problem, not the solution",
@@ -37,8 +37,8 @@
         "Prototype: a rough early version used to test ideas before building the real thing",
         "User: the person who will actually use the product",
         "Iteration: improving a design based on feedback, then testing again",
-        "Write the five design thinking stages on the board with arrows: EMPATHISE \u2192 DEFINE \u2192 IDEATE \u2192 PROTOTYPE \u2192 TEST",
-        "Put out sticky notes \u2014 one per student \u2014 for the Phase 1 spark activity.",
+        "Write the five design thinking stages on the board with arrows: EMPATHISE → DEFINE → IDEATE → PROTOTYPE → TEST",
+        "Put out sticky notes — one per student — for the Phase 1 spark activity.",
         "Have at least 6 sheets of paper per group ready for the prototype sprint."
       ],
       "tip": "Arrange desks into groups of three before students arrive if possible. The prototype sprint works best when groups are already seated together."
@@ -46,54 +46,54 @@
     {
       "id": "slide-phase1",
       "phase": "Phase 1",
-      "time": "0\u20133 min",
-      "title": "Spark Question \u2014 What Actually Annoys You?",
+      "time": "0–3 min",
+      "title": "Spark Question — What Actually Annoys You?",
       "colour": "violet",
-      "whatToSay": "Think about something that genuinely annoys you or wastes your time at school or at home. Not something you want \u2014 something that is actually a problem for you or someone you know. What is it?",
+      "whatToSay": "Think about something that genuinely annoys you or wastes your time at school or at home. Not something you want — something that is actually a problem for you or someone you know. What is it?",
       "whatToDo": [
-        "Ask every student to write one problem on a sticky note silently \u2014 no discussion yet. Give them 90 seconds.",
-        "Ask 5\u20136 students to read theirs aloud. Write them on the board without comment.",
-        "Tell them: 'Every piece of technology that exists today started with someone noticing a problem exactly like the ones you just wrote. The people who built Google were annoyed that searching the internet was slow. The people who built Spotify were annoyed that buying music was expensive. Today you start in the same place they did \u2014 with a real problem.'",
-        "Leave all the sticky notes on the board \u2014 groups will use them in Phase 4 to choose their design challenge."
+        "Ask every student to write one problem on a sticky note silently — no discussion yet. Give them 90 seconds.",
+        "Ask 5–6 students to read theirs aloud. Write them on the board without comment.",
+        "Tell them: 'Every piece of technology that exists today started with someone noticing a problem exactly like the ones you just wrote. The people who built Google were annoyed that searching the internet was slow. The people who built Spotify were annoyed that buying music was expensive. Today you start in the same place they did — with a real problem.'",
+        "Leave all the sticky notes on the board — groups will use them in Phase 4 to choose their design challenge."
       ],
-      "tip": "The silent sticky note step is important \u2014 it gives every student, including quieter ones, a chance to contribute before anyone speaks. Do not skip this. Collect and display all notes even if some seem trivial."
+      "tip": "The silent sticky note step is important — it gives every student, including quieter ones, a chance to contribute before anyone speaks. Do not skip this. Collect and display all notes even if some seem trivial."
     },
     {
       "id": "slide-phase2",
       "phase": "Phase 2",
-      "time": "3\u201310 min",
-      "title": "Warm-Up \u2014 The Broken School Day",
+      "time": "3–10 min",
+      "title": "Warm-Up — The Broken School Day",
       "colour": "blue",
-      "whatToSay": "I am going to describe a school day that has several small problems in it. Your job is to spot every problem \u2014 not to suggest a solution yet. Just the problem.",
+      "whatToSay": "I am going to describe a school day that has several small problems in it. Your job is to spot every problem — not to suggest a solution yet. Just the problem.",
       "whatToDo": [
-        "Read this scenario aloud slowly: 'Maya arrives at school and cannot remember which classroom her first lesson is in because the schedule changed this week. She checks the noticeboard but it has not been updated. She is late. In the canteen at lunch, she queues for 10 minutes and when she gets to the front, the meal she wanted is sold out \u2014 but nobody told the people in the queue. After lunch she needs to return a library book but the library is closed with no sign saying when it will reopen. On her way home she realises she left her PE kit in her locker but does not know if she will need it tomorrow.'",
+        "Read this scenario aloud slowly: 'Maya arrives at school and cannot remember which classroom her first lesson is in because the schedule changed this week. She checks the noticeboard but it has not been updated. She is late. In the canteen at lunch, she queues for 10 minutes and when she gets to the front, the meal she wanted is sold out — but nobody told the people in the queue. After lunch she needs to return a library book but the library is closed with no sign saying when it will reopen. On her way home she realises she left her PE kit in her locker but does not know if she will need it tomorrow.'",
         "Ask pairs to list every problem they heard. Take answers and write them on the board. You should get at least five: schedule changes not communicated; canteen does not warn when items run out; library times not displayed; forgotten kit; general communication gap.",
-        "Then ask: 'Which of these could technology help with? And which is not really a technology problem \u2014 it is a people or organisation problem?'"
+        "Then ask: 'Which of these could technology help with? And which is not really a technology problem — it is a people or organisation problem?'"
       ],
-      "tip": "If a student immediately says 'just make an app for it,' push back: 'Before we design the app \u2014 what exactly is the problem? Who has it? When does it happen? How often? Why does it happen?' Those questions are the core of the empathy stage."
+      "tip": "If a student immediately says 'just make an app for it,' push back: 'Before we design the app — what exactly is the problem? Who has it? When does it happen? How often? Why does it happen?' Those questions are the core of the empathy stage."
     },
     {
       "id": "slide-phase3",
       "phase": "Phase 3",
-      "time": "10\u201320 min",
-      "title": "Concept Introduction \u2014 Design Thinking and the Logic Behind Screens",
+      "time": "10–20 min",
+      "title": "Concept Introduction — Design Thinking and the Logic Behind Screens",
       "colour": "violet",
-      "whatToSay": "Professional designers use a process called design thinking to make sure they are solving the right problem in the right way. It has five stages, but today we focus on the first three \u2014 because those happen before any building starts.",
+      "whatToSay": "Professional designers use a process called design thinking to make sure they are solving the right problem in the right way. It has five stages, but today we focus on the first three — because those happen before any building starts.",
       "whatToDo": [
-        "Point to the board: EMPATHISE \u2192 DEFINE \u2192 IDEATE \u2192 PROTOTYPE \u2192 TEST",
+        "Point to the board: EMPATHISE → DEFINE → IDEATE → PROTOTYPE → TEST",
         "Explain each of the first three in plain language:",
-        "EMPATHISE: understand the problem from the user's point of view. Ask \u2014 who is affected? When does it happen? How does it make them feel? What have they already tried? You find this out by talking to and watching people. You do not assume you already know.",
+        "EMPATHISE: understand the problem from the user's point of view. Ask — who is affected? When does it happen? How does it make them feel? What have they already tried? You find this out by talking to and watching people. You do not assume you already know.",
         "DEFINE: write a clear problem statement. Who has the problem, what it is, and why it matters. No solution yet. Weak: 'Students need an app.' Strong: 'Students in Groep 7 often arrive late because they have no reliable way to check an updated timetable quickly.'",
-        "IDEATE: generate as many possible solutions as you can without judging any of them. Quantity, not quality. Bad ideas are welcome \u2014 they sometimes lead to good ones.",
-        "Draw a phone outline on the board. Draw two buttons: 'Check timetable' and 'Report an issue.' Draw an arrow from 'Check timetable' to a second screen. Say: 'That arrow means: when you tap this button, the app takes you to this screen. This is the logic of the app \u2014 the same conditional logic from Lesson 3. IF the user taps this button, THEN show this screen.'",
-        "Write on the board: The app uses sequences / loops / conditionals / variables / could use AI / needs encryption. Say: 'You are not just designing a pretty picture. You are designing a system. Every screen has logic behind it \u2014 and that logic is built from exactly the concepts you have learned.'"
+        "IDEATE: generate as many possible solutions as you can without judging any of them. Quantity, not quality. Bad ideas are welcome — they sometimes lead to good ones.",
+        "Draw a phone outline on the board. Draw two buttons: 'Check timetable' and 'Report an issue.' Draw an arrow from 'Check timetable' to a second screen. Say: 'That arrow means: when you tap this button, the app takes you to this screen. This is the logic of the app — the same conditional logic from Lesson 3. IF the user taps this button, THEN show this screen.'",
+        "Write on the board: The app uses sequences / loops / conditionals / variables / could use AI / needs encryption. Say: 'You are not just designing a pretty picture. You are designing a system. Every screen has logic behind it — and that logic is built from exactly the concepts you have learned.'"
       ],
       "tip": "Spend two minutes explicitly naming which lessons connect to which design feature. Students who can say 'this button is a conditional from Lesson 3' are integrating knowledge, which is the goal of this session."
     },
     {
       "id": "slide-phase4-step1",
-      "phase": "Phase 4 \u2014 Step 1",
-      "time": "20\u201323 min",
+      "phase": "Phase 4 — Step 1",
+      "time": "20–23 min",
       "title": "Choose Your Problem",
       "colour": "blue",
       "whatToDo": [
@@ -102,34 +102,35 @@
         "If groups struggle, suggest these starting points from the warm-up: canteen stock problem, timetable communication, or lost property.",
         "Once chosen, groups write the problem at the top of their first sheet of paper."
       ],
-      "tip": "If two groups choose the same problem, that is fine \u2014 it will make the share at the end more interesting, not less. Do not redirect them."
+      "tip": "If two groups choose the same problem, that is fine — it will make the share at the end more interesting, not less. Do not redirect them."
     },
     {
       "id": "slide-phase4-step2",
-      "phase": "Phase 4 \u2014 Step 2",
-      "time": "23\u201327 min",
-      "title": "Empathy \u2014 Who Has This Problem?",
+      "phase": "Phase 4 — Step 2",
+      "time": "23–27 min",
+      "title": "Empathy — Who Has This Problem?",
       "colour": "blue",
-      "whatToSay": "Before drawing anything, answer these four questions in writing. This is the empathy stage \u2014 we are not designing yet.",
+      "whatToSay": "Before drawing anything, answer these four questions in writing. This is the empathy stage — we are not designing yet.",
       "rules": [
-        "Who exactly has this problem? Give them a name and describe them \u2014 for example 'Maya, age 11, Groep 7, always rushing in the morning'",
-        "When does the problem happen? Be specific \u2014 'every Monday when the timetable changes'",
+        "Who exactly has this problem? Give them a name and describe them — for example 'Maya, age 11, Groep 7, always rushing in the morning'",
+        "When does the problem happen? Be specific — 'every Monday when the timetable changes'",
         "What have they already tried that did not work? This prevents designing a solution that already exists and failed",
         "How does it make them feel? Frustrated? Embarrassed? Stressed? This is the human dimension"
       ],
       "whatToDo": [
         "Groups write their answers before drawing anything. Give them 4 minutes.",
-        "Walk around and check \u2014 if a group is already drawing screens, redirect them back to the questions."
+        "Walk around and check — if a group is already drawing screens, redirect them back to the questions."
       ],
-      "tip": "The named person \u2014 'Maya' \u2014 is called a persona in design thinking. Having a specific imaginary person makes design decisions clearer. When a group disagrees about a feature, they can ask: 'Would Maya use this?' That question is easier to answer than 'would users use this?'"
+      "tip": "The named person — 'Maya' — is called a persona in design thinking. Having a specific imaginary person makes design decisions clearer. When a group disagrees about a feature, they can ask: 'Would Maya use this?' That question is easier to answer than 'would users use this?'",
+      "roleModelMoment": "Reshma Saujani started here: she noticed girls were being left out of coding. She did not build an app first — she asked who has the problem. That is your first step too."
     },
     {
       "id": "slide-phase4-step3",
-      "phase": "Phase 4 \u2014 Step 3",
-      "time": "27\u201330 min",
-      "title": "Define \u2014 Write the Problem Statement",
+      "phase": "Phase 4 — Step 3",
+      "time": "27–30 min",
+      "title": "Define — Write the Problem Statement",
       "colour": "violet",
-      "whatToSay": "Write one sentence that completes this template \u2014 and it must NOT mention a solution.",
+      "whatToSay": "Write one sentence that completes this template — and it must NOT mention a solution.",
       "rules": [
         "'[Name] needs a way to [do what] because [why it matters], but currently [what makes it hard].'",
         "Example: 'Maya needs a way to check her updated timetable quickly in the morning because arriving late to the wrong classroom is stressful, but currently the only option is checking a noticeboard that is often outdated.'"
@@ -143,33 +144,34 @@
     },
     {
       "id": "slide-phase4-step4",
-      "phase": "Phase 4 \u2014 Step 4",
-      "time": "30\u201333 min",
-      "title": "Ideate \u2014 Generate Solutions",
+      "phase": "Phase 4 — Step 4",
+      "time": "30–33 min",
+      "title": "Ideate — Generate Solutions",
       "colour": "blue",
-      "whatToSay": "You have 3 minutes \u2014 write down every possible solution you can think of. No judging, no crossing out, just generating. Aim for at least 6 ideas. Wild ideas are welcome.",
+      "whatToSay": "You have 3 minutes — write down every possible solution you can think of. No judging, no crossing out, just generating. Aim for at least 6 ideas. Wild ideas are welcome.",
       "whatToDo": [
         "Set a visible timer for 3 minutes.",
         "After 3 minutes, groups circle the one idea they want to prototype.",
-        "It does not have to be the most exciting \u2014 it should be the one they can actually sketch in the time available."
+        "It does not have to be the most exciting — it should be the one they can actually sketch in the time available."
       ],
-      "tip": "If a group has only 2 or 3 ideas, push them: 'What if there was no app \u2014 how would you solve it with just paper? What if you had unlimited budget? What if you had to solve it in one sentence?' Constraints generate ideas."
+      "tip": "If a group has only 2 or 3 ideas, push them: 'What if there was no app — how would you solve it with just paper? What if you had unlimited budget? What if you had to solve it in one sentence?' Constraints generate ideas.",
+      "roleModelMoment": "Reshma's first ideas were not her best. Neither will yours be. Keep going — ideating means making the first idea a starting point, not a final answer."
     },
     {
       "id": "slide-phase4-step5",
-      "phase": "Phase 4 \u2014 Step 5",
-      "time": "33\u201343 min",
-      "title": "Prototype \u2014 Draw Three Screens",
+      "phase": "Phase 4 — Step 5",
+      "time": "33–43 min",
+      "title": "Prototype — Draw Three Screens",
       "colour": "violet",
       "whatToSay": "Now draw your app on paper. You have exactly 10 minutes. Messy and functional is better than beautiful and incomplete.",
       "rules": [
-        "Exactly three screens \u2014 no more, no fewer",
+        "Exactly three screens — no more, no fewer",
         "Each screen must have: a title, at least two interactive elements (buttons, input fields, lists), and arrows showing where each element takes the user",
-        "One screen must show what happens when something goes wrong \u2014 e.g. timetable not updated yet, or canteen run out of all options"
+        "One screen must show what happens when something goes wrong — e.g. timetable not updated yet, or canteen run out of all options"
       ],
       "whatToDo": [
         "Walk around and ask groups: 'What variable does this screen need to remember?', 'What conditional fires when the user taps this button?', 'What happens if the user has no internet connection?'",
-        "The third question introduces edge cases \u2014 the same concept from Lessons 3 and 5.",
+        "The third question introduces edge cases — the same concept from Lessons 3 and 5.",
         "If groups are spending too long on layout and colours, redirect them: 'The drawing does not matter. The logic matters. Draw boxes and arrows.'"
       ],
       "tip": "Time pressure is intentional. Professional designers use it to stop overthinking and start making. Remind groups: this is a rough draft, not a finished product."
@@ -177,24 +179,24 @@
     {
       "id": "slide-phase5",
       "phase": "Phase 5",
-      "time": "42\u201347 min",
+      "time": "42–47 min",
       "title": "Discussion",
       "colour": "violet",
       "whatToDo": [
-        "Take 2\u20133 volunteer answers per question.",
-        "Question 2 generates the most useful discussion for this age group \u2014 if the class is engaged, let it run."
+        "Take 2–3 volunteer answers per question.",
+        "Question 2 generates the most useful discussion for this age group — if the class is engaged, let it run."
       ],
       "discussionQuestions": [
         "In Step 2 you described a specific person who has the problem. How did thinking about that person change the decisions you made when designing? What assumptions did you make about Maya that might not be true for everyone? Who might your design not work for?",
-        "We said the problem statement must not mention a solution. Why is that rule important? What goes wrong when you start with a solution instead of a problem? Think about an app that exists right now that feels like it was built by someone who never talked to the people who would use it \u2014 what did the designer get wrong?",
-        "Your prototype has three screens. A real app might have 300. At what point does more screens make a product better \u2014 and at what point does it make it worse? The original Instagram had exactly four screens: feed, camera, notifications, profile. What would you cut from your design if you could only keep two screens?"
+        "We said the problem statement must not mention a solution. Why is that rule important? What goes wrong when you start with a solution instead of a problem? Think about an app that exists right now that feels like it was built by someone who never talked to the people who would use it — what did the designer get wrong?",
+        "Your prototype has three screens. A real app might have 300. At what point does more screens make a product better — and at what point does it make it worse? The original Instagram had exactly four screens: feed, camera, notifications, profile. What would you cut from your design if you could only keep two screens?"
       ],
-      "tip": "Question 3 introduces the concept of minimum viable product without needing the term. Students have strong intuitions about badly designed technology \u2014 give them vocabulary to describe why things feel wrong."
+      "tip": "Question 3 introduces the concept of minimum viable product without needing the term. Students have strong intuitions about badly designed technology — give them vocabulary to describe why things feel wrong."
     },
     {
       "id": "slide-exercise1",
-      "phase": "Exercise \u2014 Written Task 1",
-      "time": "47\u201352 min",
+      "phase": "Exercise — Written Task 1",
+      "time": "47–52 min",
       "title": "The Logic Layer",
       "colour": "blue",
       "whatToSay": "For each of your three screens, fill in the logic layer. This connects your visual design to the underlying code.",
@@ -204,7 +206,7 @@
         "Screen 3: [Screen name] | Variable: ___ | Conditional: IF ___ THEN ___ ELSE ___ | Edge case: What if ___?"
       ],
       "whatToDo": [
-        "Walk around and check variables are specific to the design \u2014 not just 'SCORE = 0' copied from Lesson 4, but something like 'TIMETABLE_UPDATED = true/false' or 'USER_CLASS = Groep 7'.",
+        "Walk around and check variables are specific to the design — not just 'SCORE = 0' copied from Lesson 4, but something like 'TIMETABLE_UPDATED = true/false' or 'USER_CLASS = Groep 7'.",
         "Check conditionals reflect real decisions the app needs to make.",
         "Check edge cases show students thinking about what could go wrong, not just what should go right."
       ],
@@ -213,8 +215,8 @@
     },
     {
       "id": "slide-exercise2",
-      "phase": "Exercise \u2014 Written Task 2",
-      "time": "52\u201355 min",
+      "phase": "Exercise — Written Task 2",
+      "time": "52–55 min",
       "title": "The Pitch Sentence",
       "colour": "blue",
       "whatToSay": "Each group writes one sentence using this formula. This is what you will use to open your presentation in Lesson 8.",
@@ -235,30 +237,30 @@
       "time": "Fast finishers",
       "title": "Stress Test Your Prototype",
       "colour": "violet",
-      "whatToSay": "Swap your prototype with another group. You have 5 minutes to try to break it \u2014 find every situation the design does not handle.",
-      "task": "Receiving group: write on a sticky note every gap or unclear decision you find. Return it with the prototype. Original group: respond to each point \u2014 either improve the design or explain why the edge case is acceptable. Questions to guide your review: What happens if the user does not have an account yet? What happens if the user makes a mistake and wants to go back? What happens if the user is in Groep 5, not Groep 7 \u2014 does it still work? What happens if the app loses internet connection halfway through?",
+      "whatToSay": "Swap your prototype with another group. You have 5 minutes to try to break it — find every situation the design does not handle.",
+      "task": "Receiving group: write on a sticky note every gap or unclear decision you find. Return it with the prototype. Original group: respond to each point — either improve the design or explain why the edge case is acceptable. Questions to guide your review: What happens if the user does not have an account yet? What happens if the user makes a mistake and wants to go back? What happens if the user is in Groep 5, not Groep 7 — does it still work? What happens if the app loses internet connection halfway through?",
       "challengeQuestions": [
         "How many edge cases did you find that the original group had not considered?",
-        "Did the original group's design change after your feedback \u2014 or did they defend it? What does each response tell you about the designer?",
+        "Did the original group's design change after your feedback — or did they defend it? What does each response tell you about the designer?",
         "If you had to choose between fixing one edge case or adding one new feature, which would you choose and why?"
       ],
-      "tip": "Groups who receive challenging feedback and actually use it to change their design are demonstrating iteration \u2014 the fourth stage of design thinking. This is one of the most important signals in the entire program. Note those students.",
+      "tip": "Groups who receive challenging feedback and actually use it to change their design are demonstrating iteration — the fourth stage of design thinking. This is one of the most important signals in the entire program. Note those students.",
       "exerciseId": "exercise-7-3"
     },
     {
       "id": "slide-reflect",
       "phase": "Share and Reflect",
-      "time": "52\u201357 min",
+      "time": "52–57 min",
       "title": "Close the Lesson",
       "colour": "violet",
       "whatToDo": [
-        "Each group holds up their prototype \u2014 just holds it up, no explanation. Give the class 30 seconds to look at each one silently.",
-        "Ask: 'Just from looking \u2014 without any explanation \u2014 what problem does each one seem to solve?' If the class can identify the problem from the design alone, the prototype is communicating clearly.",
-        "Then ask every student \u2014 verbally or on a sticky note \u2014 to complete this sentence."
+        "Each group holds up their prototype — just holds it up, no explanation. Give the class 30 seconds to look at each one silently.",
+        "Ask: 'Just from looking — without any explanation — what problem does each one seem to solve?' If the class can identify the problem from the design alone, the prototype is communicating clearly.",
+        "Then ask every student — verbally or on a sticky note — to complete this sentence."
       ],
       "exitReflection": "The hardest part of designing something was _______ because _______.",
       "whatToSay": "Common answers: 'not jumping to a solution,' 'figuring out what the user actually needs,' 'deciding what to leave out.' All of these are things professional designers say. Write the most honest one on the board.",
-      "watchFor": "Did groups write a problem statement that genuinely avoids mentioning a solution? Did the logic layer task produce variables and conditionals specific to their design \u2014 or did they copy generic examples from earlier lessons? Did any groups in the extension receive challenging feedback and actually use it to change their design rather than defend the original? That last behaviour \u2014 genuine willingness to revise \u2014 is one of the most important signals in the entire program."
+      "watchFor": "Did groups write a problem statement that genuinely avoids mentioning a solution? Did the logic layer task produce variables and conditionals specific to their design — or did they copy generic examples from earlier lessons? Did any groups in the extension receive challenging feedback and actually use it to change their design rather than defend the original? That last behaviour — genuine willingness to revise — is one of the most important signals in the entire program."
     }
   ],
   "title": "Build Something Real - Design Thinking and Your First Prototype",

@@ -1,6 +1,6 @@
 {
   "id": "lesson-1",
-  "title": "How Does a Computer Think? The PB&J Sandwich Lesson",
+  "title": "How Does a Computer Think? \u2014 The Sandwich Algorithm",
   "description": "Students discover that computers follow exact step-by-step instructions, and that sequence determines the result.",
   "duration": 60,
   "level": "Beginner",
@@ -12,22 +12,10 @@
     "intro": "The world\u2019s first computer programmer \u2014 she wrote algorithms for a machine that didn\u2019t exist yet."
   },
   "vocabulary": [
-    {
-      "word": "Algorithm",
-      "def": "A set of step-by-step instructions"
-    },
-    {
-      "word": "Input",
-      "def": "What goes in (ingredients, data, commands)"
-    },
-    {
-      "word": "Output",
-      "def": "What comes out (the sandwich, the route, the result)"
-    },
-    {
-      "word": "Sequence",
-      "def": "The order of steps"
-    }
+    { "word": "Algorithm", "def": "A set of step-by-step instructions" },
+    { "word": "Input", "def": "What goes in (ingredients, data, commands)" },
+    { "word": "Output", "def": "What comes out (the sandwich, the result, the route)" },
+    { "word": "Sequence", "def": "The order of steps" }
   ],
   "learningObjectives": [
     "Explain in their own words that a computer follows instructions exactly, one step at a time.",
@@ -37,19 +25,18 @@
   ],
   "prerequisites": "None",
   "materials": [
-    "Bread, peanut butter, and jam (or printed ingredient cards for allergy-safe version)",
-    "Knife and plate",
+    "Bread (in the bag, closed), a jar of spread, a knife, and a plate",
     "Whiteboard and marker",
     "Paper and pencils"
   ],
-  "fullDescription": "Age group: Groep 5-8 (ages 8-12). Duration: 45-60 minutes. Devices required: computers for exercise phase (webapp). SLO alignment: Domain A (21A), Domain B (22B). Students experience computational thinking through a literal robot activity and a PB&J challenge. The class learns that computers do not guess, every step must be explicit, and order drives output. Role model of the day: Ada Lovelace, who wrote the first algorithm designed for a machine long before modern computers.",
+  "fullDescription": "Age group: Groep 5-8 (ages 8-12). Duration: 45-60 minutes. Devices required: computers for exercise phase (webapp). SLO alignment: Domain A (21A), Domain B (22B). Students experience computational thinking through a literal robot activity and a sandwich challenge. The class learns that computers do not guess, every step must be explicit, and order drives output. Role model of the day: Ada Lovelace, who wrote the first algorithm designed for a machine long before modern computers.",
   "teacherInstructions": {
-    "setup": "Write vocabulary on the board and keep it visible all lesson: Algorithm, Input, Output, Sequence. Place PB&J materials (or picture cards) at the front table. Prepare paper for pair activities.",
+    "setup": "Write vocabulary on the board and keep it visible all lesson: Algorithm, Input, Output, Sequence. Place the sandwich materials at the front table. Prepare paper for pair activities.",
     "steps": [
       "Phase 1 (0-3 min): Spark question. Ask: 'What could a robot do better than a human, and what could it never do?' Students share in pairs, then collect 3-4 class answers without correcting.",
       "Phase 2 (3-10 min): Unplugged warm-up (Robot Teacher). Allow only four commands: STEP FORWARD, TURN LEFT, TURN RIGHT, STOP. Follow instructions literally and discuss why precision was hard.",
       "Phase 3 (10-20 min): Concept intro. Define algorithm and explain input, output, sequence. Use real examples (recipe, morning routine, LEGO) and connect to GPS/recommendation mistakes.",
-      "Phase 4 (20-42 min): PB&J robot challenge. Round 1 class gives instructions while teacher executes literally. Round 2 pairs write a numbered precise algorithm. Round 3 test one pair algorithm and debug in real time.",
+      "Phase 4 (20-42 min): Sandwich robot challenge. Round 1 class gives instructions while teacher executes literally. Round 2 pairs write a numbered precise algorithm. Round 3 test one pair algorithm and debug in real time.",
       "Phase 5 (42-47 min): Discussion. Use at least one reflection question about responsibility for errors and revisit opening robot-vs-human ideas.",
       "Exercises (47-57 min): Ask students to get their computers out and open the webapp. They complete the algorithm exercise individually on the webapp.",
       "Share and reflect (52-57 min): Students share one step, class spots vagueness, and each student completes: 'An algorithm needs to be ____ because computers cannot ____.'"
@@ -68,7 +55,7 @@
     "Computational Thinking Foundations",
     "Sequencing and Algorithmic Reasoning"
   ],
-  "teacherGuide": "Core message: computers execute instructions exactly, without common sense. Keep vocabulary visible all lesson. Use humor and literal execution during PB&J to surface hidden assumptions, then move into debugging. Prioritize depth over speed in discussion: one strong reflection is better than rushed coverage.",
+  "teacherGuide": "Core message: computers execute instructions exactly, without common sense. Keep vocabulary visible all lesson. Use humour and literal execution during the sandwich challenge to surface hidden assumptions, then move into debugging. Prioritise depth over speed in discussion: one strong reflection is better than rushed coverage.",
   "studentExercises": [
     {
       "id": "exercise-1-1",
@@ -78,10 +65,7 @@
       "difficulty": "Easy",
       "durationMinutes": 10,
       "displayMode": "Individual then pairs",
-      "materials": [
-        "Webapp",
-        "Whiteboard vocabulary list"
-      ],
+      "materials": ["Webapp", "Whiteboard vocabulary list"],
       "instructions": [
         "Choose one task: getting ready for school, making chocolate milk, or feeding a pet.",
         "Write at least 6 numbered steps.",
@@ -104,9 +88,7 @@
       "difficulty": "Easy",
       "durationMinutes": 8,
       "displayMode": "Whole class or pairs",
-      "materials": [
-        "Webapp"
-      ],
+      "materials": ["Webapp"],
       "instructions": [
         "Read the six tea-making instruction cards on the webapp.",
         "Drag them into the order you think is correct.",
@@ -128,20 +110,18 @@
       "difficulty": "Medium",
       "durationMinutes": 10,
       "displayMode": "Fast finishers",
-      "materials": [
-        "Webapp"
-      ],
+      "materials": ["Webapp"],
       "instructions": [
         "Choose one lunch item from the school canteen menu.",
         "Write a precise step-by-step algorithm a robot chef could follow.",
-        "Add safety instructions for students with nut allergies.",
+        "Add safety instructions for students with allergies.",
         "Add a rule for what the robot should do if an ingredient runs out.",
         "Challenge: make your algorithm work for any sandwich type."
       ],
       "successCriteria": [
         "Algorithm is specific and testable.",
         "Safety and missing ingredient edge cases are included.",
-        "Student can explain how to generalize the algorithm."
+        "Student can explain how to generalise the algorithm."
       ]
     }
   ],
@@ -149,14 +129,12 @@
     {
       "id": "challenge-1-1",
       "title": "Allergy-Safe Robot Chef",
-      "description": "Design a robot-chef algorithm that safely handles a nut allergy without using common sense.",
+      "description": "Design a robot-chef algorithm that safely handles a food allergy without using common sense.",
       "type": "Challenge",
       "difficulty": "Medium",
       "durationMinutes": 10,
       "displayMode": "Pairs or small groups",
-      "materials": [
-        "Webapp"
-      ],
+      "materials": ["Webapp"],
       "instructions": [
         "Choose one canteen food item.",
         "Write a step-by-step robot algorithm for preparing it.",
@@ -178,9 +156,7 @@
       "difficulty": "Medium",
       "durationMinutes": 8,
       "displayMode": "Whole class then pairs",
-      "materials": [
-        "Webapp"
-      ],
+      "materials": ["Webapp"],
       "instructions": [
         "Take an algorithm you already wrote.",
         "Pick one ingredient that could run out halfway.",
@@ -197,16 +173,14 @@
     {
       "id": "challenge-1-3",
       "title": "One Algorithm for Any Sandwich",
-      "description": "Generalize from one sandwich to a reusable algorithm that works with different inputs.",
+      "description": "Generalise from one sandwich to a reusable algorithm that works with different inputs.",
       "type": "Challenge",
       "difficulty": "Hard",
       "durationMinutes": 10,
       "displayMode": "Fast finishers or extension station",
-      "materials": [
-        "Webapp"
-      ],
+      "materials": ["Webapp"],
       "instructions": [
-        "Rewrite your sandwich algorithm so it does not mention only peanut butter and jam.",
+        "Rewrite your sandwich algorithm so it does not name specific spreads.",
         "Use placeholders like SPREAD A and SPREAD B.",
         "Define input choices at the top (bread type, spread 1, spread 2).",
         "Keep the action steps specific and in order.",
@@ -226,14 +200,14 @@
       "time": "Preparation",
       "title": "Get the Room Ready",
       "colour": "indigo",
+      "alsoNeed": "Paper and pencils ready for the pair-writing phase.",
       "whatToDo": [
         "Write these four words on the board \u2014 leave them visible all lesson:",
         "Algorithm: a set of step-by-step instructions",
         "Input: what goes in (ingredients, data, commands)",
         "Output: what comes out (the sandwich, the result, the route)",
         "Sequence: the order of steps",
-        "Place at the front table: a loaf of bread still in its bag (closed), a closed jar of peanut butter, a closed jar of jam, a knife, and a plate. Do not open anything yet \u2014 the sealed, untouched props are part of the activity.",
-        "Have paper and pencils ready for the pair-writing phase later."
+        "Place at the front table: bread (in the bag, closed), a jar of spread, a knife, and a plate. Don\u2019t open anything yet \u2014 the props being sealed is part of the joke."
       ]
     },
     {
@@ -244,32 +218,7 @@
       "colour": "indigo",
       "roleModel": "Ada Lovelace (1815\u20131852) was a mathematician who worked with inventor Charles Babbage on his Analytical Engine \u2014 a mechanical computing machine. She wrote detailed instructions for how it could be used to calculate a complex mathematical sequence. Those instructions, written in 1843, are considered the world\u2019s first computer program. Ada was the first person to understand that a machine could follow any logical sequence of steps \u2014 not just do maths. That idea is the foundation of every app, game, and website your students use today.",
       "whatToSay": "Introduce Ada simply and warmly: \u201cToday\u2019s role model lived over 200 years ago \u2014 long before computers, smartphones, or the internet existed. Her name was Ada Lovelace. She wrote instructions for a machine that hadn\u2019t even been built yet. We call those instructions an algorithm. And today, you are going to write one too.\u201d",
-      "whatToDo": [
-        "Keep the intro to about 60 seconds \u2014 enough to make it stick without slowing momentum.",
-        "Don\u2019t feel you need to explain her full life story. One striking fact is enough: she wrote a computer program over 100 years before computers existed.",
-        "You can return to Ada naturally at these moments in the lesson:",
-        "Phase 3 (algorithm intro): \u2018Ada Lovelace called these instructions an algorithm too \u2014 same word, same idea, just a different century.\u2019",
-        "Phase 4 Round 2 (pairs writing): \u2018Ada had exactly this problem \u2014 she had to write instructions so precise that a machine with no brain could follow them.\u2019",
-        "Exit reflection: \u2018Ada Lovelace did this with pen and paper in 1843. You just did it too.\u2019"
-      ],
-      "realWorldConnection": "Ada realised something no one else had seen: a machine that follows instructions precisely enough can do anything \u2014 not just calculate, but create music, process language, run a recommendation engine. Every algorithm powering technology today traces back to that idea. She named the concept. Your students are living it."
-    },
-    {
-      "id": "slide-rolemodel-integration",
-      "phase": "Role Model \u2014 Using Her in Class",
-      "time": "Reference throughout",
-      "title": "Bringing Ada Into the Lesson",
-      "colour": "indigo",
-      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Ada in:",
-      "whatToDo": [
-        "LESSON INTRO \u2014 right now: Keep it to one striking fact. \u2018She wrote a computer program in 1843 \u2014 over 100 years before computers existed.\u2019 That\u2019s enough. Let the curiosity sit.",
-        "PHASE 3 \u2014 when you write the word ALGORITHM on the board: \u2018Ada Lovelace used this exact word. She wrote an algorithm for a machine that hadn\u2019t even been built yet. Same word. Same idea. Different century.\u2019",
-        "PHASE 4 Round 2 \u2014 when pairs are struggling to be precise: \u2018Ada had exactly this problem. She had to write instructions so specific that a machine with no brain could follow them. No guessing allowed. Sound familiar?\u2019",
-        "PHASE 4 Round 3 \u2014 when you name debugging: \u2018Finding and fixing errors in your instructions is called debugging. Ada did this too \u2014 she rewrote her algorithm multiple times before it was right.\u2019",
-        "PHASE 5 \u2014 discussion, if time allows: \u2018Ada wrote her algorithm for a machine that didn\u2019t exist yet. Do you think it matters that she couldn\u2019t test it? Can you solve a problem before you have the tools?\u2019",
-        "EXIT REFLECTION \u2014 as the final word: \u2018Ada Lovelace did exactly what you just did \u2014 with pen and paper, in 1843. Same idea. You just did it too.\u2019"
-      ],
-      "realWorldConnection": "Ada is not just a historical footnote. She understood something no one else did: that a machine could follow any logical sequence, not just do maths. That insight powers every algorithm running in the background of every app, recommendation engine, and search result your students use today. When they write an algorithm, they are continuing something she started."
+      "realWorldConnection": "Ada realised something no one else had seen: a machine that follows instructions precisely enough can do anything \u2014 not just calculate, but create music, process language, run a recommendation engine. Every algorithm powering technology today traces back to that idea."
     },
     {
       "id": "slide-overview",
@@ -280,9 +229,9 @@
       "whatToSay": "Welcome the class and set the scene simply: \u201cToday we are going to find out how computers actually think \u2014 or rather, how they don\u2019t think at all. Computers don\u2019t guess. They don\u2019t use common sense. They can\u2019t fill in the blanks. They follow instructions \u2014 exactly as written. And today, you are going to write some.\u201d",
       "whatToDo": [
         "Point to the vocabulary on the board: \u2018These four words are what we\u2019re working with today. You don\u2019t need to know them yet \u2014 just notice they are there. By the end you will.\u2019",
-        "Point to the PB&J materials at the front: \u2018We are going to use those later. I\u2019m not telling you what for yet.\u2019",
+        "Point to the materials at the front: \u2018We are going to use those later. I\u2019m not telling you what for yet.\u2019",
         "Let that sit for a moment. The mystery is part of the hook.",
-        "This is lesson one \u2014 students may not know what to expect. Keep the tone warm, simple, and a little playful. The lesson will explain itself through the activities."
+        "This is lesson one \u2014 keep the tone warm, simple, and a little playful. The lesson will explain itself through the activities."
       ]
     },
     {
@@ -295,10 +244,11 @@
       "whatToDo": [
         "Ask students to turn to the person next to them and share one idea each.",
         "Take 3\u20134 answers from the class.",
-        "Write the 2 most interesting ones on the board \u2014 you will return to these at the end of the lesson.",
+        "Write the 2 most interesting answers on the board. You\u2019ll come back to them at the end.",
         "Accept all answers without correcting. Nothing is wrong at this point."
       ],
-      "conversationStarter": "If the class is quiet, try: \u2018Think about something a machine does that would take a human hours \u2014 like calculating a million numbers. Now think about something even a toddler can do that a robot can\u2019t \u2014 like knowing when someone is sad. What\u2019s the difference between those two things?\u2019 Wait for a few hands before taking answers."
+      "realWorldConnection": "GPS apps sometimes give directions that technically work but make no human sense \u2014 because the algorithm doesn\u2019t know what a person would notice. Students are about to experience exactly this.",
+      "conversationStarter": "Think about what a toddler can do that a robot can\u2019t \u2014 like knowing when someone is sad. What\u2019s the difference?"
     },
     {
       "id": "slide-phase2",
@@ -306,15 +256,15 @@
       "time": "3 \u2013 10 min",
       "title": "Robot Warm-Up",
       "colour": "blue",
-      "whatToSay": "\u201cI am going to be a robot for the next 2 minutes. You need to give me instructions to walk from here to the door. But I only understand four commands: STEP FORWARD, TURN LEFT, TURN RIGHT, and STOP. Nothing else.\u201d",
+      "whatToSay": "\u201cI am going to be a robot for a few minutes. You need to give me instructions to walk from here to the door. But I only understand four commands: STEP FORWARD, TURN LEFT, TURN RIGHT, and STOP. Nothing else.\u201d",
       "whatToDo": [
         "Stand still and wait for the first instruction.",
         "Follow every instruction exactly and literally \u2014 do not fill in any gaps.",
-        "If a student says \u2018walk to the door\u2019 \u2014 do nothing. That is not one of the four commands.",
+        "<strong>If a student says \u2018walk to the door\u2019 \u2014 do nothing. That is not one of the four commands.</strong>",
         "If they say \u2018turn left\u2019 when you are facing the wrong direction \u2014 turn left anyway.",
-        "If you bump into a desk because they forgot to tell you to turn \u2014 stop there and wait.",
-        "After 2 minutes, stop and ask: \u2018What was hard about giving me instructions? What did you have to think about that you don\u2019t normally think about when you walk somewhere?\u2019"
-      ]
+        "If you bump into a desk because they forgot to tell you to turn \u2014 stop there and wait."
+      ],
+      "debrief": "Stop after a few minutes and ask: \u2018What was hard about giving me instructions? What did you have to think about that you don\u2019t normally think about when you walk somewhere?\u2019"
     },
     {
       "id": "slide-phase3",
@@ -327,25 +277,27 @@
         "Write these three examples on the board and explain each one out loud:",
         "1. A recipe \u2014 if you add the eggs before mixing the flour, the cake comes out wrong. Order matters.",
         "2. Your morning routine \u2014 you always put socks on before shoes. That is an algorithm.",
-        "3. LEGO instructions \u2014 if you skip step 14, the model falls apart in step 20. Each step depends on the one before it.",
+        "3. LEGO instructions \u2014 skip one step and the whole model goes wrong. Sound familiar?",
         "Point to the vocabulary on the board: \u2018These are the words we\u2019ll use today.\u2019",
         "Say: \u2018Computers run on algorithms. Every single thing a computer does \u2014 playing a video, sending a message, showing a search result \u2014 is the result of someone writing very precise instructions. Today we are going to write one ourselves, and find out what happens when the instructions are not precise enough.\u2019"
       ],
-      "realWorldConnection": "Ask: \u2018Has a GPS ever given you directions that seemed wrong? Or has a streaming service recommended something you hate?\u2019 Those are algorithm mistakes \u2014 the instructions were precise, but did not account for everything a human would notice. This is exactly the problem students are about to experience.",
-      "conversationStarter": "If students look blank, try: \u2018You\u2019ve already used an algorithm today. Did anyone eat breakfast? Did you put your shoes on before your socks? No \u2014 because there\u2019s a sequence. That sequence is an algorithm. Same idea, just with food and shoes instead of code.\u2019 Keep it concrete and personal."
+      "realWorldConnection": "Ask: \u2018Has a GPS ever given you directions that seemed wrong? Or has a streaming service recommended something you hate? Or has your music app played something completely random after you liked one song?\u2019 Those are algorithm mistakes \u2014 the instructions were precise, but didn\u2019t account for everything a person would notice.",
+      "roleModelMoment": "Ada Lovelace used this exact word \u2014 algorithm. She wrote one in 1843, over 100 years before computers existed. Same word, same idea, different century.",
+      "conversationStarter": "You\u2019ve already used an algorithm today \u2014 socks before shoes. That\u2019s a sequence. That\u2019s an algorithm."
     },
     {
       "id": "slide-phase4-setup",
       "phase": "Phase 4",
       "time": "20 \u2013 22 min",
-      "title": "PB&J Robot Challenge \u2014 Setup",
+      "title": "Sandwich Robot Challenge \u2014 Setup",
       "colour": "orange",
-      "whatToSay": "\u201cYou are going to give me instructions to make a peanut butter and jam sandwich. I am the robot. I will follow your instructions exactly. I cannot guess what you mean. I cannot use common sense. If you do not tell me to do it, I will not do it.\u201d",
+      "whatToSay": "\u201cYou are going to give me instructions to make a sandwich. I am the robot. I follow instructions exactly \u2014 if you don\u2019t tell me to do it, I will not do it.\u201d",
       "whatToDo": [
-        "Place on the front table: bread still in its closed bag, closed jar of peanut butter, closed jar of jam, a knife, and a plate.",
+        "Place on the front table: bread in its closed bag, a closed jar of spread, a knife, and a plate.",
         "Make sure everything is still closed and in its original state.",
         "Stand behind the table and wait for the class to begin giving instructions."
-      ]
+      ],
+      "note": "The funnier and more literal you are, the better the lesson lands."
     },
     {
       "id": "slide-phase4-round1",
@@ -355,16 +307,16 @@
       "colour": "orange",
       "whatToDo": [
         "Ask for the first instruction from the class.",
-        "A student will probably say something like \u2018put the peanut butter on the bread.\u2019",
+        "A student will probably say something like \u2018put the spread on the bread.\u2019",
         "Pick up the closed jar and place it on top of the closed bag of bread.",
-        "Say: \u2018Is that right? I put the peanut butter on the bread. The jar is on the bag.\u2019",
+        "Say: \u2018I put the spread on the bread.\u2019 [Place the closed jar on top of the closed bag.] \u2018Is that what you meant?\u2019",
         "When students protest, say: \u2018I know what you meant. But I am a robot. I can only do exactly what you say.\u2019",
         "Do NOT open the jar until a student explicitly says \u2018open the jar.\u2019",
         "Do NOT take bread out of the bag until told to do so.",
-        "If they say \u2018spread the peanut butter\u2019 without specifying which side \u2014 spread it on the outside crust.",
+        "If they say \u2018spread it\u2019 without saying which side \u2014 spread it on the outside of the bread.",
         "Continue literally until the class fully understands the problem."
       ],
-      "conversationStarter": "If students immediately give very precise instructions, commit anyway \u2014 find a small gap in their wording and act on it literally. For example: \u2018Open the jar of peanut butter\u2019 \u2014 open it, then stop and wait. They said open, not pick up a knife, not scoop anything. Follow the letter of what was said, not the intent."
+      "conversationStarter": "If students immediately give precise instructions, find a gap anyway \u2014 act on exactly what was said, not the intent.<br><br><strong>Follow the letter of what was said, not the intent.</strong>"
     },
     {
       "id": "slide-phase4-round2",
@@ -372,16 +324,15 @@
       "time": "29 \u2013 39 min",
       "title": "Pairs Write a Better Algorithm",
       "colour": "orange",
-      "whatToSay": "\u201cNow you are going to fix this. In pairs, you have 8 minutes to write a perfect algorithm. It must be so precise that even a robot that cannot guess could follow it. Number every step. One action per step.\u201d",
-      "whatToDo": [
-        "Give each pair a sheet of paper.",
-        "Walk around the room and push students to be more precise.",
-        "Ask: \u2018What if I don\u2019t know what spread means?\u2019",
-        "Ask: \u2018What if I don\u2019t know which side of the knife to use?\u2019",
-        "Ask: \u2018What if I don\u2019t know where the bread is?\u2019",
-        "Ask: \u2018Did you remember to tell me to open the jar first?\u2019"
+      "whatToSay": "\u201cNow you are going to fix this. In pairs, you have 8 minutes to write a perfect algorithm. It must be so precise that even a robot that cannot guess could follow it.\u201d",
+      "rules": [
+        "Number every step.",
+        "One action per step \u2014 not two combined.",
+        "At least 6 steps.",
+        "A robot with no common sense must be able to follow it."
       ],
-      "conversationStarter": "If a pair finishes quickly and thinks they\u2019re done, push deeper: \u2018What if the bread is still in the bag \u2014 did you say to take it out? What if the knife is in a drawer across the room \u2014 did you say to get it? What if I don\u2019t know what a knife looks like?\u2019 There is always a gap to find."
+      "roleModelMoment": "Ada had exactly this problem. She had to write instructions so precise that a machine with no brain could follow them. Sound familiar?",
+      "conversationStarter": "Was the bread still in the bag \u2014 did you say to take it out?<br>Was the knife in a drawer \u2014 did you say to get it?<br>There is always a gap to find."
     },
     {
       "id": "slide-phase4-round3",
@@ -393,9 +344,9 @@
         "Ask for one volunteer pair to read their algorithm aloud, step by step.",
         "Follow every step literally while the class watches.",
         "The rest of the class can call out mistakes and suggest fixes in real time.",
-        "When the class spots a problem, ask: \u2018How would you fix that step? What should the exact instruction be?\u2019",
-        "You can name what\u2019s happening: \u2018What you are doing right now is called debugging. Professional programmers spend a large part of their day doing exactly this.\u2019"
-      ]
+        "When the class spots a problem, ask: \u2018How would you fix that step? What should the exact instruction be?\u2019"
+      ],
+      "conceptMoment": "What you are doing right now is called <strong>debugging</strong> \u2014 finding and fixing errors in instructions. Professional programmers spend a large part of their day doing exactly this."
     },
     {
       "id": "slide-phase5",
@@ -404,16 +355,15 @@
       "title": "Discussion",
       "colour": "teal",
       "whatToDo": [
-        "Pick the question below that feels most alive based on how the class went.",
-        "One strong discussion is better than two rushed ones.",
+        "Pick whichever fits. One strong discussion beats two rushed ones.",
         "Give students a moment to think before taking answers.",
         "Return to the 2 answers you wrote on the board at the start."
       ],
       "discussionQuestions": [
-        "\u201cA robot followed your instructions exactly and got the wrong result. Whose fault is that \u2014 the robot\u2019s or the programmer\u2019s?\u201d Follow-up: \u201cDoes this change how you think about technology making mistakes? When a GPS takes you the wrong way, is that the GPS\u2019s fault?\u201d",
+        "\u201cA robot followed your instructions exactly and got the wrong result. Whose fault is that \u2014 the robot\u2019s or the programmer\u2019s?\u201d Follow-up: \u201cWhen a GPS takes you the wrong way, is that the GPS\u2019s fault?\u201d",
         "\u201cGo back to the question from the start \u2014 what can a robot do better than a human, and what can it never do? Has your answer changed?\u201d Point to the answers you wrote at the beginning."
       ],
-      "conversationStarter": "If the discussion goes quiet, try: \u2018Think about the last time your phone did something annoying \u2014 like autocorrect changing a word to something completely wrong. Was that the phone\u2019s fault? Or the fault of whoever wrote the instructions?\u2019 Autocorrect usually gets a strong reaction from this age group."
+      "conversationStarter": "Try: \u2018Think about the last time autocorrect changed your message to something embarrassing \u2014 was that the phone\u2019s fault?\u2019"
     },
     {
       "id": "slide-exercise1",
@@ -423,7 +373,7 @@
       "title": "Write the Perfect Algorithm",
       "colour": "green",
       "webappCue": "Ask everyone to get their computers out and open the webapp. Wait until most students are on before you continue.",
-      "whatToSay": "\u201cWorking on your own, you are going to write a step-by-step algorithm for one of these tasks \u2014 your choice: getting ready for school in the morning, making a glass of chocolate milk, or feeding a pet. You\u2019ll type it directly into the webapp.\u201d",
+      "whatToSay": "\u201cWorking on your own, write a step-by-step algorithm for one of these tasks \u2014 your choice: getting ready for school in the morning, making a glass of chocolate milk, or feeding a pet. Type it directly into the webapp.\u201d",
       "rules": [
         "Each step must be numbered.",
         "Each step must be one action only \u2014 not two actions combined.",
@@ -434,8 +384,7 @@
         "Give students a moment to get set up on the webapp \u2014 wait until most are ready before starting.",
         "Walk around and watch for students who catch themselves writing vague steps and fix them.",
         "When most students have a draft, ask them to swap with a partner on the webapp to review each other\u2019s algorithms.",
-        "The partner marks any unclear step.",
-        "The original writer improves that step. This is the debugging phase."
+        "The partner marks any unclear step. The original writer improves it. This is the debugging phase."
       ]
     },
     {
@@ -446,14 +395,14 @@
       "title": "Sequence Sorting: Make Tea",
       "colour": "green",
       "webappCue": "Tell the class to stay on the webapp and open the next activity: Sequence Sorting.",
-      "whatToSay": "If students have finished Exercise 1 and time allows: \u201cStay on the webapp and open the next activity \u2014 Sequence Sorting. You will see six tea-making steps. Your job is to drag them into the correct order.\u201d",
+      "whatToSay": "If students have finished Exercise 1 and time allows: \u201cStay on the webapp and open the next activity \u2014 Sequence Sorting. You will see six tea-making steps. Drag them into the correct order.\u201d",
       "whatToDo": [
         "Students open the Sequence Sorting activity on the webapp.",
         "They drag the six tea-making steps into the order they think is correct.",
         "Ask them to compare their sequence with a partner when done.",
         "If they disagree on any step, ask them to explain why their sequence works."
       ],
-      "discussionClose": "Ask: \u2018Is there only one correct order? Or could some steps swap?\u2019 Yes \u2014 \u2018add milk\u2019 could come before or after removing the teabag. This introduces the idea that some algorithms have flexibility built in, and some have none at all."
+      "discussionClose": "Is there only one correct order? Or could some steps swap? Yes \u2014 \u2018add milk\u2019 could come before or after removing the teabag. Some algorithms have flexibility built in, and some have none at all."
     },
     {
       "id": "slide-extension",
@@ -462,11 +411,10 @@
       "time": "Fast finishers",
       "title": "Algorithm for a Robot Chef",
       "colour": "amber",
-      "webappCue": "Tell fast finishers to stay on the webapp and open the extension task.",
-      "whatToSay": "Tell fast finishers: \u201cStay on the webapp and open the extension task. A robot chef has been hired at the school canteen. It can only follow written instructions. It has no common sense \u2014 if something is not in the instructions, it will not do it. It also cannot taste food.\u201d",
+      "whatToSay": "\u201cA robot chef has been hired at the school canteen. It can only follow written instructions. It has no common sense \u2014 if something is not in the instructions, it will not do it. It also cannot taste food.\u201d",
       "task": "Write the algorithm for one item on today\u2019s school lunch menu. It must be detailed enough that the robot could follow it without any help.",
       "challengeQuestions": [
-        "What would happen if a student had a nut allergy and the robot followed your algorithm \u2014 would they be safe? If not, how would you fix it?",
+        "What would happen if a student had a food allergy and the robot followed your algorithm \u2014 would they be safe? If not, how would you fix it?",
         "What if the robot ran out of one ingredient halfway through \u2014 what should it do? How would you write that into the algorithm?",
         "Can you write an algorithm that works for making ANY sandwich, not just one specific type? Try using placeholders like SPREAD A and SPREAD B."
       ]
@@ -480,11 +428,13 @@
       "whatToDo": [
         "Ask 2\u20133 students to read one step from their algorithm aloud.",
         "The class listens and raises a hand if they spot a step that is not precise enough.",
-        "Keep it short and warm \u2014 this is a light public share, not a formal presentation.",
-        "Ask every student \u2014 verbally or on a sticky note \u2014 to complete this sentence:"
+        "Keep it light \u2014 this isn\u2019t a presentation.",
+        "Ask every student to complete this sentence:"
       ],
-      "exitReflection": "\"An algorithm needs to be _______ because computers cannot _______.",
-      "whatToSay": "After collecting responses or hearing 3\u20134 answers, close with: \u201cNext week we will look at what computers are actually very good at \u2014 spotting patterns \u2014 and how that connects to something you use every day.\u201d"
+      "exitReflection": "An algorithm needs to be _______ because computers cannot _______.",
+      "exitNote": "Sticky note or verbal \u2014 both fine.",
+      "whatToSay": "After collecting responses or hearing 3\u20134 answers, close with: \u201cNext week we will look at what computers are actually very good at \u2014 spotting patterns \u2014 and how that connects to something you use every day.\u201d",
+      "dashboardNote": "After the lesson \u2014 note on the dashboard: Did students catch themselves writing vague instructions and self-correct? Did the exit sentences go beyond \u2018computers follow instructions\u2019? If yes \u2014 ready for Lesson 2. If not \u2014 briefly revisit the sandwich example in the Lesson 2 warm-up."
     }
   ]
 }

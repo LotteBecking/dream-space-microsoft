@@ -294,32 +294,7 @@
       "colour": "indigo",
       "roleModel": "Annie Easley (1933–2011) was a computer scientist at NASA for over 34 years. She started as a 'human computer' — manually computing math for researchers — and transitioned to programming when NASA adopted electronic computers. She developed code for energy-conversion systems and the Centaur rocket stage, which was used to launch communication satellites and interplanetary probes including the Cassini mission to Saturn. In her work, processing order was not a convenience — it was a safety requirement. The wrong sequence of computations in a rocket engine could mean the difference between a successful launch and a catastrophic failure. Annie also faced significant racial discrimination throughout her career — she was one of only four African American employees when she started at NASA's predecessor, NACA. She persevered, became a leading programmer, and mentored younger engineers. Her career demonstrates that the logic behind ordering and prioritisation is never just technical — it shapes real outcomes for real people.",
       "whatToSay": "Introduce Annie simply: 'Today's role model worked at NASA for 34 years. Her name is Annie Easley. She wrote code that helped launch rockets and satellites — including missions to Saturn. In her work, the order in which a computer processed tasks was not a small detail. Getting it wrong could destroy a rocket. Today, you are going to learn about the same thing — how systems decide what to process first, and why that matters.'",
-      "whatToDo": [
-        "Keep the intro to about 60 seconds — the rocket detail is vivid and memorable.",
-        "You can return to Annie naturally at these moments in the lesson:",
-        "Phase 2 (stack vs queue): 'Annie Easley worked on systems where one wrong processing order destroyed a mission. Stack and queue are not abstract — they are how real systems make real decisions.'",
-        "Phase 3 (priority queue): 'Annie's rocket code had to prioritise which computations happened first — fuel flow, thrust angle, navigation — because doing them in the wrong order meant failure. That is a priority queue in action.'",
-        "Phase 4 Round 2 (preemption): 'In Annie's systems, a critical alert could interrupt everything else. That is preemption — and the rules for when it triggers had to be decided by humans, not guessed by machines.'",
-        "Exit reflection: 'Annie Easley spent 34 years making sure computers processed the right thing at the right time. You just designed a system that does the same thing for patients.'"
-      ],
       "realWorldConnection": "Annie Easley's work on the Centaur rocket is still in use today — updated versions of the stage she programmed continue to launch missions. Her career also highlights that technical excellence does not protect against systemic discrimination. She had to fight for equal treatment while doing work that literally launched spacecraft. When students think about who sets the priorities in a system, Annie's story reminds them that the people behind the code matter as much as the code itself."
-    },
-    {
-      "id": "slide-rolemodel-integration",
-      "phase": "Role Model — Using Her in Class",
-      "time": "Reference throughout",
-      "title": "Bringing Annie Into the Lesson",
-      "colour": "indigo",
-      "whatToSay": "You do not need to give a long speech. A single well-placed sentence at the right moment lands far better than a long introduction. Here is a guide to the best natural moments to bring Annie in:",
-      "whatToDo": [
-        "LESSON INTRO — right now: One fact. 'She wrote code for rockets at NASA. If the computer processed things in the wrong order, the rocket could explode.' That's enough.",
-        "PHASE 2 — when demonstrating stack vs queue: 'Annie Easley's systems had to decide: which calculation runs first? Fuel flow or thrust angle? A stack says most recent first. A queue says oldest first. Her systems needed something more flexible — a priority queue.'",
-        "PHASE 3 — when introducing priority queue: 'Annie's rocket code prioritised computations by urgency. Fuel calculations before status reports. Navigation updates before logging. That is exactly what you are about to design — but for patients instead of rockets.'",
-        "PHASE 4 Round 2 — when discussing preemption: 'In Annie's systems, a critical sensor reading could interrupt everything. That is preemption. But someone had to decide: which readings are critical enough to interrupt? That is a human decision, not a technical one.'",
-        "PHASE 5 — discussion: 'Annie faced discrimination at NASA for decades — she was one of four African American employees when she started. She built systems that launched satellites despite that. Who gets to set the priorities matters — in code and in organisations.'",
-        "EXIT REFLECTION — as the final word: 'Annie Easley spent 34 years making sure computers processed the right thing at the right time. You just designed a system that does the same.'"
-      ],
-      "realWorldConnection": "Annie is not just a historical figure. The Centaur rocket stage she worked on is still used today. Her code helped launch Cassini to Saturn, and modern successors launch GPS satellites. When students design priority logic, they are working on the same class of problem Annie solved — just with patients instead of propulsion systems."
     },
     {
       "id": "slide-overview",
@@ -408,7 +383,8 @@
         "Ask: 'What happens if a new patient arrives with severity 10 while you are treating a severity-5 patient? Do you stop treating the 5 and switch to the 10?'",
         "Say: 'That is called preemption — interrupting a current task for a higher-priority one. In hospitals, sometimes yes. In rocket systems — Annie Easley's world — absolutely yes. In a printer queue? Probably not. Whether to preempt is a design decision.'"
       ],
-      "realWorldConnection": "Emergency rooms worldwide use triage systems based on priority queues. The Manchester Triage System assigns every patient a colour-coded urgency level. Red (immediate) always goes before yellow (urgent), which goes before green (standard). Arrival time only matters within the same colour. The weights and categories are set by medical consensus — but they are still human decisions encoded into an algorithm."
+      "realWorldConnection": "Emergency rooms worldwide use triage systems based on priority queues. The Manchester Triage System assigns every patient a colour-coded urgency level. Red (immediate) always goes before yellow (urgent), which goes before green (standard). Arrival time only matters within the same colour. The weights and categories are set by medical consensus — but they are still human decisions encoded into an algorithm.",
+      "roleModelMoment": "Annie Easley's rocket processing code treated execution order as a safety requirement, not a preference. A priority queue is not just a data structure — it is a statement about what matters most, encoded as logic."
     },
     {
       "id": "slide-exercise1",
@@ -478,7 +454,8 @@
         "Say: 'That is called preemption. In a hospital, stopping treatment mid-procedure can be dangerous. But ignoring a severity-10 patient can also be fatal. There is no clean answer — only a policy that you design and defend.'",
         "Walk around. Push groups to write a clear preemption rule: under what conditions is preemption allowed?"
       ],
-      "conversationStarter": "If groups avoid the preemption question, force it: 'Patient B is having a blood test taken. Patient E cannot breathe. Do you stop the blood test? What if Patient B is mid-surgery? Does the answer change? Where is the line?'"
+      "conversationStarter": "If groups avoid the preemption question, force it: 'Patient B is having a blood test taken. Patient E cannot breathe. Do you stop the blood test? What if Patient B is mid-surgery? Does the answer change? Where is the line?'",
+      "roleModelMoment": "Easley's code handled dynamic reordering in real time — new information changed the execution priority mid-run. Your preemption logic is that same principle: the queue is never static."
     },
     {
       "id": "slide-exercise3",
