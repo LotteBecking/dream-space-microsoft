@@ -324,15 +324,7 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write these eight words on the board — leave them visible all lesson:",
-        "Boolean logic: a system of logic where every value is either true or false",
-        "Conditional: a rule that checks a condition and takes different actions depending on true or false",
-        "AND: both conditions must be true for the result to be true",
-        "OR: at least one condition must be true for the result to be true",
-        "NOT: reverses a value — true becomes false, false becomes true",
-        "Firewall: a system that filters incoming data and decides what to allow and what to block",
-        "False positive: the system blocks something that was actually safe",
-        "False negative: the system allows something that was actually a threat",
+        "Write these eight words on the board — leave them visible all lesson.",
         "Prepare 10 index cards — one per packet. Write on each card: card number, origin, file type, size, and other detail.",
         "Card 1: Unknown, .exe, 15MB, sent at 3am",
         "Card 2: Trusted doctor, .pdf, 2MB, normal hours",
@@ -344,6 +336,16 @@
         "Card 8: Hacker IP, .pdf, 2MB, normal hours",
         "Card 9: Trusted device, .pdf, 4MB, normal hours",
         "Card 10: Unknown, .exe, 2MB, normal hours"
+      ],
+      "boardWords": [
+        "Boolean logic: a system of logic where every value is either true or false",
+        "Conditional: a rule that checks a condition and takes different actions depending on true or false",
+        "AND: both conditions must be true for the result to be true",
+        "OR: at least one condition must be true for the result to be true",
+        "NOT: reverses a value — true becomes false, false becomes true",
+        "Firewall: a system that filters incoming data and decides what to allow and what to block",
+        "False positive: the system blocks something that was actually safe",
+        "False negative: the system allows something that was actually a threat"
       ]
     },
     {

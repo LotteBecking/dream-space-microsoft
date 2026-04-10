@@ -214,17 +214,19 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write these four words on the board — leave them visible all lesson:",
-        "Algorithm: a set of step-by-step instructions that solves a problem",
-        "Efficiency: how well an algorithm uses time and resources",
-        "Trade-off: a compromise where improving one thing makes another worse",
-        "Scale: what happens when you increase the input size — from 10 to 10 million",
+        "Write these four words on the board — leave them visible all lesson.",
         "Prepare five sticky notes with numbers: 47, 8, 93, 21, 64.",
         "Draw the delivery map on the board with travel times:",
         "A—B: 12 min, A—C: 8 min, B—C: 5 min, B—D: 9 min, C—D: 7 min, D—E: 11 min",
         "Draw five circles for warehouses A through E and label each route with its time.",
         "Have paper and pencils ready for group work.",
         "Identify five students you can use as sorting volunteers in Phase 2."
+      ],
+      "boardWords": [
+        "Algorithm: a set of step-by-step instructions that solves a problem",
+        "Efficiency: how well an algorithm uses time and resources",
+        "Trade-off: a compromise where improving one thing makes another worse",
+        "Scale: what happens when you increase the input size — from 10 to 10 million"
       ]
     },
     {

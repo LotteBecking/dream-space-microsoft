@@ -31,17 +31,19 @@
       "colour": "violet",
       "roleModel": "Fei-Fei Li (born 1976) is a computer scientist and professor at Stanford University who built ImageNet — a database of over 14 million labelled images that became the foundation for most modern AI image recognition. Before ImageNet, AI could not reliably identify a cat in a photo. After training on her data, it could. She showed that the secret to better AI was not a smarter algorithm — it was better, more diverse training data.",
       "whatToDo": [
-        "Write these five words on the board and leave them visible all lesson:",
-        "Artificial Intelligence (AI): a program that learns patterns from examples, not fixed rules",
-        "Training Data: the examples the AI learns from",
-        "Pattern: a rule or regularity the AI finds across many examples",
-        "Bias: when incomplete training data causes unfair or wrong decisions",
-        "Prediction: the AI's best guess based on patterns it has seen before",
+        "Write these five words on the board — leave them visible all lesson.",
         "Prepare 12–16 picture cards — print or hand-draw mixed objects, animals, and people (suggestions: dog, cat, horse, bird, fish, apple, banana, chair, car, bicycle, person running, person sitting, tree, cloud).",
         "Decide your secret rule for the warm-up. Good options: YES to all animals, YES to things that can fly, YES to things with four legs, or YES to things found outside.",
         "Make sure you have at least one surprising card to force a model revision — e.g. a chair if your rule is 'four legs.'"
       ],
-      "tip": "Keep all picture cards face-down until Phase 2. The reveal works best when students have no preview of what's coming."
+      "tip": "Keep all picture cards face-down until Phase 2. The reveal works best when students have no preview of what's coming.",
+      "boardWords": [
+        "Artificial Intelligence (AI) — a program that learns patterns from examples, not fixed rules",
+        "Training Data — the examples the AI learns from",
+        "Pattern — a rule or regularity the AI finds across many examples",
+        "Bias — when incomplete training data causes unfair or wrong decisions",
+        "Prediction — the AI’s best guess based on patterns it has seen before"
+      ]
     },
     {
       "id": "slide-phase1",
@@ -241,6 +243,16 @@
   ],
   "title": "Teaching the Machine - What AI Actually Is",
   "description": "Students learn that AI finds patterns from training examples, and examine how bias and mistakes emerge from data.",
+  "roleModelOfDay": {
+    "name": "Fei-Fei Li",
+    "years": "born 1976",
+    "intro": "Computer scientist at Stanford who built ImageNet, a database of 14 million labelled images that became the foundation of modern AI image recognition."
+  },
+  "sloGoals": {
+    "domain": "Domain A — Computational Thinking (21A, 21D) & Domain B (22B) & Domain C — Digital Society (23A)",
+    "detail": "This lesson targets AI literacy and data ethics: students learn that AI finds patterns from training examples, not rules. They examine how bias and errors emerge from data, and practise evaluating AI outputs critically.",
+    "why": "SLO Domain C (23A) requires students to understand how technology shapes society. AI literacy is now considered essential digital citizenship — students who understand how AI is trained are better equipped to question and improve the systems they will live and work with."
+  },
   "duration": 60,
   "level": "Beginner",
   "ageGroup": "Groep 5-8 (ages 8-12)",

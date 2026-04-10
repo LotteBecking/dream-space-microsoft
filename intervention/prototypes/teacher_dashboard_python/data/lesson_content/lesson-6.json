@@ -31,19 +31,21 @@
       "colour": "violet",
       "roleModel": "Hedy Lamarr (1914–2000) was a film actress and inventor who co-invented a radio communication system during World War II that changed signals rapidly so enemies could not intercept them. Her invention — frequency hopping — was ignored during her lifetime but became the foundation for modern Wi-Fi, Bluetooth, and GPS encryption. Today every phone call, every Wi-Fi connection, and every Bluetooth device uses a descendant of her idea.",
       "whatToDo": [
-        "Write these five words on the board and leave them visible all lesson:",
-        "Encryption: scrambling information so only the intended person can read it",
-        "Cipher: the rule or algorithm used to encrypt a message",
-        "Key: the piece of information needed to decrypt a message",
-        "Decrypt: unscramble an encrypted message back to its original form",
-        "Hacker: someone who tries to access information they are not supposed to see",
+        "Write these five words on the board — leave them visible all lesson.",
         "Write the plain and Caesar+3 shifted alphabet on the board ready for Phase 2:",
         "Plain:     A B C D E F G H I J K L M N O P Q R S T U V W X Y Z",
         "Encrypted: D E F G H I J K L M N O P Q R S T U V W X Y Z A B C",
         "Have paper and pencils ready for every student.",
         "Optional: prepare one envelope per group for the message-passing game in Phase 4."
       ],
-      "tip": "Do not reveal the Caesar shift amount before Phase 2 — the warm-up only works if students have to discover the rule themselves."
+      "tip": "Do not reveal the Caesar shift amount before Phase 2 — the warm-up only works if students have to discover the rule themselves.",
+      "boardWords": [
+        "Encryption — scrambling information so only the intended person can read it",
+        "Cipher — the rule or algorithm used to encrypt a message",
+        "Key — the piece of information needed to decrypt a message",
+        "Decrypt — unscramble an encrypted message back to its original form",
+        "Hacker — someone who tries to access information they are not supposed to see"
+      ]
     },
     {
       "id": "slide-phase1",
@@ -240,6 +242,16 @@
   ],
   "title": "Secrets and Codes - How Computers Keep Information Safe",
   "description": "Students learn encryption basics, practice encoding and decoding, and evaluate password strength and key security.",
+  "roleModelOfDay": {
+    "name": "Hedy Lamarr",
+    "years": "1914–2000",
+    "intro": "Film actress and inventor who co-invented frequency-hopping radio transmission — the core idea behind modern Wi-Fi, Bluetooth, and GPS."
+  },
+  "sloGoals": {
+    "domain": "Domain A — Computational Thinking (21A) & Domain C — Digital Society (23A)",
+    "detail": "This lesson targets cybersecurity and privacy (23A): students learn how encryption protects information, practise encoding and decoding messages, and evaluate what makes passwords and keys secure.",
+    "why": "SLO digital literacy goals include understanding how to protect personal information online. As students become more active online, knowing how encryption and privacy work is a core safety and citizenship skill recognised in the Dutch curriculum."
+  },
   "duration": 60,
   "level": "Beginner",
   "ageGroup": "Groep 5-8 (ages 8-12)",

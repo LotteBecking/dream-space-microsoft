@@ -255,17 +255,19 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write these six words on the board — leave them visible all lesson:",
+        "Write these six words on the board — leave them visible all lesson.",
+        "Write the 10 ocean temperature anomaly readings on the board:",
+        "−2, 4, 1, −5, 8, 3.2, 0, 6, −1, 5",
+        "Label them: 'Ocean Temperature Anomaly Readings (°C above/below average)'",
+        "Have paper and pencils ready for group work."
+      ],
+      "boardWords": [
         "Loop: an instruction that repeats a set of steps multiple times",
         "FOR loop: a loop that repeats a fixed number of times (you know the count in advance)",
         "WHILE loop: a loop that repeats as long as a condition is true (you do not know when it will stop)",
         "Array: an ordered list of values stored together so a loop can process them one by one",
         "Data parsing: reading through data and extracting the information you need",
-        "Redundancy: unnecessary repetition in code that makes it harder to maintain",
-        "Write the 10 ocean temperature anomaly readings on the board:",
-        "−2, 4, 1, −5, 8, 3.2, 0, 6, −1, 5",
-        "Label them: 'Ocean Temperature Anomaly Readings (°C above/below average)'",
-        "Have paper and pencils ready for group work."
+        "Redundancy: unnecessary repetition in code that makes it harder to maintain"
       ]
     },
     {

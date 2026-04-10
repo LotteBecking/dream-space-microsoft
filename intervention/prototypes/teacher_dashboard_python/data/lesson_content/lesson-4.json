@@ -2,6 +2,16 @@
   "id": "lesson-4",
   "title": "Memory Boxes - How Computers Remember Things",
   "description": "Students learn variables as memory containers and track how values update through sequences, loops, and conditionals.",
+  "roleModelOfDay": {
+    "name": "Radia Perlman",
+    "years": "born 1951",
+    "intro": "Computer scientist who invented the Spanning Tree Protocol — the algorithm that keeps the internet stable when data travels across millions of possible paths simultaneously."
+  },
+  "sloGoals": {
+    "domain": "Domain A — Computational Thinking (21A) & Domain B — Digital Skills (22B)",
+    "detail": "This lesson targets program state and variables (21A): students learn that computers use memory containers to store and update values. They trace how variables change through sequences, loops, and conditionals — building a mental model of how programs remember things.",
+    "why": "SLO digital literacy goals help students understand computation at a conceptual level, not just as button-pressing. Knowing how memory and state work gives students the foundation to understand every interactive system they use."
+  },
   "duration": 60,
   "level": "Beginner",
   "ageGroup": "Groep 5-8 (ages 8-12)",
@@ -162,18 +172,20 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write these five words on the board and leave them visible all lesson:",
-        "Variable — a named container that stores a value which can change",
-        "Value — the thing stored inside the variable at any moment",
-        "Assign — to put a value into a variable",
-        "Update — to change the value stored in a variable",
-        "State — the current snapshot of all variables in a program at one moment",
+        "Write these five words on the board — leave them visible all lesson.",
         "Draw three large labelled boxes on the board with these names and starting values: SCORE = 0 / LIVES = 3 / LEVEL = 1 — you will use these in Phase 2.",
         "If you have small cardboard boxes or envelopes, label them the same way and use sticky notes as the values inside. Either approach works.",
         "Have a wastepaper bin at the front and 10 scrunched-up paper balls ready for Phase 4. If no bin, mark an X on the floor with tape."
       ],
       "roleModel": "Radia Perlman (born 1951) is a computer scientist who invented the algorithm that makes the internet stable — called the Spanning Tree Protocol. Her work means that when data travels across the internet, it does not get lost in infinite loops. Her algorithm uses variables to track which paths are open and which are blocked, updating them in real time as the network changes. She is sometimes called 'the mother of the internet' — though she finds that title too simple for what she actually did. Today students will use variables the same way she did: to keep track of changing information.",
-      "tip": "This lesson ties all four building blocks together for the first time. By the end, students should see how sequences give computers their steps, loops give them efficiency, conditionals give them decisions, and variables give them memory. Phrase it that way at the end of Phase 3."
+      "tip": "This lesson ties all four building blocks together for the first time. By the end, students should see how sequences give computers their steps, loops give them efficiency, conditionals give them decisions, and variables give them memory. Phrase it that way at the end of Phase 3.",
+      "boardWords": [
+        "Variable — a named container that stores a value which can change",
+        "Value — the thing stored inside the variable at any moment",
+        "Assign — to put a value into a variable",
+        "Update — to change the value stored in a variable",
+        "State — the current snapshot of all variables in a program at one moment"
+      ]
     },
     {
       "id": "slide-phase1",

@@ -139,9 +139,63 @@
     font-size: 0.72rem; color: var(--mu); display: block; margin-top: 2px;
   }
 
+  .dp .vocab-list {
+    display: flex; flex-direction: column; gap: 6px; margin-bottom: 32px;
+  }
+
+  .dp .vocab-list-row {
+    display: flex; align-items: baseline; gap: 10px;
+    background: var(--sf); border: 1px solid var(--bd);
+    border-radius: 8px; padding: 10px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .dp .vocab-list-row .vocab-word {
+    font-family: var(--fm); font-size: 0.82rem;
+    color: var(--ac); font-weight: 600; white-space: nowrap;
+  }
+
+  .dp .vocab-list-row .vocab-sep {
+    color: var(--bd); flex-shrink: 0;
+  }
+
+  .dp .vocab-list-row .vocab-def {
+    font-size: 0.84rem; color: var(--tx); display: inline; margin: 0;
+  }
+
+  /* ── SLO goals ── */
+  .dp .slo-box {
+    background: rgba(37, 99, 235, 0.04);
+    border: 1.5px solid rgba(37, 99, 235, 0.18);
+    border-radius: 12px; padding: 18px 22px;
+  }
+
+  .dp .slo-domain {
+    font-family: var(--fm); font-size: 0.75rem;
+    color: var(--ac2); font-weight: 600;
+    letter-spacing: 0.04em; margin-bottom: 8px;
+  }
+
+  .dp .slo-detail {
+    font-size: 0.88rem; color: var(--tx); line-height: 1.6; margin: 0 0 8px 0;
+  }
+
+  .dp .slo-why {
+    font-size: 0.8rem; color: var(--mu); line-height: 1.55; margin: 0;
+    border-top: 1px solid rgba(37, 99, 235, 0.12); padding-top: 8px;
+  }
+
+  /* ── role model overview ── */
+  .dp .rm-why {
+    font-size: 0.84rem; color: var(--mu); line-height: 1.6;
+    margin: 0 0 16px 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--bd);
+  }
+
   /* ── info grid ── */
   .dp .info-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
+    display: grid; grid-template-columns: repeat(2, 1fr);
     gap: 14px; margin-bottom: 32px;
   }
 
@@ -583,6 +637,45 @@
 
   .webapp-cue svg { flex-shrink: 0; }
 
+  .board-words-box {
+    background: rgba(124, 58, 237, 0.04);
+    border: 1.5px solid rgba(124, 58, 237, 0.18);
+    border-radius: 10px; padding: 14px 20px;
+    margin-top: 14px;
+  }
+
+  .board-words-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ac);
+    margin-bottom: 10px; display: block;
+  }
+
+  .board-words-list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 7px;
+  }
+
+  .board-words-list li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem; color: var(--tx); line-height: 1.5;
+  }
+
+  .board-sub-list {
+    list-style: none; padding: 0; margin: 10px 0 2px 0;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+
+  .board-sub-list li {
+    font-size: 0.93rem; color: var(--tx); line-height: 1.55;
+    padding-left: 20px; position: relative;
+  }
+
+  .board-sub-list li::before {
+    content: '\2022'; position: absolute; left: 5px; top: 1px;
+    color: var(--ac); font-size: 0.85rem;
+  }
+
   /* slide bottom nav */
   .ss-nav {
     display: flex; align-items: center; justify-content: space-between;
@@ -678,25 +771,39 @@
   <!-- Vocabulary Strip -->
   {% if lesson.vocabulary %}
   <p class="section-title">Key Vocabulary &mdash; Write on board before class</p>
-  <div class="vocab-strip">
+  <div class="vocab-list">
     {% for v in lesson.vocabulary %}
-    <div class="vocab-badge">
+    <div class="vocab-list-row">
       <span class="vocab-word">{{ v.word }}</span>
+      <span class="vocab-sep">&mdash;</span>
       <span class="vocab-def">{{ v.def }}</span>
     </div>
     {% endfor %}
   </div>
   {% endif %}
 
+  <!-- SLO Digital Literacy Goals -->
+  {% if lesson.sloGoals %}
+  <p class="section-title">SLO Digital Literacy Goals</p>
+  <div class="slo-box" style="margin-bottom:24px">
+    <div class="slo-domain">{{ lesson.sloGoals.domain }}</div>
+    <p class="slo-detail">{{ lesson.sloGoals.detail }}</p>
+    <p class="slo-why">{{ lesson.sloGoals.why }}</p>
+  </div>
+  {% endif %}
+
   <!-- Role Model of the Day -->
   {% if lesson.roleModelOfDay %}
   <p class="section-title">Role Model of the Day</p>
-  <div class="rm-card" style="margin-bottom:32px">
-    <div class="rm-initials">{{ lesson.roleModelOfDay.name.split()[0][0] }}{{ lesson.roleModelOfDay.name.split()[-1][0] }}</div>
-    <div>
-      <div class="rm-name">{{ lesson.roleModelOfDay.name }}</div>
-      {% if lesson.roleModelOfDay.years %}<div class="rm-years">{{ lesson.roleModelOfDay.years }}</div>{% endif %}
-      <div class="rm-text">{{ lesson.roleModelOfDay.intro }}</div>
+  <div style="margin-bottom:32px">
+    <p class="rm-why">Each Dream Space lesson features a real person from technology history — to show students that people like them have always shaped computing. Role models help students see themselves as future builders, not just users of technology.</p>
+    <div class="rm-card">
+      <div class="rm-initials">{{ lesson.roleModelOfDay.name.split()[0][0] }}{{ lesson.roleModelOfDay.name.split()[-1][0] }}</div>
+      <div>
+        <div class="rm-name">{{ lesson.roleModelOfDay.name }}</div>
+        {% if lesson.roleModelOfDay.years %}<div class="rm-years">{{ lesson.roleModelOfDay.years }}</div>{% endif %}
+        <div class="rm-text">{{ lesson.roleModelOfDay.intro }}</div>
+      </div>
     </div>
   </div>
   {% endif %}
@@ -717,20 +824,6 @@
         {% for mat in lesson.materials %}
         <li>{{ mat }}</li>
         {% endfor %}
-      </ul>
-    </div>
-    <div class="info-card">
-      <h3>Setup Checklist</h3>
-      <ul class="info-list">
-        {% if lesson.vocabulary %}
-        <li>Vocabulary written on board and visible all lesson</li>
-        {% endif %}
-        {% if lesson.teacherInstructions and lesson.teacherInstructions.setup %}
-        <li>{{ lesson.teacherInstructions.setup }}</li>
-        {% else %}
-        <li>Materials prepared at front of room</li>
-        <li>Paper ready for pair and individual activities</li>
-        {% endif %}
       </ul>
     </div>
   </div>
@@ -938,17 +1031,21 @@ function buildSlideHTML(s) {
     </div>`;
   }
 
-  if (s.whatToSay) {
-    h += `<div class="ss-section">
-      <div class="ss-label">Say to the class</div>
-      <div class="say-box">${s.whatToSay}</div>
-    </div>`;
-  }
-
   if (s.whatToDo && s.whatToDo.length) {
     h += `<div class="ss-section">
       <div class="ss-label">What to do</div>
       <ul class="step-list">${s.whatToDo.map(x => `<li>${x}</li>`).join('')}</ul>
+      ${s.boardWords && s.boardWords.length ? `<div class="board-words-box">
+        <span class="board-words-label">Words for the board</span>
+        <ul class="board-words-list">${s.boardWords.map(w => `<li>${w}</li>`).join('')}</ul>
+      </div>` : ''}
+    </div>`;
+  }
+
+  if (s.whatToSay) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Say to the class</div>
+      <div class="say-box">${s.whatToSay}</div>
     </div>`;
   }
 
