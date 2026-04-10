@@ -67,13 +67,12 @@
       "displayMode": "Individual then pairs",
       "materials": ["Webapp", "Whiteboard vocabulary list"],
       "instructions": [
-        "Choose one task from the dropdown below: getting ready for school, making chocolate milk, or feeding a pet.",
-        "Type each step into a numbered box — start with the 6 boxes provided.",
-        "Hit 'Add Step' if you need more than 6 steps.",
-        "Each box must contain one action only — not two actions combined.",
+        "Choose one task: getting ready for school, making chocolate milk, or feeding a pet.",
+        "Write at least 6 numbered steps.",
+        "Each line must contain one action only.",
         "Make every step precise enough for a robot that cannot guess.",
-        "When you are done, swap devices with a partner and mark any unclear steps.",
-        "Return to your own screen, improve the unclear steps, and hit Submit."
+        "Swap with a partner and mark unclear steps with a question mark.",
+        "Improve unclear steps and submit your final algorithm."
       ],
       "successCriteria": [
         "Algorithm has 6 or more numbered steps.",
@@ -91,20 +90,11 @@
       "displayMode": "Whole class or pairs",
       "materials": ["Webapp"],
       "instructions": [
-        "You will see six tea-making cards below in a shuffled order.",
-        "Drag each card up or down to place it where you think it belongs.",
-        "When you are happy with your order, click 'Check my answer'.",
-        "Each card will show a green tick or red cross.",
-        "Compare your result with a partner — discuss any differences.",
-        "Discuss: which steps are completely fixed, and which could be swapped?"
-      ],
-      "sortableItems": [
-        { "id": "tea-1", "text": "Boil the water",                   "position": 1 },
-        { "id": "tea-2", "text": "Place the tea bag in the cup",     "position": 2 },
-        { "id": "tea-3", "text": "Pour the hot water into the cup",  "position": 3 },
-        { "id": "tea-4", "text": "Wait 3 minutes to steep",          "position": 4 },
-        { "id": "tea-5", "text": "Remove the tea bag",               "position": 5 },
-        { "id": "tea-6", "text": "Add milk or sugar if you like",    "position": 6 }
+        "Read the six tea-making instruction cards on the webapp.",
+        "Drag them into the order you think is correct.",
+        "Compare your order with a partner.",
+        "If you disagree, explain why your sequence works.",
+        "Discuss which steps are fixed and which can be flexible."
       ],
       "successCriteria": [
         "Students can justify their sequence choices.",
@@ -124,7 +114,7 @@
       "instructions": [
         "Choose one lunch item from the school canteen menu.",
         "Write a precise step-by-step algorithm a robot chef could follow.",
-        "Add safety instructions for students with nut allergies.",
+        "Add safety instructions for students with allergies.",
         "Add a rule for what the robot should do if an ingredient runs out.",
         "Challenge: make your algorithm work for any sandwich type."
       ],

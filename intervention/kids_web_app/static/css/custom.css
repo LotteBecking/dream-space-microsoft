@@ -271,37 +271,3 @@ img { max-width: 100%; display: block; }
 .instruction-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .instruction-list li::before { content: '→ '; color: #7B4FA6; font-weight: 700; }
 .criteria-item::before { content: '✓ '; color: #4CAF50; font-weight: 700; }
-
-/* ── Exercise widgets ───────────────────────────────────────────── */
-.ex-widget { padding-top: 14px; border-top: 1px solid var(--border); margin-top: 14px; }
-
-/* Written / Extension step rows */
-.step-row .form-input { flex: 1; }
-
-/* Extension section label */
-.ex-section-label {
-  color: var(--purple);
-  border-left: 3px solid var(--purple);
-  padding-left: 8px;
-}
-
-/* Sorting drag cards */
-.sort-card {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 14px; margin-bottom: 8px; min-height: 48px;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm); cursor: grab; font-size: 0.9rem;
-  transition: box-shadow 0.15s, opacity 0.15s, border-color 0.15s;
-  user-select: none;
-}
-.sort-card:hover { border-color: var(--purple); }
-.sort-card.dragging { opacity: 0.4; cursor: grabbing; box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
-.sort-handle { color: var(--text-muted); font-size: 1rem; cursor: grab; flex-shrink: 0; }
-.sort-text { flex: 1; }
-.sort-feedback { margin-left: auto; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; }
-
-/* Sorting feedback states */
-.sort-card.sort-correct { border-color: #4CAF50; background: rgba(76,175,80,0.10); }
-.sort-card.sort-wrong   { border-color: #F44336; background: rgba(244,67,54,0.10); }
-.sort-card.sort-correct .sort-feedback { color: #4CAF50; }
-.sort-card.sort-wrong   .sort-feedback { color: #F44336; }
