@@ -265,17 +265,7 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write the full program vocabulary on the board — leave it visible all lesson:",
-        "Algorithm — a set of step-by-step instructions that solves a problem",
-        "Efficiency — achieving maximum result with minimum wasted effort",
-        "Boolean logic — decision-making with true/false conditions",
-        "Loop — a sequence of instructions repeated until a condition is met",
-        "Function — a reusable block of instructions for a specific task",
-        "Priority queue — a list where the most urgent item is handled first",
-        "Machine learning — a system that improves by learning from data patterns",
-        "Proxy bias — when a neutral data point unfairly stands in for a protected characteristic",
-        "Audit — a systematic check of whether a system works as intended and treats people fairly",
-        "Systems design — defining the architecture, components, and data flow of a complete system",
+        "Write the full program vocabulary on the board — leave it visible all lesson.",
         "Below the vocabulary, write the five-question design framework:",
         "1. What problem are you solving, and for whom specifically?",
         "2. What logic does your system use from this program?",
@@ -285,6 +275,18 @@
         "Place paper and pencils on tables for group work.",
         "Have a visible timer ready for the 60-second pitch phase.",
         "Clear the whiteboard space for the dependency web activity."
+      ],
+      "boardWords": [
+        "Algorithm — a set of step-by-step instructions that solves a problem",
+        "Efficiency — achieving maximum result with minimum wasted effort",
+        "Boolean logic — decision-making with true/false conditions",
+        "Loop — a sequence of instructions repeated until a condition is met",
+        "Function — a reusable block of instructions for a specific task",
+        "Priority queue — a list where the most urgent item is handled first",
+        "Machine learning — a system that improves by learning from data patterns",
+        "Proxy bias — when a neutral data point unfairly stands in for a protected characteristic",
+        "Audit — a systematic check of whether a system works as intended and treats people fairly",
+        "Systems design — defining the architecture, components, and data flow of a complete system"
       ]
     },
     {

@@ -31,12 +31,7 @@
       "colour": "violet",
       "roleModel": "Timnit Gebru (born 1983) is a computer scientist and AI ethics researcher who co-wrote one of the most important papers in AI ethics — showing that facial recognition AI was significantly less accurate for darker-skinned women than lighter-skinned men. She was fired from Google for refusing to withdraw the paper. She then founded her own independent AI ethics institute. She did not stop building technology — she insisted that building responsibly means asking hard questions about who it harms, not just who it helps.",
       "whatToDo": [
-        "Write these five words on the board and leave them visible all lesson:",
-        "Ethics: the study of what is right, fair, and responsible",
-        "Stakeholder: anyone affected by a decision, not just the person who made it",
-        "Unintended Consequence: a result of a decision that nobody planned for",
-        "Transparency: being open and honest about how something works and why",
-        "Consent: agreeing to something after being fully informed about what it means",
+        "Write these five words on the board — leave them visible all lesson.",
         "Write these five questions on the board — they will be used throughout the lesson:",
         "1. Who does it help?",
         "2. Who does it harm — including people who did not choose to use it?",
@@ -46,7 +41,14 @@
         "Clear a space at the front of the room and mark one side AGREE and the other DISAGREE for the walking debate in Phase 2.",
         "Have the Lesson 7 prototypes accessible — groups will need them in Phase 4."
       ],
-      "tip": "Arrange the room before students arrive if possible. The walking debate works best when students can physically move freely. Remove chairs from the debate area."
+      "tip": "Arrange the room before students arrive if possible. The walking debate works best when students can physically move freely. Remove chairs from the debate area.",
+      "boardWords": [
+        "Ethics — the study of what is right, fair, and responsible",
+        "Stakeholder — anyone affected by a decision, not just the person who made it",
+        "Unintended Consequence — a result of a decision that nobody planned for",
+        "Transparency — being open and honest about how something works and why",
+        "Consent — agreeing to something after being fully informed about what it means"
+      ]
     },
     {
       "id": "slide-phase1",
@@ -231,6 +233,16 @@
   ],
   "title": "Who Is Technology For? Ethics, Fairness, and Responsibility",
   "description": "Students evaluate technology ethics, audit stakeholders and harms, and apply responsible-design thinking to their own prototypes.",
+  "roleModelOfDay": {
+    "name": "Timnit Gebru",
+    "years": "born 1983",
+    "intro": "AI ethics researcher who co-authored landmark research showing facial recognition AI was significantly less accurate for darker-skinned women — sparking a global conversation about bias in technology."
+  },
+  "sloGoals": {
+    "domain": "Domain C — Digital Society (23A) & Domain A — Computational Thinking (21D)",
+    "detail": "This lesson targets responsible technology design and ethical reasoning (23A, 21D): students evaluate who technology affects, audit for unintended harms, and apply ethics frameworks to their own prototypes.",
+    "why": "SLO Domain C (23A) requires students to understand technology’s role and responsibility in society. Ethical reasoning is now a core digital literacy standard — students who can identify bias, fairness, and unintended consequences are better prepared to design and use technology responsibly."
+  },
   "duration": 60,
   "level": "Beginner",
   "ageGroup": "Groep 5-8 (ages 8-12)",

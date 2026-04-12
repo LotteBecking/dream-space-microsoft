@@ -299,14 +299,7 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write these seven words on the board — leave them visible all lesson:",
-        "Machine learning: a system that learns patterns from data instead of following hand-written rules",
-        "Feature: a measurable property of the data used as input to a model",
-        "Weight: a number that controls how much influence a feature has on the output",
-        "Threshold: the score boundary above which the model triggers an action",
-        "Training data: the dataset a model learns from — its patterns become the model's patterns",
-        "False positive: model says fraud, but the transaction was actually safe",
-        "False negative: model says safe, but the transaction was actually fraud",
+        "Write these seven words on the board — leave them visible all lesson.",
         "Draw the training transaction table on the board (transactions 1–4):",
         "Transaction 1: Local, €8, 9:00 AM → Safe",
         "Transaction 2: Local, €1200, 2:00 PM → Safe",
@@ -314,6 +307,15 @@
         "Transaction 4: Overseas, €420, 3:15 AM → Fraud",
         "Keep transactions 5–7 hidden until Round 3.",
         "Have paper and pencils ready for group work."
+      ],
+      "boardWords": [
+        "Machine learning: a system that learns patterns from data instead of following hand-written rules",
+        "Feature: a measurable property of the data used as input to a model",
+        "Weight: a number that controls how much influence a feature has on the output",
+        "Threshold: the score boundary above which the model triggers an action",
+        "Training data: the dataset a model learns from — its patterns become the model's patterns",
+        "False positive: model says fraud, but the transaction was actually safe",
+        "False negative: model says safe, but the transaction was actually fraud"
       ]
     },
     {

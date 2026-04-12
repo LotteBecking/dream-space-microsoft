@@ -270,13 +270,7 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write these six words on the board — leave them visible all lesson:",
-        "Stack: a data structure where the last item added is the first one removed (LIFO)",
-        "Queue: a data structure where the first item added is the first one removed (FIFO)",
-        "LIFO: Last In, First Out — the stack processing order",
-        "FIFO: First In, First Out — the queue processing order",
-        "Priority Queue: a queue where items are processed by importance, not arrival order",
-        "Severity score: a number representing how urgent or critical a case is",
+        "Write these six words on the board — leave them visible all lesson.",
         "Write or project the triage scenario on the board:",
         "Patient A — arrived 9:00, severity 2, sprained ankle",
         "Patient B — arrived 9:05, severity 9, chest pain",
@@ -284,6 +278,14 @@
         "Patient D — arrived 9:15, severity 10, cannot breathe",
         "Have four books or notebooks stacked at the front for the stack demo.",
         "Have paper and pencils ready for group work."
+      ],
+      "boardWords": [
+        "Stack: a data structure where the last item added is the first one removed (LIFO)",
+        "Queue: a data structure where the first item added is the first one removed (FIFO)",
+        "LIFO: Last In, First Out — the stack processing order",
+        "FIFO: First In, First Out — the queue processing order",
+        "Priority Queue: a queue where items are processed by importance, not arrival order",
+        "Severity score: a number representing how urgent or critical a case is"
       ]
     },
     {

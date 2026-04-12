@@ -2,6 +2,16 @@
   "id": "lesson-3",
   "title": "If This, Then That - How Computers Make Decisions",
   "description": "Students learn conditionals, write IF/THEN/ELSE logic, and debug decision rules used in everyday technology.",
+  "roleModelOfDay": {
+    "name": "Katherine Johnson",
+    "years": "1918–2020",
+    "intro": "NASA mathematician whose conditional calculations determined whether Apollo 11 would safely reach the Moon and return. Her equations were trusted over the computers."
+  },
+  "sloGoals": {
+    "domain": "Domain A — Computational Thinking (21A) & Domain B — Digital Skills (22B)",
+    "detail": "This lesson targets conditional logic (21A): students learn to write IF/THEN/ELSE decision rules and trace how different inputs produce different outputs. They debug branching logic and connect conditionals to real technology like recommendation systems and traffic lights.",
+    "why": "SLO digital literacy goals connect classroom learning to the real systems students encounter daily. Understanding how machines make decisions helps students critically evaluate technology — a skill central to the Dutch curriculum’s digital literacy standards."
+  },
   "duration": 60,
   "level": "Beginner",
   "ageGroup": "Groep 5-8 (ages 8-12)",
@@ -160,18 +170,20 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write these five words on the board and leave them visible all lesson:",
-        "Conditional — a rule that only runs if a certain condition is true",
-        "IF — the condition being checked",
-        "THEN — what happens if the condition is true",
-        "ELSE — what happens if the condition is not true",
-        "Boolean — a value that is either true or false, nothing in between",
+        "Write these five words on the board — leave them visible all lesson.",
         "Place one red, one blue, and one green sheet of paper on the floor at the front of the room — spaced slightly apart. These are the sensor tiles for Phase 4.",
         "Also write the IF/THEN/ELSE syntax block on the board and leave it up all lesson: IF (condition is true) / THEN (do this) / ELSE (do this instead)",
         "Have paper and pencils ready for the exercise phase."
       ],
-      "roleModel": "Katherine Johnson (1918–2020) was a mathematician at NASA whose conditional calculations determined whether Apollo 11 would safely reach the Moon and return. She wrote the equations that told the spacecraft: IF you are on this trajectory AND within this speed range, THEN fire the engine for exactly this many seconds, ELSE abort. Without her conditionals, the Moon landing does not happen. Today students will write their own conditional logic — the same kind of thinking that got humans to the Moon.",
-      "tip": "This lesson builds on Lesson 1 (sequences) and Lesson 2 (loops). At the start of Phase 3, briefly connect all three on the board: Sequence → Loop → Conditional. It takes 30 seconds and helps students see the bigger picture."
+      "roleModel": "Katherine Johnson (1918–2020) was a mathematician at NASA whose conditional calculations determined whether Apollo 11 would safely reach the Moon and return. She wrote the equations that told the spacecraft: IF you are on this trajectory AND within this speed range, THEN fire the engine for exactly this many seconds, ELSE abort. Without her conditionals, the Moon landing does not happen.",
+      "tip": "This lesson builds on Lesson 1 (sequences) and Lesson 2 (loops). At the start of Phase 3, briefly connect all three on the board: Sequence → Loop → Conditional. It takes 30 seconds and helps students see the bigger picture.",
+      "boardWords": [
+        "Conditional — a rule that only runs if a certain condition is true",
+        "IF — the condition being checked",
+        "THEN — what happens if the condition is true",
+        "ELSE — what happens if the condition is not true",
+        "Boolean — a value that is either true or false, nothing in between"
+      ]
     },
     {
       "id": "slide-phase1",
@@ -233,7 +245,7 @@
       "whatToSay": "\"This is one of the most important structures in all of computing. Almost every interesting thing a computer does is built on this pattern.\"",
       "whatToDo": [
         "Point to the IF/THEN/ELSE block already on the board. Explain each part:",
-        "IF is the question the computer is asking. It is always yes or no — there is no maybe. The computer checks whether something is true or false. That is a Boolean.",
+        "IF is the question the computer is asking. It is always yes or no — there is no maybe. The computer checks whether something is true or false.",
         "THEN is what happens if the answer is yes.",
         "ELSE is what happens if the answer is no. If you do not write an ELSE, the computer does nothing when the condition is false — which is sometimes fine, but sometimes a bug.",
         "Now write these three examples on the board in full IF/THEN/ELSE format:",
@@ -306,7 +318,6 @@
       ],
       "discussionQuestions": [
         "\"In Round 2, we disagreed about whether the shield cancelled the red damage. In real game programming, who decides the answer? The computer or the programmer?\" Follow-up: \"What happens if the programmer forgets to decide? What does the computer do?\" The answer: the computer does whatever the code says, even if that produces a nonsensical result. A missing rule is a bug.",
-        "\"We wrote ELSE IF three times for three colours. What if there were 100 colours — would you write 100 ELSE IFs?\" Follow-up: \"Is there a smarter way?\" Students will suggest something like a lookup list — they are right. Tell them there is a structure called a SWITCH statement that handles exactly this, and they will encounter it when they write real code.",
         "\"Think about the automatic doors from the start of the lesson. What could go wrong with the IF/THEN/ELSE rule? What edge cases did the programmer probably not think about?\" Follow-up: What if two people approach from opposite sides? What if the sensor detects a trolley but no person? What if someone stands exactly in the middle? These are edge cases — situations the programmer did not anticipate."
       ],
       "tip": "Question 3 — edge cases — is the best discussion question for this lesson. Students immediately generate examples from games they play: 'In Minecraft, what if you place a block inside another block?' or 'In FIFA, what if the ball hits the post at exactly the final whistle?' Both are real edge cases. Let the discussion run — it is valuable and connects directly to Lesson 5 on AI and bias."
@@ -369,11 +380,8 @@
       "colour": "pink",
       "whatToDo": [
         "Ask 2–3 students to read one conditional rule from Exercise 1 aloud — just one rule, not the whole block.",
-        "After each one, ask the class: 'Can you think of an edge case that rule does not handle?'",
-        "Keep it short and warm — this is a light share, not a presentation.",
-        "Ask every student — verbally or on a sticky note — to complete this sentence:"
+        "After each one, ask the class: 'Can you think of an edge case that rule does not handle?'"
       ],
-      "exitReflection": "\"A conditional is like a _______ because _______.\"",
       "whatToSay": "After collecting responses, close with: \"You now know three of the most fundamental ideas in all of computing — sequences, loops, and conditionals. Almost every program ever written uses all three. Next week we are going to look at something that confused the entire world when it first appeared, but that you are now almost ready to understand: what AI actually is, and why it is not as clever as it looks.\"",
       "tip": "The metaphor they choose reveals how they have understood the concept. Good answers: a referee (checks rules and makes a call), a traffic light (controls what happens based on what it detects), a bouncer (decides who gets in). All correct. Write the most interesting metaphor on the board next to the exit sentences from Lessons 1 and 2 — by Week 6 there will be a small gallery of the class's own definitions in their own words.",
       "watchFor": "Did students identify that three separate IFs behave differently from a chained ELSE IF block? Did anyone independently connect Problem 3 in Exercise 2 to the loop bug from Lesson 2? Did the traffic light extension prompt students to think beyond one algorithm to the system it operates in? These three observations together are a strong signal the class is building genuine computational thinking — not just following steps, but reasoning about systems."

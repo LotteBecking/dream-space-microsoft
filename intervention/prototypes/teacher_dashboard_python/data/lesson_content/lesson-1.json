@@ -11,6 +11,11 @@
     "years": "1815\u20131852",
     "intro": "The world\u2019s first computer programmer \u2014 she wrote algorithms for a machine that didn\u2019t exist yet."
   },
+  "sloGoals": {
+    "domain": "Domain A \u2014 Computational Thinking (21A) & Domain B \u2014 Digital Skills (22B)",
+    "detail": "This lesson targets computational thinking (21A): students learn that computers execute step-by-step instructions precisely, without inference or common sense. They practise sequencing, algorithmic writing, and debugging \u2014 core skills that underpin all future programming and technology work. Domain B (22B) is addressed when students use the webapp to write and test their algorithms digitally.",
+    "why": "SLO digital literacy goals ensure all primary school students in the Netherlands develop 21st-century skills recognised across the curriculum. Connecting each lesson to SLO domains means your teaching is purposeful, trackable, and aligned with national standards."
+  },
   "vocabulary": [
     { "word": "Algorithm", "def": "A set of step-by-step instructions" },
     { "word": "Input", "def": "What goes in (ingredients, data, commands)" },
@@ -202,12 +207,14 @@
       "colour": "indigo",
       "alsoNeed": "Paper and pencils ready for the pair-writing phase.",
       "whatToDo": [
-        "Write these four words on the board \u2014 leave them visible all lesson:",
-        "Algorithm: a set of step-by-step instructions",
-        "Input: what goes in (ingredients, data, commands)",
-        "Output: what comes out (the sandwich, the result, the route)",
-        "Sequence: the order of steps",
+        "Write these four words on the board \u2014 leave them visible all lesson.",
         "Place at the front table: bread (in the bag, closed), a jar of spread, a knife, and a plate. Don\u2019t open anything yet \u2014 the props being sealed is part of the joke."
+      ],
+      "boardWords": [
+        "Algorithm \u2014 a set of step-by-step instructions",
+        "Input \u2014 what goes in (ingredients, data, commands)",
+        "Output \u2014 what comes out (the sandwich, the result, the route)",
+        "Sequence \u2014 the order of steps"
       ]
     },
     {
@@ -229,9 +236,7 @@
       "whatToSay": "Welcome the class and set the scene simply: \u201cToday we are going to find out how computers actually think \u2014 or rather, how they don\u2019t think at all. Computers don\u2019t guess. They don\u2019t use common sense. They can\u2019t fill in the blanks. They follow instructions \u2014 exactly as written. And today, you are going to write some.\u201d",
       "whatToDo": [
         "Point to the vocabulary on the board: \u2018These four words are what we\u2019re working with today. You don\u2019t need to know them yet \u2014 just notice they are there. By the end you will.\u2019",
-        "Point to the materials at the front: \u2018We are going to use those later. I\u2019m not telling you what for yet.\u2019",
-        "Let that sit for a moment. The mystery is part of the hook.",
-        "This is lesson one \u2014 keep the tone warm, simple, and a little playful. The lesson will explain itself through the activities."
+        "Point to the materials at the front: \u2018We are going to use those later. I\u2019m not telling you what for yet.\u2019"
       ]
     },
     {
@@ -247,8 +252,7 @@
         "Write the 2 most interesting answers on the board. You\u2019ll come back to them at the end.",
         "Accept all answers without correcting. Nothing is wrong at this point."
       ],
-      "realWorldConnection": "GPS apps sometimes give directions that technically work but make no human sense \u2014 because the algorithm doesn\u2019t know what a person would notice. Students are about to experience exactly this.",
-      "conversationStarter": "Think about what a toddler can do that a robot can\u2019t \u2014 like knowing when someone is sad. What\u2019s the difference?"
+      "realWorldConnection": "GPS apps sometimes give directions that technically work but make no human sense \u2014 because the algorithm doesn\u2019t know what a person would notice. Students are about to experience exactly this."
     },
     {
       "id": "slide-phase2",
@@ -296,8 +300,7 @@
         "Place on the front table: bread in its closed bag, a closed jar of spread, a knife, and a plate.",
         "Make sure everything is still closed and in its original state.",
         "Stand behind the table and wait for the class to begin giving instructions."
-      ],
-      "note": "The funnier and more literal you are, the better the lesson lands."
+      ]
     },
     {
       "id": "slide-phase4-round1",
@@ -315,8 +318,7 @@
         "Do NOT take bread out of the bag until told to do so.",
         "If they say \u2018spread it\u2019 without saying which side \u2014 spread it on the outside of the bread.",
         "Continue literally until the class fully understands the problem."
-      ],
-      "conversationStarter": "If students immediately give precise instructions, find a gap anyway \u2014 act on exactly what was said, not the intent.<br><br><strong>Follow the letter of what was said, not the intent.</strong>"
+      ]
     },
     {
       "id": "slide-phase4-round2",
@@ -331,8 +333,7 @@
         "At least 6 steps.",
         "A robot with no common sense must be able to follow it."
       ],
-      "roleModelMoment": "Ada had exactly this problem. She had to write instructions so precise that a machine with no brain could follow them. Sound familiar?",
-      "conversationStarter": "Was the bread still in the bag \u2014 did you say to take it out?<br>Was the knife in a drawer \u2014 did you say to get it?<br>There is always a gap to find."
+      "roleModelMoment": "Ada had exactly this problem. She had to write instructions so precise that a machine with no brain could follow them. Sound familiar?"
     },
     {
       "id": "slide-phase4-round3",
@@ -346,7 +347,7 @@
         "The rest of the class can call out mistakes and suggest fixes in real time.",
         "When the class spots a problem, ask: \u2018How would you fix that step? What should the exact instruction be?\u2019"
       ],
-      "conceptMoment": "What you are doing right now is called <strong>debugging</strong> \u2014 finding and fixing errors in instructions. Professional programmers spend a large part of their day doing exactly this."
+      "whatToSay": "What you are doing right now is called <strong>debugging</strong> \u2014 finding and fixing errors in instructions. Professional programmers spend a large part of their day doing exactly this."
     },
     {
       "id": "slide-phase5",
@@ -362,8 +363,7 @@
       "discussionQuestions": [
         "\u201cA robot followed your instructions exactly and got the wrong result. Whose fault is that \u2014 the robot\u2019s or the programmer\u2019s?\u201d Follow-up: \u201cWhen a GPS takes you the wrong way, is that the GPS\u2019s fault?\u201d",
         "\u201cGo back to the question from the start \u2014 what can a robot do better than a human, and what can it never do? Has your answer changed?\u201d Point to the answers you wrote at the beginning."
-      ],
-      "conversationStarter": "Try: \u2018Think about the last time autocorrect changed your message to something embarrassing \u2014 was that the phone\u2019s fault?\u2019"
+      ]
     },
     {
       "id": "slide-exercise1",
@@ -428,13 +428,9 @@
       "whatToDo": [
         "Ask 2\u20133 students to read one step from their algorithm aloud.",
         "The class listens and raises a hand if they spot a step that is not precise enough.",
-        "Keep it light \u2014 this isn\u2019t a presentation.",
-        "Ask every student to complete this sentence:"
+        "Ask every student to complete this sentence on the webapp or on paper:"
       ],
-      "exitReflection": "An algorithm needs to be _______ because computers cannot _______.",
-      "exitNote": "Sticky note or verbal \u2014 both fine.",
-      "whatToSay": "After collecting responses or hearing 3\u20134 answers, close with: \u201cNext week we will look at what computers are actually very good at \u2014 spotting patterns \u2014 and how that connects to something you use every day.\u201d",
-      "dashboardNote": "After the lesson \u2014 note on the dashboard: Did students catch themselves writing vague instructions and self-correct? Did the exit sentences go beyond \u2018computers follow instructions\u2019? If yes \u2014 ready for Lesson 2. If not \u2014 briefly revisit the sandwich example in the Lesson 2 warm-up."
+      "whatToSay": "After collecting responses or hearing 3\u20134 answers, close with: \u201cNext week we will look at what computers are actually very good at \u2014 spotting patterns \u2014 and how that connects to something you use every day.\u201d"
     }
   ]
 }

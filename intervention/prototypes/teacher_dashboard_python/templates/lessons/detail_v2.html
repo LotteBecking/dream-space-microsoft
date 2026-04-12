@@ -1,0 +1,1643 @@
+{% extends "base.html" %}
+
+{% block title %}{{ lesson.title }} - Teacher Dashboard{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..900;1,8..60,300..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   DETAIL V2 — "Extreme UX" Accordion Layout
+   ─────────────────────────────────────────────────────────
+   UX principles applied:
+   • Miller's Law        → max 6 top-level sections (5-7 chunks)
+   • Fitts's Law         → click targets ≥ 56px tall, full-width
+   • Progressive Disclosure → only titles visible on load
+   • Zeigarnik Effect    → progress ring + section-explore bar
+   • 3-Click Rule        → any sub-section reachable in ≤3 clicks
+   ═══════════════════════════════════════════════════════════ */
+
+.v2 {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 1rem;       /* 16px base — NNG min for body text */
+  line-height: 1.6;      /* optimal readability for mixed content */
+  /* ── Color system (60-30-10 rule; Wathan & Schoger, Refactoring UI) ──
+     60% — warm neutrals (surfaces, bg, text)
+     30% — purple family (primary accent, accordions, CTAs)
+     10% — semantic highlights (blue=speech, teal=context, amber=tips)
+
+     Warm neutrals: Labrecque & Milne (2012) JAMS —
+     warm-tinted grays increase perceived approachability in educational UI
+
+     Semantic color coding (Itten, 1961; Few, 2004):
+       Purple (#7c3aed) — actions, primary interactive, "what to do"
+       Blue   (#2563eb) — speech, teacher script, "what to say"
+       Teal   (#0d9488) — context: world connections, discussion, starter prompts
+       Amber  (#d97706) — advisory: tips, warnings, attention
+  */
+  --ac: #7c3aed;
+  --ac-rgb: 124,58,237;
+  --ac2: #2563eb;
+  --ac2-rgb: 37,99,235;
+  --ac3: #5b21b6;
+  --teal: #0d9488;
+  --teal-rgb: 13,148,136;
+  --amber: #d97706;
+  --amber-rgb: 217,119,6;
+  --tx: #1c1917;         /* warm black (stone-900) */
+  --mu: #57534e;         /* warm muted (stone-600) — 5.5:1 on white */
+  --sf: #ffffff;
+  --sf2: #fafaf9;        /* warm surface (stone-50) */
+  --bd: #e7e5e4;         /* warm border (stone-300) */
+  --fd: 'Source Serif 4', Georgia, serif;
+  --fm: 'JetBrains Mono', monospace;
+  --radius: 14px;
+  --anim: 0.3s cubic-bezier(.4,0,.2,1);
+  /* ── Modular type scale (1.25 major third) ──
+     xs:    0.75rem  (12px) — labels, badges
+     sm:    0.875rem (14px) — captions, chips, meta
+     base:  1rem     (16px) — body text
+     md:    1.125rem (18px) — sub-headings, say-boxes
+     lg:    1.25rem  (20px) — accordion titles
+     xl:    1.563rem (25px) — section heading
+     2xl:   1.953rem (31px) — hero heading
+  */
+}
+
+.v2, .v2 *, .v2 button, .v2 input, .v2 select { font-family: inherit; }
+
+/* ── Accessibility: focus-visible (WCAG 2.1 §2.4.7) ── */
+.v2 *:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.v2 button:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: 2px;
+}
+
+/* ── Accessibility: reduced motion (WCAG 2.1 §2.3.3) ── */
+@media (prefers-reduced-motion: reduce) {
+  .v2, .v2 *, .v2 *::before, .v2 *::after,
+  #ss-overlay, #ss-overlay *, #ss-overlay *::before {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── back link ── */
+.v2 .back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.875rem; color: var(--mu);
+  text-decoration: none; margin-bottom: 20px;
+  transition: color 0.15s;
+}
+.v2 .back-link:hover { color: var(--ac); }
+
+/* ── hero header ── */
+.v2 .lesson-hero {
+  background: var(--sf);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 0;
+  margin-bottom: 28px;
+  position: relative;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.v2 .lesson-hero::before {
+  content: '';
+  display: block;
+  height: 5px;
+  background: linear-gradient(90deg, var(--ac), var(--ac2), var(--teal));
+}
+
+.v2 .lesson-hero-inner {
+  padding: 28px 32px 24px;
+}
+
+.v2 .lesson-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--fm); font-size: 0.75rem;
+  color: var(--ac);
+  background: rgba(var(--ac-rgb), 0.07);
+  border: 1px solid rgba(var(--ac-rgb), 0.18);
+  padding: 5px 12px; border-radius: 4px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.v2 .lesson-heading {
+  font-family: var(--fd);
+  font-size: 1.953rem; line-height: 1.2;
+  color: var(--tx); letter-spacing: -0.02em;
+  margin: 0 0 6px 0;
+}
+
+.v2 .lesson-desc {
+  font-size: 1rem; color: var(--mu); line-height: 1.6;
+  margin: 0 0 16px 0; max-width: 65ch; /* optimal 45-75 char line length */
+}
+
+.v2 .meta-row {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px;
+}
+
+.v2 .meta-pill {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.875rem; color: var(--mu);
+  background: var(--sf2); border: 1px solid var(--bd);
+  padding: 5px 14px; border-radius: 20px;
+}
+
+.v2 .meta-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+}
+
+.v2 .hero-actions {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+}
+
+.v2 .btn-start {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 26px;
+  background: var(--ac); color: #fff;
+  font-weight: 600; font-size: 1rem;
+  border: none; border-radius: 8px; cursor: pointer;
+  text-decoration: none; white-space: nowrap;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(var(--ac-rgb), 0.28);
+}
+
+.v2 .btn-start:hover {
+  background: var(--ac3); color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(var(--ac-rgb), 0.36);
+}
+
+.v2 .btn-start:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(var(--ac-rgb), 0.2);
+}
+
+.v2 .btn-secondary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 12px 18px;
+  background: var(--sf); color: var(--ac);
+  font-weight: 500; font-size: 0.9375rem;
+  border: 1px solid rgba(var(--ac-rgb), 0.25); border-radius: 8px;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.v2 .btn-secondary:hover { background: rgba(var(--ac-rgb), 0.04); }
+
+.v2 .btn-secondary:active {
+  background: rgba(var(--ac-rgb), 0.08);
+  transform: scale(0.98);
+}
+
+/* ══════════════════════════════════════
+   PROGRESS BAR — Zeigarnik Effect
+   ══════════════════════════════════════ */
+.v2 .progress-strip {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--sf);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.v2 .progress-label {
+  font-family: var(--fm); font-size: 0.75rem;
+  color: var(--mu); letter-spacing: 0.06em;
+  text-transform: uppercase; white-space: nowrap;
+}
+
+.v2 .progress-track {
+  flex: 1; height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px; overflow: hidden;
+}
+
+.v2 .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ac), var(--ac2));
+  border-radius: 3px;
+  transition: width var(--anim);
+  width: 0%;
+}
+
+.v2 .progress-count {
+  font-family: var(--fm); font-size: 0.8125rem;
+  color: var(--ac); font-weight: 600; white-space: nowrap;
+}
+
+/* ══════════════════════════════════════
+   ACCORDION — Progressive Disclosure
+   ══════════════════════════════════════ */
+.v2 .accordion-group {
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+/* Each accordion section */
+.v2 .acc-section {
+  background: var(--sf);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  transition: box-shadow var(--anim), border-color var(--anim);
+}
+
+.v2 .acc-section.open {
+  border-color: rgba(var(--ac-rgb), 0.25);
+  box-shadow: 0 2px 12px rgba(var(--ac-rgb), 0.08);
+}
+
+/* Trigger (Fitts's Law: ≥ 56px, full-width) */
+.v2 .acc-trigger {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%;
+  min-height: 60px;
+  padding: 16px 22px;
+  background: none; border: none; cursor: pointer;
+  text-align: left;
+  transition: background var(--anim);
+  -webkit-user-select: none; user-select: none;
+}
+
+.v2 .acc-trigger:hover { background: rgba(var(--ac-rgb), 0.025); }
+.v2 .acc-trigger:active { background: rgba(var(--ac-rgb), 0.06); }
+.v2 .acc-section.open .acc-trigger { background: rgba(var(--ac-rgb), 0.03); }
+
+.v2 .acc-icon {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  flex-shrink: 0;
+  font-size: 1.05rem;
+  transition: background var(--anim), color var(--anim);
+}
+
+.v2 .acc-section:not(.open) .acc-icon {
+  background: var(--sf2); color: var(--mu);
+}
+.v2 .acc-section.open .acc-icon {
+  background: rgba(var(--ac-rgb), 0.1); color: var(--ac);
+}
+
+/* Per-section accent colors for icon backgrounds (Von Restorff effect) */
+.v2 .acc-section[data-acc="prep"] .acc-icon { color: var(--ac); }
+.v2 .acc-section[data-acc="prep"].open .acc-icon { background: rgba(var(--ac-rgb), 0.12); }
+.v2 .acc-section[data-acc="goals"] .acc-icon { color: var(--ac2); }
+.v2 .acc-section[data-acc="goals"].open .acc-icon { background: rgba(var(--ac2-rgb), 0.10); color: var(--ac2); }
+.v2 .acc-section[data-acc="plan"] .acc-icon { color: var(--teal); }
+.v2 .acc-section[data-acc="plan"].open .acc-icon { background: rgba(var(--teal-rgb), 0.10); color: var(--teal); }
+
+.v2 .acc-title-area { flex: 1; min-width: 0; }
+
+.v2 .acc-title {
+  font-size: 1.125rem; font-weight: 600; color: var(--tx);
+  margin: 0; line-height: 1.3;
+}
+
+.v2 .acc-subtitle {
+  font-size: 0.875rem; color: var(--mu);
+  margin: 3px 0 0 0; line-height: 1.4;
+}
+
+.v2 .acc-badge {
+  font-family: var(--fm); font-size: 0.75rem;
+  color: var(--mu); background: var(--sf2);
+  border: 1px solid var(--bd);
+  padding: 4px 10px; border-radius: 4px;
+  white-space: nowrap;
+}
+
+.v2 .acc-section.open .acc-badge {
+  background: rgba(var(--ac-rgb), 0.06);
+  border-color: rgba(var(--ac-rgb), 0.15);
+  color: var(--ac);
+}
+
+.v2 .acc-chevron {
+  width: 20px; height: 20px; flex-shrink: 0;
+  color: var(--mu);
+  transition: transform var(--anim), color var(--anim);
+}
+
+.v2 .acc-section.open .acc-chevron {
+  transform: rotate(180deg); color: var(--ac);
+}
+
+/* Body — hidden by default */
+.v2 .acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(.4,0,.2,1),
+              padding 0.3s ease;
+  padding: 0 22px;
+}
+
+.v2 .acc-section.open .acc-body {
+  max-height: 4000px;          /* large enough for any content */
+  padding: 0 22px 24px;
+}
+
+.v2 .acc-divider {
+  border: none; border-top: 1px solid var(--bd);
+  margin: 0 0 18px 0;
+}
+
+/* ── inner sub-accordion (for lesson phases) ── */
+.v2 .sub-acc {
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  transition: border-color var(--anim);
+}
+
+.v2 .sub-acc.open { border-color: rgba(var(--ac2-rgb), 0.3); }
+
+.v2 .sub-trigger {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; min-height: 50px;
+  padding: 12px 16px;
+  background: none; border: none; cursor: pointer;
+  text-align: left;
+  transition: background var(--anim);
+}
+
+.v2 .sub-trigger:hover { background: rgba(var(--ac2-rgb), 0.03); }
+.v2 .sub-trigger:active { background: rgba(var(--ac2-rgb), 0.07); }
+.v2 .sub-acc.open .sub-trigger { background: rgba(var(--ac2-rgb), 0.04); }
+
+.v2 .sub-time {
+  font-family: var(--fm); font-size: 0.8125rem;
+  color: var(--ac2); white-space: nowrap; min-width: 88px;
+}
+
+.v2 .sub-label {
+  flex: 1; font-size: 1rem; font-weight: 500; color: var(--tx);
+}
+
+.v2 .sub-chevron {
+  width: 16px; height: 16px; flex-shrink: 0;
+  color: var(--mu);
+  transition: transform var(--anim);
+}
+
+.v2 .sub-acc.open .sub-chevron { transform: rotate(180deg); color: var(--ac2); }
+
+.v2 .sub-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(.4,0,.2,1),
+              padding 0.25s ease;
+  padding: 0 16px;
+}
+
+.v2 .sub-acc.open .sub-body {
+  max-height: 3000px;
+  padding: 0 16px 18px;
+}
+
+/* ── content blocks inside accordions ── */
+.v2 .content-label {
+  font-family: var(--fm); font-size: 0.75rem;
+  color: var(--mu); letter-spacing: 0.08em;
+  text-transform: uppercase; margin: 18px 0 10px 0;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.v2 .content-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--bd);
+}
+
+.v2 .say-box {
+  background: linear-gradient(135deg, rgba(var(--ac2-rgb), 0.06), rgba(var(--ac2-rgb), 0.02));
+  border-left: 4px solid var(--ac2);
+  border-radius: 0 12px 12px 0;
+  padding: 18px 22px;
+  font-size: 1.0625rem; line-height: 1.75;
+  color: var(--tx); font-style: italic;
+  max-width: 65ch;
+  box-shadow: 0 1px 3px rgba(var(--ac2-rgb), 0.06);
+}
+
+.v2 .do-box {
+  background: linear-gradient(135deg, rgba(var(--ac-rgb), 0.05), rgba(var(--ac-rgb), 0.02));
+  border-left: 4px solid var(--ac);
+  border-radius: 0 12px 12px 0;
+  padding: 18px 22px;
+  font-size: 1rem; line-height: 1.65; color: var(--tx);
+  max-width: 65ch;
+  box-shadow: 0 1px 3px rgba(var(--ac-rgb), 0.06);
+}
+
+.v2 .numbered-list {
+  list-style: none; counter-reset: steps;
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 0; margin: 0;
+}
+
+.v2 .numbered-list li {
+  counter-increment: steps;
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 1rem; line-height: 1.65; color: var(--tx);
+}
+
+.v2 .numbered-list li::before {
+  content: counter(steps);
+  display: flex; align-items: center; justify-content: center;
+  min-width: 28px; height: 28px;
+  background: rgba(var(--ac-rgb), 0.07);
+  border: 1px solid rgba(var(--ac-rgb), 0.18);
+  border-radius: 50%;
+  font-family: var(--fm); font-size: 0.75rem; color: var(--ac);
+  flex-shrink: 0; margin-top: 2px;
+}
+
+.v2 .bullet-list {
+  list-style: none; display: flex; flex-direction: column;
+  gap: 8px; padding: 0; margin: 0;
+}
+
+.v2 .bullet-list li {
+  font-size: 1rem; padding-left: 18px;
+  position: relative; line-height: 1.6; color: var(--tx);
+}
+
+.v2 .bullet-list li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(var(--ac-rgb), 0.4);
+}
+
+.v2 .world-chip {
+  background: rgba(var(--teal-rgb), 0.05);
+  border: 1.5px solid rgba(var(--teal-rgb), 0.2);
+  border-radius: 10px; padding: 14px 18px;
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 1rem; line-height: 1.65; color: var(--tx);
+}
+
+.v2 .world-chip svg {
+  flex-shrink: 0; width: 16px; height: 16px;
+  color: var(--teal); margin-top: 2px;
+}
+
+.v2 .rm-moment-box {
+  background: rgba(var(--ac-rgb), 0.04);
+  border-left: 4px solid rgba(var(--ac-rgb), 0.3);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 20px;
+  font-size: 1rem; line-height: 1.65; color: var(--tx);
+  font-style: italic;
+}
+
+.v2 .starter-box {
+  background: rgba(var(--teal-rgb), 0.05);
+  border-left: 4px solid var(--teal);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 20px;
+  font-size: 1rem; line-height: 1.65; color: var(--tx);
+}
+
+.v2 .board-words-box {
+  background: rgba(var(--ac-rgb), 0.03);
+  border: 1.5px solid rgba(var(--ac-rgb), 0.15);
+  border-radius: 10px; padding: 14px 18px; margin-top: 12px;
+}
+
+.v2 .board-words-label {
+  font-family: var(--fm); font-size: 0.75rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ac); margin-bottom: 8px; display: block;
+}
+
+.v2 .board-words-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 5px;
+}
+
+.v2 .board-words-list li {
+  font-family: var(--fm); font-size: 0.9375rem; color: var(--tx); line-height: 1.5;
+}
+
+/* ── vocab inside accordion ── */
+.v2 .vocab-grid {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+
+.v2 .vocab-card {
+  background: var(--sf); border: 1px solid var(--bd);
+  border-radius: 8px; padding: 6px 12px;
+  border-left: 3px solid var(--ac);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  display: flex; align-items: baseline; gap: 6px;
+}
+
+.v2 .vocab-word {
+  font-family: var(--fm); font-size: 0.8125rem;
+  color: var(--ac); font-weight: 600; white-space: nowrap;
+}
+
+.v2 .vocab-def {
+  font-size: 0.8125rem; color: var(--mu); line-height: 1.4;
+}
+
+/* ── SLO box ── */
+.v2 .slo-box {
+  background: var(--sf);
+  border: 1.5px solid rgba(var(--ac2-rgb), 0.18);
+  border-left: 4px solid var(--ac2);
+  border-radius: 12px; padding: 18px 22px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+
+.v2 .slo-domain {
+  font-family: var(--fm); font-size: 0.8125rem;
+  color: var(--ac2); font-weight: 600;
+  letter-spacing: 0.04em; margin-bottom: 6px;
+}
+
+.v2 .slo-detail {
+  font-size: 1rem; color: var(--tx); line-height: 1.65; margin: 0 0 8px 0;
+}
+
+.v2 .slo-why {
+  font-size: 0.9375rem; color: var(--mu); line-height: 1.6; margin: 0;
+  border-top: 1px solid rgba(var(--ac2-rgb), 0.1); padding-top: 8px;
+}
+
+/* ── Role model card ── */
+.v2 .rm-card {
+  background: var(--sf);
+  border: 1px solid rgba(var(--ac-rgb), 0.18);
+  border-radius: 12px; padding: 18px 20px;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+
+.v2 .rm-initials {
+  width: 44px; height: 44px;
+  background: rgba(var(--ac-rgb), 0.07);
+  border: 1px solid rgba(var(--ac-rgb), 0.18);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--fm); font-size: 0.72rem; font-weight: 600;
+  color: var(--ac); flex-shrink: 0;
+}
+
+.v2 .rm-name {
+  font-family: var(--fd); font-size: 1.125rem; color: var(--ac); margin-bottom: 2px;
+}
+
+.v2 .rm-years {
+  font-family: var(--fm); font-size: 0.75rem; color: var(--mu); margin-bottom: 8px;
+}
+
+.v2 .rm-text {
+  font-size: 1rem; line-height: 1.65; color: var(--tx);
+}
+
+/* ── exercise / challenge cards ── */
+.v2 .activity-card {
+  background: var(--sf); border: 1px solid var(--bd);
+  border-radius: 10px; padding: 18px 20px;
+  display: flex; gap: 16px; align-items: flex-start;
+  border-left: 4px solid var(--ac);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.v2 .activity-card:hover {
+  box-shadow: 0 4px 16px rgba(var(--ac-rgb), 0.1);
+  transform: translateY(-1px);
+}
+
+.v2 .activity-card.challenge {
+  background: var(--sf);
+  border-color: rgba(var(--ac2-rgb), 0.18);
+  border-left: 4px solid var(--ac2);
+}
+
+.v2 .activity-card.challenge:hover {
+  box-shadow: 0 4px 16px rgba(var(--ac2-rgb), 0.1);
+}
+
+.v2 .activity-body { flex: 1; }
+
+.v2 .activity-title {
+  font-size: 1.0625rem; font-weight: 600; color: var(--tx); margin: 0 0 5px 0;
+}
+
+.v2 .chip {
+  display: inline-block; font-size: 0.75rem;
+  padding: 3px 8px; border-radius: 4px;
+  font-family: var(--fm); margin-right: 4px;
+  border: 1px solid var(--bd); color: var(--mu);
+}
+
+.v2 .chip-easy   { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+.v2 .chip-medium { background: #fefce8; border-color: #fde68a; color: #a16207; }
+.v2 .chip-hard   { background: #fff7ed; border-color: #fed7aa; color: #b45309; }
+
+.v2 .activity-desc {
+  font-size: 0.9375rem; color: var(--mu); margin-top: 6px; line-height: 1.6;
+}
+
+.v2 .btn-present {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 9px 16px; border-radius: 7px;
+  font-size: 0.875rem; font-weight: 500;
+  white-space: nowrap; text-decoration: none;
+  transition: all 0.15s; flex-shrink: 0;
+}
+
+.v2 .btn-present-ex {
+  background: rgba(var(--ac-rgb), 0.07);
+  border: 1px solid rgba(var(--ac-rgb), 0.18);
+  color: var(--ac);
+}
+.v2 .btn-present-ex:hover { background: rgba(var(--ac-rgb), 0.14); color: var(--ac); }
+.v2 .btn-present-ex:active { background: rgba(var(--ac-rgb), 0.2); transform: scale(0.97); }
+
+.v2 .btn-present-ch {
+  background: rgba(var(--ac2-rgb), 0.07);
+  border: 1px solid rgba(var(--ac2-rgb), 0.18);
+  color: var(--ac2);
+}
+.v2 .btn-present-ch:hover { background: rgba(var(--ac2-rgb), 0.14); color: var(--ac2); }
+.v2 .btn-present-ch:active { background: rgba(var(--ac2-rgb), 0.2); transform: scale(0.97); }
+
+/* ── discussion prompt cards — teal (context/dialogue) ── */
+.v2 .discussion-card {
+  background: linear-gradient(135deg, rgba(var(--teal-rgb), 0.05), rgba(var(--teal-rgb), 0.01));
+  border-left: 3px solid var(--teal);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 20px;
+  font-size: 1rem; line-height: 1.6; color: var(--tx);
+  box-shadow: 0 1px 3px rgba(var(--teal-rgb), 0.06);
+}
+
+/* ── tip cards — amber (advisory) ── */
+.v2 .tip-card {
+  background: linear-gradient(135deg, rgba(var(--amber-rgb), 0.06), rgba(var(--amber-rgb), 0.02));
+  border-left: 3px solid var(--amber);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 20px;
+  font-size: 0.9375rem; line-height: 1.6; color: var(--tx);
+  box-shadow: 0 1px 3px rgba(var(--amber-rgb), 0.06);
+}
+
+/* ── responsive ── */
+@media (max-width: 768px) {
+  .v2 .lesson-hero { padding: 20px 18px 18px; }
+  .v2 .lesson-heading { font-size: 1.563rem; }
+  .v2 .lesson-desc { font-size: 0.9375rem; }
+  .v2 .meta-row { gap: 6px; }
+  .v2 .meta-pill { font-size: 0.8125rem; padding: 4px 10px; }
+  .v2 .hero-actions { flex-direction: column; align-items: stretch; }
+  .v2 .btn-start, .v2 .btn-secondary { justify-content: center; }
+  .v2 .vocab-grid { flex-direction: column; }
+  .v2 .acc-trigger { padding: 14px 16px; gap: 10px; }
+  .v2 .acc-badge { display: none; }  /* declutter on small screens */
+  .v2 .acc-body { padding: 0 16px; }
+  .v2 .acc-section.open .acc-body { padding: 0 16px 20px; }
+  .v2 .sub-trigger { padding: 10px 12px; }
+  .v2 .sub-time { min-width: 60px; font-size: 0.75rem; }
+  .v2 .sub-body { padding: 0 12px; }
+  .v2 .sub-acc.open .sub-body { padding: 0 12px 14px; }
+  .v2 .activity-card { flex-direction: column; gap: 10px; }
+  .v2 .btn-present { align-self: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .v2 .lesson-heading { font-size: 1.35rem; }
+  .v2 .acc-title { font-size: 1rem; }
+  .v2 .acc-icon { width: 34px; height: 34px; font-size: 0.9rem; }
+}
+
+/* ── teacher notes footer (discrete) ── */
+/* moved into lesson plan sub-accordion — no custom styles needed */
+
+/* ═══════════════════════════════════════════════════════════
+   SLIDESHOW OVERLAY (unchanged from v1)
+   ═══════════════════════════════════════════════════════════ */
+#ss-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(250, 251, 255, 0.98);
+  z-index: 9999; flex-direction: column;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  --ac: #7c3aed; --ac-rgb: 124,58,237;
+  --ac2: #2563eb; --ac2-rgb: 37,99,235;
+  --ac3: #5b21b6;
+  --tx: #111827; --mu: #6b7280;
+  --sf: #ffffff; --sf2: #f3f4f6; --bd: #e5e7eb;
+}
+#ss-overlay.active { display: flex; }
+
+.ss-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 24px; border-bottom: 1px solid var(--bd);
+  background: var(--sf); flex-shrink: 0;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.06);
+}
+.ss-phase-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; color: var(--ac);
+  letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+}
+.ss-dots { display: flex; gap: 5px; flex-wrap: wrap; max-width: 360px; justify-content: center; }
+.ss-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #d1d5db; border: none; padding: 0; cursor: pointer;
+  transition: all 0.2s;
+}
+.ss-dot.active { background: var(--ac); transform: scale(1.4); }
+.ss-dot.done   { background: #6ee7b7; }
+.ss-close {
+  background: none; border: 1px solid var(--bd); color: var(--mu);
+  padding: 5px 13px; border-radius: 6px; cursor: pointer;
+  font-size: 0.77rem; font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.15s;
+}
+.ss-close:hover { border-color: #ef4444; color: #ef4444; }
+.ss-progress-bar { flex-shrink: 0; height: 3px; background: #e5e7eb; }
+.ss-progress-fill { height: 100%; background: var(--ac); transition: width 0.3s; }
+.ss-wrapper { flex: 1; overflow-y: auto; padding: 40px 32px; }
+.ss-wrapper::-webkit-scrollbar { width: 5px; }
+.ss-wrapper::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+.ss-inner { max-width: 820px; margin: 0 auto; animation: ssIn 0.25s ease; }
+@keyframes ssIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: translateX(0); } }
+.ss-phase-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.63rem;
+  color: var(--ac2); letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+}
+.ss-phase-tag::before { content: ''; display: inline-block; width: 16px; height: 2px; background: var(--ac2); }
+.ss-title {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 2.1rem; line-height: 1.2; color: var(--tx); margin: 0 0 6px 0;
+}
+.ss-timing { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--mu); margin-bottom: 32px; }
+.ss-section { margin-bottom: 28px; }
+.ss-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  color: var(--mu); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 10px;
+}
+.ss-label::after { content: ''; flex: 1; height: 1px; background: var(--bd); }
+.ss-say-box {
+  background: rgba(var(--ac2-rgb), 0.06); border-left: 4px solid var(--ac2);
+  border-radius: 0 10px 10px 0; padding: 18px 22px;
+  font-size: 1.02rem; line-height: 1.75; color: var(--tx); font-style: italic;
+}
+.ss-do-box {
+  background: rgba(var(--ac-rgb), 0.05); border-left: 4px solid var(--ac);
+  border-radius: 0 10px 10px 0; padding: 16px 22px;
+  font-size: 0.98rem; line-height: 1.7; color: var(--tx);
+}
+.ss-step-list {
+  list-style: none; counter-reset: steps;
+  display: flex; flex-direction: column; gap: 12px; padding: 0; margin: 0;
+}
+.ss-step-list li {
+  counter-increment: steps; display: flex; align-items: flex-start; gap: 14px;
+  font-size: 0.98rem; line-height: 1.65; color: var(--tx);
+}
+.ss-step-list li::before {
+  content: counter(steps); display: flex; align-items: center; justify-content: center;
+  min-width: 28px; height: 28px;
+  background: rgba(var(--ac-rgb), 0.08); border: 1px solid rgba(var(--ac-rgb), 0.2);
+  border-radius: 50%; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; color: var(--ac); flex-shrink: 0; margin-top: 3px;
+}
+.ss-bullet-list {
+  list-style: none; display: flex; flex-direction: column; gap: 10px; padding: 0; margin: 0;
+}
+.ss-bullet-list li {
+  font-size: 0.98rem; padding-left: 20px; position: relative; line-height: 1.65; color: var(--tx);
+}
+.ss-bullet-list li::before {
+  content: '→'; position: absolute; left: 0; top: 1px; color: var(--ac3); font-size: 0.82rem;
+}
+.ss-rm-card {
+  background: var(--sf); border: 1px solid rgba(var(--ac-rgb), 0.2);
+  border-radius: 12px; padding: 18px 22px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.ss-rm-initials {
+  width: 46px; height: 46px;
+  background: rgba(var(--ac-rgb), 0.08); border: 1px solid rgba(var(--ac-rgb), 0.2);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; font-weight: 600; color: var(--ac); flex-shrink: 0;
+}
+.ss-rm-name { font-family: 'Source Serif 4', Georgia, serif; font-size: 1.15rem; color: var(--ac); margin-bottom: 3px; }
+.ss-rm-years { font-family: 'JetBrains Mono', monospace; font-size: 0.67rem; color: var(--mu); margin-bottom: 9px; }
+.ss-rm-text { font-size: 0.95rem; line-height: 1.65; color: var(--tx); }
+.ss-rm-moment-box {
+  background: rgba(124,58,237,0.05); border-left: 4px solid rgba(124,58,237,0.35);
+  border-radius: 0 10px 10px 0; padding: 14px 22px;
+  font-size: 0.95rem; line-height: 1.65; color: var(--tx); font-style: italic;
+}
+.ss-world-chip {
+  background: rgba(13,148,136,0.06); border: 1.5px solid rgba(13,148,136,0.25);
+  border-radius: 10px; padding: 13px 18px;
+  display: flex; align-items: flex-start; gap: 11px;
+  font-size: 0.96rem; line-height: 1.65; color: var(--tx);
+}
+.ss-world-chip-icon { flex-shrink: 0; width: 18px; height: 18px; color: #0d9488; margin-top: 2px; }
+.ss-starter-box {
+  background: rgba(13,148,136,0.06); border-left: 4px solid #0d9488;
+  border-radius: 0 10px 10px 0; padding: 16px 22px;
+  font-size: 0.98rem; line-height: 1.7; color: var(--tx);
+}
+.ss-board-words-box {
+  background: rgba(124,58,237,0.04); border: 1.5px solid rgba(124,58,237,0.18);
+  border-radius: 10px; padding: 14px 20px; margin-top: 14px;
+}
+.ss-board-words-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ac);
+  margin-bottom: 10px; display: block;
+}
+.ss-board-words-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 7px; }
+.ss-board-words-list li { font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; color: var(--tx); line-height: 1.5; }
+.go-exercise-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin: 0 0 28px 0; padding: 14px 28px;
+  background: #2563eb; color: #fff;
+  font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700;
+  border-radius: 10px; text-decoration: none;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.3); transition: all 0.15s;
+}
+.go-exercise-btn:hover { background: #1d4ed8; color: #fff; box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+.webapp-cue {
+  background: #eff6ff; border: 1.5px solid #93c5fd; border-radius: 10px;
+  padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+  margin-bottom: 28px; font-size: 0.97rem; font-weight: 500; color: #1e40af; line-height: 1.5;
+}
+.webapp-cue svg { flex-shrink: 0; }
+.ss-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 26px; border-top: 1px solid var(--bd);
+  background: var(--sf); flex-shrink: 0;
+}
+.ss-btn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 20px; background: var(--sf2);
+  border: 1px solid var(--bd); color: var(--tx);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.84rem; border-radius: 7px; cursor: pointer;
+  transition: all 0.15s;
+}
+.ss-btn:hover:not(:disabled) { border-color: var(--ac2); color: var(--ac2); }
+.ss-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.ss-btn-next {
+  background: var(--ac); border-color: var(--ac); color: #fff; font-weight: 600;
+}
+.ss-btn-next:hover:not(:disabled) { background: var(--ac3); border-color: var(--ac3); color: #fff; }
+.ss-counter { font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--mu); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="v2">
+
+  <!-- Back link -->
+  <a href="/lessons" class="back-link">
+    <i class="fas fa-arrow-left" style="font-size:0.72rem"></i> Back to Lessons
+  </a>
+
+  <!-- ════════════════════════════════════════════
+       HERO HEADER — Always visible, never collapsed
+       ════════════════════════════════════════════ -->
+  <div class="lesson-hero">
+    <div class="lesson-hero-inner">
+    <div class="lesson-tag">
+      <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg>
+      {{ lesson.id | replace('lesson-', 'Lesson ') }} &middot; {{ lesson.level }}
+    </div>
+
+    <h1 class="lesson-heading">{{ lesson.title }}</h1>
+    <p class="lesson-desc">{{ lesson.description }}</p>
+
+    <div class="meta-row">
+      <div class="meta-pill">
+        <div class="meta-dot" style="background:var(--ac)"></div>
+        {{ lesson.ageGroup }}
+      </div>
+      <div class="meta-pill">
+        <div class="meta-dot" style="background:var(--ac2)"></div>
+        {{ lesson.duration }} min
+      </div>
+      {% if lesson.curriculumAlignment %}
+      {% for std in lesson.curriculumAlignment[:2] %}
+      <div class="meta-pill">
+        <div class="meta-dot" style="background:var(--teal)"></div>
+        {{ std }}
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="hero-actions">
+      {% if lesson.lessonSlides %}
+      <button class="btn-start" onclick="openSlideshow(0)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Start {{ lesson.id | replace('lesson-', 'Lesson ') }}
+      </button>
+      {% endif %}
+      <button class="btn-secondary" onclick="openAssignmentModal()">
+        <i class="fas fa-paper-plane" style="font-size:0.78rem"></i> Assign {{ lesson.id | replace('lesson-', 'Lesson ') }} to Class
+      </button>
+    </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       ACCORDION GROUP — Miller's Law: 3 primary chunks
+       Progressive Disclosure: titles only on load
+       Fitts's Law: full-width triggers ≥ 56px
+       3-Click Rule: hero → section → sub-section
+       ════════════════════════════════════════════ -->
+  <div class="accordion-group" id="accordionGroup">
+
+    <!-- ─── 1. PREPARATION & MATERIALS ─── -->
+    <div class="acc-section" data-acc="prep">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <div class="acc-icon"><i class="fas fa-clipboard-list"></i></div>
+        <div class="acc-title-area">
+          <p class="acc-title">Preparation &amp; Materials</p>
+          <p class="acc-subtitle">Vocabulary, materials list, and setup instructions</p>
+        </div>
+        <span class="acc-badge">{{ lesson.vocabulary | length }} terms</span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <hr class="acc-divider">
+
+        {% if lesson.vocabulary %}
+        <div class="content-label">Key Vocabulary — write on board before class</div>
+        <div class="vocab-grid">
+          {% for v in lesson.vocabulary %}
+          <div class="vocab-card">
+            <span class="vocab-word">{{ v.word }}</span>
+            <span class="vocab-def">— {{ v.def }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if lesson.materials %}
+        <div class="content-label" style="margin-top:20px">Materials needed</div>
+        <div style="background:var(--sf);border:1px solid var(--bd);border-left:4px solid var(--amber);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;flex-wrap:wrap;gap:8px">
+          {% for mat in lesson.materials %}
+          <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(var(--amber-rgb),0.06);border:1px solid rgba(var(--amber-rgb),0.15);border-radius:6px;padding:5px 12px;font-size:0.9375rem;color:var(--tx)">
+            <i class="fas fa-check-circle" style="font-size:0.7rem;color:var(--amber)"></i>
+            {{ mat }}
+          </span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if lesson.teacherInstructions and lesson.teacherInstructions.setup %}
+        <div class="content-label" style="margin-top:20px">Setup instructions</div>
+        <div class="do-box">{{ lesson.teacherInstructions.setup }}</div>
+        {% endif %}
+
+        {% if lesson.prerequisites and lesson.prerequisites != 'None' %}
+        <div class="content-label" style="margin-top:20px">Prerequisites</div>
+        <p style="font-size:0.86rem;color:var(--tx);margin:0">{{ lesson.prerequisites }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- ─── 2. LEARNING GOALS & STANDARDS ─── -->
+    <div class="acc-section" data-acc="goals">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <div class="acc-icon"><i class="fas fa-bullseye"></i></div>
+        <div class="acc-title-area">
+          <p class="acc-title">Learning Goals &amp; Standards</p>
+          <p class="acc-subtitle">Objectives, SLO alignment, and curriculum standards</p>
+        </div>
+        <span class="acc-badge">{{ lesson.learningObjectives | length }} objectives</span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <hr class="acc-divider">
+
+        {% if lesson.learningObjectives %}
+        <div class="content-label">Learning objectives</div>
+        <ul class="numbered-list">
+          {% for obj in lesson.learningObjectives %}
+          <li>{{ obj }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if lesson.sloGoals %}
+        <div class="content-label" style="margin-top:20px">SLO Digital Literacy Goals</div>
+        <div class="slo-box">
+          <div class="slo-domain">{{ lesson.sloGoals.domain }}</div>
+          <p class="slo-detail">{{ lesson.sloGoals.detail }}</p>
+          {% if lesson.sloGoals.why %}
+          <p class="slo-why">{{ lesson.sloGoals.why }}</p>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if lesson.curriculumAlignment %}
+        <div class="content-label" style="margin-top:20px">Curriculum alignment</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          {% for std in lesson.curriculumAlignment %}
+          <span class="chip" style="font-size:0.72rem;padding:4px 10px">{{ std }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- ─── 3. LESSON PLAN (sub-accordions for phases + activities) ─── -->
+    <div class="acc-section" data-acc="plan">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <div class="acc-icon"><i class="fas fa-route"></i></div>
+        <div class="acc-title-area">
+          <p class="acc-title">Lesson Plan &amp; Activities</p>
+          <p class="acc-subtitle">Teaching phases, exercises, and challenges</p>
+        </div>
+        {% if lesson.lessonSlides %}
+        <span class="acc-badge">{{ lesson.lessonSlides | length }} phases &middot; {{ (lesson.studentExercises | length) if lesson.studentExercises else 0 }} exercises</span>
+        {% elif lesson.teacherInstructions and lesson.teacherInstructions.steps %}
+        <span class="acc-badge">{{ lesson.teacherInstructions.steps | length }} steps</span>
+        {% endif %}
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <hr class="acc-divider">
+
+        {% if lesson.lessonSlides %}
+        <div style="display:flex;flex-direction:column;gap:6px" id="phaseAccordions">
+          {% for slide in lesson.lessonSlides %}
+          <div class="sub-acc" data-phase="{{ loop.index0 }}">
+            <button class="sub-trigger" onclick="toggleSub(this)">
+              <span class="sub-time">{{ slide.time or '' }}</span>
+              <span class="sub-label">{{ slide.phase }}: {{ slide.title }}</span>
+              <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="sub-body">
+              <hr class="acc-divider" style="margin-top:0">
+
+              {% if slide.whatToSay %}
+              <div class="content-label">Say to the class</div>
+              <div class="say-box">{{ slide.whatToSay }}</div>
+              {% endif %}
+
+              {% if slide.whatToDo and slide.whatToDo | length > 0 %}
+              <div class="content-label">What to do</div>
+              <ul class="numbered-list">
+                {% for step in slide.whatToDo %}
+                <li>{{ step }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+
+              {% if slide.boardWords and slide.boardWords | length > 0 %}
+              <div class="board-words-box">
+                <span class="board-words-label">Words for the board</span>
+                <ul class="board-words-list">
+                  {% for w in slide.boardWords %}
+                  <li>{{ w }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+
+              {% if slide.roleModel %}
+              <div class="content-label">Role model of the day</div>
+              <div class="say-box">{{ slide.roleModel }}</div>
+              {% endif %}
+
+              {% if slide.roleModelHints and slide.roleModelHints | length > 0 %}
+              <div class="content-label">Role model moments</div>
+              <ul class="bullet-list">
+                {% for hint in slide.roleModelHints %}
+                <li>{{ hint }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+
+              {% if slide.roleModelMoment %}
+              <div class="content-label">Role model moment</div>
+              <div class="rm-moment-box">{{ slide.roleModelMoment }}</div>
+              {% endif %}
+
+              {% if slide.realWorldConnection %}
+              <div class="content-label">Real-world connection</div>
+              <div class="world-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>{{ slide.realWorldConnection }}</span>
+              </div>
+              {% endif %}
+
+              {% if slide.rules and slide.rules | length > 0 %}
+              <div class="content-label">Rules for students</div>
+              <ul class="numbered-list">
+                {% for rule in slide.rules %}
+                <li>{{ rule }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+
+              {% if slide.discussionQuestions and slide.discussionQuestions | length > 0 %}
+              <div class="content-label">Discussion — pick one</div>
+              {% for q in slide.discussionQuestions %}
+              <div class="say-box" style="margin-bottom:6px">{{ q }}</div>
+              {% endfor %}
+              {% endif %}
+
+              {% if slide.task %}
+              <div class="content-label">Their task</div>
+              <div class="do-box">{{ slide.task }}</div>
+              {% endif %}
+
+              {% if slide.conceptMoment %}
+              <div class="content-label">Concept moment</div>
+              <div class="do-box">{{ slide.conceptMoment }}</div>
+              {% endif %}
+
+              {% if slide.debrief %}
+              <div class="content-label">Debrief</div>
+              <div class="say-box">{{ slide.debrief }}</div>
+              {% endif %}
+
+              {% if slide.exitReflection %}
+              <div class="content-label">Exit reflection</div>
+              <div class="say-box" style="font-weight:600;font-style:normal;font-size:0.94rem">{{ slide.exitReflection }}</div>
+              {% endif %}
+
+              {% if slide.conversationStarter %}
+              <div class="content-label">If it goes quiet →</div>
+              <div class="starter-box">{{ slide.conversationStarter }}</div>
+              {% endif %}
+
+              {% if slide.exerciseId %}
+              <div style="margin-top:14px">
+                <a href="/lessons/{{ lesson.id }}/exercises/{{ slide.exerciseId }}" target="_blank" class="btn-present btn-present-ex" style="padding:10px 18px;font-size:0.84rem">
+                  <i class="fas fa-display" style="font-size:0.72rem"></i> Open Exercise for Class
+                </a>
+              </div>
+              {% endif %}
+
+              <!-- Jump-to-slideshow link -->
+              {% if lesson.lessonSlides %}
+              <div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--bd)">
+                <button onclick="openSlideshow({{ loop.index0 }})" class="btn-present btn-present-ex" style="background:none;border:1px solid var(--bd);color:var(--mu);font-size:0.76rem;padding:7px 12px">
+                  <i class="fas fa-play" style="font-size:0.62rem"></i> Present from here
+                </button>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        {% elif lesson.teacherInstructions and lesson.teacherInstructions.steps %}
+        <ul class="numbered-list">
+          {% for step in lesson.teacherInstructions.steps %}
+          <li>{{ step }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        <!-- ── Student Activities (merged into Lesson Plan) ── -->
+        {% if lesson.studentExercises or lesson.studentChallenges %}
+        <div style="margin-top:24px;padding-top:18px;border-top:2px solid var(--bd)">
+          <div class="content-label" style="margin-top:0"><i class="fas fa-pencil-alt" style="font-size:0.55rem;margin-right:4px"></i> Student activities</div>
+
+          {% if lesson.studentExercises %}
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+            {% for ex in lesson.studentExercises %}
+            <div class="activity-card">
+              <div class="activity-body">
+                <h3 class="activity-title">{{ ex.title }}</h3>
+                <div style="margin-bottom:4px">
+                  <span class="chip">{{ ex.type }}</span>
+                  <span class="chip chip-{{ ex.difficulty | lower }}">{{ ex.difficulty }}</span>
+                  <span class="chip">{{ ex.durationMinutes }} min</span>
+                  <span class="chip">{{ ex.displayMode }}</span>
+                </div>
+                <p class="activity-desc">{{ ex.description }}</p>
+              </div>
+              <a href="/lessons/{{ lesson.id }}/exercises/{{ ex.id }}" target="_blank" class="btn-present btn-present-ex">
+                <i class="fas fa-display" style="font-size:0.7rem"></i> Present
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          {% if lesson.studentChallenges %}
+          <div class="content-label">Challenges</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            {% for ch in lesson.studentChallenges %}
+            <div class="activity-card challenge">
+              <div class="activity-body">
+                <h3 class="activity-title">{{ ch.title }}</h3>
+                <div style="margin-bottom:4px">
+                  <span class="chip" style="background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8">{{ ch.type }}</span>
+                  <span class="chip chip-{{ ch.difficulty | lower }}">{{ ch.difficulty }}</span>
+                  <span class="chip">{{ ch.durationMinutes }} min</span>
+                  <span class="chip">{{ ch.displayMode }}</span>
+                </div>
+                <p class="activity-desc">{{ ch.description }}</p>
+              </div>
+              <a href="/lessons/{{ lesson.id }}/challenges/{{ ch.id }}" target="_blank" class="btn-present btn-present-ch">
+                <i class="fas fa-trophy" style="font-size:0.7rem"></i> Present
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- ── Teacher Notes & Discussion (sub-accordion inside Lesson Plan) ── -->
+        {% if lesson.teacherGuide or (lesson.teacherInstructions and (lesson.teacherInstructions.discussionPrompts or (lesson.teacherInstructions.tips and lesson.teacherInstructions.tips | length > 0))) or lesson.designFramework %}
+        <div style="margin-top:20px;padding-top:16px;border-top:2px solid var(--bd)">
+          <div class="sub-acc" data-phase="notes">
+            <button class="sub-trigger" onclick="toggleSub(this)">
+              <span class="sub-time" style="color:var(--mu)"><i class="fas fa-chalkboard-teacher" style="font-size:0.75rem"></i></span>
+              <span class="sub-label">Teacher Notes &amp; Discussion</span>
+              <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="sub-body">
+              <hr class="acc-divider" style="margin-top:0">
+
+              {% if lesson.teacherGuide %}
+              <div class="content-label">Teacher guide</div>
+              <div class="do-box">{{ lesson.teacherGuide }}</div>
+              {% endif %}
+
+              {% if lesson.teacherInstructions and lesson.teacherInstructions.discussionPrompts %}
+              <div class="content-label">Discussion prompts</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+                {% for prompt in lesson.teacherInstructions.discussionPrompts %}
+                <div class="discussion-card">{{ prompt }}</div>
+                {% endfor %}
+              </div>
+              {% endif %}
+
+              {% if lesson.teacherInstructions and lesson.teacherInstructions.tips and lesson.teacherInstructions.tips | length > 0 %}
+              <div class="content-label">Teaching tips</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+                {% for tip in lesson.teacherInstructions.tips %}
+                <div class="tip-card">{{ tip }}</div>
+                {% endfor %}
+              </div>
+              {% endif %}
+
+              {% if lesson.designFramework %}
+              <div class="content-label">Design framework</div>
+              <ul class="numbered-list">
+                {% for q in lesson.designFramework %}
+                <li>{{ q }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div><!-- /accordion-group -->
+
+</div><!-- /v2 -->
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDESHOW OVERLAY
+     ═══════════════════════════════════════════════════════════ -->
+{% if lesson.lessonSlides %}
+<div id="ss-overlay">
+  <div class="ss-topbar">
+    <div class="ss-phase-label" id="ss-phase-label"></div>
+    <div class="ss-dots" id="ss-dots"></div>
+    <button class="ss-close" onclick="closeSlideshow()">&times; Close</button>
+  </div>
+  <div class="ss-progress-bar">
+    <div class="ss-progress-fill" id="ss-progress-fill" style="width:0%"></div>
+  </div>
+  <div class="ss-wrapper">
+    <div class="ss-inner" id="ss-content"></div>
+  </div>
+  <div class="ss-nav">
+    <button class="ss-btn" id="ss-btn-prev" onclick="changeSlide(-1)" disabled>&larr; Previous</button>
+    <span class="ss-counter">Slide <span id="ss-num">1</span> / <span id="ss-total"></span></span>
+    <button class="ss-btn ss-btn-next" id="ss-btn-next" onclick="changeSlide(1)">Next &rarr;</button>
+  </div>
+</div>
+{% endif %}
+
+<!-- Assignment Modal -->
+<div id="assignmentModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl">
+    <h2 class="text-xl font-bold text-gray-900 mb-4" style="font-family:'Source Serif 4',serif">Assign Lesson</h2>
+    <p class="text-gray-500 text-sm mb-4">Select which class to assign this lesson to.</p>
+    <form onsubmit="assignLesson(event)">
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Class</label>
+        <select id="classSelect" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400">
+          <option value="">Choose a class...</option>
+          <option value="class-1">Class 4A</option>
+          <option value="class-2">Class 4B</option>
+          <option value="class-3">Class 5A</option>
+        </select>
+      </div>
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+        <input type="date" id="dueDate" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400">
+      </div>
+      <div class="flex gap-3">
+        <button type="button" onclick="closeAssignmentModal()" class="flex-1 px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition">Cancel</button>
+        <button type="submit" class="flex-1 px-4 py-2 text-white rounded-lg text-sm font-medium transition" style="background:#7c3aed">Assign</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+/* ═══════════════════════════════════════════════════════════
+   ACCORDION ENGINE
+   ─────────────────────────────────────────────────────────
+   Animation: 300ms cubic-bezier(.4,0,.2,1)
+   Hover: subtle background tint (affordance cue)
+   Open: border highlight + shadow lift
+   ═══════════════════════════════════════════════════════════ */
+
+function toggleAcc(btn) {
+  const section = btn.closest('.acc-section');
+  section.classList.toggle('open');
+}
+
+function toggleSub(btn) {
+  const sub = btn.closest('.sub-acc');
+  sub.classList.toggle('open');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ASSIGNMENT MODAL
+   ═══════════════════════════════════════════════════════════ */
+function openAssignmentModal() { document.getElementById('assignmentModal').classList.remove('hidden'); }
+function closeAssignmentModal() { document.getElementById('assignmentModal').classList.add('hidden'); }
+function assignLesson(e) {
+  e.preventDefault();
+  const c = document.getElementById('classSelect').value;
+  const d = document.getElementById('dueDate').value;
+  if (!c || !d) { alert('Please fill in all fields'); return; }
+  alert('Lesson assigned to ' + c + ' — due ' + d);
+  closeAssignmentModal();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SLIDESHOW ENGINE (preserved from v1)
+   ═══════════════════════════════════════════════════════════ */
+{% if lesson.lessonSlides %}
+const SLIDES = {{ lesson.lessonSlides | tojson }};
+const LESSON_ID = {{ lesson.id | tojson }};
+let cur = 0;
+
+function buildSlideHTML(s) {
+  const globeSVG = `<svg class="ss-world-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`;
+  const laptopSVG = `<svg style="flex-shrink:0;width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M0 20h24"/></svg>`;
+
+  let h = `
+    <div class="ss-phase-tag">${s.phase}</div>
+    <div class="ss-title">${s.title}</div>
+    ${s.time ? `<div class="ss-timing">${s.time}</div>` : ''}
+    ${s.webappCue ? `<div class="webapp-cue">${laptopSVG}${s.webappCue}</div>` : ''}
+    ${s.exerciseId ? `<a href="/lessons/${LESSON_ID}/exercises/${s.exerciseId}?slide=${cur + 1}" target="_blank" class="go-exercise-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+      Open Exercise for Class
+    </a>` : ''}
+    ${s.alsoNeed ? `<div style="font-size:0.88rem;color:var(--mu);font-style:italic;margin-bottom:18px;padding:8px 14px;background:var(--sf2);border-radius:8px;border:1px solid var(--bd)">You will also need: ${s.alsoNeed}</div>` : ''}
+  `;
+
+  if (s.roleModel) {
+    const rmName = (function(t) { const m = t.match(/^([A-Z][a-zA-Z\s\-\.]+?)\s*\(/); return m ? m[1].trim() : t.split(' ').slice(0, 3).join(' '); })(s.roleModel);
+    const rmYears = (function(t) { const m = t.match(/\(([^)]+)\)/); return m ? m[1] : ''; })(s.roleModel);
+    const rmInitials = rmName.split(' ').filter(w => w.length).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    h += `<div class="ss-section">
+      <div class="ss-label">Role model of the day</div>
+      <div class="ss-rm-card">
+        <div class="ss-rm-initials">${rmInitials}</div>
+        <div>
+          <div class="ss-rm-name">${rmName}</div>
+          ${rmYears ? `<div class="ss-rm-years">${rmYears}</div>` : ''}
+          <div class="ss-rm-text">${s.roleModel}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if (s.roleModelHints && s.roleModelHints.length) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Bring the role model into the lesson</div>
+      <ul class="ss-bullet-list">${s.roleModelHints.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  if (s.whatToDo && s.whatToDo.length) {
+    h += `<div class="ss-section">
+      <div class="ss-label">What to do</div>
+      <ul class="ss-step-list">${s.whatToDo.map(x => `<li>${x}</li>`).join('')}</ul>
+      ${s.boardWords && s.boardWords.length ? `<div class="ss-board-words-box">
+        <span class="ss-board-words-label">Words for the board</span>
+        <ul class="ss-board-words-list">${s.boardWords.map(w => `<li>${w}</li>`).join('')}</ul>
+      </div>` : ''}
+    </div>`;
+  }
+
+  if (s.whatToSay) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Say to the class</div>
+      <div class="ss-say-box">${s.whatToSay}</div>
+    </div>`;
+  }
+
+  if (s.realWorldConnection) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Real world</div>
+      <div class="ss-world-chip">${globeSVG}<span>${s.realWorldConnection}</span></div>
+    </div>`;
+  }
+
+  if (s.debrief) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Debrief</div>
+      <div class="ss-say-box">${s.debrief}</div>
+    </div>`;
+  }
+
+  if (s.rules && s.rules.length) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Rules for students</div>
+      <ul class="ss-step-list">${s.rules.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  if (s.discussionQuestions && s.discussionQuestions.length) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Discussion — pick one</div>
+      ${s.discussionQuestions.map(q => `<div class="ss-say-box" style="margin-bottom:8px">${q}</div>`).join('')}
+    </div>`;
+  }
+
+  if (s.challengeQuestions && s.challengeQuestions.length) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Challenge questions for students</div>
+      <ul class="ss-bullet-list">${s.challengeQuestions.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  if (s.task) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Their task</div>
+      <div class="ss-do-box">${s.task}</div>
+    </div>`;
+  }
+
+  if (s.conceptMoment) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Concept moment</div>
+      <div style="background:rgba(37,99,235,0.06);border:1.5px solid rgba(37,99,235,0.2);border-radius:10px;padding:14px 18px;font-size:0.96rem;line-height:1.65;color:var(--tx)">${s.conceptMoment}</div>
+    </div>`;
+  }
+
+  if (s.discussionClose) {
+    h += `<div class="ss-section">
+      <div class="ss-label">To discuss</div>
+      <div style="background:rgba(5,150,105,0.06);border-left:4px solid #059669;border-radius:0 10px 10px 0;padding:14px 22px;font-size:0.96rem;line-height:1.65;color:var(--tx)">${s.discussionClose}</div>
+    </div>`;
+  }
+
+  if (s.exitReflection) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Exit reflection</div>
+      <div class="ss-say-box" style="font-size:1.05rem;font-weight:600;font-style:normal">${s.exitReflection}</div>
+      ${s.exitNote ? `<div style="font-size:0.82rem;color:var(--mu);font-style:italic;margin-top:6px;padding-left:4px">${s.exitNote}</div>` : ''}
+    </div>`;
+  }
+
+  if (s.roleModelMoment) {
+    h += `<div class="ss-section">
+      <div class="ss-label">Role model moment</div>
+      <div class="ss-rm-moment-box">${s.roleModelMoment}</div>
+    </div>`;
+  }
+
+  if (s.conversationStarter) {
+    h += `<div class="ss-section">
+      <div class="ss-label">If it goes quiet →</div>
+      <div class="ss-starter-box">${s.conversationStarter}</div>
+    </div>`;
+  }
+
+  if (s.note) {
+    h += `<div style="font-size:0.83rem;color:var(--mu);font-style:italic;padding:6px 4px;border-top:1px solid var(--bd);margin-top:8px">${s.note}</div>`;
+  }
+
+  if (s.dashboardNote) {
+    h += `<div class="ss-section">
+      <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;font-size:0.88rem;line-height:1.6;color:var(--mu);margin-top:8px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mu);display:block;margin-bottom:6px">After the lesson</span>
+        ${s.dashboardNote}
+      </div>
+    </div>`;
+  }
+
+  return h;
+}
+
+function buildDots() {
+  const c = document.getElementById('ss-dots');
+  c.innerHTML = '';
+  SLIDES.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'ss-dot' + (i === cur ? ' active' : i < cur ? ' done' : '');
+    d.title = SLIDES[i].phase + ': ' + SLIDES[i].title;
+    d.onclick = () => goTo(i);
+    c.appendChild(d);
+  });
+}
+
+function renderSlide() {
+  const s = SLIDES[cur];
+  document.getElementById('ss-phase-label').textContent = s.phase + ' \u00b7 ' + (cur + 1) + ' of ' + SLIDES.length;
+  document.getElementById('ss-num').textContent = cur + 1;
+  document.getElementById('ss-total').textContent = SLIDES.length;
+  document.getElementById('ss-content').innerHTML = buildSlideHTML(s);
+  document.getElementById('ss-progress-fill').style.width = ((cur + 1) / SLIDES.length * 100) + '%';
+  document.getElementById('ss-btn-prev').disabled = cur === 0;
+  const nextBtn = document.getElementById('ss-btn-next');
+  nextBtn.innerHTML = cur === SLIDES.length - 1 ? '&#127937; End of Lesson' : 'Next &rarr;';
+  buildDots();
+  document.querySelector('.ss-wrapper').scrollTop = 0;
+}
+
+function goTo(index) { cur = index; renderSlide(); }
+
+function openSlideshow(startIndex) {
+  cur = startIndex || 0;
+  document.getElementById('ss-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderSlide();
+}
+
+function closeSlideshow() {
+  document.getElementById('ss-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function changeSlide(dir) {
+  const next = cur + dir;
+  if (next >= SLIDES.length) { closeSlideshow(); return; }
+  if (next < 0) return;
+  goTo(next);
+}
+
+document.addEventListener('keydown', e => {
+  const overlay = document.getElementById('ss-overlay');
+  if (!overlay || !overlay.classList.contains('active')) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+  if (e.key === 'Escape') closeSlideshow();
+});
+
+// Auto-open slideshow at correct slide if ?slide=N in URL
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const slideParam = params.get('slide');
+  if (slideParam !== null) {
+    const idx = parseInt(slideParam, 10);
+    if (!isNaN(idx) && idx >= 0 && idx < SLIDES.length) {
+      openSlideshow(idx);
+    }
+  }
+})();
+{% endif %}
+</script>
+{% endblock %}

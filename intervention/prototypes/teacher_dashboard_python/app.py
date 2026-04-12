@@ -337,7 +337,8 @@ def lesson_detail(lesson_id):
     save_last_lesson(lesson_id)
 
     lesson_detail_data = normalize_lesson_detail(lesson)
-    return render_template('lessons/detail.html', lesson=lesson_detail_data)
+
+    return render_template('lessons/detail_v2.html', lesson=lesson_detail_data)
 
 
 @app.route('/lessons/<lesson_id>/exercises/<exercise_id>')

@@ -118,17 +118,19 @@
             {% set banner_gradient = banner_gradients.get(lesson.id, 'from-purple-400 via-pink-400 to-purple-500') %}
             {% set banner_icon = banner_icons.get(lesson.id, 'fa-graduation-cap') %}
             {% set lesson_cover = lesson_covers.get(lesson.id) %}
-            <div class="bg-white rounded-lg overflow-hidden card-shadow hover:shadow-lg transition">
+            <div class="bg-white rounded-lg overflow-hidden card-shadow hover:shadow-lg transition flex flex-col">
                 {% if lesson_cover %}
-                <div class="h-32 overflow-hidden">
+                <div class="h-32 overflow-hidden relative">
                     <img src="{{ lesson_cover }}" alt="{{ lesson.title }}" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 w-12 h-12 flex items-center justify-center rounded-lg text-white font-bold text-xl shadow-lg" style="background:#7c3aed">{{ lesson.id | replace('lesson-', '') }}</span>
                 </div>
                 {% else %}
-                <div class="bg-gradient-to-r {{ banner_gradient }} h-32 flex items-center justify-center">
+                <div class="bg-gradient-to-r {{ banner_gradient }} h-32 flex items-center justify-center relative">
                     <i class="fas {{ banner_icon }} text-white text-4xl"></i>
+                    <span class="absolute top-2 left-2 w-12 h-12 flex items-center justify-center rounded-lg text-white font-bold text-xl shadow-lg" style="background:#7c3aed">{{ lesson.id | replace('lesson-', '') }}</span>
                 </div>
                 {% endif %}
-                <div class="p-4">
+                <div class="p-4 flex flex-col flex-1">
                     <h3 class="text-lg font-bold text-gray-900">{{ lesson.title }}</h3>
                     <p class="text-sm text-gray-600 mt-2 line-clamp-2">{{ lesson.description }}</p>
                     
@@ -141,7 +143,7 @@
                         </span>
                     </div>
 
-                    <a href="/lessons/{{ lesson.id }}" class="block w-full text-center bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                    <a href="/lessons/{{ lesson.id }}" class="block w-full text-center bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition mt-auto">
                         View Lesson
                     </a>
                 </div>

@@ -242,16 +242,18 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write these six words on the board — leave them visible all lesson:",
+        "Write these six words on the board — leave them visible all lesson.",
+        "Clear whiteboard space — you will need room for interface diagrams and architecture maps.",
+        "Have paper and pencils ready for group work.",
+        "Identify three students you can use for the human function machine demo in Phase 2."
+      ],
+      "boardWords": [
         "Function: a named, reusable block of instructions that takes an input and produces an output",
         "Abstraction: hiding internal complexity so a user only needs to know what goes in and what comes out",
         "Module: an independent, self-contained component of a larger system",
         "Input: the data or information a function receives to do its job",
         "Output: the result a function produces after processing its input",
-        "Black box: a component where you can see what goes in and what comes out, but not how it works inside",
-        "Clear whiteboard space — you will need room for interface diagrams and architecture maps.",
-        "Have paper and pencils ready for group work.",
-        "Identify three students you can use for the human function machine demo in Phase 2."
+        "Black box: a component where you can see what goes in and what comes out, but not how it works inside"
       ]
     },
     {

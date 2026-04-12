@@ -31,17 +31,19 @@
       "colour": "violet",
       "roleModel": "Reshma Saujani (born 1975) is the founder of Girls Who Code, which has taught over 500,000 girls to code across the United States. She started it after noticing that while boys were encouraged to take risks and fail, girls were taught to be perfect — which made them afraid to try coding. Her insight was not technical. It was human: she understood the problem from the user's point of view before designing the solution. That is exactly what design thinking is.",
       "whatToDo": [
-        "Write these five words on the board and leave them visible all lesson:",
-        "Design Thinking: solving problems by starting with the person who has the problem, not the solution",
-        "Empathy: understanding a problem from another person's point of view, not your own",
-        "Prototype: a rough early version used to test ideas before building the real thing",
-        "User: the person who will actually use the product",
-        "Iteration: improving a design based on feedback, then testing again",
+        "Write these five words on the board — leave them visible all lesson.",
         "Write the five design thinking stages on the board with arrows: EMPATHISE → DEFINE → IDEATE → PROTOTYPE → TEST",
         "Put out sticky notes — one per student — for the Phase 1 spark activity.",
         "Have at least 6 sheets of paper per group ready for the prototype sprint."
       ],
-      "tip": "Arrange desks into groups of three before students arrive if possible. The prototype sprint works best when groups are already seated together."
+      "tip": "Arrange desks into groups of three before students arrive if possible. The prototype sprint works best when groups are already seated together.",
+      "boardWords": [
+        "Design Thinking — solving problems by starting with the person who has the problem, not the solution",
+        "Empathy — understanding a problem from another person’s point of view, not your own",
+        "Prototype — a rough early version used to test ideas before building the real thing",
+        "User — the person who will actually use the product",
+        "Iteration — improving a design based on feedback, then testing again"
+      ]
     },
     {
       "id": "slide-phase1",
@@ -265,6 +267,16 @@
   ],
   "title": "Build Something Real - Design Thinking and Your First Prototype",
   "description": "Students integrate all prior concepts to define a real problem, design with empathy, and create a three-screen paper prototype with logic.",
+  "roleModelOfDay": {
+    "name": "Reshma Saujani",
+    "years": "born 1975",
+    "intro": "Founder of Girls Who Code, which has taught over 500,000 girls to code — built after she noticed technology was systematically excluding the people who could benefit most."
+  },
+  "sloGoals": {
+    "domain": "Domain B — Digital Skills (22A, 22B) & Domain C — Digital Society (23A)",
+    "detail": "This lesson targets design thinking and digital creation (22A, 22B): students apply all prior computational concepts to define a real problem, prototype a solution, and test it with users. They practise empathy-driven design and iterative improvement.",
+    "why": "SLO Domain B (22A) requires students to design and create digital products with a purpose. This lesson bridges computational thinking with real-world application — students experience the full design process that underpins every app, game, and system they use."
+  },
   "duration": 60,
   "level": "Beginner",
   "ageGroup": "Groep 5-8 (ages 8-12)",

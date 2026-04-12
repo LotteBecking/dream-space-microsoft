@@ -2,6 +2,16 @@
   "id": "lesson-2",
   "title": "Don't Repeat Yourself - Loops and Efficiency",
   "description": "Students learn what loops are, why they make code efficient, and how to debug looping bugs.",
+  "roleModelOfDay": {
+    "name": "Grace Hopper",
+    "years": "1906–1992",
+    "intro": "Computer scientist and US Navy admiral who helped invent early programming languages — and discovered the first real computer bug (literally a moth stuck in a relay)."
+  },
+  "sloGoals": {
+    "domain": "Domain B — Digital Skills (22B) & Computational Thinking — Iteration",
+    "detail": "This lesson targets iteration and efficiency: students learn that loops allow computers to repeat actions without rewriting instructions. They practise writing loops, identifying when repetition helps, and debugging infinite or incorrect loops.",
+    "why": "SLO digital literacy goals ensure all primary school students develop 21st-century computational skills recognised across the Dutch curriculum. Iteration is a foundational concept that underpins nearly all programming and automation work students will encounter."
+  },
   "duration": 60,
   "level": "Beginner",
   "ageGroup": "Groep 5-8 (ages 8-12)",
@@ -46,9 +56,7 @@
     ]
   },
   "curriculumAlignment": [
-    "SLO Domain B (22B)",
-    "Computational Thinking - Iteration and Efficiency",
-    "Debugging Foundations"
+    "SLO Domain B (22B)"
   ],
   "teacherGuide": "Core message: loops reduce repetition while preserving precision. Students should experience both a working loop and a broken loop physically, then debug with peers. Observe whether students identify the exact source of failure (forever repeat and sequence state mismatch), and whether they can justify fixes clearly.",
   "studentExercises": [
@@ -160,17 +168,19 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write these five words on the board and leave them visible all lesson:",
+        "Write these five words on the board — leave them visible all lesson.",
+        "Clear a space at the front of the room large enough for students to stand and move — you will need this for Phase 2 and Phase 4.",
+        "Have paper and pencils ready for the exercise phase."
+      ],
+      "roleModel": "Grace Hopper (1906–1992) was a computer scientist and US Navy admiral who helped invent one of the first programming languages. She is also the person who found the very first real computer bug — a moth stuck inside a computer causing errors. She taped it into her notebook and wrote 'First actual case of bug being found.' The words bug and debug come directly from her.",
+      "tip": "This lesson builds directly on Lesson 1. Students already know what an algorithm is and why sequence matters. You do not need to re-teach that. Just briefly connect the two when you reach Phase 3.",
+      "boardWords": [
         "Loop — an instruction that repeats a set of steps a certain number of times",
         "Iteration — one single run through the loop",
         "Bug — an error in the code that causes the wrong output",
         "Debug — finding and fixing a bug",
-        "Efficient — doing the most with the least effort",
-        "Clear a space at the front of the room large enough for students to stand and move — you will need this for Phase 2 and Phase 4.",
-        "Have paper and pencils ready for the exercise phase."
-      ],
-      "roleModel": "Grace Hopper (1906–1992) was a computer scientist and US Navy admiral who helped invent one of the first programming languages. She is also the person who found the very first real computer bug — a moth stuck inside a computer causing errors. She taped it into her notebook and wrote 'First actual case of bug being found.' The words bug and debug come directly from her. Today students will debug their first loop, just like she did. Mention this when you introduce the lesson or at any natural moment.",
-      "tip": "This lesson builds directly on Lesson 1. Students already know what an algorithm is and why sequence matters. You do not need to re-teach that. Just briefly connect the two when you reach Phase 3."
+        "Efficient — doing the most with the least effort"
+      ]
     },
     {
       "id": "slide-phase1",
@@ -203,7 +213,7 @@
         "Run it again. Students count the iterations themselves and stop at 5.",
         "After they stop, ask: 'What was different that time? Why did you know when to stop?'"
       ],
-      "whatToSay": "\"That instruction — do this set of steps exactly X number of times — is a loop. The number five is how many iterations you run. One full run through the three steps is one iteration.\"",
+      "whatToSay": "\"That instruction — do this set of steps exactly X number of times — is a loop. The number five is how many iterations you run. One full run through the three steps is one iteration.\"\n\nIf Simon just says 'do it again... do it again... do it again...' — you lose count and don't know when to stop! But if Simon says 'do those 3 steps EXACTLY 5 times' — now you know exactly when you're done. You count: 1, 2, 3, 4, 5... stop! That's a loop.",
       "tip": "Do not skip this activity. Students are literally executing a loop with their bodies. The moment they count iterations and stop at exactly 5 is the moment the concept locks in. It takes only 3 minutes and makes the rest of the lesson much easier.",
       "shyStudentsNote": "If the class is very energetic, have students mime the actions at their seats rather than moving around. The concept lands just as well seated.",
       "roleModelMoment": "Grace Hopper had the same frustration — she built a tool so programmers never had to repeat themselves. She made the shortcut so everyone else could use it."
@@ -239,7 +249,10 @@
         "Give one real-world example for each: Count loop: a washing machine spin cycle — spins exactly 800 times. Until loop: a self-driving car braking — keeps applying brakes until speed reaches zero. Forever loop: your phone screen checking every second whether you have a new notification."
       ],
       "tip": "You do not need to go deep on until loops today. The count loop and the forever loop are enough for this age group. The until loop is introduced here so students have the vocabulary, but the challenge focuses on count loops and debugging a forever loop. Keep it brief and move on.",
-      "realWorldConnection": "Ask students: 'When does a video game loop? When does it stop?' They will usually say the game loops forever while you play, but stops when you turn it off or lose all your lives. That is exactly right — games are forever loops with a stop condition buried inside them."
+      "discussionQuestions": [
+        "When does a video game loop? When does it stop?"
+      ],
+      "debrief": "Example if no one mentions it: a game loops forever while you play, but stops when you turn it off or lose all your lives. Games are forever loops with a stop condition buried inside them."
     },
     {
       "id": "slide-phase4-round1",
@@ -304,8 +317,7 @@
       ],
       "discussionQuestions": [
         "\"In Round 1 the loop worked perfectly. In Round 2 it broke. What was the difference between those two programs?\" Follow-up: \"It was not just the forever loop that broke it — the sequence inside the loop was also wrong. What does that tell us about how loops and sequences work together?\"",
-        "\"Where in real life does something loop forever — and what stops it?\" Follow-up: \"A heartbeat loops forever — what stops it? A washing machine loops — what stops it? A YouTube video autoplays forever — what stops it? Are all forever loops bad, or are some of them useful?\"",
-        "\"Last week we said computers are precise. Today we said they are also efficient. Can something be both precise and efficient at the same time?\" Note: this is the hardest question. For Groep 5–6, use instead: \"If loops make code shorter, why do not programmers just use loops for everything?\""
+        "\"Where in real life does something loop forever — and what stops it?\" Follow-up: \"A heartbeat loops forever — what stops it? A washing machine loops — what stops it? A YouTube video autoplays forever — what stops it? Are all forever loops bad, or are some of them useful?\""
       ],
       "tip": "Question 2 — forever loops in real life — is the most accessible and usually generates the best discussion across all ages. The connection between forever loops and everyday cycles (heartbeats, seasons, school timetables) surprises students and makes the concept feel much bigger than coding."
     },
@@ -315,8 +327,9 @@
       "time": "47 – 55 min",
       "title": "Rewrite It with a Loop",
       "colour": "green",
+      "webappCue": "Digital option: Ask students to open their computers and go to the webapp. The loop rewrite exercise is pre-loaded — students work through it digitally, type their loop version, and submit. Keep the unplugged version below if computers are not available.",
       "whatToDo": [
-        "Write this algorithm on the board — tell students it is a robot brushing someone's hair:",
+        "Unplugged version: Write this algorithm on the board — tell students it is a robot brushing someone's hair:",
         "Move brush from top of head to bottom (written out 10 times, one per line)",
         "Students work individually to rewrite it as one count loop that produces the same result.",
         "Then ask them to write a second, more complex version: brush left side, brush right side, brush back — and loop through all three sections three times each.",
@@ -332,11 +345,11 @@
       "time": "47 – 57 min",
       "title": "Spot the Bug",
       "colour": "green",
+      "webappCue": "Digital option: Students open the webapp and complete the Spot the Bug exercise there. The buggy loops are pre-loaded — students identify the bug and type their fix. Keep the unplugged version below if computers are not available.",
       "whatToDo": [
-        "Present these three buggy loops on the board one at a time. Students work in pairs to find the bug and write a fix.",
-        "Buggy loop 1: LOOP 5 TIMES: Stand up / Sit down / Lie on the floor — Ask: is this a logic bug or a sequence bug? Students should argue their case.",
-        "Buggy loop 2: LOOP FOREVER: Add one sugar to the coffee / Stir — This loop never stops. Students must add a stop condition. Most will suggest LOOP UNTIL coffee tastes sweet enough. Then ask: how does a machine know when coffee tastes sweet enough? That is the hard question — do not resolve it.",
-        "Buggy loop 3: LOOP 3 TIMES: Open fridge / Take out juice / Pour glass — There is no close fridge step. After 3 iterations the fridge has been opened 3 times and never closed. Ask: what is the problem here beyond just being inefficient?"
+        "Present these two buggy loops on the board one at a time. Students work in pairs to find the bug and write a fix.",
+        "Buggy loop 1: LOOP FOREVER: Add one sugar to the coffee / Stir — This loop never stops. Students must add a stop condition. Most will suggest LOOP UNTIL coffee tastes sweet enough. Then ask: how does a machine know when coffee tastes sweet enough? That is the hard question — do not resolve it.",
+        "Buggy loop 2: LOOP 3 TIMES: Open fridge / Take out juice / Pour glass — There is no close fridge step. After 3 iterations the fridge has been opened 3 times and never closed. Ask: what is the problem here beyond just being inefficient?"
       ],
       "tip": "Buggy loop 2 is the hardest and the most interesting. The question of how a machine knows when something is good enough is genuinely difficult and connects directly to AI and sensor-based computing in later weeks. Leave the question open and write it on the board — do not give an answer. The fridge bug introduces the idea of a resource leak without needing to name it.",
       "exerciseId": "exercise-2-2"
@@ -369,11 +382,8 @@
       "colour": "pink",
       "whatToDo": [
         "Ask 2–3 pairs to read their corrected loop from Exercise 1 or their bug fix from Exercise 2.",
-        "After each one, ask the class: 'Would that work? Is it efficient? Is there still a bug hiding in there?'",
-        "Keep it short and warm — this is a light share, not a formal presentation.",
-        "Ask every student — verbally or on a sticky note — to complete this sentence:"
+        "After each one, ask the class: 'Would that work? Is it efficient? Is there still a bug hiding in there?'"
       ],
-      "exitReflection": "\"A loop is useful when _______ and dangerous when _______.\"",
       "whatToSay": "After collecting responses or hearing 3–4 answers, close with: \"Next week we look at how computers make decisions — not just following a sequence and not just repeating, but actually choosing what to do next based on what is happening. And the tool they use for that is something you already understand: if this, then that.\"",
       "watchFor": "Did students identify the bug in Round 2 without being told what to look for? Did they connect the physical impossibility — stuck bent over — to the concept of a loop error? In Exercise 2, did students engage with the sugar loop question: how does a machine know when to stop? Students who wrestle genuinely with that question are showing exactly the kind of critical thinking this program is designed to build. Note which students push back on the idea that machines can sense quality — they are the ones to stretch in Lesson 3."
     }

@@ -295,16 +295,18 @@
       "title": "Get the Room Ready",
       "colour": "indigo",
       "whatToDo": [
-        "Write these six words on the board — leave them visible all lesson:",
+        "Write these six words on the board — leave them visible all lesson.",
+        "Write the spark question on the board: 'Can AI trained on historical data avoid repeating historical mistakes?'",
+        "Prepare the hiring-audit dataset (employees A–E) — either on a handout, on the board, or projected.",
+        "Have paper and pencils ready for group work in Phase 4."
+      ],
+      "boardWords": [
         "AI bias: when an AI system produces unfair outcomes because of flawed data or assumptions",
         "Training data: the dataset a machine learning model learns from — its patterns become the model's patterns",
         "Proxy variable: a seemingly neutral feature that indirectly stands in for a protected characteristic",
         "Algorithmic fairness: ensuring automated decisions do not systematically disadvantage particular groups",
         "Audit: a systematic check of whether a system works as intended and treats people fairly",
-        "Filter bubble: when an algorithm only shows you content it thinks you want, narrowing your world view",
-        "Write the spark question on the board: 'Can AI trained on historical data avoid repeating historical mistakes?'",
-        "Prepare the hiring-audit dataset (employees A–E) — either on a handout, on the board, or projected.",
-        "Have paper and pencils ready for group work in Phase 4."
+        "Filter bubble: when an algorithm only shows you content it thinks you want, narrowing your world view"
       ]
     },
     {
