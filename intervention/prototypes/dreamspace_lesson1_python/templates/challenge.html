@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Challenges -- DreamSpace{% endblock %}
+
+{% block content %}
+<h1 style="font-family:var(--font-silkscreen); font-size:16px; color:var(--color-blue-dark); margin-bottom:4px;">CHALLENGES</h1>
+<p style="font-size:14px; color:var(--color-muted); margin-bottom:16px;">Push your skills further with these bonus challenges.</p>
+
+{% if not progress.all_exercises_done %}
+<!-- Locked state -->
+<div class="ds-card" style="text-align:center; padding:32px 16px; background:var(--color-locked); border-color:#b0bdd0;">
+  <div style="font-size:48px; margin-bottom:12px;">&#128274;</div>
+  <h2 style="font-family:var(--font-silkscreen); font-size:14px; color:var(--color-muted); margin-bottom:8px;">LOCKED</h2>
+  <p style="font-size:14px; color:var(--color-muted);">Complete all 3 exercises to unlock the challenges.</p>
+  <div style="margin-top:16px;">
+    <div class="ds-progress-track" style="max-width:200px; margin:0 auto;">
+      <span class="ds-progress-fill" style="width:{{ progress.progress_percent }}%;"></span>
+    </div>
+    <p style="font-size:12px; color:var(--color-muted); margin-top:6px;">{{ progress.completed_exercises|length }}/3 exercises done</p>
+  </div>
+</div>
+
+<!-- Preview cards (dimmed) -->
+<div style="margin-top:20px; opacity:.5; pointer-events:none;">
+  {% for ch in challenges %}
+  <div class="ds-card-line" style="margin-bottom:12px; position:relative;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+      <span style="font-size:20px;">&#128274;</span>
+      <span class="ds-pixel-chip" style="font-size:10px; padding:4px 8px;">{{ ch.difficulty | upper }}</span>
+    </div>
+    <h3 style="font-size:16px; font-weight:700; color:var(--color-blue-dark);">{{ ch.title }}</h3>
+    <p style="font-size:13px; color:var(--color-muted);">{{ ch.description }}</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<!-- Unlocked -->
+<div class="ds-success-banner" style="margin-bottom:20px;">
+  &#127881; All exercises complete! Challenges are unlocked.
+</div>
+
+{% for ch in challenges %}
+<div class="ds-card" style="margin-bottom:16px;">
+  <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+    <span style="font-size:20px;">&#127942;</span>
+    <span class="ds-pixel-chip" style="font-size:10px; padding:4px 8px;">{{ ch.difficulty | upper }}</span>
+    <span class="ds-pill" style="font-size:11px;">{{ ch.duration_minutes }} min</span>
+  </div>
+  <h3 style="font-size:17px; font-weight:700; color:var(--color-blue-dark); margin-bottom:6px;">{{ ch.title }}</h3>
+  <p style="font-size:14px; color:var(--color-muted); margin-bottom:12px;">{{ ch.description }}</p>
+
+  <details style="cursor:pointer;">
+    <summary style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue); margin-bottom:8px;">INSTRUCTIONS</summary>
+    <ol style="padding-left:20px; margin-top:8px; display:flex; flex-direction:column; gap:6px;">
+      {% for instruction in ch.instructions %}
+      <li style="font-size:13px; line-height:1.4;">{{ instruction }}</li>
+      {% endfor %}
+    </ol>
+  </details>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

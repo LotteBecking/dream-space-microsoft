@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Exercise 1 -- Write the Perfect Algorithm{% endblock %}
+
+{% block content %}
+<div style="display:flex; gap:8px; margin-bottom:6px;">
+  <span class="ds-pixel-chip" style="font-size:10px; padding:5px 10px;">EXERCISE 1</span>
+  <span class="ds-pixel-chip" style="font-size:10px; padding:5px 10px;">{{ exercise.difficulty | upper }}</span>
+</div>
+<h1 style="font-family:var(--font-silkscreen); font-size:16px; color:var(--color-blue-dark); margin-bottom:4px;">{{ exercise.title | upper }}</h1>
+<p style="font-size:14px; color:var(--color-muted); margin-bottom:16px;">{{ exercise.description }}</p>
+
+<!-- Navigation between exercises -->
+<div style="display:flex; gap:8px; margin-bottom:16px;">
+  <span class="ds-btn-secondary" style="opacity:.4; pointer-events:none; font-size:13px;">1</span>
+  <a href="{{ url_for('exercise', num=2) }}" class="ds-btn-secondary" style="font-size:13px;">2</a>
+  <a href="{{ url_for('exercise', num=3) }}" class="ds-btn-secondary" style="font-size:13px;">3</a>
+</div>
+
+{% if success %}
+<div class="ds-success-banner">
+  &#10003; Great algorithm! Exercise 1 complete. Try Exercise 2 next!
+</div>
+<div style="margin-top:12px;">
+  <a href="{{ url_for('exercise', num=2) }}" class="ds-btn-primary">Next: Exercise 2 &#8594;</a>
+</div>
+{% else %}
+
+<!-- Task options -->
+<div class="ds-card" style="margin-bottom:16px;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue-dark); margin-bottom:10px;">CHOOSE YOUR TASK</h2>
+  <div style="display:flex; flex-direction:column; gap:6px;">
+    {% for task in exercise.task_options %}
+    <div style="font-size:14px; display:flex; align-items:center; gap:8px;">
+      <span>&#128204;</span> {{ task }}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Rules -->
+<div class="ds-card-line" style="margin-bottom:16px;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue-dark); margin-bottom:10px;">RULES</h2>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px;">
+    {% for rule in exercise.rules %}
+    <li style="font-size:13px; display:flex; align-items:flex-start; gap:6px;">
+      <span style="color:var(--color-blue);">&#8226;</span> {{ rule }}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% if error %}
+<div style="color:#dd678f; background:#fff0f5; border:2px solid #dd678f; border-radius:16px; padding:12px; margin-bottom:12px; font-weight:600; font-size:14px;">
+  {{ error }}
+</div>
+{% endif %}
+
+<!-- Algorithm form -->
+<form method="post">
+  <div class="ds-card" style="margin-bottom:16px;">
+    <h2 style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue-dark); margin-bottom:12px;">YOUR ALGORITHM</h2>
+    <div id="steps-container" style="display:flex; flex-direction:column; gap:8px;">
+      {% for i in range(1, 9) %}
+      <div class="step-row" style="display:flex; align-items:center; gap:8px;">
+        <span style="font-family:var(--font-silkscreen); font-size:12px; color:var(--color-muted); min-width:22px;">{{ i }}.</span>
+        <input type="text" name="step_{{ i }}" class="step-input" placeholder="Step {{ i }}..." />
+      </div>
+      {% endfor %}
+    </div>
+    <button type="button" id="add-step-btn" style="margin-top:10px; background:none; border:2px dashed var(--color-line); border-radius:14px; padding:8px; width:100%; color:var(--color-muted); font-size:13px; cursor:pointer;">+ Add another step</button>
+  </div>
+  <button type="submit" class="ds-btn-primary">Submit Algorithm &#10003;</button>
+</form>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let stepCount = 8;
+  document.getElementById('add-step-btn').addEventListener('click', function() {
+    stepCount++;
+    const container = document.getElementById('steps-container');
+    const row = document.createElement('div');
+    row.className = 'step-row';
+    row.style.cssText = 'display:flex; align-items:center; gap:8px;';
+    row.innerHTML = '<span style="font-family:var(--font-silkscreen); font-size:12px; color:var(--color-muted); min-width:22px;">' + stepCount + '.</span>' +
+      '<input type="text" name="step_' + stepCount + '" class="step-input" placeholder="Step ' + stepCount + '..." />';
+    container.appendChild(row);
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Exercise 2 -- Sequence Sorting{% endblock %}
+
+{% block content %}
+<div style="display:flex; gap:8px; margin-bottom:6px;">
+  <span class="ds-pixel-chip" style="font-size:10px; padding:5px 10px;">EXERCISE 2</span>
+  <span class="ds-pixel-chip" style="font-size:10px; padding:5px 10px;">{{ exercise.difficulty | upper }}</span>
+</div>
+<h1 style="font-family:var(--font-silkscreen); font-size:16px; color:var(--color-blue-dark); margin-bottom:4px;">{{ exercise.title | upper }}</h1>
+<p style="font-size:14px; color:var(--color-muted); margin-bottom:16px;">{{ exercise.description }}</p>
+
+<!-- Navigation between exercises -->
+<div style="display:flex; gap:8px; margin-bottom:16px;">
+  <a href="{{ url_for('exercise', num=1) }}" class="ds-btn-secondary" style="font-size:13px;">1</a>
+  <span class="ds-btn-secondary" style="opacity:.4; pointer-events:none; font-size:13px;">2</span>
+  <a href="{{ url_for('exercise', num=3) }}" class="ds-btn-secondary" style="font-size:13px;">3</a>
+</div>
+
+{% if success %}
+<div class="ds-success-banner">
+  &#10003; Perfect sequence! Exercise 2 complete. Try Exercise 3 next!
+</div>
+<div style="margin-top:12px;">
+  <a href="{{ url_for('exercise', num=3) }}" class="ds-btn-primary">Next: Exercise 3 &#8594;</a>
+</div>
+{% else %}
+
+{% if error %}
+<div style="color:#dd678f; background:#fff0f5; border:2px solid #dd678f; border-radius:16px; padding:12px; margin-bottom:12px; font-weight:600; font-size:14px;">
+  {{ error }}
+</div>
+{% endif %}
+
+<form method="post" id="sort-form">
+  <div class="ds-card" style="margin-bottom:16px;">
+    <h2 style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue-dark); margin-bottom:12px;">PUT THESE STEPS IN ORDER</h2>
+    <p style="font-size:13px; color:var(--color-muted); margin-bottom:12px;">Use the arrows to move each step up or down until the order is correct.</p>
+
+    <div id="sort-list" style="display:flex; flex-direction:column; gap:8px;">
+      {% for idx in shuffled_indices %}
+      <div class="sort-card" data-index="{{ idx }}">
+        <span style="font-family:var(--font-silkscreen); font-size:14px; color:var(--color-blue); min-width:24px;" class="card-num">{{ loop.index }}.</span>
+        <span style="flex:1; font-size:14px;">{{ tea_steps[idx] }}</span>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <button type="button" class="move-btn" data-dir="up" style="background:none; border:2px solid var(--color-line); border-radius:8px; padding:2px 8px; font-size:14px; cursor:pointer; color:var(--color-blue);">&#9650;</button>
+          <button type="button" class="move-btn" data-dir="down" style="background:none; border:2px solid var(--color-line); border-radius:8px; padding:2px 8px; font-size:14px; cursor:pointer; color:var(--color-blue);">&#9660;</button>
+        </div>
+        <input type="hidden" name="order" value="{{ idx }}" />
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <button type="submit" class="ds-btn-primary">Check Order &#10003;</button>
+</form>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const list = document.getElementById('sort-list');
+  if (list) {
+    list.addEventListener('click', function(e) {
+      const btn = e.target.closest('.move-btn');
+      if (!btn) return;
+      const card = btn.closest('.sort-card');
+      const dir = btn.dataset.dir;
+      if (dir === 'up' && card.previousElementSibling) {
+        list.insertBefore(card, card.previousElementSibling);
+      } else if (dir === 'down' && card.nextElementSibling) {
+        list.insertBefore(card.nextElementSibling, card);
+      }
+      // Update numbering
+      list.querySelectorAll('.sort-card').forEach(function(c, i) {
+        c.querySelector('.card-num').textContent = (i + 1) + '.';
+      });
+    });
+  }
+</script>
+{% endblock %}

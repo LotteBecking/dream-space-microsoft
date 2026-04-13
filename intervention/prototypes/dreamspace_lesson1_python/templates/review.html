@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Review -- DreamSpace{% endblock %}
+
+{% block content %}
+<h1 style="font-family:var(--font-silkscreen); font-size:16px; color:var(--color-blue-dark); margin-bottom:4px;">REVIEW</h1>
+<p style="font-size:14px; color:var(--color-muted); margin-bottom:20px;">Let's review what you learned today.</p>
+
+<!-- Vocabulary Review -->
+<div class="ds-card" style="margin-bottom:20px;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:12px; color:var(--color-blue-dark); margin-bottom:12px;">KEY VOCABULARY</h2>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+    {% for v in vocabulary %}
+    <div class="vocab-card" onclick="this.querySelector('.vocab-card-inner').classList.toggle('flipped')">
+      <div class="vocab-card-inner">
+        <div class="vocab-card-face ds-card" style="background:linear-gradient(135deg,#dff1ff,#e8dfff); border-color:var(--color-blue); padding:12px;">
+          <span style="font-family:var(--font-silkscreen); font-size:13px; color:var(--color-blue-dark);">{{ v.word }}</span>
+          <span style="font-size:10px; color:var(--color-muted); margin-top:2px;">tap to flip</span>
+        </div>
+        <div class="vocab-card-face vocab-card-back ds-card" style="background:#fff; padding:12px;">
+          <span style="font-size:12px; line-height:1.4; text-align:center;">{{ v.definition }}</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Exit Ticket -->
+<div class="ds-card" style="margin-bottom:20px;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:12px; color:var(--color-blue-dark); margin-bottom:8px;">EXIT TICKET</h2>
+  <p style="font-size:14px; line-height:1.6; margin-bottom:12px;">Complete this sentence:</p>
+
+  {% if success %}
+  <div class="ds-success-banner">
+    &#10003; Thanks for your reflection!
+  </div>
+  <p style="font-size:14px; margin-top:12px; line-height:1.6;">
+    "An algorithm needs to be <strong>{{ exit_ticket_1 }}</strong> because computers cannot <strong>{{ exit_ticket_2 }}</strong>."
+  </p>
+  {% else %}
+  <form method="post">
+    <div style="font-size:15px; line-height:2.2;">
+      "An algorithm needs to be
+      <input type="text" name="blank1" class="step-input" style="width:140px; display:inline-block; padding:6px 10px; font-size:14px;" placeholder="________" value="{{ exit_ticket_1 }}" />
+      because computers cannot
+      <input type="text" name="blank2" class="step-input" style="width:140px; display:inline-block; padding:6px 10px; font-size:14px;" placeholder="________" value="{{ exit_ticket_2 }}" />."
+    </div>
+    <button type="submit" class="ds-btn-primary" style="margin-top:12px;">Submit &#10003;</button>
+  </form>
+  {% endif %}
+</div>
+
+<!-- Progress Summary -->
+<div class="ds-card-line" style="margin-bottom:20px;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:12px; color:var(--color-blue-dark); margin-bottom:12px;">YOUR PROGRESS</h2>
+
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+    <div class="ds-progress-track" style="flex:1;">
+      <span class="ds-progress-fill" style="width:{{ progress.progress_percent }}%;"></span>
+    </div>
+    <span style="font-family:var(--font-silkscreen); font-size:12px; color:var(--color-blue-dark);">{{ progress.progress_percent }}%</span>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:8px;">
+    <div style="display:flex; align-items:center; gap:8px; font-size:14px;">
+      <span>&#9999;&#65039;</span>
+      <span>Exercises completed: <strong>{{ progress.completed_exercises|length }}/3</strong></span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; font-size:14px;">
+      <span>&#129302;</span>
+      <span>Simulator: {% if progress.simulator_completed %}<strong style="color:var(--color-green-dark);">Complete!</strong>{% else %}Not yet{% endif %}</span>
+    </div>
+    {% if progress.simulator_confusion_count > 0 %}
+    <div style="display:flex; align-items:center; gap:8px; font-size:14px;">
+      <span>&#128161;</span>
+      <span>Robot confusions: <strong>{{ progress.simulator_confusion_count }}</strong> -- great debugging!</span>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Reset / Back -->
+<div style="display:flex; gap:8px;">
+  <a href="{{ url_for('home') }}" class="ds-btn-secondary" style="flex:1; text-align:center;">Back to Start</a>
+  <form method="post" action="{{ url_for('reset') }}" style="flex:1;">
+    <button type="submit" class="ds-btn-secondary" style="width:100%; color:#dd678f; border-color:#dd678f;">Reset All</button>
+  </form>
+</div>
+{% endblock %}

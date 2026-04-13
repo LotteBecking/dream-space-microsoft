@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}PB&J Simulator -- DreamSpace{% endblock %}
+
+{% block content %}
+<h1 style="font-family:var(--font-silkscreen); font-size:16px; color:var(--color-blue-dark); margin-bottom:4px;">PB&J SANDWICH SIMULATOR</h1>
+<p style="font-size:14px; color:var(--color-muted); margin-bottom:16px;">Type instructions to help the robot make a sandwich. Be precise -- robots follow instructions literally!</p>
+
+<!-- Kitchen Counter -->
+<div class="ds-card" style="margin-bottom:16px;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue-dark); margin-bottom:12px;">KITCHEN COUNTER</h2>
+  <div style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:8px;">
+    <div class="kitchen-item">
+      <span class="item-emoji">{% if state.bread_bag == 'open' %}&#127838;{% else %}&#129384;{% endif %}</span>
+      <span class="item-label">Bread {% if state.bread_bag == 'open' %}(open){% else %}(closed){% endif %}</span>
+    </div>
+    <div class="kitchen-item">
+      <span class="item-emoji">{% if state.pb_jar == 'open' %}&#129371;{% else %}&#127859;{% endif %}</span>
+      <span class="item-label">PB {% if state.pb_jar == 'open' %}(open){% else %}(closed){% endif %}</span>
+    </div>
+    <div class="kitchen-item">
+      <span class="item-emoji">{% if state.jam_jar == 'open' %}&#127827;{% else %}&#127862;{% endif %}</span>
+      <span class="item-label">Jam {% if state.jam_jar == 'open' %}(open){% else %}(closed){% endif %}</span>
+    </div>
+    <div class="kitchen-item">
+      <span class="item-emoji">{% if state.knife_location == 'hand' %}&#9995;&#127860;{% else %}&#127860;{% endif %}</span>
+      <span class="item-label">Knife {% if state.knife_location == 'hand' %}(in hand){% else %}(on counter){% endif %}</span>
+    </div>
+    <div class="kitchen-item">
+      <span class="item-emoji">{% if state.sandwich_complete %}&#129386;{% elif state.bread_slices >= 1 %}&#127838;{% else %}&#127869;{% endif %}</span>
+      <span class="item-label">
+        {% if state.sandwich_complete %}Done!
+        {% elif state.bread_slices >= 1 %}{{ state.bread_slices }} slice{{ 's' if state.bread_slices > 1 }}
+        {% else %}Plate (empty){% endif %}
+      </span>
+    </div>
+  </div>
+
+  <!-- Status checklist -->
+  <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;">
+    <span class="ds-pill" style="{% if state.bread_bag == 'open' %}color:var(--color-green-dark); border-color:var(--color-green-dark);{% endif %}">
+      {% if state.bread_bag == 'open' %}&#10003;{% else %}&#9711;{% endif %} Bread open
+    </span>
+    <span class="ds-pill" style="{% if state.bread_slices >= 2 %}color:var(--color-green-dark); border-color:var(--color-green-dark);{% endif %}">
+      {% if state.bread_slices >= 2 %}&#10003;{% else %}&#9711;{% endif %} 2 slices
+    </span>
+    <span class="ds-pill" style="{% if state.pb_applied %}color:var(--color-green-dark); border-color:var(--color-green-dark);{% endif %}">
+      {% if state.pb_applied %}&#10003;{% else %}&#9711;{% endif %} PB applied
+    </span>
+    <span class="ds-pill" style="{% if state.jam_applied %}color:var(--color-green-dark); border-color:var(--color-green-dark);{% endif %}">
+      {% if state.jam_applied %}&#10003;{% else %}&#9711;{% endif %} Jam applied
+    </span>
+    <span class="ds-pill" style="{% if state.sandwich_complete %}color:var(--color-green-dark); border-color:var(--color-green-dark);{% endif %}">
+      {% if state.sandwich_complete %}&#10003;{% else %}&#9711;{% endif %} Complete
+    </span>
+  </div>
+</div>
+
+<!-- Command list -->
+<div class="ds-card-line" style="margin-bottom:16px;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue-dark); margin-bottom:10px;">YOUR COMMANDS ({{ commands|length }})</h2>
+  {% if commands %}
+  <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
+    {% for cmd in commands %}
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-muted); min-width:22px;">{{ loop.index }}.</span>
+      <span style="flex:1; font-size:14px;">{{ cmd }}</span>
+      <form method="post" style="margin:0;">
+        <input type="hidden" name="action" value="remove" />
+        <input type="hidden" name="index" value="{{ loop.index0 }}" />
+        <button type="submit" style="background:none; border:none; color:#dd678f; font-size:16px; padding:4px;" title="Remove">&#10005;</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="font-size:13px; color:var(--color-muted); margin-bottom:12px;">No commands yet. Add your first instruction below!</p>
+  {% endif %}
+
+  <!-- Add command -->
+  <form method="post" style="display:flex; gap:8px; margin-bottom:10px;">
+    <input type="hidden" name="action" value="add" />
+    <input type="text" name="command" class="step-input" placeholder="e.g. open bread bag" autocomplete="off" style="flex:1;" />
+    <button type="submit" class="ds-btn-secondary" style="white-space:nowrap;">+ Add</button>
+  </form>
+
+  <!-- Run / Reset buttons -->
+  <div style="display:flex; gap:8px;">
+    {% if commands %}
+    <form method="post" style="flex:1;">
+      <input type="hidden" name="action" value="run" />
+      <button type="submit" class="ds-btn-primary" style="font-size:15px; padding:12px;">&#9654; Run All</button>
+    </form>
+    {% endif %}
+    <form method="post">
+      <input type="hidden" name="action" value="reset" />
+      <button type="submit" class="ds-btn-secondary" style="color:#dd678f; border-color:#dd678f;">Reset</button>
+    </form>
+  </div>
+</div>
+
+<!-- Execution Log -->
+{% if log %}
+<div class="ds-card-line" style="margin-bottom:16px;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue-dark); margin-bottom:10px;">EXECUTION LOG</h2>
+  <div style="display:flex; flex-direction:column; gap:8px;">
+    {% for entry in log %}
+    <div class="log-entry {{ entry.type }}">
+      <div style="font-family:var(--font-silkscreen); font-size:10px; margin-bottom:4px; opacity:.7;">STEP {{ loop.index }}: {{ entry.command }}</div>
+      <div>{{ entry.message }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if progress.simulator_confusion_count > 0 %}
+  <div style="margin-top:10px; font-size:13px; color:#7a1f3a;">
+    &#129302; Robot confusions: {{ progress.simulator_confusion_count }}
+  </div>
+  {% endif %}
+
+  {% if state.sandwich_complete %}
+  <div class="ds-success-banner" style="margin-top:12px;">
+    &#127881; Sandwich complete! Great job, programmer! Head to the exercises next.
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}
