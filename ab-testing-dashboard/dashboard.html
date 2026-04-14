@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>A/B Vote Screen</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-rose-50 via-pink-100 to-violet-100 p-4 text-slate-900 sm:p-6">
+	<main class="mx-auto max-w-6xl rounded-3xl border border-white/80 bg-white/80 p-5 shadow-xl backdrop-blur-sm sm:p-8">
+		<div class="mb-4 flex flex-wrap gap-2">
+			<a
+				class="rounded-xl border border-fuchsia-200 bg-fuchsia-50 px-3 py-2 text-sm font-semibold text-fuchsia-700 transition hover:bg-fuchsia-100"
+				href="/results"
+				>View Results Screen</a
+			>
+		</div>
+		<h1 class="text-3xl font-bold tracking-tight text-violet-900 sm:text-4xl">Vote your favorite!</h1>
+		<p class="mt-2 text-sm text-slate-600 sm:text-base">
+			Pick one favorite design and save your vote. Votes are stored in a database.
+		</p>
+
+		<section class="mt-6 grid gap-4 md:grid-cols-3" id="designGrid" aria-label="Design options">
+			<article
+				class="card cursor-pointer rounded-2xl border-2 border-fuchsia-100 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md focus-within:ring-2 focus-within:ring-fuchsia-300"
+				data-design="A"
+				role="button"
+				tabindex="0"
+				aria-pressed="false"
+			>
+				<h2 class="mb-3 text-base font-semibold text-violet-900">Design A</h2>
+				<div class="mx-auto aspect-[9/18] w-full max-w-[260px] overflow-hidden rounded-[30px] border-[3px] border-slate-900 bg-gradient-to-b from-slate-700 to-slate-900 p-[2px]">
+					<div class="relative h-full overflow-hidden rounded-[24px] bg-slate-950">
+						<div class="absolute inset-[6px] rounded-[18px] bg-gradient-to-br from-pink-200 to-rose-200"></div>
+						<div class="absolute left-1/2 top-0 z-20 h-5 w-[50%] -translate-x-1/2 rounded-b-xl bg-black"></div>
+						<div class="relative z-10 flex h-full items-center justify-center px-3 pb-3 pt-10 text-center text-sm font-semibold text-slate-700">
+							<div>
+								Video Placeholder A<br />Phone Preview
+							</div>
+						</div>
+					</div>
+				</div>
+			</article>
+
+			<article
+				class="card cursor-pointer rounded-2xl border-2 border-fuchsia-100 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md focus-within:ring-2 focus-within:ring-fuchsia-300"
+				data-design="B"
+				role="button"
+				tabindex="0"
+				aria-pressed="false"
+			>
+				<h2 class="mb-3 text-base font-semibold text-violet-900">Design B</h2>
+				<div class="mx-auto aspect-[9/18] w-full max-w-[260px] overflow-hidden rounded-[30px] border-[3px] border-slate-900 bg-gradient-to-b from-slate-700 to-slate-900 p-[2px]">
+					<div class="relative h-full overflow-hidden rounded-[24px] bg-slate-950">
+						<div class="absolute inset-[6px] rounded-[18px] bg-gradient-to-br from-violet-200 to-purple-200"></div>
+						<div class="absolute left-1/2 top-0 z-20 h-5 w-[50%] -translate-x-1/2 rounded-b-xl bg-black"></div>
+						<div class="relative z-10 flex h-full items-center justify-center px-3 pb-3 pt-10 text-center text-sm font-semibold text-slate-700">
+							<div>
+								Video Placeholder A<br />Phone Preview
+							</div>
+						</div>
+					</div>
+				</div>
+			</article>
+
+			<article
+				class="card cursor-pointer rounded-2xl border-2 border-fuchsia-100 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md focus-within:ring-2 focus-within:ring-fuchsia-300"
+				data-design="C"
+				role="button"
+				tabindex="0"
+				aria-pressed="false"
+			>
+				<h2 class="mb-3 text-base font-semibold text-violet-900">Design C</h2>
+				<div class="mx-auto aspect-[9/18] w-full max-w-[260px] overflow-hidden rounded-[30px] border-[3px] border-slate-900 bg-gradient-to-b from-slate-700 to-slate-900 p-[2px]">
+					<div class="relative h-full overflow-hidden rounded-[24px] bg-slate-950">
+						<div class="absolute inset-[6px] rounded-[18px] bg-gradient-to-br from-fuchsia-200 to-purple-200"></div>
+						<div class="absolute left-1/2 top-0 z-20 h-5 w-[50%] -translate-x-1/2 rounded-b-xl bg-black"></div>
+						<div class="relative z-10 flex h-full items-center justify-center px-3 pb-3 pt-10 text-center text-sm font-semibold text-slate-700">
+							<div>
+								Video Placeholder A<br />Phone Preview
+							</div>
+						</div>
+					</div>
+				</div>
+			</article>
+		</section>
+
+		<div class="mt-5 flex flex-wrap gap-2">
+			<button
+				id="saveBtn"
+				type="button"
+				class="rounded-xl bg-violet-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-800"
+			>
+				Save Favorite
+			</button>
+		</div>
+
+		<div
+			class="mt-3 flex min-h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-600"
+			id="statusMsg"
+		>
+			No favorite selected yet.
+		</div>
+	</main>
+
+	<script>
+		const cards = Array.from(document.querySelectorAll(".card"));
+		const statusMsg = document.getElementById("statusMsg");
+		const saveBtn = document.getElementById("saveBtn");
+		const selectedCardClasses = [
+			"border-fuchsia-500",
+			"bg-fuchsia-50",
+			"ring-4",
+			"ring-fuchsia-200",
+			"-translate-y-0.5",
+			"shadow-lg"
+		];
+		const neutralStatusClasses = [
+			"border-slate-200",
+			"bg-slate-50",
+			"text-slate-600"
+		];
+		const successStatusClasses = [
+			"border-emerald-200",
+			"bg-emerald-50",
+			"text-emerald-700",
+			"font-semibold"
+		];
+
+		let selectedDesign = null;
+
+		function setStatus(message, isSuccess = false) {
+			statusMsg.textContent = message;
+			statusMsg.classList.remove(...neutralStatusClasses, ...successStatusClasses);
+			statusMsg.classList.add(...(isSuccess ? successStatusClasses : neutralStatusClasses));
+		}
+
+		function highlightSelected(design) {
+			cards.forEach((card) => {
+				const active = card.dataset.design === design;
+				selectedCardClasses.forEach((className) => {
+					card.classList.toggle(className, active);
+				});
+				card.setAttribute("aria-pressed", active ? "true" : "false");
+			});
+			selectedDesign = design || null;
+		}
+
+		function onPick(design) {
+			highlightSelected(design);
+			setStatus(`Picked Design ${design}. Press Save Favorite to store it.`);
+		}
+
+		cards.forEach((card) => {
+			card.addEventListener("click", () => onPick(card.dataset.design));
+			card.addEventListener("keydown", (event) => {
+				if (event.key === "Enter" || event.key === " ") {
+					event.preventDefault();
+					onPick(card.dataset.design);
+				}
+			});
+		});
+
+		saveBtn.addEventListener("click", () => {
+			if (!selectedDesign) {
+				setStatus("Select a design first.");
+				return;
+			}
+
+			fetch("/api/vote", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ design: selectedDesign })
+			})
+				.then(async (response) => {
+					if (!response.ok) {
+						const payload = await response.json().catch(() => ({}));
+						throw new Error(payload.error || "Could not save vote");
+					}
+					setStatus(`Saved your favorite design, please next vote!.`, true);
+				})
+				.catch((error) => {
+					setStatus(error.message);
+				});
+		});
+	</script>
+</body>
+</html>
