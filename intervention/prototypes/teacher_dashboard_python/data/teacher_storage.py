@@ -366,7 +366,15 @@ def verify_user(email, password):
     print(f"DEBUG verify_user: Looking for email '{email.lower()}'")
     print(f"DEBUG verify_user: Available users: {list(users.keys())}")
     
+    # First try direct lookup by email as key (new format)
     user = users.get(email.lower())
+    
+    # If not found, search all users for matching email field (old format keyed by username)
+    if not user:
+        for key, u in users.items():
+            if u.get('email', '').lower() == email.lower():
+                user = u
+                break
     
     if not user:
         print(f"DEBUG verify_user: User not found for '{email.lower()}'")
