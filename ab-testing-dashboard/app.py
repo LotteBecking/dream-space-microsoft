@@ -8,7 +8,7 @@ from flask import Flask, jsonify, render_template, request
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "ab_test.db"
 
-app = Flask(__name__, template_folder=str(BASE_DIR))
+app = Flask(__name__, template_folder=str(BASE_DIR), static_folder=str(BASE_DIR / "static"))
 
 
 def get_db() -> sqlite3.Connection:
