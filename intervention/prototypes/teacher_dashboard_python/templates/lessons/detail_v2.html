@@ -43,11 +43,11 @@
   --teal-rgb: 13,148,136;
   --amber: #d97706;
   --amber-rgb: 217,119,6;
-  --tx: #1c1917;         /* warm black (stone-900) */
-  --mu: #57534e;         /* warm muted (stone-600) — 5.5:1 on white */
+  --tx: #0f0d0c;         /* near-black for max readability */
+  --mu: #44403c;         /* stone-700 — 7.5:1 on white (WCAG AAA) */
   --sf: #ffffff;
-  --sf2: #fafaf9;        /* warm surface (stone-50) */
-  --bd: #e7e5e4;         /* warm border (stone-300) */
+  --sf2: #f5f5f4;        /* stone-100 — slightly more visible surface */
+  --bd: #d6d3d1;         /* stone-300 — stronger border visibility */
   --fd: 'Source Serif 4', Georgia, serif;
   --fm: 'JetBrains Mono', monospace;
   --radius: 14px;
@@ -247,16 +247,16 @@
 /* Each accordion section */
 .v2 .acc-section {
   background: var(--sf);
-  border: 1px solid var(--bd);
+  border: 1.5px solid var(--bd);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   transition: box-shadow var(--anim), border-color var(--anim);
 }
 
 .v2 .acc-section.open {
-  border-color: rgba(var(--ac-rgb), 0.25);
-  box-shadow: 0 2px 12px rgba(var(--ac-rgb), 0.08);
+  border-color: rgba(var(--ac-rgb), 0.4);
+  box-shadow: 0 4px 20px rgba(var(--ac-rgb), 0.12);
 }
 
 /* Trigger (Fitts's Law: ≥ 56px, full-width) */
@@ -302,7 +302,7 @@
 .v2 .acc-title-area { flex: 1; min-width: 0; }
 
 .v2 .acc-title {
-  font-size: 1.125rem; font-weight: 600; color: var(--tx);
+  font-size: 1.2rem; font-weight: 700; color: var(--tx);
   margin: 0; line-height: 1.3;
 }
 
@@ -356,14 +356,19 @@
 
 /* ── inner sub-accordion (for lesson phases) ── */
 .v2 .sub-acc {
-  border: 1px solid var(--bd);
+  border: 1.5px solid var(--bd);
   border-radius: 10px;
   margin-bottom: 6px;
   overflow: hidden;
-  transition: border-color var(--anim);
+  transition: border-color var(--anim), box-shadow var(--anim);
+  background: var(--sf);
 }
 
-.v2 .sub-acc.open { border-color: rgba(var(--ac2-rgb), 0.3); }
+.v2 .sub-acc:hover { border-color: rgba(var(--ac2-rgb), 0.25); }
+.v2 .sub-acc.open {
+  border-color: rgba(var(--ac2-rgb), 0.4);
+  box-shadow: 0 2px 10px rgba(var(--ac2-rgb), 0.08);
+}
 
 .v2 .sub-trigger {
   display: flex; align-items: center; gap: 12px;
@@ -384,7 +389,7 @@
 }
 
 .v2 .sub-label {
-  flex: 1; font-size: 1rem; font-weight: 500; color: var(--tx);
+  flex: 1; font-size: 1rem; font-weight: 600; color: var(--tx);
 }
 
 .v2 .sub-chevron {
@@ -410,8 +415,9 @@
 /* ── content blocks inside accordions ── */
 .v2 .content-label {
   font-family: var(--fm); font-size: 0.75rem;
-  color: var(--mu); letter-spacing: 0.08em;
+  color: var(--ac3); letter-spacing: 0.08em;
   text-transform: uppercase; margin: 18px 0 10px 0;
+  font-weight: 600;
   display: flex; align-items: center; gap: 10px;
 }
 
@@ -420,14 +426,14 @@
 }
 
 .v2 .say-box {
-  background: linear-gradient(135deg, rgba(var(--ac2-rgb), 0.06), rgba(var(--ac2-rgb), 0.02));
+  background: linear-gradient(135deg, rgba(var(--ac2-rgb), 0.08), rgba(var(--ac2-rgb), 0.03));
   border-left: 4px solid var(--ac2);
   border-radius: 0 12px 12px 0;
   padding: 18px 22px;
   font-size: 1.0625rem; line-height: 1.75;
   color: var(--tx); font-style: italic;
   max-width: 65ch;
-  box-shadow: 0 1px 3px rgba(var(--ac2-rgb), 0.06);
+  box-shadow: 0 2px 6px rgba(var(--ac2-rgb), 0.1);
 }
 
 .v2 .do-box {
@@ -1066,16 +1072,16 @@
       </div>
     </div>
 
-    <!-- ─── 3. LESSON PLAN (sub-accordions for phases + activities) ─── -->
+    <!-- ─── 3. LESSON PHASES (Coursera/Udemy-style: title+time only, click to expand) ─── -->
     <div class="acc-section" data-acc="plan">
       <button class="acc-trigger" onclick="toggleAcc(this)">
         <div class="acc-icon"><i class="fas fa-route"></i></div>
         <div class="acc-title-area">
-          <p class="acc-title">Lesson Plan &amp; Activities</p>
-          <p class="acc-subtitle">Teaching phases, exercises, and challenges</p>
+          <p class="acc-title">Lesson Phases</p>
+          <p class="acc-subtitle">Step-by-step teaching timeline</p>
         </div>
         {% if lesson.lessonSlides %}
-        <span class="acc-badge">{{ lesson.lessonSlides | length }} phases &middot; {{ (lesson.studentExercises | length) if lesson.studentExercises else 0 }} exercises</span>
+        <span class="acc-badge">{{ lesson.lessonSlides | length }} phases &middot; {{ lesson.duration or 60 }} min</span>
         {% elif lesson.teacherInstructions and lesson.teacherInstructions.steps %}
         <span class="acc-badge">{{ lesson.teacherInstructions.steps | length }} steps</span>
         {% endif %}
@@ -1085,16 +1091,46 @@
         <hr class="acc-divider">
 
         {% if lesson.lessonSlides %}
+        <!-- Expand/Collapse all (Udemy pattern) -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <p style="font-size:0.78rem;color:var(--mu)">{{ lesson.lessonSlides | length }} phases &middot; click any phase to see details</p>
+          <button onclick="toggleAllSubs()" id="expandAllBtn" style="font-size:0.75rem;color:var(--ac);background:none;border:none;cursor:pointer;font-weight:600;padding:4px 8px">Expand all</button>
+        </div>
+
         <div style="display:flex;flex-direction:column;gap:6px" id="phaseAccordions">
           {% for slide in lesson.lessonSlides %}
           <div class="sub-acc" data-phase="{{ loop.index0 }}">
-            <button class="sub-trigger" onclick="toggleSub(this)">
-              <span class="sub-time">{{ slide.time or '' }}</span>
-              <span class="sub-label">{{ slide.phase }}: {{ slide.title }}</span>
+            <button class="sub-trigger" onclick="toggleSub(this)" style="gap:10px">
+              <span style="font-size:0.72rem;color:var(--ac);width:18px;text-align:center;flex-shrink:0" aria-hidden="true">
+                {% if 'Exercise' in (slide.phase or '') %}<i class="fas fa-pencil-alt"></i>
+                {% elif 'Extension' in (slide.phase or '') %}<i class="fas fa-rocket"></i>
+                {% elif 'Share' in (slide.phase or '') or 'Reflect' in (slide.phase or '') %}<i class="fas fa-share-nodes"></i>
+                {% elif 'Before' in (slide.phase or '') or 'Preparation' in (slide.phase or '') %}<i class="fas fa-clipboard-check"></i>
+                {% elif 'Role Model' in (slide.phase or '') %}<i class="fas fa-user-astronaut"></i>
+                {% elif 'Intro' in (slide.phase or '') %}<i class="fas fa-bullhorn"></i>
+                {% else %}<i class="fas fa-circle-play"></i>
+                {% endif %}
+              </span>
+              <span class="sub-label" style="flex:1">{{ slide.title }}</span>
+              <span class="sub-time" style="font-size:0.72rem;min-width:fit-content">{{ slide.time or '' }}</span>
               <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="sub-body">
               <hr class="acc-divider" style="margin-top:0">
+
+              <!-- Present button at top (Fitts's Law — most-wanted action first) -->
+              <div style="display:flex;gap:8px;margin-bottom:14px">
+                {% if lesson.lessonSlides %}
+                <button onclick="openSlideshow({{ loop.index0 }})" class="btn-present btn-present-ex" style="font-size:0.78rem;padding:8px 14px">
+                  <i class="fas fa-play" style="font-size:0.62rem"></i> Present this phase
+                </button>
+                {% endif %}
+                {% if slide.exerciseId %}
+                <a href="/lessons/{{ lesson.id }}/exercises/{{ slide.exerciseId }}" target="_blank" class="btn-present btn-present-ex" style="font-size:0.78rem;padding:8px 14px">
+                  <i class="fas fa-display" style="font-size:0.62rem"></i> Open Exercise
+                </a>
+                {% endif %}
+              </div>
 
               {% if slide.whatToSay %}
               <div class="content-label">Say to the class</div>
@@ -1124,15 +1160,6 @@
               {% if slide.roleModel %}
               <div class="content-label">Role model of the day</div>
               <div class="say-box">{{ slide.roleModel }}</div>
-              {% endif %}
-
-              {% if slide.roleModelHints and slide.roleModelHints | length > 0 %}
-              <div class="content-label">Role model moments</div>
-              <ul class="bullet-list">
-                {% for hint in slide.roleModelHints %}
-                <li>{{ hint }}</li>
-                {% endfor %}
-              </ul>
               {% endif %}
 
               {% if slide.roleModelMoment %}
@@ -1169,41 +1196,14 @@
               <div class="do-box">{{ slide.task }}</div>
               {% endif %}
 
-              {% if slide.conceptMoment %}
-              <div class="content-label">Concept moment</div>
-              <div class="do-box">{{ slide.conceptMoment }}</div>
-              {% endif %}
-
               {% if slide.debrief %}
               <div class="content-label">Debrief</div>
               <div class="say-box">{{ slide.debrief }}</div>
               {% endif %}
 
-              {% if slide.exitReflection %}
-              <div class="content-label">Exit reflection</div>
-              <div class="say-box" style="font-weight:600;font-style:normal;font-size:0.94rem">{{ slide.exitReflection }}</div>
-              {% endif %}
-
               {% if slide.conversationStarter %}
               <div class="content-label">If it goes quiet →</div>
               <div class="starter-box">{{ slide.conversationStarter }}</div>
-              {% endif %}
-
-              {% if slide.exerciseId %}
-              <div style="margin-top:14px">
-                <a href="/lessons/{{ lesson.id }}/exercises/{{ slide.exerciseId }}" target="_blank" class="btn-present btn-present-ex" style="padding:10px 18px;font-size:0.84rem">
-                  <i class="fas fa-display" style="font-size:0.72rem"></i> Open Exercise for Class
-                </a>
-              </div>
-              {% endif %}
-
-              <!-- Jump-to-slideshow link -->
-              {% if lesson.lessonSlides %}
-              <div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--bd)">
-                <button onclick="openSlideshow({{ loop.index0 }})" class="btn-present btn-present-ex" style="background:none;border:1px solid var(--bd);color:var(--mu);font-size:0.76rem;padding:7px 12px">
-                  <i class="fas fa-play" style="font-size:0.62rem"></i> Present from here
-                </button>
-              </div>
               {% endif %}
             </div>
           </div>
@@ -1217,108 +1217,72 @@
           {% endfor %}
         </ul>
         {% endif %}
+      </div>
+    </div>
 
-        <!-- ── Student Activities (merged into Lesson Plan) ── -->
-        {% if lesson.studentExercises or lesson.studentChallenges %}
-        <div style="margin-top:24px;padding-top:18px;border-top:2px solid var(--bd)">
-          <div class="content-label" style="margin-top:0"><i class="fas fa-pencil-alt" style="font-size:0.55rem;margin-right:4px"></i> Student activities</div>
+    <!-- ─── 4. STUDENT EXERCISES & CHALLENGES (Udemy: own section, zero-click visible cards) ─── -->
+    {% if lesson.studentExercises or lesson.studentChallenges %}
+    <div class="acc-section" data-acc="activities">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <div class="acc-icon"><i class="fas fa-pencil-alt"></i></div>
+        <div class="acc-title-area">
+          <p class="acc-title">Exercises &amp; Challenges</p>
+          <p class="acc-subtitle">Student activities you can present or assign</p>
+        </div>
+        <span class="acc-badge">{{ (lesson.studentExercises | length) if lesson.studentExercises else 0 }} exercises &middot; {{ (lesson.studentChallenges | length) if lesson.studentChallenges else 0 }} challenges</span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <hr class="acc-divider">
 
-          {% if lesson.studentExercises %}
-          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
-            {% for ex in lesson.studentExercises %}
-            <div class="activity-card">
-              <div class="activity-body">
-                <h3 class="activity-title">{{ ex.title }}</h3>
-                <div style="margin-bottom:4px">
-                  <span class="chip">{{ ex.type }}</span>
-                  <span class="chip chip-{{ ex.difficulty | lower }}">{{ ex.difficulty }}</span>
-                  <span class="chip">{{ ex.durationMinutes }} min</span>
-                  <span class="chip">{{ ex.displayMode }}</span>
-                </div>
-                <p class="activity-desc">{{ ex.description }}</p>
+        {% if lesson.studentExercises %}
+        <div class="content-label" style="margin-top:0"><i class="fas fa-pencil-alt" style="font-size:0.55rem;margin-right:4px"></i> Exercises</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+          {% for ex in lesson.studentExercises %}
+          <div class="activity-card">
+            <div class="activity-body">
+              <h3 class="activity-title">{{ ex.title }}</h3>
+              <div style="margin-bottom:4px">
+                <span class="chip">{{ ex.type }}</span>
+                <span class="chip chip-{{ ex.difficulty | lower }}">{{ ex.difficulty }}</span>
+                <span class="chip">{{ ex.durationMinutes }} min</span>
+                <span class="chip">{{ ex.displayMode }}</span>
               </div>
-              <a href="/lessons/{{ lesson.id }}/exercises/{{ ex.id }}" target="_blank" class="btn-present btn-present-ex">
-                <i class="fas fa-display" style="font-size:0.7rem"></i> Present
-              </a>
+              <p class="activity-desc">{{ ex.description }}</p>
             </div>
-            {% endfor %}
+            <a href="/lessons/{{ lesson.id }}/exercises/{{ ex.id }}" target="_blank" class="btn-present btn-present-ex">
+              <i class="fas fa-display" style="font-size:0.7rem"></i> Present
+            </a>
           </div>
-          {% endif %}
-
-          {% if lesson.studentChallenges %}
-          <div class="content-label">Challenges</div>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            {% for ch in lesson.studentChallenges %}
-            <div class="activity-card challenge">
-              <div class="activity-body">
-                <h3 class="activity-title">{{ ch.title }}</h3>
-                <div style="margin-bottom:4px">
-                  <span class="chip" style="background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8">{{ ch.type }}</span>
-                  <span class="chip chip-{{ ch.difficulty | lower }}">{{ ch.difficulty }}</span>
-                  <span class="chip">{{ ch.durationMinutes }} min</span>
-                  <span class="chip">{{ ch.displayMode }}</span>
-                </div>
-                <p class="activity-desc">{{ ch.description }}</p>
-              </div>
-              <a href="/lessons/{{ lesson.id }}/challenges/{{ ch.id }}" target="_blank" class="btn-present btn-present-ch">
-                <i class="fas fa-trophy" style="font-size:0.7rem"></i> Present
-              </a>
-            </div>
-            {% endfor %}
-          </div>
-          {% endif %}
+          {% endfor %}
         </div>
         {% endif %}
 
-        <!-- ── Teacher Notes & Discussion (sub-accordion inside Lesson Plan) ── -->
-        {% if lesson.teacherGuide or (lesson.teacherInstructions and (lesson.teacherInstructions.discussionPrompts or (lesson.teacherInstructions.tips and lesson.teacherInstructions.tips | length > 0))) or lesson.designFramework %}
-        <div style="margin-top:20px;padding-top:16px;border-top:2px solid var(--bd)">
-          <div class="sub-acc" data-phase="notes">
-            <button class="sub-trigger" onclick="toggleSub(this)">
-              <span class="sub-time" style="color:var(--mu)"><i class="fas fa-chalkboard-teacher" style="font-size:0.75rem"></i></span>
-              <span class="sub-label">Teacher Notes &amp; Discussion</span>
-              <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="sub-body">
-              <hr class="acc-divider" style="margin-top:0">
-
-              {% if lesson.teacherGuide %}
-              <div class="content-label">Teacher guide</div>
-              <div class="do-box">{{ lesson.teacherGuide }}</div>
-              {% endif %}
-
-              {% if lesson.teacherInstructions and lesson.teacherInstructions.discussionPrompts %}
-              <div class="content-label">Discussion prompts</div>
-              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
-                {% for prompt in lesson.teacherInstructions.discussionPrompts %}
-                <div class="discussion-card">{{ prompt }}</div>
-                {% endfor %}
+        {% if lesson.studentChallenges %}
+        <div class="content-label">Challenges</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          {% for ch in lesson.studentChallenges %}
+          <div class="activity-card challenge">
+            <div class="activity-body">
+              <h3 class="activity-title">{{ ch.title }}</h3>
+              <div style="margin-bottom:4px">
+                <span class="chip" style="background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8">{{ ch.type }}</span>
+                <span class="chip chip-{{ ch.difficulty | lower }}">{{ ch.difficulty }}</span>
+                <span class="chip">{{ ch.durationMinutes }} min</span>
+                <span class="chip">{{ ch.displayMode }}</span>
               </div>
-              {% endif %}
-
-              {% if lesson.teacherInstructions and lesson.teacherInstructions.tips and lesson.teacherInstructions.tips | length > 0 %}
-              <div class="content-label">Teaching tips</div>
-              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
-                {% for tip in lesson.teacherInstructions.tips %}
-                <div class="tip-card">{{ tip }}</div>
-                {% endfor %}
-              </div>
-              {% endif %}
-
-              {% if lesson.designFramework %}
-              <div class="content-label">Design framework</div>
-              <ul class="numbered-list">
-                {% for q in lesson.designFramework %}
-                <li>{{ q }}</li>
-                {% endfor %}
-              </ul>
-              {% endif %}
+              <p class="activity-desc">{{ ch.description }}</p>
             </div>
+            <a href="/lessons/{{ lesson.id }}/challenges/{{ ch.id }}" target="_blank" class="btn-present btn-present-ch">
+              <i class="fas fa-trophy" style="font-size:0.7rem"></i> Present
+            </a>
           </div>
+          {% endfor %}
         </div>
         {% endif %}
       </div>
     </div>
+    {% endif %}
 
   </div><!-- /accordion-group -->
 
@@ -1401,7 +1365,13 @@ function toggleSub(btn) {
 /* ═══════════════════════════════════════════════════════════
    ASSIGNMENT MODAL
    ═══════════════════════════════════════════════════════════ */
-function openAssignmentModal() { document.getElementById('assignmentModal').classList.remove('hidden'); }
+function openAssignmentModal() {
+  {% if not session.get('user_username') %}
+    window.location.href = '/register';
+    return;
+  {% endif %}
+  document.getElementById('assignmentModal').classList.remove('hidden');
+}
 function closeAssignmentModal() { document.getElementById('assignmentModal').classList.add('hidden'); }
 function assignLesson(e) {
   e.preventDefault();
@@ -1410,6 +1380,17 @@ function assignLesson(e) {
   if (!c || !d) { alert('Please fill in all fields'); return; }
   alert('Lesson assigned to ' + c + ' — due ' + d);
   closeAssignmentModal();
+}
+
+/* Expand/Collapse all phases (Udemy pattern) */
+function toggleAllSubs() {
+  var box = document.getElementById('phaseAccordions');
+  if (!box) return;
+  var subs = box.querySelectorAll('.sub-acc');
+  var btn = document.getElementById('expandAllBtn');
+  var anyOpen = Array.from(subs).some(function(s){ return s.classList.contains('open'); });
+  subs.forEach(function(s){ anyOpen ? s.classList.remove('open') : s.classList.add('open'); });
+  if (btn) btn.textContent = anyOpen ? 'Expand all' : 'Collapse all';
 }
 
 /* ═══════════════════════════════════════════════════════════

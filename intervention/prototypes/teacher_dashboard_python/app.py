@@ -274,8 +274,6 @@ def home():
 @app.route('/lessons')
 def lesson_library():
     """Lesson library page"""
-    if 'user_username' not in session:
-        return redirect(url_for('home'))
     
     search_query = request.args.get('search', '').strip().lower()
     selected_track = request.args.get('track', 'all').strip().lower()
@@ -325,8 +323,6 @@ def lesson_library():
 @app.route('/lessons/<lesson_id>')
 def lesson_detail(lesson_id):
     """Single lesson detail page"""
-    if 'user_username' not in session:
-        return redirect(url_for('home'))
     
     lesson = next((l for l in lessons if l['id'] == lesson_id), None)
     
@@ -403,8 +399,6 @@ def lesson_challenge_present(lesson_id, challenge_id):
 @app.route('/classes')
 def class_overview():
     """Class management overview"""
-    if 'user_username' not in session:
-        return redirect(url_for('home'))
     
     classes = get_classes()
     return render_template('classes/overview.html', classes=classes)
@@ -412,8 +406,6 @@ def class_overview():
 @app.route('/students')
 def student_list():
     """Student list and filters"""
-    if 'user_username' not in session:
-        return redirect(url_for('home'))
     
     class_id = request.args.get('class')
     students = get_students()
@@ -431,8 +423,6 @@ def student_list():
 @app.route('/students/<student_id>')
 def student_profile(student_id):
     """Detailed student progress page"""
-    if 'user_username' not in session:
-        return redirect(url_for('home'))
     
     students = get_students()
     student = next((s for s in students if s['id'] == student_id), None)
@@ -445,8 +435,6 @@ def student_profile(student_id):
 @app.route('/settings')
 def profile():
     """Teacher profile settings"""
-    if 'user_username' not in session:
-        return redirect(url_for('home'))
 
     stored_profile = get_teacher_profile() or {}
     username = session.get('user_username', '')

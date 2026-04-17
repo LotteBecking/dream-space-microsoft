@@ -1,9 +1,12 @@
 {% extends "base.html" %}
+{% from "_macros.html" import breadcrumbs, empty_state, help_tip %}
 
-{% block title %}Lesson Library - Teacher Dashboard{% endblock %}
+{% block title %}Lesson Library - DreamSpace{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
+    {{ breadcrumbs([('Dashboard', '/'), ('Lessons', None)]) }}
+
     <!-- Header -->
     <div>
         <h1 class="text-3xl font-bold text-gray-900">Lesson Library</h1>
@@ -12,7 +15,11 @@
 
     <!-- Track Filters -->
     <div class="bg-white rounded-lg p-4 card-shadow">
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap items-center gap-2">
+            <span class="text-sm font-medium text-gray-700 mr-2">
+                Filter by track
+                {{ help_tip('Tracks group lessons by school level so you can quickly find age-appropriate content.') }}
+            </span>
             <a href="/lessons?track=all{% if search_query %}&search={{ search_query|urlencode }}{% endif %}"
                class="px-4 py-2 rounded-lg text-sm font-medium transition {% if selected_track == 'all' %}bg-purple-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
                 All Lessons
@@ -150,16 +157,22 @@
             </div>
             {% endfor %}
         {% else %}
-            <div class="col-span-3 text-center py-12">
-                <i class="fas fa-book text-4xl text-gray-300 mb-4"></i>
+            <div class="col-span-3">
                 {% if selected_track == 'tv' and not search_query %}
-                <p class="text-gray-600">DreamSpace TV lessons are coming soon.</p>
+                    {{ empty_state('DreamSpace TV lessons coming soon',
+                                   'We are actively curating video-based lessons. Check back shortly or explore other tracks in the meantime.',
+                                   'fa-tv',
+                                   'Browse all lessons', '/lessons?track=all') }}
                 {% elif search_query %}
-                <p class="text-gray-600">No lessons found matching "{{ search_query }}"</p>
-                <a href="/lessons?track={{ selected_track or 'all' }}" class="text-purple-600 hover:text-purple-700 mt-4 inline-block">Clear search</a>
+                    {{ empty_state('No lessons match “' ~ search_query ~ '”',
+                                   'Try a different keyword or clear the search to see every lesson in this track.',
+                                   'fa-magnifying-glass',
+                                   'Clear search', '/lessons?track=' ~ (selected_track or 'all')) }}
                 {% else %}
-                <p class="text-gray-600">No lessons available in this filter yet.</p>
-                <a href="/lessons?track=all" class="text-purple-600 hover:text-purple-700 mt-4 inline-block">Show all lessons</a>
+                    {{ empty_state('No lessons in this filter yet',
+                                   'This track has no published lessons. Switch to another track to keep exploring.',
+                                   'fa-book',
+                                   'Show all lessons', '/lessons?track=all') }}
                 {% endif %}
             </div>
         {% endif %}

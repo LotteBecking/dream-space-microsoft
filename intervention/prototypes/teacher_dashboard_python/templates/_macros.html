@@ -1,0 +1,91 @@
+{#
+  Reusable UI macros for the Teacher Dashboard.
+  Import once at the top of any template:
+
+      {% from "_macros.html" import breadcrumbs, empty_state, help_tip, confirm_button %}
+
+  Backed by Nielsen's 10 Usability Heuristics (1994/2024) and WCAG 2.2.
+#}
+
+{# ── Breadcrumbs (Nielsen #1 visibility, #3 user control) ────────────── #}
+{#  trail = list of (label, href) tuples. Last item should have href=None. #}
+{% macro breadcrumbs(trail) %}
+<nav aria-label="Breadcrumb" class="mb-4">
+  <ol class="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+    {% for label, href in trail %}
+      <li class="flex items-center gap-2">
+        {% if href and not loop.last %}
+          <a href="{{ href }}" class="hover:text-purple-600 underline-offset-2 hover:underline">{{ label }}</a>
+          <i class="fas fa-chevron-right text-xs text-gray-400" aria-hidden="true"></i>
+        {% else %}
+          <span class="text-gray-900 font-medium" aria-current="page">{{ label }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+</nav>
+{% endmacro %}
+
+{# ── Empty state (Nielsen #9 help users recover from errors / no results) #}
+{% macro empty_state(title, message='', icon='fa-inbox', action_label=None, action_href=None) %}
+<div class="flex flex-col items-center justify-center text-center bg-white border border-dashed border-gray-300 rounded-xl py-12 px-6">
+  <div class="w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center mb-4">
+    <i class="fas {{ icon }} text-2xl text-purple-600" aria-hidden="true"></i>
+  </div>
+  <h3 class="text-lg font-semibold text-gray-900">{{ title }}</h3>
+  {% if message %}<p class="mt-1 text-sm text-gray-600 max-w-md">{{ message }}</p>{% endif %}
+  {% if action_label and action_href %}
+    <a href="{{ action_href }}"
+       class="mt-5 inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+      <i class="fas fa-arrow-right" aria-hidden="true"></i> {{ action_label }}
+    </a>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# ── Help tooltip (Nielsen #10 help and documentation, in context) ───── #}
+{% macro help_tip(text) %}
+<span class="inline-flex items-center group relative align-middle ml-1">
+  <i class="fas fa-circle-question text-gray-400 text-xs cursor-help"
+     tabindex="0" role="img" aria-label="Help: {{ text }}"></i>
+  <span class="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2
+               w-56 px-3 py-2 rounded-md bg-gray-900 text-white text-xs leading-snug
+               opacity-0 group-hover:opacity-100 group-focus-within:opacity-100
+               transition z-50 shadow-lg">{{ text }}</span>
+</span>
+{% endmacro %}
+
+{# ── Confirm button (Nielsen #5 error prevention) ────────────────────── #}
+{#  Wraps any destructive action in a confirm() dialog. Use as:
+       {{ confirm_button('/classes/1/delete', 'Delete class', 'This cannot be undone.') }}
+#}
+{% macro confirm_button(href, label, message='Are you sure? This cannot be undone.', icon='fa-trash', method='post') %}
+<form action="{{ href }}" method="{{ method }}" class="inline"
+      onsubmit="return confirm({{ message|tojson }});">
+  <button type="submit"
+          class="inline-flex items-center gap-2 px-3 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition text-sm font-medium">
+    <i class="fas {{ icon }}" aria-hidden="true"></i> {{ label }}
+  </button>
+</form>
+{% endmacro %}
+
+{# ── Stat card (dashboard metric) ────────────────────────────────────── #}
+{% macro stat_card(label, value, icon='fa-chart-line', trend=None, trend_label=None) %}
+<div class="bg-white border border-gray-200 rounded-xl p-5 card-shadow">
+  <div class="flex items-center justify-between">
+    <p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">{{ label }}</p>
+    <div class="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center">
+      <i class="fas {{ icon }} text-purple-600" aria-hidden="true"></i>
+    </div>
+  </div>
+  <p class="mt-3 text-3xl font-bold text-gray-900">{{ value }}</p>
+  {% if trend is not none %}
+    {% set tcol = 'text-green-600' if trend >= 0 else 'text-red-600' %}
+    {% set tico = 'fa-arrow-up' if trend >= 0 else 'fa-arrow-down' %}
+    <p class="mt-2 text-xs {{ tcol }} flex items-center gap-1">
+      <i class="fas {{ tico }}" aria-hidden="true"></i>
+      <span>{{ trend }}%{% if trend_label %} {{ trend_label }}{% endif %}</span>
+    </p>
+  {% endif %}
+</div>
+{% endmacro %}

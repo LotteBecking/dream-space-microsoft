@@ -1,4 +1,5 @@
 """DreamSpace Lesson 1 -- Flask web app for students (ages 8-12)."""
+from __future__ import annotations
 
 from flask import (
     Flask, render_template, request, session, redirect, url_for, jsonify,

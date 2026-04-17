@@ -200,6 +200,10 @@ const authHeaders = token ? { 'Content-Type': 'application/json', 'Authorization
 /* ── Add Class ──────────────────────────────────── */
 
 function openAddClassModal() {
+    {% if not session.get('user_username') %}
+    window.location.href = '/register';
+    return;
+    {% endif %}
     document.getElementById('addClassModal').classList.remove('hidden');
     document.getElementById('className').value = '';
     document.getElementById('addClassError').classList.add('hidden');

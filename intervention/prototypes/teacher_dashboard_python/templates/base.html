@@ -23,7 +23,7 @@
     <style>
         body, body * { font-family: 'Space Grotesk', system-ui, sans-serif; }
         .gradient-text {
-            background: linear-gradient(to right, #9333ea, #ec4899);
+            background: linear-gradient(135deg, #7c3aed, #db2777);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -31,55 +31,128 @@
         .card-shadow {
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         }
+        /* WCAG 2.4.1 skip link — hidden until focused */
+        .skip-link {
+            position: absolute; left: -999px; top: 0;
+            background: #7c3aed; color: #fff;
+            padding: 10px 16px; z-index: 1000;
+            border-radius: 0 0 8px 0; font-weight: 600;
+        }
+        .skip-link:focus { left: 0; }
+        /* Global visible focus ring (WCAG 2.4.7) */
+        a:focus-visible, button:focus-visible,
+        input:focus-visible, select:focus-visible, textarea:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid #7c3aed;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+        /* Toast entry animation */
+        @keyframes toast-in {
+            from { transform: translateY(-8px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+        .toast { animation: toast-in 0.25s ease-out; }
     </style>
     {% block head %}{% endblock %}
 </head>
 <body class="bg-gray-50">
+    <!-- Skip to content (Nielsen #3 User Control, WCAG 2.4.1) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Navigation -->
-    <nav class="bg-white border-b border-gray-200 card-shadow">
+    <nav class="bg-white border-b border-gray-200 card-shadow" aria-label="Primary">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-20">
                 <div class="flex items-center">
-                    <a href="/" class="flex items-center">
-                        <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
-                            TD
+                    <a href="/" class="flex items-center" aria-label="DreamSpace — Dashboard home">
+                        <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg" aria-hidden="true">
+                            DS
                         </div>
-                        <span class="ml-3 text-lg font-bold text-gray-900">Teacher Dashboard</span>
+                        <span class="ml-3 text-xl font-bold text-gray-900">Teacher Dashboard</span>
                     </a>
                 </div>
-                <div class="flex items-center space-x-6">
-                    <a href="/" class="nav-link {% if request.path == '/' %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4">
-                        <i class="fas fa-home mr-1"></i> Dashboard
+                <!-- Desktop nav -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="nav-link text-base font-semibold {% if request.path == '/' %}text-purple-700 border-b-2 border-purple-600{% else %}text-gray-700 hover:text-gray-900{% endif %} pb-5"
+                       {% if request.path == '/' %}aria-current="page"{% endif %}>
+                        <i class="fas fa-home mr-1.5" aria-hidden="true"></i> Dashboard
                     </a>
-                    <a href="/lessons" class="nav-link {% if request.path.startswith('/lessons') %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4">
-                        <i class="fas fa-book mr-1"></i> Lessons
+                    <a href="/lessons" class="nav-link text-base font-semibold {% if request.path.startswith('/lessons') %}text-purple-700 border-b-2 border-purple-600{% else %}text-gray-700 hover:text-gray-900{% endif %} pb-5"
+                       {% if request.path.startswith('/lessons') %}aria-current="page"{% endif %}>
+                        <i class="fas fa-book mr-1.5" aria-hidden="true"></i> Lessons
                     </a>
-                    <a href="/classes" class="nav-link {% if request.path == '/classes' %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4">
-                        <i class="fas fa-users mr-1"></i> Classes
-                    </a>
-                    <a href="/students" class="nav-link {% if request.path.startswith('/students') %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4">
-                        <i class="fas fa-user-graduate mr-1"></i> Students
+                    <a href="/classes" class="nav-link text-base font-semibold {% if request.path == '/classes' %}text-purple-700 border-b-2 border-purple-600{% else %}text-gray-700 hover:text-gray-900{% endif %} pb-5"
+                       {% if request.path == '/classes' %}aria-current="page"{% endif %}>
+                        <i class="fas fa-users mr-1.5" aria-hidden="true"></i> Classes
                     </a>
                     {% if session.get('user_username') %}
-                    <a href="/settings" class="nav-link {% if request.path == '/settings' %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4 flex items-center space-x-2">
-                        <i class="fas fa-user-circle text-lg"></i>
-                        <span class="text-sm font-medium">{{ session['user_username'] }} </span>
+                    <a href="/settings" class="nav-link text-base font-semibold {% if request.path == '/settings' %}text-purple-700 border-b-2 border-purple-600{% else %}text-gray-700 hover:text-gray-900{% endif %} pb-5">
+                        <i class="fas fa-user-circle mr-1.5" aria-hidden="true"></i> {{ session['user_username'] }}
+                    </a>
+                    <a href="/logout" class="nav-link text-base font-semibold text-gray-700 hover:text-gray-900 pb-5">
+                        <i class="fas fa-sign-out-alt mr-1.5" aria-hidden="true"></i> Logout
                     </a>
                     {% else %}
-                    <a href="/settings" class="nav-link {% if request.path == '/settings' %}text-purple-600 border-b-2 border-purple-600{% else %}text-gray-600 hover:text-gray-900{% endif %} pb-4">
-                        <i class="fas fa-user-circle mr-1"></i> My Account
+                    <a href="/register" class="nav-link text-base font-bold text-purple-700 hover:text-purple-800 pb-5">
+                        <i class="fas fa-right-to-bracket mr-1.5" aria-hidden="true"></i> Log in
                     </a>
                     {% endif %}
-                    <a href="/logout" class="nav-link text-gray-600 hover:text-gray-900 pb-4">
-                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
-                    </a>
                 </div>
+                <!-- Mobile hamburger (responsive nav — Nielsen #4 consistency with platform conventions) -->
+                <button id="mobile-nav-toggle" class="md:hidden text-gray-600 hover:text-gray-900 px-2"
+                        aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+                    <i class="fas fa-bars text-xl" aria-hidden="true"></i>
+                </button>
+            </div>
+            <!-- Mobile nav panel -->
+            <div id="mobile-nav" class="md:hidden hidden pb-4 space-y-1" role="menu">
+                <a href="/" role="menuitem" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"><i class="fas fa-home mr-2" aria-hidden="true"></i>Dashboard</a>
+                <a href="/lessons" role="menuitem" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"><i class="fas fa-book mr-2" aria-hidden="true"></i>Lessons</a>
+                <a href="/classes" role="menuitem" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"><i class="fas fa-users mr-2" aria-hidden="true"></i>Classes</a>
+                <a href="/settings" role="menuitem" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"><i class="fas fa-user-circle mr-2" aria-hidden="true"></i>My Account</a>
+                {% if session.get('user_username') %}
+                <a href="/logout" role="menuitem" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"><i class="fas fa-sign-out-alt mr-2" aria-hidden="true"></i>Logout</a>
+                {% else %}
+                <a href="/register" role="menuitem" class="block px-3 py-2 rounded-lg text-purple-600 font-medium hover:bg-purple-50"><i class="fas fa-right-to-bracket mr-2" aria-hidden="true"></i>Log in</a>
+                {% endif %}
             </div>
         </div>
     </nav>
 
+    <!-- Flash messages (Nielsen #1 Visibility of System Status + #9 Error Recovery) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div id="flash-region" role="status" aria-live="polite"
+             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 space-y-2">
+            {% for category, message in messages %}
+            {% set styles = {
+                'success': 'bg-green-50 border-green-200 text-green-800',
+                'error':   'bg-red-50 border-red-200 text-red-800',
+                'warning': 'bg-amber-50 border-amber-200 text-amber-800',
+                'info':    'bg-blue-50 border-blue-200 text-blue-800'
+            } %}
+            {% set icons = {
+                'success': 'fa-circle-check',
+                'error':   'fa-circle-exclamation',
+                'warning': 'fa-triangle-exclamation',
+                'info':    'fa-circle-info'
+            } %}
+            <div class="toast flex items-start gap-3 border rounded-lg px-4 py-3 {{ styles.get(category, styles['info']) }}">
+                <i class="fas {{ icons.get(category, icons['info']) }} mt-0.5" aria-hidden="true"></i>
+                <p class="flex-1 text-sm font-medium">{{ message }}</p>
+                <button type="button" class="text-current opacity-60 hover:opacity-100"
+                        aria-label="Dismiss notification" onclick="this.parentElement.remove()">
+                    <i class="fas fa-xmark" aria-hidden="true"></i>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" tabindex="-1">
         {% block content %}{% endblock %}
     </main>
 
@@ -87,11 +160,32 @@
     <footer class="bg-white border-t border-gray-200 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <p class="text-center text-gray-600 text-sm">
-                &copy; 2026 CSSci - Dream Space @ Microsoft.
+                &copy; 2026 CSSci &middot; Dream Space @ Microsoft.
             </p>
         </div>
     </footer>
 
     {% block scripts %}{% endblock %}
+    <script>
+        // Mobile nav toggle (keyboard + click accessible)
+        (function () {
+            var btn = document.getElementById('mobile-nav-toggle');
+            var panel = document.getElementById('mobile-nav');
+            if (!btn || !panel) return;
+            btn.addEventListener('click', function () {
+                var isOpen = panel.classList.toggle('hidden') === false;
+                btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                btn.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+            });
+        })();
+        // Auto-dismiss flash toasts after 6s (accessible — user can dismiss earlier with the X)
+        setTimeout(function () {
+            document.querySelectorAll('#flash-region .toast').forEach(function (el) {
+                el.style.transition = 'opacity 0.4s';
+                el.style.opacity = '0';
+                setTimeout(function () { el.remove(); }, 400);
+            });
+        }, 6000);
+    </script>
 </body>
 </html>
