@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}Rewards &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{{ stepper('recap', progress) }}
+
+<div style="margin-top: 28px;"></div>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <span class="eyebrow">Rewards</span>
+    <h1 class="display-xl" style="margin-top:6px;">Nice work today.</h1>
+  </div>
+</div>
+
+{% if progress.all_exercises_done %}
+<div style="margin-bottom:24px;">
+  {{ callout('success', 'Lesson 1 complete.', 'All missions done') }}
+</div>
+{% endif %}
+
+<div class="grid-2" style="margin-bottom:32px;">
+  <div class="stack">
+    <!-- Vocabulary review -->
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('book-open') }}</span>
+          <h2 class="title-lg">Vocabulary</h2>
+        </div>
+        <div class="vocab-grid">
+          {% for v in vocabulary %}
+          <div class="vocab-card" onclick="this.querySelector('.vocab-card-inner').classList.toggle('flipped')" tabindex="0"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.querySelector('.vocab-card-inner').classList.toggle('flipped')}">
+            <div class="vocab-card-inner">
+              <div class="vocab-card-face vocab-card-face-front">
+                <span class="vocab-word">{{ v.word }}</span>
+                <span class="vocab-flip-hint">{{ icon('refresh') }} Tap to flip</span>
+              </div>
+              <div class="vocab-card-face vocab-card-face-back">
+                <span class="vocab-definition">{{ v.definition }}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Exit ticket -->
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('send') }}</span>
+          <h2 class="title-lg">Exit ticket</h2>
+        </div>
+
+        {% if success %}
+          {{ callout('success', 'Saved.', 'Exit ticket submitted') }}
+          <p class="body-lg" style="margin-top:16px; padding:16px; background:var(--color-surface-muted); border-radius:var(--radius-input);">
+            "An algorithm needs to be <strong>{{ exit_ticket_1 }}</strong> because computers cannot <strong>{{ exit_ticket_2 }}</strong>."
+          </p>
+        {% else %}
+          <form method="post">
+            <div class="body-lg" style="line-height:2.4; margin-bottom:16px;">
+              "An algorithm needs to be
+              <input type="text" name="blank1" class="input" style="width:160px; display:inline-block; padding:6px 12px;" placeholder="_______" value="{{ exit_ticket_1 }}" />
+              because computers cannot
+              <input type="text" name="blank2" class="input" style="width:160px; display:inline-block; padding:6px 12px;" placeholder="_______" value="{{ exit_ticket_2 }}" />."
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <span>Submit</span>{{ icon('check') }}
+            </button>
+          </form>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- Extensions -->
+    <section class="card" id="extensions">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon" style="background:var(--color-highlight-soft); color:var(--color-highlight-ink);">{{ icon('trophy') }}</span>
+          <h2 class="title-lg">Extensions</h2>
+          <span class="chip chip-highlight" style="margin-left:auto;">Optional</span>
+        </div>
+
+        {% if not progress.all_exercises_done %}
+          <div class="panel-muted" style="text-align:center; padding:28px;">
+            <div style="color:var(--color-text-subtle); margin-bottom:10px;">{{ icon('lock') }}</div>
+            <p class="caption">{{ progress.completed_exercises|length }}/3 missions done</p>
+            <div style="max-width:280px; margin:12px auto 0;">
+              <div class="progress"><span class="progress-fill" style="width:{{ progress.progress_percent }}%;"></span></div>
+            </div>
+          </div>
+        {% else %}
+          <div class="stack-sm">
+            {% for ch in challenges %}
+            <details class="card" style="box-shadow:none; border-color:var(--color-border-subtle);">
+              <summary style="padding:14px 18px; display:flex; align-items:center; gap:12px; cursor:pointer; list-style:none;">
+                <span style="width:32px; height:32px; border-radius:10px; background:var(--color-highlight-soft); color:var(--color-highlight-ink); display:grid; place-items:center; flex-shrink:0;">
+                  {{ icon('trophy') }}
+                </span>
+                <span style="flex:1;">
+                  <span class="title-md" style="display:block;">{{ ch.title }}</span>
+                  <span class="caption">{{ ch.description }}</span>
+                </span>
+                <span class="chip {% if ch.difficulty == 'Hard' %}chip-highlight{% else %}chip-muted{% endif %}">{{ ch.difficulty }}</span>
+                <span class="chip">{{ icon('clock') }}{{ ch.duration_minutes }} min</span>
+              </summary>
+              <div style="padding:14px 18px 18px 62px; border-top:1px solid var(--color-border-subtle);">
+                <ol class="stack-sm" style="list-style:none;">
+                  {% for instruction in ch.instructions %}
+                  <li style="display:flex; gap:10px; align-items:flex-start;">
+                    <span style="width:22px; height:22px; border-radius:999px; background:var(--color-primary-soft); color:var(--color-primary-ink); font-size:12px; font-weight:600; display:grid; place-items:center; flex-shrink:0;">{{ loop.index }}</span>
+                    <span class="body">{{ instruction }}</span>
+                  </li>
+                  {% endfor %}
+                </ol>
+              </div>
+            </details>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  </div>
+
+  <!-- Right: progress + beaver + actions -->
+  <div class="stack">
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('target') }}</span>
+          <h2 class="title-lg">Progress</h2>
+        </div>
+        <div style="margin-bottom:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">
+            <span class="caption">Lesson 1</span>
+            <span class="title-md">{{ progress.progress_percent }}%</span>
+          </div>
+          <div class="progress">
+            <span class="progress-fill {% if progress.all_exercises_done %}is-complete{% endif %}" style="width:{{ progress.progress_percent }}%;"></span>
+          </div>
+        </div>
+        <ul class="stack-sm" style="list-style:none;">
+          <li class="row-tight" style="justify-content:space-between;">
+            <span class="row-tight" style="gap:8px;">{{ icon('list-checks') }}<span class="body">Missions</span></span>
+            <span class="caption"><strong style="color:var(--color-text);">{{ progress.completed_exercises|length }}/3</strong></span>
+          </li>
+          <li class="row-tight" style="justify-content:space-between;">
+            <span class="row-tight" style="gap:8px;">{{ icon('terminal') }}<span class="body">Lab</span></span>
+            <span class="caption">
+              {% if progress.simulator_completed %}<strong style="color:var(--color-success-ink);">Done</strong>
+              {% else %}Not yet{% endif %}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <aside class="hint-card" style="position:static;">
+      <div style="display:flex; gap:16px; align-items:center;">
+        <div style="flex:1;">
+          <div class="eyebrow" style="margin-bottom:8px;">{% if progress.all_exercises_done %}Nice work!{% else %}Keep going{% endif %}</div>
+          <h3 class="title-lg">
+            {% if progress.all_exercises_done %}All missions complete.{% else %}Almost there.{% endif %}
+          </h3>
+        </div>
+        <div style="flex-shrink:0;">{{ space_beaver(120) }}</div>
+      </div>
+    </aside>
+
+    <div class="card" style="padding:18px 24px;">
+      <div class="stack-sm">
+        <a href="{{ url_for('home') }}" class="btn btn-secondary btn-block">
+          {{ icon('home') }}<span>Home</span>
+        </a>
+        <form method="post" action="{{ url_for('reset') }}" style="margin:0;">
+          <button type="submit" class="btn btn-ghost btn-block">{{ icon('refresh') }}<span>Reset progress</span></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

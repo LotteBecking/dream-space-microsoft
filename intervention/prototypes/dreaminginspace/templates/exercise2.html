@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Mission 2 &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{{ stepper('ex2', progress) }}
+
+<div style="margin-top: 28px;"></div>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <div class="row-tight">
+      <span class="chip chip-primary">Mission 2 of 3</span>
+      <span class="chip">{{ icon('clock') }}{{ exercise.duration_minutes }} min</span>
+    </div>
+    <h1 class="display-xl" style="margin-top:8px;">{{ exercise.title }}</h1>
+  </div>
+</div>
+
+{% if success %}
+<div style="margin-bottom:20px;">
+  {{ callout('success', 'One more mission to go.', 'Perfect sequence!') }}
+</div>
+<div class="card" style="padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+  <span>{{ space_beaver(56) }}</span>
+  <a href="{{ url_for('exercise', num=3) }}" class="btn btn-primary">
+    <span>Mission 3</span>{{ icon('arrow-right') }}
+  </a>
+</div>
+{% else %}
+
+<div class="grid-2">
+  <div class="stack">
+    {% if error %}{{ callout('error', error) }}{% endif %}
+
+    <form method="post" id="sort-form">
+      <section class="card">
+        <div class="card-body">
+          <div class="section-title">
+            <span class="section-title-icon">{{ icon('list-checks') }}</span>
+            <h2 class="title-lg">Put these steps in order</h2>
+          </div>
+          <div id="sort-list" class="stack-sm">
+            {% for idx in shuffled_indices %}
+            <div class="sort-card" data-index="{{ idx }}">
+              <span class="sort-index card-num">{{ loop.index }}</span>
+              <span class="sort-text">{{ tea_steps[idx] }}</span>
+              <div class="sort-controls">
+                <button type="button" class="icon-btn move-btn" data-dir="up" title="Move up">{{ icon('chevron-up') }}</button>
+                <button type="button" class="icon-btn move-btn" data-dir="down" title="Move down">{{ icon('chevron-down') }}</button>
+              </div>
+              <input type="hidden" name="order" value="{{ idx }}" />
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+      <div class="card" style="margin-top:20px; padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
+        <a href="{{ url_for('exercise', num=1) }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
+        <button type="submit" class="btn btn-primary">
+          <span>Check order</span>{{ icon('check') }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <aside class="hint-card">
+      <div class="hint-mascot">{{ space_beaver(80) }}</div>
+      <div class="eyebrow" style="margin-bottom:8px;">Tip from Space Beaver</div>
+      <h3 class="title-md">Follow the dependencies</h3>
+      <p class="body-muted" style="margin-top:8px;">
+        Some steps can only happen <em>after</em> another is done. What needs to happen before the tea can steep?
+      </p>
+    </aside>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function() {
+    var list = document.getElementById('sort-list');
+    if (!list) return;
+    list.addEventListener('click', function(e) {
+      var btn = e.target.closest('.move-btn');
+      if (!btn) return;
+      var card = btn.closest('.sort-card');
+      var dir = btn.dataset.dir;
+      if (dir === 'up' && card.previousElementSibling) {
+        list.insertBefore(card, card.previousElementSibling);
+      } else if (dir === 'down' && card.nextElementSibling) {
+        list.insertBefore(card.nextElementSibling, card);
+      }
+      list.querySelectorAll('.sort-card').forEach(function(c, i) {
+        c.querySelector('.card-num').textContent = (i + 1);
+      });
+    });
+  })();
+</script>
+{% endblock %}

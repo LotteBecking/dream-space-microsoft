@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block title %}Mission 1 &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{{ stepper('ex1', progress) }}
+
+<div style="margin-top: 28px;"></div>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <div class="row-tight">
+      <span class="chip chip-primary">Mission 1 of 3</span>
+      <span class="chip">{{ icon('clock') }}{{ exercise.duration_minutes }} min</span>
+    </div>
+    <h1 class="display-xl" style="margin-top:8px;">{{ exercise.title }}</h1>
+  </div>
+</div>
+
+{% if success %}
+<div style="margin-bottom:20px;">
+  {{ callout('success', 'Move on to Mission 2.', 'Mission complete!') }}
+</div>
+<div class="card" style="padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+  <span>{{ space_beaver(56) }}</span>
+  <a href="{{ url_for('exercise', num=2) }}" class="btn btn-primary">
+    <span>Mission 2</span>{{ icon('arrow-right') }}
+  </a>
+</div>
+{% else %}
+
+<div class="grid-2">
+  <div class="stack">
+    {% if error %}{{ callout('error', error) }}{% endif %}
+
+    <!-- Task selector -->
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('flag') }}</span>
+          <h2 class="title-lg">Choose your task</h2>
+        </div>
+        <ul class="stack-sm" style="list-style:none;" id="task-options">
+          {% for task in exercise.task_options %}
+          <li>
+            <button type="button"
+              class="task-option-btn{% if loop.first %} selected{% endif %}"
+              data-task-index="{{ loop.index0 }}"
+              style="width:100%; text-align:left; display:flex; align-items:center;
+                     padding:12px 14px; border-radius:var(--radius-input);
+                     border:2px solid {% if loop.first %}var(--color-primary-border){% else %}var(--color-border){% endif %};
+                     background:{% if loop.first %}var(--color-primary-soft){% else %}var(--color-surface){% endif %};
+                     font-family:var(--font-game); font-size:16px; color:var(--color-text);
+                     cursor:pointer; transition:all .15s;">
+              <span>{{ task }}</span>
+            </button>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Algorithm form, steps saved per task -->
+    <form method="post" id="algo-form">
+      <input type="hidden" name="task_index" id="task-index-input" value="0" />
+      <section class="card">
+        <div class="card-body">
+          <div class="section-title">
+            <span class="section-title-icon">{{ icon('list-checks') }}</span>
+            <h2 class="title-lg">Your algorithm</h2>
+          </div>
+          <div id="steps-container" class="stack-sm">
+            {% for i in range(1, 9) %}
+            <div class="step-row">
+              <span class="step-index">{{ i }}</span>
+              <input type="text" name="step_{{ i }}" id="step_{{ i }}" class="input" placeholder="Step {{ i }}..." />
+            </div>
+            {% endfor %}
+          </div>
+          <div style="display:flex; gap:8px; margin-top:12px;">
+            <button type="button" id="add-step-btn" class="add-step-btn" style="flex:1;">+ Add step</button>
+            <button type="button" id="clear-btn" class="btn btn-ghost btn-sm">{{ icon('trash') }} Clear</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="card" style="margin-top:20px; padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
+        <a href="{{ url_for('lesson_intro') }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
+        <button type="submit" class="btn btn-primary">
+          <span>Submit</span>{{ icon('check') }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <aside class="hint-card">
+      <div class="eyebrow" style="margin-bottom:6px;">Tip from Space Beaver</div>
+      <div style="display:flex; align-items:center;">
+        <div style="flex:1;">
+          <h3 class="title-md" style="margin-bottom:8px;">Write like a robot reads it</h3>
+          <p class="body-muted" style="margin:0;">
+            Use physical actions:<br>
+            <strong style="color:var(--color-text);">open</strong>, <strong style="color:var(--color-text);">pick up</strong>, <strong style="color:var(--color-text);">place</strong>,<br>
+            <strong style="color:var(--color-text);">pour</strong>, <strong style="color:var(--color-text);">press</strong>.
+          </p>
+        </div>
+        <div style="flex:1; display:flex; justify-content:center; align-items:center;">
+          {{ space_beaver(110) }}
+        </div>
+      </div>
+      <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--color-border);">
+        <div class="eyebrow" style="margin-bottom:8px;">Try these</div>
+        <ul class="stack-sm" style="list-style:none;">
+          <li class="caption">"open the bread bag"</li>
+          <li class="caption">"take a slice of bread"</li>
+          <li class="caption">"pick up the knife"</li>
+          <li class="caption">"spread peanut butter"</li>
+          <li class="caption">"place the second slice"</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function() {
+    // Per-task step storage: array of arrays (one per task)
+    var NUM_TASKS = {{ exercise.task_options | length }};
+    var savedSteps = [];
+    for (var t = 0; t < NUM_TASKS; t++) savedSteps.push([]);
+
+    var currentTask = 0;
+    var dynamicCount = 8; // tracks how many step rows exist
+
+    function getStepInputs() {
+      return Array.from(document.querySelectorAll('#steps-container input[type="text"]'));
+    }
+
+    function saveCurrentTask() {
+      savedSteps[currentTask] = getStepInputs().map(function(i) { return i.value; });
+    }
+
+    function rebuildSteps(steps) {
+      var container = document.getElementById('steps-container');
+      container.innerHTML = '';
+      var count = Math.max(steps.length, 8);
+      for (var n = 1; n <= count; n++) {
+        var row = document.createElement('div');
+        row.className = 'step-row';
+        row.innerHTML = '<span class="step-index">' + n + '</span>' +
+          '<input type="text" name="step_' + n + '" class="input" placeholder="Step ' + n + '..." />';
+        container.appendChild(row);
+        if (steps[n - 1] !== undefined) row.querySelector('input').value = steps[n - 1];
+      }
+      dynamicCount = count;
+    }
+
+    function switchTask(idx) {
+      saveCurrentTask();
+      currentTask = idx;
+      document.getElementById('task-index-input').value = idx;
+
+      // Update button styles
+      document.querySelectorAll('.task-option-btn').forEach(function(btn, i) {
+        var selected = (i === idx);
+        btn.style.borderColor = selected ? 'var(--color-primary-border)' : 'var(--color-border)';
+        btn.style.background  = selected ? 'var(--color-primary-soft)' : 'var(--color-surface)';
+      });
+
+      rebuildSteps(savedSteps[idx]);
+    }
+
+    // Task option click handlers
+    document.querySelectorAll('.task-option-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        switchTask(parseInt(btn.dataset.taskIndex, 10));
+      });
+    });
+
+    // Add step button
+    var addBtn = document.getElementById('add-step-btn');
+    if (addBtn) {
+      addBtn.addEventListener('click', function() {
+        saveCurrentTask(); // snapshot before adding
+        dynamicCount++;
+        var container = document.getElementById('steps-container');
+        var row = document.createElement('div');
+        row.className = 'step-row';
+        row.innerHTML = '<span class="step-index">' + dynamicCount + '</span>' +
+          '<input type="text" name="step_' + dynamicCount + '" class="input" placeholder="Step ' + dynamicCount + '..." />';
+        container.appendChild(row);
+        row.querySelector('input').focus();
+      });
+    }
+
+    // Clear button, clears only current task
+    var clearBtn = document.getElementById('clear-btn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function() {
+        savedSteps[currentTask] = [];
+        rebuildSteps([]);
+      });
+    }
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+{% block title %}Robot Lab &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{{ stepper('intro', progress) }}
+
+<div style="margin-top: 28px;"></div>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <div class="row-tight">
+      <span class="chip chip-primary">Robot Lab</span>
+      {% if state.sandwich_complete %}<span class="chip chip-success">{{ icon('check') }}Complete</span>{% endif %}
+    </div>
+    <h1 class="display-xl" style="margin-top:8px;">PB&amp;J Simulator</h1>
+  </div>
+  <div class="page-header-actions">
+    <a href="{{ url_for('lesson_intro') }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
+  </div>
+</div>
+
+<div class="grid-2" style="margin-bottom: 28px;">
+  <div class="stack">
+    <!-- Kitchen counter -->
+    <section class="card">
+      <div class="card-body">
+        <div class="kitchen-grid">
+          <div class="kitchen-tile {% if state.bread_bag == 'open' %}is-active{% endif %}">
+            <span class="kitchen-tile-illustration">{{ icon('bread') }}</span>
+            <span class="kitchen-label">Bread bag</span>
+            <span class="kitchen-state">{% if state.bread_bag == 'open' %}Open{% else %}Closed{% endif %}</span>
+          </div>
+          <div class="kitchen-tile {% if state.pb_jar == 'open' %}is-active{% endif %}">
+            <span class="kitchen-tile-illustration">{{ icon('jar') }}</span>
+            <span class="kitchen-label">Peanut butter</span>
+            <span class="kitchen-state">{% if state.pb_jar == 'open' %}Open{% else %}Closed{% endif %}</span>
+          </div>
+          <div class="kitchen-tile {% if state.jam_jar == 'open' %}is-active{% endif %}">
+            <span class="kitchen-tile-illustration">{{ icon('jar') }}</span>
+            <span class="kitchen-label">Jam</span>
+            <span class="kitchen-state">{% if state.jam_jar == 'open' %}Open{% else %}Closed{% endif %}</span>
+          </div>
+          <div class="kitchen-tile {% if state.knife_location == 'hand' %}is-active{% endif %}">
+            <span class="kitchen-tile-illustration">{{ icon('knife') }}</span>
+            <span class="kitchen-label">Knife</span>
+            <span class="kitchen-state">{% if state.knife_location == 'hand' %}In hand{% else %}On counter{% endif %}</span>
+          </div>
+          <div class="kitchen-tile {% if state.sandwich_complete %}is-complete{% elif state.bread_slices >= 1 %}is-active{% endif %}">
+            <span class="kitchen-tile-illustration">
+              {% if state.sandwich_complete %}{{ icon('sandwich') }}{% else %}{{ icon('plate') }}{% endif %}
+            </span>
+            <span class="kitchen-label">{% if state.sandwich_complete %}Sandwich{% else %}Plate{% endif %}</span>
+            <span class="kitchen-state">
+              {% if state.sandwich_complete %}Done
+              {% elif state.bread_slices >= 1 %}{{ state.bread_slices }} slice{{ 's' if state.bread_slices > 1 }}
+              {% else %}Empty{% endif %}
+            </span>
+          </div>
+        </div>
+
+        <div class="row-tight" style="margin-top:16px; gap:8px; flex-wrap:wrap;">
+          <span class="chip {% if state.bread_bag == 'open' %}chip-success{% endif %}">
+            {% if state.bread_bag == 'open' %}{{ icon('check') }}{% else %}{{ icon('circle') }}{% endif %} Bread open
+          </span>
+          <span class="chip {% if state.bread_slices >= 2 %}chip-success{% endif %}">
+            {% if state.bread_slices >= 2 %}{{ icon('check') }}{% else %}{{ icon('circle') }}{% endif %} 2 slices
+          </span>
+          <span class="chip {% if state.pb_applied %}chip-success{% endif %}">
+            {% if state.pb_applied %}{{ icon('check') }}{% else %}{{ icon('circle') }}{% endif %} PB spread
+          </span>
+          <span class="chip {% if state.jam_applied %}chip-success{% endif %}">
+            {% if state.jam_applied %}{{ icon('check') }}{% else %}{{ icon('circle') }}{% endif %} Jam spread
+          </span>
+          <span class="chip {% if state.sandwich_complete %}chip-success{% endif %}">
+            {% if state.sandwich_complete %}{{ icon('check') }}{% else %}{{ icon('circle') }}{% endif %} Complete
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Command composer -->
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('code') }}</span>
+          <h2 class="title-lg">Instructions ({{ commands|length }})</h2>
+        </div>
+
+        {% if commands %}
+        <div class="stack-sm" style="margin-bottom:16px;">
+          {% for cmd in commands %}
+          <div class="cmd-row">
+            <span class="cmd-index">{{ loop.index }}</span>
+            <span class="cmd-text">{{ cmd }}</span>
+            <form method="post" style="margin:0;">
+              <input type="hidden" name="action" value="remove" />
+              <input type="hidden" name="index" value="{{ loop.index0 }}" />
+              <button type="submit" class="icon-btn is-danger" title="Remove">{{ icon('x') }}</button>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="panel-muted" style="margin-bottom:16px; text-align:center; padding:24px;">
+          <p class="body-muted">No instructions yet.</p>
+        </div>
+        {% endif %}
+
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;" id="cmd-hint-buttons">
+          {% set hints = [
+            ('open bread bag', 'Open bread bag'),
+            ('take bread slice', 'Take bread slice'),
+            ('open peanut butter jar', 'Open PB jar'),
+            ('get knife', 'Get knife'),
+            ('spread peanut butter', 'Spread PB'),
+            ('open jam jar', 'Open jam jar'),
+            ('spread jam', 'Spread jam'),
+            ('place second slice', 'Place second slice'),
+            ('serve', 'Serve'),
+          ] %}
+          {% for value, label in hints %}
+          <button type="button" class="cmd-hint-btn" data-cmd="{{ value }}">{{ label }}</button>
+          {% endfor %}
+        </div>
+
+        <form method="post" style="display:flex; gap:8px; margin-bottom:12px;" id="cmd-add-form">
+          <input type="hidden" name="action" value="add" />
+          <input type="text" name="command" id="cmd-input" class="input" placeholder="e.g. open the bread bag" autocomplete="off" style="flex:1;" />
+          <button type="submit" class="btn btn-secondary">{{ icon('plus') }}<span>Add</span></button>
+        </form>
+
+        <div class="row" style="gap:8px; justify-content:space-between;">
+          <form method="post" style="flex:1;">
+            <input type="hidden" name="action" value="run" />
+            <button type="submit" class="btn btn-primary btn-block" {% if not commands %}disabled{% endif %}>
+              {{ icon('play') }}<span>Run</span>
+            </button>
+          </form>
+          <form method="post">
+            <input type="hidden" name="action" value="reset" />
+            <button type="submit" class="btn btn-secondary">{{ icon('rotate-ccw') }}</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Execution log -->
+    {% if log %}
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('terminal') }}</span>
+          <h2 class="title-lg">Log</h2>
+        </div>
+        {% for entry in log %}
+        <div class="log-entry {{ entry.type }}">
+          <span class="log-entry-icon">
+            {% if entry.type == 'success' %}{{ icon('check') }}
+            {% elif entry.type == 'precondition_error' %}{{ icon('alert-triangle') }}
+            {% else %}{{ icon('alert-circle') }}{% endif %}
+          </span>
+          <div class="log-entry-body">
+            <div class="log-entry-label">"{{ entry.command }}"</div>
+            <div class="log-entry-message">{{ entry.message }}</div>
+          </div>
+        </div>
+        {% endfor %}
+
+        {% if progress.simulator_confusion_count > 0 %}
+        <div style="margin-top:14px;">
+          {{ callout('warning', 'Robot was confused ' ~ progress.simulator_confusion_count ~ ' time(s).', 'Try simpler verbs') }}
+        </div>
+        {% endif %}
+
+        {% if state.sandwich_complete %}
+        <div style="margin-top:14px;">
+          {{ callout('success', 'Head to Mission 1 when ready.', 'Sandwich complete!') }}
+        </div>
+        <div style="margin-top:14px;">
+          <a href="{{ url_for('exercise', num=1) }}" class="btn btn-primary btn-lg btn-block">
+            <span>Mission 1</span>{{ icon('arrow-right') }}
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+    {% endif %}
+  </div>
+
+  <!-- Hint panel -->
+  <div>
+    <aside class="hint-card">
+      <div class="eyebrow" style="margin-bottom:6px;">Tip from Space Beaver</div>
+      <div style="display:flex; align-items:center;">
+        <div style="flex:1;">
+          <h3 class="title-md" style="margin-bottom:8px;">Talk like a robot</h3>
+          <p class="body-muted" style="margin:0;">
+            Use simple physical verbs:<br>
+            <strong style="color:var(--color-text);">open</strong>, <strong style="color:var(--color-text);">take</strong>, <strong style="color:var(--color-text);">spread</strong>,<br>
+            <strong style="color:var(--color-text);">place</strong>, <strong style="color:var(--color-text);">serve</strong>.
+          </p>
+        </div>
+        <div style="flex:1; display:flex; justify-content:center; align-items:center;">
+          {{ space_beaver(110) }}
+        </div>
+      </div>
+      <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--color-border);">
+        <div class="eyebrow" style="margin-bottom:8px;">Try these</div>
+        <ul class="stack-sm" style="list-style:none;">
+          <li class="caption">"open the bread bag"</li>
+          <li class="caption">"take a slice of bread"</li>
+          <li class="caption">"pick up the knife"</li>
+          <li class="caption">"spread peanut butter"</li>
+          <li class="caption">"place the second slice"</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.querySelectorAll('.cmd-hint-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.getElementById('cmd-input').value = btn.dataset.cmd;
+      document.getElementById('cmd-input').focus();
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% block title %}Base Camp &middot; Dreaming in Space{% endblock %}
+
+{% block header_context %}
+  {% set xp_total = (progress.completed_exercises | length) * 25 + (25 if progress.simulator_completed else 0) %}
+  <span class="game-level-badge" style="margin-bottom:0; box-shadow:none; padding:4px 10px;">{{ icon('sparkles') }} LVL 1</span>
+  <span class="dot"></span>
+  <div class="xp-bar-wrap">
+    <span class="xp-label">XP</span>
+    <div class="xp-bar"><div class="xp-bar-fill" style="width: {{ [xp_total, 100]|min }}%;"></div></div>
+    <span class="xp-label">{{ [xp_total, 100]|min }}%</span>
+  </div>
+{% endblock %}
+
+{% block content %}
+{% set completed = progress.completed_exercises %}
+{% set ex1_done = 1 in completed %}
+{% set ex2_done = 2 in completed %}
+{% set ex3_done = 3 in completed %}
+{% set sim_done = progress.simulator_completed %}
+{% set lesson_started = sim_done or completed|length > 0 %}
+{% set stars_earned = completed|length + (1 if sim_done else 0) %}
+
+<!-- ── OUTER TWO-COLUMN GRID ─────────────────────────────
+     Left (4fr): beaver hero + mission map
+     Right (1fr): stats panel spanning full height          -->
+<div style="display:grid; grid-template-columns: 1fr 22%; gap: 28px; align-items: stretch;">
+
+  <!-- ── LEFT COLUMN ──────────────────────────────────── -->
+  <div style="display:flex; flex-direction:column; gap:28px; min-width:0;">
+
+    <!-- HERO: beaver + speech bubble/CTA side by side -->
+    <div style="display:flex; gap:24px; align-items:flex-start;">
+
+      <!-- Beaver -->
+      <div style="flex-shrink:0;">
+        <div style="filter: drop-shadow(0 8px 20px rgba(107,57,217,0.25)); transition: transform .3s ease;"
+             onmouseover="this.style.transform='translateY(-6px) scale(1.03)'"
+             onmouseout="this.style.transform=''">
+          {{ space_beaver(170) }}
+        </div>
+      </div>
+
+      <!-- Speech bubble + CTA -->
+      <div style="flex:1; min-width:0; padding-top:8px;">
+        <div class="speech-bubble" style="margin-bottom:20px;">
+          {% if not lesson_started %}
+            Hey, Commander! Your first mission is ready. Let's learn how computers think!
+          {% elif progress.all_exercises_done %}
+            Amazing work, Commander! You've completed all missions. Time to claim your reward!
+          {% elif sim_done %}
+            Great job in the lab! Your next mission is waiting. You've got this!
+          {% else %}
+            Welcome back, Commander! The lab is ready, jump in and keep going!
+          {% endif %}
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <div class="game-level-badge" style="font-size:13px; padding:7px 16px;">{{ icon('rocket') }} Mission 1 &middot; How Does a Computer Think?</div>
+        </div>
+
+        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+          <a href="{{ progress.resume.href }}" class="btn btn-primary btn-lg">
+            {{ icon('play') }}
+            {% if lesson_started %}Continue Mission{% else %}Start Mission{% endif %}
+          </a>
+          <form method="post" action="{{ url_for('reset') }}" style="margin:0;">
+            <button type="submit" class="btn btn-ghost btn-sm" title="Reset all progress">
+              {{ icon('refresh') }}<span>Reset</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- MISSION MAP -->
+    <section>
+      <div class="section-bar" style="font-size:15px; padding:10px 18px;">
+        {{ icon('map') }} Mission Map
+      </div>
+
+      {% set missions = [
+        {
+          'href':    url_for('lesson_intro'),
+          'icon':    'book-open',
+          'title':   'Briefing Room',
+          'meta':    'Objectives, vocabulary &amp; role model',
+          'done':    lesson_started,
+          'active':  not lesson_started,
+          'locked':  False,
+          'badge':   'Complete' if lesson_started else 'Start'
+        },
+        {
+          'href':    url_for('simulator'),
+          'icon':    'terminal',
+          'title':   'Robot Lab, PB&amp;J Simulator',
+          'meta':    'Send commands to a robot. See what precision means!',
+          'done':    sim_done,
+          'active':  not sim_done and lesson_started,
+          'locked':  False,
+          'badge':   'Complete' if sim_done else ('Active' if (not sim_done and lesson_started) else 'Go')
+        },
+        {
+          'href':    url_for('exercise', num=1),
+          'icon':    'list-checks',
+          'title':   'Mission 1, Write the Algorithm',
+          'meta':    '~10 min · Write 6+ clear steps',
+          'done':    ex1_done,
+          'active':  sim_done and not ex1_done,
+          'locked':  not sim_done,
+          'badge':   'Complete' if ex1_done else ('Active' if (sim_done and not ex1_done) else 'Locked')
+        },
+        {
+          'href':    url_for('exercise', num=2),
+          'icon':    'refresh',
+          'title':   'Mission 2, Sequence Sorting',
+          'meta':    '~8 min · Put steps back in order',
+          'done':    ex2_done,
+          'active':  ex1_done and not ex2_done,
+          'locked':  not ex1_done,
+          'badge':   'Complete' if ex2_done else ('Active' if (ex1_done and not ex2_done) else 'Locked')
+        },
+        {
+          'href':    url_for('exercise', num=3),
+          'icon':    'sandwich',
+          'title':   'Mission 3, Robot Chef',
+          'meta':    '~10 min · Design an algorithm with safety rules',
+          'done':    ex3_done,
+          'active':  ex2_done and not ex3_done,
+          'locked':  not ex2_done,
+          'badge':   'Complete' if ex3_done else ('Active' if (ex2_done and not ex3_done) else 'Locked')
+        },
+        {
+          'href':    url_for('review'),
+          'icon':    'trophy',
+          'title':   'Rewards &amp; Recap',
+          'meta':    'Vocabulary, exit ticket &amp; bonus challenges',
+          'done':    False,
+          'active':  progress.all_exercises_done,
+          'locked':  not progress.all_exercises_done,
+          'badge':   'Active' if progress.all_exercises_done else 'Locked'
+        },
+      ] %}
+
+      <ol class="mission-map">
+        {% for m in missions %}
+        {% set state = 'done' if m.done else ('active' if m.active else 'locked') %}
+        <li class="mission-item">
+          <div class="mission-spine">
+            <div class="mission-node {{ state }}">
+              {% if m.done %}{{ icon('check') }}{% elif m.locked %}{{ icon('lock') }}{% else %}{{ loop.index }}{% endif %}
+            </div>
+            {% if not loop.last %}
+              <div class="mission-connector {{ 'done' if m.done else '' }}"></div>
+            {% endif %}
+          </div>
+          <div class="mission-body">
+            {% if not m.locked %}
+            <a href="{{ m.href }}" class="mission-card {{ state }}">
+              <div class="mission-card-icon">{{ icon(m.icon) }}</div>
+              <div style="flex:1; min-width:0;">
+                <div class="mission-title">{{ m.title|safe }}</div>
+                <div class="mission-meta">{{ m.meta|safe }}</div>
+              </div>
+              <span class="mission-badge {{ state }}">{{ m.badge }}</span>
+            </a>
+            {% else %}
+            <span class="mission-card locked">
+              <div class="mission-card-icon">{{ icon(m.icon) }}</div>
+              <div style="flex:1; min-width:0;">
+                <div class="mission-title">{{ m.title|safe }}</div>
+                <div class="mission-meta">Finish the previous mission to unlock</div>
+              </div>
+              <span class="mission-badge locked">Locked</span>
+            </span>
+            {% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </section>
+
+  </div><!-- end left column -->
+
+  <!-- ── RIGHT COLUMN: STATS PANEL ───────────────────── -->
+  <aside class="card" style="display:flex; flex-direction:column; min-width:0;">
+    <div style="padding:18px; display:flex; flex-direction:column; gap:16px; height:100%;">
+
+      <div class="section-bar" style="border-radius:8px; margin-bottom:0;">
+        {{ icon('target') }} Player Stats
+      </div>
+
+      <!-- XP bar -->
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px;">
+          <span class="xp-label">Mission XP</span>
+          <span style="font-family:var(--font-pixel); font-size:10px; font-weight:700; color:var(--color-primary-ink);">
+            {{ progress.progress_percent }}%
+          </span>
+        </div>
+        <div class="progress">
+          <span class="progress-fill {% if progress.all_exercises_done %}is-complete{% endif %}"
+                style="width: {{ progress.progress_percent }}%;"></span>
+        </div>
+      </div>
+
+      <!-- XP pip stars -->
+      <div>
+        <div class="xp-label" style="margin-bottom:6px;">Stars earned</div>
+        <div class="xp-stars">
+          {% for i in range(1, 6) %}
+            <span class="xp-star {% if i > stars_earned %}empty{% endif %}"></span>
+          {% endfor %}
+          <span class="xp-label" style="margin-left:4px;">{{ stars_earned }}/5</span>
+        </div>
+      </div>
+
+      <!-- Per-mission XP breakdown -->
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; flex:1;">
+        {% for item in [
+          {'label':'Lab Run',   'done': sim_done},
+          {'label':'Mission 1', 'done': ex1_done},
+          {'label':'Mission 2', 'done': ex2_done},
+          {'label':'Mission 3', 'done': ex3_done},
+        ] %}
+        <li style="display:flex; align-items:center; justify-content:space-between; gap:6px;">
+          <span style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--color-text-muted); min-width:0;">
+            <span style="flex-shrink:0; color: {% if item.done %}var(--color-success){% else %}var(--color-border-strong){% endif %};">
+              {% if item.done %}{{ icon('check-circle') }}{% else %}{{ icon('circle') }}{% endif %}
+            </span>
+            <span style="white-space:nowrap;">{{ item.label }}</span>
+          </span>
+          <span style="font-family:var(--font-pixel); font-size:9px; font-weight:700; white-space:nowrap;
+            color: {% if item.done %}var(--color-success-ink){% else %}var(--color-text-subtle){% endif %};">
+            {% if item.done %}+20 XP{% else %}0 XP{% endif %}
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <!-- Total XP -->
+      <div style="border-top:2px solid var(--color-border); padding-top:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="xp-label">Total XP</span>
+          <span style="font-family:var(--font-pixel); font-size:12px; font-weight:700; color:var(--color-primary-ink);">
+            {{ stars_earned * 20 }} / 100
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </aside><!-- end right column -->
+
+</div><!-- end outer grid -->
+{% endblock %}

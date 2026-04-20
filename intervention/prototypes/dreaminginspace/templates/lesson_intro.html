@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Briefing Room &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{{ stepper('intro', progress) }}
+
+<div style="margin-top: 28px;"></div>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <div class="row-tight">
+      <span class="chip chip-primary">Lesson 1</span>
+      <span class="chip">{{ icon('clock') }}{{ lesson.duration }} min</span>
+    </div>
+    <h1 class="display-xl" style="margin-top:10px;">{{ lesson.title }}</h1>
+  </div>
+</div>
+
+<!-- Space Beaver welcome -->
+<div class="card hero-card" style="margin-bottom: 28px; background: linear-gradient(135deg, var(--color-primary-soft) 0%, var(--color-accent-soft) 100%);">
+  <div class="card-body" style="display:flex; gap:20px; align-items:center;">
+    <div style="flex-shrink:0;">{{ space_beaver(110) }}</div>
+    <div style="flex:1;">
+      <div class="eyebrow" style="margin-bottom:6px;">Space Beaver says</div>
+      <p class="body-lg" style="color: var(--color-text);">{{ lesson.welcome }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Role model: full width above vocabulary + practice room -->
+<section class="card" style="margin-bottom:28px;">
+  <div class="card-body" style="display:flex; gap:20px; align-items:flex-start;">
+    <div style="flex:1;">
+      <h3 class="title-lg" style="margin-bottom:2px;">{{ role_model.name }}</h3>
+      <p class="caption" style="margin-bottom:10px;">{{ role_model.years }}</p>
+      <p class="body">{{ role_model.intro }}</p>
+      {% if role_model.detail %}<p class="body-muted" style="margin-top:10px;">{{ role_model.detail }}</p>{% endif %}
+    </div>
+  </div>
+</section>
+
+<div class="grid-2" style="margin-bottom: 28px; align-items: stretch;">
+  <div style="display:flex; flex-direction:column;">
+    <!-- Vocabulary -->
+    <section class="card" style="flex:1;">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('book-open') }}</span>
+          <h2 class="title-lg">Key vocabulary</h2>
+        </div>
+        <div class="vocab-grid">
+          {% for v in vocabulary %}
+          <div class="vocab-card" onclick="this.querySelector('.vocab-card-inner').classList.toggle('flipped')" tabindex="0"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.querySelector('.vocab-card-inner').classList.toggle('flipped')}">
+            <div class="vocab-card-inner">
+              <div class="vocab-card-face vocab-card-face-front">
+                <span class="vocab-word">{{ v.word }}</span>
+                <span class="vocab-flip-hint">{{ icon('refresh') }} Tap to flip</span>
+              </div>
+              <div class="vocab-card-face vocab-card-face-back">
+                <span class="vocab-definition">{{ v.definition }}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div style="display:flex; flex-direction:column;">
+    <!-- Simulator CTA -->
+    <section class="card" style="flex:1; background:var(--color-accent-soft); border-color:#efc5e2;">
+      <div class="card-body" style="height:100%; display:flex; flex-direction:column; justify-content:center;">
+        <div class="eyebrow" style="color:var(--color-accent-ink); margin-bottom:6px;">Practice room</div>
+        <h3 class="title-lg" style="margin-bottom:14px;">Try the PB&amp;J Simulator</h3>
+        <a href="{{ url_for('simulator') }}" class="btn btn-secondary" style="align-self:flex-start;">
+          {{ icon('terminal') }}<span>Open the simulator</span>
+        </a>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="card" style="padding:18px 24px; display:flex; align-items:center; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
+  {% if progress.simulator_completed %}
+  <span class="chip chip-success">{{ icon('check') }}Simulator done</span>
+  {% endif %}
+  <a href="{{ url_for('home') }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
+  <a href="{{ url_for('exercise', num=1) }}" class="btn btn-primary">
+    <span>Mission 1</span>{{ icon('arrow-right') }}
+  </a>
+</div>
+{% endblock %}
