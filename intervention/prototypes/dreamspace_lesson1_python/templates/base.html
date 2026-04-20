@@ -35,16 +35,16 @@
   <style>
     :root {
       --color-cream: #fff8ee;
-      --color-blue: #4a9ff5;
-      --color-blue-dark: #2563eb;
-      --color-ink: #1e293b;
-      --color-muted: #64748b;
-      --color-line: #c7d8f0;
-      --color-purple: #8b5cf6;
-      --color-green-dark: #16a34a;
-      --color-locked: #e2e8f0;
-      --color-orange: #f59e0b;
-      --color-pink: #ec4899;
+      --color-blue: #2563eb;
+      --color-blue-dark: #1d4ed8;
+      --color-ink: #0f172a;
+      --color-muted: #475569;
+      --color-line: #93c5fd;
+      --color-purple: #7c3aed;
+      --color-green-dark: #15803d;
+      --color-locked: #cbd5e1;
+      --color-orange: #d97706;
+      --color-pink: #db2777;
       --font-body: "Baloo 2", "Fredoka", system-ui, sans-serif;
       --font-heading: "Fredoka", system-ui, sans-serif;
       --font-fredoka: "Fredoka", system-ui, sans-serif;
@@ -53,9 +53,9 @@
       --radius-card: 24px;
       --radius-pill: 999px;
       --radius-btn: 20px;
-      --shadow-card: 0 6px 0 #4a9ff520, 0 2px 8px #0001;
-      --shadow-btn: 0 5px 0 #1d4ed8;
-      --shadow-chip: 0 3px 0 #4a9ff520;
+      --shadow-card: 0 6px 0 #2563eb25, 0 2px 8px #0002;
+      --shadow-btn: 0 5px 0 #1e3a8a;
+      --shadow-chip: 0 3px 0 #2563eb25;
     }
 
     html, body {
@@ -123,14 +123,14 @@
       animation: pop-in .4s ease-out both;
     }
     .ds-pixel-chip {
-      border: 3px solid var(--color-blue);
+      border: 2px solid var(--color-blue);
       border-radius: var(--radius-pill);
       box-shadow: var(--shadow-chip);
       color: var(--color-blue-dark);
-      letter-spacing: .13em; font-size: 12px;
+      letter-spacing: .1em; font-size: 12px;
       font-family: var(--font-silkscreen);
-      background: #ffffffeb; padding: 8px 13px;
-      display: inline-block;
+      background: #fff; padding: 7px 13px;
+      display: inline-block; font-weight: 700;
     }
     .ds-btn-primary {
       border-radius: var(--radius-btn); color: #fff; width: 100%;
@@ -140,8 +140,8 @@
       border: none; padding: 16px 20px; transition: all .15s;
       text-align: center; text-decoration: none; display: block;
     }
-    .ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #1d4ed8, 0 4px 16px #3b82f640; }
-    .ds-btn-primary:active { transform: translateY(1px); box-shadow: 0 2px 0 #1d4ed8; }
+    .ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #1e3a8a, 0 4px 16px #2563eb40; }
+    .ds-btn-primary:active { transform: translateY(1px); box-shadow: 0 2px 0 #1e3a8a; }
     .ds-btn-primary:disabled { opacity: .5; cursor: not-allowed; box-shadow: 0 3px #277db080; }
     .ds-btn-secondary {
       border: 3px solid var(--color-blue);
@@ -239,18 +239,29 @@
     .step-input:focus { border-color: var(--color-purple); box-shadow: 0 0 0 4px #8b5cf620; }
 
     /* Vocab flip cards */
-    .vocab-card { perspective: 600px; cursor: pointer; height: 120px; }
+    .vocab-card { perspective: 800px; cursor: pointer; height: 140px; }
     .vocab-card-inner {
       width: 100%; height: 100%; transform-style: preserve-3d;
-      transition: transform .5s; position: relative;
+      transition: transform .6s cubic-bezier(.4,0,.2,1); position: relative;
     }
     .vocab-card-inner.flipped { transform: rotateY(180deg); }
-    .vocab-card-face {
-      backface-visibility: hidden; border-radius: var(--radius-card);
+    .vocab-card .vocab-card-face {
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      border-radius: var(--radius-card);
       flex-direction: column; justify-content: center; align-items: center;
       padding: 16px; display: flex; position: absolute; inset: 0;
+      overflow: hidden;
+      /* Override ds-card animation/transition that breaks 3D flip */
+      animation: none !important;
+      transition: none !important;
+      transform: rotateY(0deg);
     }
-    .vocab-card-back { transform: rotateY(180deg); }
+    .vocab-card .vocab-card-face.vocab-card-back {
+      transform: rotateY(180deg);
+    }
+    .vocab-card .ds-card:hover {
+      transform: none !important;
+    }
 
     /* Bottom nav */
     .bottom-nav {
@@ -275,14 +286,14 @@
     @media (max-width: 600px) {
       .nav-btn { flex-direction: column; gap: 2px; padding: 8px 4px; font-size: 10px; }
     }
-    .nav-btn:hover { background: #f0f9ff; border-color: var(--color-blue); transform: translateY(-2px); }
+    .nav-btn:hover { background: #eff6ff; border-color: var(--color-blue); transform: translateY(-2px); }
     .nav-btn.active {
-      border-color: var(--color-purple); color: var(--color-purple);
+      border-color: var(--color-purple); color: #5b21b6;
       background: linear-gradient(135deg, #ede9fe, #dbeafe);
-      box-shadow: 0 3px 0 #8b5cf620;
+      box-shadow: 0 3px 0 #7c3aed30;
     }
-    .nav-btn .nav-icon { font-size: 22px; }
-    .nav-btn .nav-label { font-size: 12px; font-weight: 600; }
+    .nav-btn .nav-icon { font-size: 28px; }
+    .nav-btn .nav-label { font-size: 14px; font-weight: 700; }
 
     .home-header {
       z-index: 5; color: #fff;
@@ -326,17 +337,17 @@
         <span class="nav-icon">&#127968;</span>
         <span class="nav-label">Home</span>
       </a>
-      <a href="{{ url_for('lesson_home', lesson_num=1) }}" class="nav-btn {% if '/lesson/1' in request.path %}active{% endif %}">
+      <a href="{{ url_for('lesson_home', lesson_num=1) }}" class="nav-btn nav-lesson1 {% if '/lesson/1' in request.path %}active{% endif %}">
         <span class="nav-icon">&#129302;</span>
-        <span class="nav-label">L1</span>
+        <span class="nav-label">Lesson 1</span>
       </a>
-      <a href="{{ url_for('lesson_home', lesson_num=2) }}" class="nav-btn {% if '/lesson/2' in request.path %}active{% endif %}">
+      <a href="{{ url_for('lesson_home', lesson_num=2) }}" class="nav-btn nav-lesson2 {% if '/lesson/2' in request.path %}active{% endif %}">
         <span class="nav-icon">&#128260;</span>
-        <span class="nav-label">L2</span>
+        <span class="nav-label">Lesson 2</span>
       </a>
-      <a href="{{ url_for('lesson_home', lesson_num=3) }}" class="nav-btn {% if '/lesson/3' in request.path %}active{% endif %}">
+      <a href="{{ url_for('lesson_home', lesson_num=3) }}" class="nav-btn nav-lesson3 {% if '/lesson/3' in request.path %}active{% endif %}">
         <span class="nav-icon">&#128268;</span>
-        <span class="nav-label">L3</span>
+        <span class="nav-label">Lesson 3</span>
       </a>
       <a href="{{ url_for('review') }}" class="nav-btn {% if '/review' in request.path %}active{% endif %}">
         <span class="nav-icon">&#11088;</span>

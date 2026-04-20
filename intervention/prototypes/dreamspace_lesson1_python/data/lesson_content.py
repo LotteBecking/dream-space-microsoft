@@ -310,6 +310,7 @@ LESSON = {
         "Bruner\u2019s (1966) CPA progression. Unplugged activities draw on Bell et al. "
         "(1998). Scaffolding follows Vygotsky\u2019s (1978) ZPD framework."
     ),
+    "video_url": "",
 }
 
 ROLE_MODEL = {

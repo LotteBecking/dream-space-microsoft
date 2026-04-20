@@ -18,6 +18,7 @@ LESSON_2 = {
         "as a key CT concept accessible to primary-age learners. Physical warm-up "
         "follows Bell et al. (1998). Debugging framed via Dweck (2006) growth mindset."
     ),
+    "video_url": "",
 }
 
 ROLE_MODEL_2 = {

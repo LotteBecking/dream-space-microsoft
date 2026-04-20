@@ -3,7 +3,7 @@
 
 {% block content %}
 <!-- Header -->
-<div class="home-header">
+<div class="home-header" style="background:linear-gradient(135deg, {% if lesson_num == 1 %}#2563eb, #7c3aed{% elif lesson_num == 2 %}#059669, #0d9488{% else %}#d97706, #ea580c{% endif %});">
   <div style="display:flex; align-items:center; justify-content:space-between;">
     <div>
       <div style="font-family:var(--font-silkscreen); font-size:12px; letter-spacing:.12em; opacity:.85;">LESSON {{ lesson_num }}</div>
@@ -44,22 +44,22 @@
 <div>
 <!-- About this lesson -->
 <div class="ds-card" style="margin-bottom:20px;">
-  <h2 style="font-family:var(--font-silkscreen); font-size:14px; margin-bottom:10px; color:var(--color-blue-dark);">ABOUT THIS LESSON</h2>
-  <p style="font-size:15px; line-height:1.5; color:var(--color-muted);">{{ lesson.description }}</p>
+  <h2 style="font-family:var(--font-silkscreen); font-size:16px; margin-bottom:10px; color:var(--color-blue-dark);">ABOUT THIS LESSON</h2>
+  <p style="font-size:17px; line-height:1.6; color:var(--color-muted);">{{ lesson.description }}</p>
 </div>
 
 <!-- Vocabulary cards -->
-<h2 style="font-family:var(--font-silkscreen); font-size:14px; margin-bottom:12px; color:var(--color-blue-dark);">KEY VOCABULARY</h2>
+<h2 style="font-family:var(--font-silkscreen); font-size:16px; margin-bottom:12px; color:var(--color-blue-dark);">KEY VOCABULARY</h2>
 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px;">
   {% for v in vocabulary %}
   <div class="vocab-card" onclick="this.querySelector('.vocab-card-inner').classList.toggle('flipped')">
     <div class="vocab-card-inner">
       <div class="vocab-card-face ds-card" style="background:linear-gradient(135deg,#dff1ff,#e8dfff); border-color:var(--color-blue);">
-        <span style="font-family:var(--font-silkscreen); font-size:13px; color:var(--color-blue-dark);">{{ v.word }}</span>
-        <span style="font-size:11px; color:var(--color-muted); margin-top:4px;">tap to flip</span>
+        <span style="font-family:var(--font-silkscreen); font-size:16px; color:var(--color-blue-dark);">{{ v.word }}</span>
+        <span style="font-size:12px; color:var(--color-muted); margin-top:6px;">tap to flip</span>
       </div>
       <div class="vocab-card-face vocab-card-back ds-card" style="background:#fff;">
-        <span style="font-size:13px; line-height:1.4; text-align:center;">{{ v.definition }}</span>
+        <span style="font-size:16px; line-height:1.5; text-align:center; color:var(--color-ink); font-weight:500;">{{ v.definition }}</span>
       </div>
     </div>
   </div>
@@ -68,18 +68,41 @@
 </div>
 
 <!-- Role model sidebar -->
-<div style="position:sticky; top:80px; border-radius:22px; background:linear-gradient(180deg,#f0e8ff,#e8f4ff); border:3px solid var(--color-purple); padding:16px; box-shadow:0 4px #c8b3ef40;">
+<div style="position:sticky; top:80px; display:flex; flex-direction:column; gap:14px;">
+<div style="border-radius:22px; background:linear-gradient(180deg,#f0e8ff,#e8f4ff); border:3px solid var(--color-purple); padding:16px; box-shadow:0 4px #c8b3ef40;">
   <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
     <span style="font-size:20px;">&#128105;&#8205;&#128187;</span>
     <span class="ds-pixel-chip" style="font-size:9px; padding:4px 8px;">ROLE MODEL</span>
   </div>
-  <h3 style="font-size:15px; font-weight:700; color:var(--color-blue-dark);">{{ role_model.name }}</h3>
-  <p style="font-size:11px; color:var(--color-muted); margin-bottom:4px;">{{ role_model.years }}</p>
-  <p style="font-size:12px; line-height:1.4;">{{ role_model.intro }}</p>
+  <h3 style="font-size:17px; font-weight:700; color:var(--color-blue-dark);">{{ role_model.name }}</h3>
+  <p style="font-size:12px; color:var(--color-muted); margin-bottom:4px;">{{ role_model.years }}</p>
+  <p style="font-size:14px; line-height:1.5;">{{ role_model.intro }}</p>
   <details style="margin-top:8px; cursor:pointer;">
     <summary style="font-size:11px; color:var(--color-purple); font-weight:600;">Read more</summary>
     <p style="font-size:11px; line-height:1.4; color:var(--color-muted); margin-top:6px;">{{ role_model.detail }}</p>
   </details>
+</div>
+
+<!-- Video tutorial -->
+<div style="border-radius:22px; background:#fff; border:3px solid var(--color-line); padding:16px; box-shadow:0 4px 0 #94a3b820;">
+  <div style="display:flex; align-items:center; gap:6px; margin-bottom:10px;">
+    <span style="font-size:20px;">&#127909;</span>
+    <span style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue-dark); font-weight:700;">HOW TO DO THIS LESSON</span>
+  </div>
+  {% if lesson.video_url %}
+  <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:14px; overflow:hidden;">
+    <iframe src="{{ lesson.video_url }}" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" allowfullscreen></iframe>
+  </div>
+  {% else %}
+  <div style="background:linear-gradient(135deg, #f1f5f9, #e2e8f0); border-radius:14px; padding:24px 16px; text-align:center;">
+    <span style="font-size:40px; display:block; margin-bottom:8px;">&#127916;</span>
+    <p style="font-size:14px; font-weight:600; color:var(--color-muted); margin-bottom:4px;">Video coming soon!</p>
+    <p style="font-size:12px; color:var(--color-muted);">A walkthrough video will appear here to help you get started.</p>
+  </div>
+  {% endif %}
+</div>
+</div>
+
 </div>
 </div>
 

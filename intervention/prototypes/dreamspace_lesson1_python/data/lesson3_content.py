@@ -18,6 +18,7 @@ LESSON_3 = {
         "learners. Physical warm-up follows Bell et al. (1998). Edge-case reasoning "
         "connects to Kapur\u2019s (2008) productive failure."
     ),
+    "video_url": "",
 }
 
 ROLE_MODEL_3 = {
