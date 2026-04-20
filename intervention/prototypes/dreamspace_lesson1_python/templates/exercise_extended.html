@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Exercise {{ num }} -- {{ exercise.title }}{% endblock %}
+
+{% block content %}
+<div style="display:flex; gap:8px; margin-bottom:6px;">
+  <span class="ds-pixel-chip" style="font-size:10px; padding:5px 10px;">LESSON {{ lesson_num }} &middot; EX {{ num }}</span>
+  <span class="ds-pixel-chip" style="font-size:10px; padding:5px 10px;">{{ exercise.difficulty | upper }}</span>
+</div>
+<h1 style="font-family:var(--font-silkscreen); font-size:16px; color:var(--color-blue-dark); margin-bottom:4px;">{{ exercise.title | upper }}</h1>
+<p style="font-size:14px; color:var(--color-muted); margin-bottom:16px;">{{ exercise.description }}</p>
+
+<!-- Navigation -->
+<div style="display:flex; gap:8px; margin-bottom:16px;">
+  {% for i in range(1, total_exercises + 1) %}
+  {% if i == num %}
+  <span class="ds-btn-secondary" style="opacity:.4; pointer-events:none; font-size:13px;">{{ i }}</span>
+  {% else %}
+  <a href="{{ url_for('lesson_exercise', lesson_num=lesson_num, ex_num=i) }}" class="ds-btn-secondary" style="font-size:13px;">{{ i }}</a>
+  {% endif %}
+  {% endfor %}
+</div>
+
+{% if success %}
+<div class="ds-success-banner">
+  &#10003; Excellent work! Exercise {{ num }} complete.
+  {% if num < total_exercises %}
+  Try Exercise {{ num + 1 }} next!
+  {% else %}
+  All exercises done for this lesson!
+  {% endif %}
+</div>
+<div style="margin-top:12px;">
+  {% if num < total_exercises %}
+  <a href="{{ url_for('lesson_exercise', lesson_num=lesson_num, ex_num=num+1) }}" class="ds-btn-primary">Next: Exercise {{ num + 1 }} &#8594;</a>
+  {% else %}
+  <a href="{{ url_for('home') }}" class="ds-btn-primary">Back to All Lessons &#8594;</a>
+  {% endif %}
+</div>
+{% else %}
+
+{% if error %}
+<div style="color:#dd678f; background:#fff0f5; border:2px solid #dd678f; border-radius:16px; padding:12px; margin-bottom:12px; font-weight:600; font-size:14px;">
+  {{ error }}
+</div>
+{% endif %}
+
+<form method="post">
+  {% for field in exercise.fields %}
+  <div class="ds-card" style="margin-bottom:12px;">
+    <h2 style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue-dark); margin-bottom:8px;">{{ field.label | upper }}</h2>
+
+    {% if field.type == 'text' %}
+    <input type="text" name="{{ field.name }}" class="step-input" placeholder="Type here..." />
+
+    {% elif field.type == 'textarea' %}
+    <textarea name="{{ field.name }}" class="step-input" rows="3" placeholder="Type here..."></textarea>
+
+    {% elif field.type == 'steps' %}
+    <div id="steps-{{ field.name }}" style="display:flex; flex-direction:column; gap:8px;">
+      {% for i in range(1, 7) %}
+      <div class="step-row" style="display:flex; align-items:center; gap:8px;">
+        <span style="font-family:var(--font-silkscreen); font-size:12px; color:var(--color-muted); min-width:22px;">{{ i }}.</span>
+        <input type="text" name="{{ field.name }}_{{ i }}" class="step-input" placeholder="Step {{ i }}..." />
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <button type="submit" class="ds-btn-primary">Submit &#10003;</button>
+</form>
+{% endif %}
+{% endblock %}

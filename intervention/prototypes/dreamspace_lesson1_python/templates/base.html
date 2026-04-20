@@ -7,7 +7,7 @@
   <title>{% block title %}DreamSpace -- Lesson 1{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Silkscreen:wght@400;700&family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -34,56 +34,93 @@
   </script>
   <style>
     :root {
-      --color-cream: #fffaf3;
-      --color-blue: #4f91d7;
-      --color-blue-dark: #2f6fae;
-      --color-ink: #274565;
-      --color-muted: #5d7390;
-      --color-line: #b7d2ef;
-      --color-purple: #9f8de6;
-      --color-green-dark: #37a951;
-      --color-locked: #d6dce8;
+      --color-cream: #fff8ee;
+      --color-blue: #4a9ff5;
+      --color-blue-dark: #2563eb;
+      --color-ink: #1e293b;
+      --color-muted: #64748b;
+      --color-line: #c7d8f0;
+      --color-purple: #8b5cf6;
+      --color-green-dark: #16a34a;
+      --color-locked: #e2e8f0;
+      --color-orange: #f59e0b;
+      --color-pink: #ec4899;
+      --font-body: "Baloo 2", "Fredoka", system-ui, sans-serif;
+      --font-heading: "Fredoka", system-ui, sans-serif;
       --font-fredoka: "Fredoka", system-ui, sans-serif;
       --font-silkscreen: "Silkscreen", monospace;
-      --radius-card: 22px;
+      --font-pixel: "Silkscreen", monospace;
+      --radius-card: 24px;
       --radius-pill: 999px;
-      --radius-btn: 18px;
-      --shadow-card: 0 4px 0 #91b3e359;
-      --shadow-btn: 0 6px 0 #277db0f2;
-      --shadow-chip: 0 4px 0 #4f91d729;
+      --radius-btn: 20px;
+      --shadow-card: 0 6px 0 #4a9ff520, 0 2px 8px #0001;
+      --shadow-btn: 0 5px 0 #1d4ed8;
+      --shadow-chip: 0 3px 0 #4a9ff520;
     }
 
     html, body {
-      min-height: 100%;
-      font-family: var(--font-fredoka);
+      min-height: 100vh;
+      font-family: var(--font-body);
       color: var(--color-ink);
-      margin: 0;
+      margin: 0; font-size: 16px;
     }
-    body { background: var(--color-cream); }
+    body {
+      background: var(--color-cream);
+      background-image:
+        radial-gradient(circle at 10% 20%, #dbeafe44 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, #ede9fe44 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, #fef3c744 0%, transparent 60%);
+    }
     button { font: inherit; cursor: pointer; }
     img { max-width: 100%; display: block; }
 
     .ds-backdrop {
       pointer-events: none; z-index: -1;
-      background: linear-gradient(#f3f9ff99, #f5e9ff7a 56%, #e8ecff99);
-      position: fixed; inset: 0;
+      position: fixed; inset: 0; overflow: hidden;
+    }
+    .ds-backdrop::before, .ds-backdrop::after {
+      content: ''; position: absolute; border-radius: 50%; opacity: .06;
+    }
+    .ds-backdrop::before {
+      width: 400px; height: 400px; background: var(--color-purple);
+      top: -100px; right: -100px; animation: float 20s ease-in-out infinite;
+    }
+    .ds-backdrop::after {
+      width: 300px; height: 300px; background: var(--color-orange);
+      bottom: -80px; left: -80px; animation: float 15s ease-in-out infinite reverse;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.1); }
+    }
+    @keyframes pop-in {
+      0% { transform: scale(.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
     }
     .ds-screen {
-      max-width: 430px; min-height: 100vh;
-      margin: 0 auto; padding: 18px 16px 108px;
-      position: relative;
+      width: 100%; max-width: 1280px; min-height: 100vh;
+      margin: 0 auto; padding: 24px clamp(16px, 3vw, 48px) 90px;
+      position: relative; box-sizing: border-box;
     }
     .ds-card {
       border: 3px solid var(--color-blue);
       border-radius: var(--radius-card);
       box-shadow: var(--shadow-card);
-      color: #1f2937; background: #fffffff0; padding: 16px;
+      color: var(--color-ink); background: #ffffffee; padding: 20px;
+      transition: transform .2s, box-shadow .2s;
+      animation: pop-in .4s ease-out both;
     }
+    .ds-card:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #4a9ff520, 0 4px 12px #0002; }
     .ds-card-line {
       border: 3px solid var(--color-line);
       border-radius: var(--radius-card);
-      background: #fffffff0; padding: 16px;
-      box-shadow: 0 4px #bfc8dde6;
+      background: #ffffffee; padding: 20px;
+      box-shadow: 0 4px 0 #94a3b820;
+      animation: pop-in .4s ease-out both;
     }
     .ds-pixel-chip {
       border: 3px solid var(--color-blue);
@@ -98,19 +135,23 @@
     .ds-btn-primary {
       border-radius: var(--radius-btn); color: #fff; width: 100%;
       box-shadow: var(--shadow-btn); font-size: 18px; font-weight: 700;
-      font-family: var(--font-fredoka); cursor: pointer;
-      background: linear-gradient(#3ca9f5, #217ae8);
-      border: none; padding: 15px 16px; transition: opacity .15s;
+      font-family: var(--font-heading); cursor: pointer;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border: none; padding: 16px 20px; transition: all .15s;
       text-align: center; text-decoration: none; display: block;
     }
-    .ds-btn-primary:disabled { opacity: .55; cursor: not-allowed; box-shadow: 0 3px #277db080; }
+    .ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #1d4ed8, 0 4px 16px #3b82f640; }
+    .ds-btn-primary:active { transform: translateY(1px); box-shadow: 0 2px 0 #1d4ed8; }
+    .ds-btn-primary:disabled { opacity: .5; cursor: not-allowed; box-shadow: 0 3px #277db080; }
     .ds-btn-secondary {
-      border: 2px solid var(--color-blue);
+      border: 3px solid var(--color-blue);
       border-radius: var(--radius-btn); color: var(--color-blue-dark);
-      font-size: 15px; font-family: var(--font-fredoka);
-      cursor: pointer; background: #ffffffeb; padding: 10px 16px;
+      font-size: 15px; font-family: var(--font-heading); font-weight: 600;
+      cursor: pointer; background: #fff; padding: 12px 20px;
       text-align: center; text-decoration: none; display: inline-block;
+      transition: all .15s;
     }
+    .ds-btn-secondary:hover { background: #eff6ff; transform: translateY(-1px); }
     .ds-bubble {
       border: 3px solid var(--color-line); color: #2a3441;
       background: #fffffff0; border-radius: 20px;
@@ -126,23 +167,31 @@
     .ds-progress-track {
       border: 2px solid var(--color-blue);
       border-radius: var(--radius-pill);
-      background: #dcecff; flex: 1; height: 18px; padding: 2px;
-      box-shadow: inset 0 2px #4f91d726;
+      background: #e0f2fe; flex: 1; height: 22px; padding: 3px;
+      box-shadow: inset 0 2px 4px #0001; overflow: hidden;
     }
     .ds-progress-fill {
       border-radius: var(--radius-pill);
-      background: linear-gradient(#5fb6f2, #3894e1);
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
       height: 100%; transition: width .5s; display: block;
     }
     .ds-mascot-wrap {
       border: 3px solid var(--color-blue);
-      background: #f3faffeb; border-radius: 26px;
-      place-items: center; min-width: 94px; padding: 8px;
-      display: grid; box-shadow: 0 4px #91b3e359;
+      background: #f0f9ff; border-radius: 26px;
+      place-items: center; min-width: 80px; padding: 8px;
+      display: grid; box-shadow: 0 4px 0 #3b82f620;
     }
     .ds-mascot {
-      object-fit: contain; width: 78px; height: 78px;
-      image-rendering: pixelated; filter: drop-shadow(0 3px #365c841a);
+      object-fit: contain; width: 70px; height: 70px;
+      image-rendering: pixelated; filter: drop-shadow(0 3px 2px #0002);
+      animation: wiggle 3s ease-in-out infinite;
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-3deg); }
+      75% { transform: rotate(3deg); }
     }
     .ds-footer-cta {
       backdrop-filter: blur(8px);
@@ -151,13 +200,14 @@
       padding: 14px 16px; position: fixed;
       bottom: 56px; left: 0; right: 0;
     }
-    .ds-footer-cta-inner { max-width: 430px; margin: 0 auto; }
+    .ds-footer-cta-inner { max-width: 1280px; margin: 0 auto; }
     .ds-topbar { align-items: center; gap: 10px; margin-bottom: 22px; display: flex; }
     .ds-speech-row { align-items: flex-start; gap: 14px; margin-bottom: 24px; display: flex; }
     .ds-success-banner {
-      color: #25633a; background: #ecfff0;
-      border: 2px solid #76c48a; border-radius: 16px;
-      margin-top: 12px; padding: 12px; font-weight: 600;
+      color: #15803d; background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+      border: 2px solid #86efac; border-radius: 20px;
+      margin-top: 12px; padding: 16px 20px; font-weight: 700;
+      font-size: 16px; animation: pop-in .4s ease-out both;
     }
     .ds-pill {
       color: #7a8799; background: #fff;
@@ -181,12 +231,12 @@
     .sort-card.correct { border-color: var(--color-green-dark); background: #ecfff0; }
     .sort-card.wrong { background: #fff0f5; border-color: #dd678f; }
     .step-input {
-      border: 2px solid var(--color-line); width: 100%;
+      border: 3px solid var(--color-line); width: 100%;
       font: inherit; color: var(--color-ink);
-      background: #fff; border-radius: 14px; outline: none;
-      padding: 10px 12px; font-size: 15px; transition: border-color .15s;
+      background: #fff; border-radius: 16px; outline: none;
+      padding: 12px 16px; font-size: 16px; transition: all .2s;
     }
-    .step-input:focus { border-color: var(--color-blue); }
+    .step-input:focus { border-color: var(--color-purple); box-shadow: 0 0 0 4px #8b5cf620; }
 
     /* Vocab flip cards */
     .vocab-card { perspective: 600px; cursor: pointer; height: 120px; }
@@ -204,38 +254,44 @@
 
     /* Bottom nav */
     .bottom-nav {
-      border-top: 4px solid var(--color-blue);
-      z-index: 30; background: #fffffff7;
-      padding: 10px 16px; position: fixed;
+      border-top: 3px solid var(--color-blue);
+      z-index: 30; background: #ffffffdd;
+      backdrop-filter: blur(12px);
+      padding: 8px clamp(16px, 3vw, 48px); position: fixed;
       bottom: 0; left: 0; right: 0;
     }
     .bottom-nav-inner {
       grid-template-columns: repeat(5, 1fr);
-      gap: 8px; max-width: 430px; margin: 0 auto; display: grid;
+      gap: 10px; max-width: 1280px; margin: 0 auto; display: grid;
     }
     .nav-btn {
-      text-align: center; color: #4c5c74; font-size: 10px;
+      text-align: center; color: #4c5c74; font-size: 12px;
       font-family: var(--font-fredoka); cursor: pointer;
       background: #fff; border: 2px solid #cad0e0;
-      border-radius: 14px; flex-direction: column;
-      align-items: center; gap: 2px; padding: 8px 4px;
-      display: flex; text-decoration: none;
+      border-radius: 14px; flex-direction: row;
+      align-items: center; gap: 6px; padding: 10px 16px;
+      display: flex; text-decoration: none; justify-content: center;
     }
+    @media (max-width: 600px) {
+      .nav-btn { flex-direction: column; gap: 2px; padding: 8px 4px; font-size: 10px; }
+    }
+    .nav-btn:hover { background: #f0f9ff; border-color: var(--color-blue); transform: translateY(-2px); }
     .nav-btn.active {
-      border-color: var(--color-blue); color: var(--color-blue);
-      background: #dff1ff;
+      border-color: var(--color-purple); color: var(--color-purple);
+      background: linear-gradient(135deg, #ede9fe, #dbeafe);
+      box-shadow: 0 3px 0 #8b5cf620;
     }
-    .nav-btn .nav-icon { font-size: 18px; }
-    .nav-btn .nav-label { font-size: 10px; font-weight: 600; }
+    .nav-btn .nav-icon { font-size: 22px; }
+    .nav-btn .nav-label { font-size: 12px; font-weight: 600; }
 
     .home-header {
       z-index: 5; color: #fff;
-      border-bottom: 4px solid var(--color-blue-dark);
-      backdrop-filter: blur(3px);
-      background: linear-gradient(#4aa3dcf5, #3995d5f5);
-      padding: 14px 16px; position: sticky; top: 0;
+      border-bottom: 4px solid #1d4ed8;
+      backdrop-filter: blur(4px);
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      padding: 20px clamp(16px, 3vw, 48px); position: sticky; top: 0;
       border-radius: 0 0 var(--radius-card) var(--radius-card);
-      margin: -18px -16px 20px;
+      margin: -24px calc(-1 * clamp(16px, 3vw, 48px)) 24px;
     }
     .log-entry {
       border-left: 4px solid; border-radius: 12px;
@@ -250,6 +306,10 @@
       border-radius: var(--radius-card);
       position: absolute; inset: 0; z-index: 2;
     }
+
+    /* Fun extras */
+    h1, h2, h3 { font-family: var(--font-heading); }
+    ::selection { background: #c4b5fd; color: #1e1b4b; }
   </style>
   {% block head %}{% endblock %}
 </head>
@@ -266,17 +326,17 @@
         <span class="nav-icon">&#127968;</span>
         <span class="nav-label">Home</span>
       </a>
-      <a href="{{ url_for('simulator') }}" class="nav-btn {% if '/simulator' in request.path %}active{% endif %}">
+      <a href="{{ url_for('lesson_home', lesson_num=1) }}" class="nav-btn {% if '/lesson/1' in request.path %}active{% endif %}">
         <span class="nav-icon">&#129302;</span>
-        <span class="nav-label">Simulator</span>
+        <span class="nav-label">L1</span>
       </a>
-      <a href="{{ url_for('exercise', num=1) }}" class="nav-btn {% if '/exercise' in request.path %}active{% endif %}">
-        <span class="nav-icon">&#9999;&#65039;</span>
-        <span class="nav-label">Exercises</span>
+      <a href="{{ url_for('lesson_home', lesson_num=2) }}" class="nav-btn {% if '/lesson/2' in request.path %}active{% endif %}">
+        <span class="nav-icon">&#128260;</span>
+        <span class="nav-label">L2</span>
       </a>
-      <a href="{{ url_for('challenge') }}" class="nav-btn {% if '/challenge' in request.path %}active{% endif %}">
-        <span class="nav-icon">&#127942;</span>
-        <span class="nav-label">Challenge</span>
+      <a href="{{ url_for('lesson_home', lesson_num=3) }}" class="nav-btn {% if '/lesson/3' in request.path %}active{% endif %}">
+        <span class="nav-icon">&#128268;</span>
+        <span class="nav-label">L3</span>
       </a>
       <a href="{{ url_for('review') }}" class="nav-btn {% if '/review' in request.path %}active{% endif %}">
         <span class="nav-icon">&#11088;</span>

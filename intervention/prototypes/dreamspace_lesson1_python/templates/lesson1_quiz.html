@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Quiz — Lesson {{ lesson_num }}{% endblock %}
+
+{% block content %}
+<div style="display:flex; gap:8px; margin-bottom:6px;">
+  <span class="ds-pixel-chip" style="font-size:10px; padding:5px 10px;">LESSON {{ lesson_num }}</span>
+  <span class="ds-pixel-chip" style="font-size:10px; padding:5px 10px;">QUIZ</span>
+</div>
+<h1 style="font-family:var(--font-silkscreen); font-size:16px; color:var(--color-blue-dark); margin-bottom:4px;">ALGORITHM QUIZ</h1>
+<p style="font-size:14px; color:var(--color-muted); margin-bottom:16px;">Test what you learned from the maze levels!</p>
+
+{% if result is not none %}
+<!-- Results -->
+<div class="ds-card" style="margin-bottom:16px; text-align:center; background:{% if result.percent >= 75 %}#ecfff0{% else %}#fff7e7{% endif %};">
+  <div style="font-size:48px; margin-bottom:8px;">{% if result.percent >= 75 %}&#127881;{% else %}&#128170;{% endif %}</div>
+  <h2 style="font-family:var(--font-silkscreen); font-size:18px; color:var(--color-blue-dark); margin-bottom:8px;">{{ result.score }} / {{ result.total }}</h2>
+  <p style="font-size:15px; color:var(--color-muted);">
+    {% if result.percent >= 75 %}
+    Great job! You understand algorithms!
+    {% else %}
+    Good try! Review the levels and try again.
+    {% endif %}
+  </p>
+</div>
+
+<!-- Show answers -->
+{% for q in questions %}
+<div class="ds-card{% if loop.index0 in result.wrong %}-line{% endif %}" style="margin-bottom:12px; {% if loop.index0 in result.wrong %}border-color:#f43f5e;{% endif %}">
+  <p style="font-size:14px; font-weight:700; color:var(--color-blue-dark); margin-bottom:8px;">{{ loop.index }}. {{ q.question }}</p>
+  {% set qi = loop.index0 %}
+  {% for opt in q.options %}
+  <div style="padding:6px 10px; border-radius:10px; font-size:13px; margin-bottom:4px;
+    {% if loop.index0 == q.correct %}background:#ecfff0; color:#25633a; font-weight:600;{% elif loop.index0 == result.answers[qi] and loop.index0 != q.correct %}background:#fff0f5; color:#9f1239; text-decoration:line-through;{% else %}color:var(--color-muted);{% endif %}
+  ">
+    {{ opt }}
+    {% if loop.index0 == q.correct %} &#10003;{% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endfor %}
+
+<div style="display:flex; gap:8px; margin-bottom:16px;">
+  <a href="{{ url_for('lesson_quiz', lesson_num=lesson_num) }}" class="ds-btn-secondary" style="flex:1; text-align:center;">Try Again</a>
+  <a href="{{ url_for('home') }}" class="ds-btn-primary" style="flex:1; text-align:center;">All Lessons &#8594;</a>
+</div>
+
+{% else %}
+<!-- Quiz form -->
+<form method="post">
+  {% for q in questions %}
+  <div class="ds-card" style="margin-bottom:14px;">
+    <p style="font-size:15px; font-weight:700; color:var(--color-blue-dark); margin-bottom:10px;">{{ loop.index }}. {{ q.question }}</p>
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      {% set qi = loop.index0 %}
+      {% for opt in q.options %}
+      <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:14px; border:2px solid var(--color-line); cursor:pointer; font-size:14px; transition:border-color .15s;" onmouseenter="this.style.borderColor='var(--color-blue)'" onmouseleave="this.style.borderColor=''">
+        <input type="radio" name="q{{ qi }}" value="{{ loop.index0 }}" required style="accent-color:var(--color-blue); width:18px; height:18px;" />
+        {{ opt }}
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+  <button type="submit" class="ds-btn-primary" style="margin-bottom:16px;">Submit Quiz &#10003;</button>
+</form>
+{% endif %}
+
+<a href="{{ url_for('lesson_home', lesson_num=lesson_num) }}" class="ds-btn-secondary" style="display:block; text-align:center;">&#8592; Back to Lesson</a>
+{% endblock %}

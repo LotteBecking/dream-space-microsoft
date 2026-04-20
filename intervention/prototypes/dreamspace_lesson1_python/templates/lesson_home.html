@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}DreamSpace -- Lesson {{ lesson_num }}{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="home-header">
+  <div style="display:flex; align-items:center; justify-content:space-between;">
+    <div>
+      <div style="font-family:var(--font-silkscreen); font-size:12px; letter-spacing:.12em; opacity:.85;">LESSON {{ lesson_num }}</div>
+      <h1 style="font-size:20px; font-weight:700; margin-top:4px;">{{ lesson.title }}</h1>
+    </div>
+    <div class="ds-mascot-wrap" style="border-color:#fff4;">
+      <img src="{{ url_for('static', filename='images/space-beaver.png') }}" alt="Space Beaver" class="ds-mascot" />
+    </div>
+  </div>
+</div>
+
+<!-- Progress -->
+<div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+  <span style="font-family:var(--font-silkscreen); font-size:11px; color:var(--color-blue-dark);">PROGRESS</span>
+  <div class="ds-progress-track" style="flex:1;">
+    <span class="ds-progress-fill" style="width:{{ progress.progress_percent }}%;"></span>
+  </div>
+  <span style="font-family:var(--font-silkscreen); font-size:12px; color:var(--color-blue-dark);">{{ progress.progress_percent }}%</span>
+</div>
+
+<!-- Speech bubble -->
+<div class="ds-speech-row">
+  <div class="ds-mascot-wrap" style="flex-shrink:0;">
+    <img src="{{ url_for('static', filename='images/space-beaver.png') }}" alt="Space Beaver" class="ds-mascot" style="width:50px; height:50px;" />
+  </div>
+  <div class="ds-bubble">{{ lesson.welcome }}</div>
+</div>
+
+<!-- Lesson info pills -->
+<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
+  <span class="ds-pixel-chip">{{ lesson.age_group }}</span>
+  <span class="ds-pixel-chip">{{ lesson.duration }} MIN</span>
+  <span class="ds-pixel-chip">{{ lesson.level | upper }}</span>
+</div>
+
+<!-- Two-column layout: main content left, role model banner right -->
+<div style="display:grid; grid-template-columns:1fr 280px; gap:24px; margin-bottom:24px; align-items:start;">
+<div>
+<!-- About this lesson -->
+<div class="ds-card" style="margin-bottom:20px;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:14px; margin-bottom:10px; color:var(--color-blue-dark);">ABOUT THIS LESSON</h2>
+  <p style="font-size:15px; line-height:1.5; color:var(--color-muted);">{{ lesson.description }}</p>
+</div>
+
+<!-- Vocabulary cards -->
+<h2 style="font-family:var(--font-silkscreen); font-size:14px; margin-bottom:12px; color:var(--color-blue-dark);">KEY VOCABULARY</h2>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px;">
+  {% for v in vocabulary %}
+  <div class="vocab-card" onclick="this.querySelector('.vocab-card-inner').classList.toggle('flipped')">
+    <div class="vocab-card-inner">
+      <div class="vocab-card-face ds-card" style="background:linear-gradient(135deg,#dff1ff,#e8dfff); border-color:var(--color-blue);">
+        <span style="font-family:var(--font-silkscreen); font-size:13px; color:var(--color-blue-dark);">{{ v.word }}</span>
+        <span style="font-size:11px; color:var(--color-muted); margin-top:4px;">tap to flip</span>
+      </div>
+      <div class="vocab-card-face vocab-card-back ds-card" style="background:#fff;">
+        <span style="font-size:13px; line-height:1.4; text-align:center;">{{ v.definition }}</span>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</div>
+
+<!-- Role model sidebar -->
+<div style="position:sticky; top:80px; border-radius:22px; background:linear-gradient(180deg,#f0e8ff,#e8f4ff); border:3px solid var(--color-purple); padding:16px; box-shadow:0 4px #c8b3ef40;">
+  <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+    <span style="font-size:20px;">&#128105;&#8205;&#128187;</span>
+    <span class="ds-pixel-chip" style="font-size:9px; padding:4px 8px;">ROLE MODEL</span>
+  </div>
+  <h3 style="font-size:15px; font-weight:700; color:var(--color-blue-dark);">{{ role_model.name }}</h3>
+  <p style="font-size:11px; color:var(--color-muted); margin-bottom:4px;">{{ role_model.years }}</p>
+  <p style="font-size:12px; line-height:1.4;">{{ role_model.intro }}</p>
+  <details style="margin-top:8px; cursor:pointer;">
+    <summary style="font-size:11px; color:var(--color-purple); font-weight:600;">Read more</summary>
+    <p style="font-size:11px; line-height:1.4; color:var(--color-muted); margin-top:6px;">{{ role_model.detail }}</p>
+  </details>
+</div>
+</div>
+
+<style>
+  @media (max-width: 700px) {
+    div[style*="grid-template-columns:1fr 280px"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+<!-- CTA -->
+<div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
+  <a href="{{ url_for('lesson_exercise', lesson_num=lesson_num, ex_num=1) }}" class="ds-btn-primary">Start Level 1 &#8594;</a>
+  <a href="{{ url_for('home') }}" class="ds-btn-secondary" style="text-align:center;">&#8592; All Lessons</a>
+</div>
+{% endblock %}

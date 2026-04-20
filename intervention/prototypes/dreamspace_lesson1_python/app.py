@@ -1,4 +1,4 @@
-"""DreamSpace Lesson 1 -- Flask web app for students (ages 8-12)."""
+"""DreamSpace Lessons 1-3 -- Flask web app for students (ages 8-12)."""
 from __future__ import annotations
 
 from flask import (
@@ -12,7 +12,42 @@ from data.lesson_content import (
     LESSON, ROLE_MODEL, VOCABULARY, LEARNING_OBJECTIVES,
     EXERCISES, TEA_STEPS_CORRECT, CHALLENGES,
     INITIAL_SANDWICH_STATE, COMMAND_ALIASES,
+    RESEARCH_REFERENCES, PEDAGOGICAL_FRAMEWORK,
+    MAZE_LEVELS, QUIZ_QUESTIONS,
 )
+from data.lesson2_content import (
+    LESSON_2, ROLE_MODEL_2, VOCABULARY_2, LEARNING_OBJECTIVES_2, EXERCISES_2,
+)
+from data.lesson3_content import (
+    LESSON_3, ROLE_MODEL_3, VOCABULARY_3, LEARNING_OBJECTIVES_3, EXERCISES_3,
+)
+
+# ---------------------------------------------------------------------------
+# All-lessons registry
+# ---------------------------------------------------------------------------
+ALL_LESSONS = {
+    1: {
+        "lesson": LESSON,
+        "role_model": ROLE_MODEL,
+        "vocabulary": VOCABULARY,
+        "objectives": LEARNING_OBJECTIVES,
+        "exercises": MAZE_LEVELS,
+    },
+    2: {
+        "lesson": LESSON_2,
+        "role_model": ROLE_MODEL_2,
+        "vocabulary": VOCABULARY_2,
+        "objectives": LEARNING_OBJECTIVES_2,
+        "exercises": EXERCISES_2,
+    },
+    3: {
+        "lesson": LESSON_3,
+        "role_model": ROLE_MODEL_3,
+        "vocabulary": VOCABULARY_3,
+        "objectives": LEARNING_OBJECTIVES_3,
+        "exercises": EXERCISES_3,
+    },
+}
 
 app = Flask(__name__)
 app.secret_key = os.environ.get(
@@ -23,11 +58,18 @@ app.secret_key = os.environ.get(
 # Session helpers
 # ---------------------------------------------------------------------------
 
-def get_progress():
-    """Return (and lazily initialise) student progress stored in the session."""
-    if "initialized" not in session:
-        session["completed_exercises"] = []
-        session["exercise_answers"] = {}
+def get_progress(lesson_num=1):
+    """Return (and lazily initialise) student progress for a lesson."""
+    key = f"lesson_{lesson_num}"
+    if key not in session:
+        session[key] = {
+            "completed_exercises": [],
+            "exercise_answers": {},
+        }
+        session.modified = True
+
+    # Lesson 1 also has simulator state
+    if lesson_num == 1 and "initialized" not in session:
         session["exit_ticket_1"] = ""
         session["exit_ticket_2"] = ""
         session["simulator_completed"] = False
@@ -37,13 +79,28 @@ def get_progress():
         session["simulator_commands"] = []
         session["initialized"] = True
 
-    completed = session.get("completed_exercises", [])
+    data = session.get(key, {"completed_exercises": [], "exercise_answers": {}})
+    completed = data.get("completed_exercises", [])
     return {
         "completed_exercises": completed,
         "progress_percent": round(len(completed) / 3 * 100),
         "simulator_completed": session.get("simulator_completed", False),
         "simulator_confusion_count": session.get("simulator_confusion_count", 0),
         "all_exercises_done": len(completed) >= 3,
+    }
+
+
+def get_overall_progress():
+    """Return progress across all lessons."""
+    total = 0
+    for ln in (1, 2, 3):
+        key = f"lesson_{ln}"
+        data = session.get(key, {"completed_exercises": []})
+        total += len(data.get("completed_exercises", []))
+    return {
+        "total_completed": total,
+        "total_exercises": 9,
+        "progress_percent": round(total / 9 * 100),
     }
 
 
@@ -203,20 +260,42 @@ def process_user_command(user_input: str, state: dict) -> dict:
 
 @app.route("/")
 def home():
-    progress = get_progress()
+    """Lesson picker / landing page."""
+    overall = get_overall_progress()
+    lessons = []
+    for ln in (1, 2, 3):
+        info = ALL_LESSONS[ln]
+        prog = get_progress(ln)
+        lessons.append({
+            "num": ln,
+            "lesson": info["lesson"],
+            "role_model": info["role_model"],
+            "progress": prog,
+        })
+    return render_template("home.html", lessons=lessons, overall=overall)
+
+
+@app.route("/lesson/<int:lesson_num>")
+def lesson_home(lesson_num):
+    """Home page for a specific lesson."""
+    if lesson_num not in ALL_LESSONS:
+        return "Lesson not found", 404
+    info = ALL_LESSONS[lesson_num]
+    progress = get_progress(lesson_num)
     return render_template(
-        "home.html",
-        lesson=LESSON,
-        role_model=ROLE_MODEL,
-        vocabulary=VOCABULARY,
-        objectives=LEARNING_OBJECTIVES,
+        "lesson_home.html",
+        lesson=info["lesson"],
+        role_model=info["role_model"],
+        vocabulary=info["vocabulary"],
+        objectives=info["objectives"],
         progress=progress,
+        lesson_num=lesson_num,
     )
 
 
 @app.route("/simulator", methods=["GET", "POST"])
 def simulator():
-    progress = get_progress()
+    progress = get_progress(1)
     state = session.get("simulator_state", copy.deepcopy(INITIAL_SANDWICH_STATE))
     log = session.get("simulator_log", [])
     commands = session.get("simulator_commands", [])
@@ -253,7 +332,7 @@ def simulator():
             session["simulator_confusion_count"] = confusion
             if state["sandwich_complete"]:
                 session["simulator_completed"] = True
-            progress = get_progress()
+            progress = get_progress(1)
 
         if action == "remove":
             idx = request.form.get("index")
@@ -278,7 +357,7 @@ def simulator():
 @app.route("/api/simulator/command", methods=["POST"])
 def api_simulator_command():
     """JSON endpoint for JS-enhanced simulator interaction."""
-    progress = get_progress()
+    progress = get_progress(1)
     state = session.get("simulator_state", copy.deepcopy(INITIAL_SANDWICH_STATE))
     commands = session.get("simulator_commands", [])
     user_input = (request.json or {}).get("command", "").strip()
@@ -316,16 +395,114 @@ def api_simulator_command():
 
 @app.route("/exercise/<int:num>", methods=["GET", "POST"])
 def exercise(num):
-    if num not in (1, 2, 3):
+    """Legacy route — redirects to lesson 1 exercises."""
+    return redirect(url_for("lesson_exercise", lesson_num=1, ex_num=num))
+
+
+@app.route("/lesson/<int:lesson_num>/exercise/<int:ex_num>", methods=["GET", "POST"])
+def lesson_exercise(lesson_num, ex_num):
+    if lesson_num not in ALL_LESSONS:
+        return "Lesson not found", 404
+    info = ALL_LESSONS[lesson_num]
+    exercises = info["exercises"]
+    if ex_num < 1 or ex_num > len(exercises):
         return "Exercise not found", 404
 
-    progress = get_progress()
-    ex = EXERCISES[num - 1]
+    progress = get_progress(lesson_num)
+    ex = exercises[ex_num - 1]
+    lesson_data = session.setdefault(f"lesson_{lesson_num}",
+                                     {"completed_exercises": [], "exercise_answers": {}})
     error = None
     success = False
 
     if request.method == "POST":
-        if num == 1:
+        ex_type = ex.get("type", "written_steps")
+
+        if ex_type in ("written_steps", "written_conditional"):
+            steps = [
+                request.form.get(f"step_{i}", "").strip()
+                for i in range(1, 21)
+            ]
+            steps = [s for s in steps if s]
+            min_steps = ex.get("min_steps", 2)
+            if len(steps) < min_steps:
+                error = f"You need at least {min_steps} steps. Keep going!"
+            else:
+                lesson_data["exercise_answers"][str(ex_num)] = steps
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session.modified = True
+                success = True
+                progress = get_progress(lesson_num)
+
+        elif ex_type == "bug_hunt":
+            fixes = []
+            bugs = ex.get("bugs", [])
+            all_filled = True
+            for i in range(len(bugs)):
+                fix = request.form.get(f"fix_{i}", "").strip()
+                fixes.append(fix)
+                if not fix:
+                    all_filled = False
+            if not all_filled:
+                error = "Please write a fix for every bug!"
+            else:
+                lesson_data["exercise_answers"][str(ex_num)] = fixes
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session.modified = True
+                success = True
+                progress = get_progress(lesson_num)
+
+        elif ex_type == "written_extended":
+            fields = ex.get("fields", [])
+            answers = {}
+            errors = []
+            for field in fields:
+                name = field["name"]
+                if field["type"] == "steps":
+                    val = [
+                        request.form.get(f"{name}_{i}", "").strip()
+                        for i in range(1, 21)
+                    ]
+                    val = [v for v in val if v]
+                    if len(val) < 2:
+                        errors.append(f"Write at least 2 steps for \u2018{field['label']}\u2019.")
+                    answers[name] = val
+                else:
+                    val = request.form.get(name, "").strip()
+                    if not val:
+                        errors.append(f"Please fill in \u2018{field['label']}\u2019.")
+                    answers[name] = val
+            if errors:
+                error = " ".join(errors)
+            else:
+                lesson_data["exercise_answers"][str(ex_num)] = answers
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session.modified = True
+                success = True
+                progress = get_progress(lesson_num)
+
+        # Lesson 1 sorting exercise (special case)
+        elif ex_type == "Sorting":
+            order = request.form.getlist("order")
+            if len(order) != 6:
+                error = "Please put all 6 steps in order."
+            else:
+                submitted = [TEA_STEPS_CORRECT[int(i)] for i in order]
+                lesson_data["exercise_answers"][str(ex_num)] = submitted
+                if submitted == TEA_STEPS_CORRECT:
+                    if ex_num not in lesson_data["completed_exercises"]:
+                        lesson_data["completed_exercises"].append(ex_num)
+                    session.modified = True
+                    success = True
+                    progress = get_progress(lesson_num)
+                else:
+                    error = "Not quite right! Check the order and try again."
+
+        # Lesson 1 original written types
+        elif ex_type == "Written":
             steps = [
                 request.form.get(f"step_{i}", "").strip()
                 for i in range(1, 21)
@@ -334,30 +511,14 @@ def exercise(num):
             if len(steps) < 6:
                 error = "You need at least 6 steps. Keep going!"
             else:
-                session["exercise_answers"][str(num)] = steps
-                if num not in session["completed_exercises"]:
-                    session["completed_exercises"].append(num)
+                lesson_data["exercise_answers"][str(ex_num)] = steps
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
                 session.modified = True
                 success = True
-                progress = get_progress()
+                progress = get_progress(lesson_num)
 
-        elif num == 2:
-            order = request.form.getlist("order")
-            if len(order) != 6:
-                error = "Please put all 6 steps in order."
-            else:
-                submitted = [TEA_STEPS_CORRECT[int(i)] for i in order]
-                session["exercise_answers"][str(num)] = submitted
-                if submitted == TEA_STEPS_CORRECT:
-                    if num not in session["completed_exercises"]:
-                        session["completed_exercises"].append(num)
-                    session.modified = True
-                    success = True
-                    progress = get_progress()
-                else:
-                    error = "Not quite right! Check the order and try again."
-
-        elif num == 3:
+        elif ex_type == "Extension":
             lunch_item = request.form.get("lunch_item", "").strip()
             steps = [
                 request.form.get(f"step_{i}", "").strip()
@@ -366,42 +527,44 @@ def exercise(num):
             steps = [s for s in steps if s]
             allergy = request.form.get("allergy", "").strip()
             missing = request.form.get("missing_ingredient", "").strip()
-
-            errors = []
+            errs = []
             if not lunch_item:
-                errors.append("Choose a lunch item.")
+                errs.append("Choose a lunch item.")
             if len(steps) < 6:
-                errors.append("You need at least 6 steps.")
+                errs.append("You need at least 6 steps.")
             if not allergy:
-                errors.append("Add allergy safety instructions.")
+                errs.append("Add allergy safety instructions.")
             if not missing:
-                errors.append("Add a rule for missing ingredients.")
-            if errors:
-                error = " ".join(errors)
+                errs.append("Add a rule for missing ingredients.")
+            if errs:
+                error = " ".join(errs)
             else:
-                session["exercise_answers"][str(num)] = {
-                    "lunch_item": lunch_item,
-                    "steps": steps,
-                    "allergy": allergy,
-                    "missing_ingredient": missing,
+                lesson_data["exercise_answers"][str(ex_num)] = {
+                    "lunch_item": lunch_item, "steps": steps,
+                    "allergy": allergy, "missing_ingredient": missing,
                 }
-                if num not in session["completed_exercises"]:
-                    session["completed_exercises"].append(num)
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
                 session.modified = True
                 success = True
-                progress = get_progress()
+                progress = get_progress(lesson_num)
 
-    # Prepare exercise-specific context
+    session[f"lesson_{lesson_num}"] = lesson_data
+    session.modified = True
+
     context = {
         "exercise": ex,
-        "num": num,
+        "num": ex_num,
+        "lesson_num": lesson_num,
+        "lesson": info["lesson"],
         "progress": progress,
         "error": error,
         "success": success,
+        "total_exercises": len(exercises),
     }
 
-    if num == 2:
-        # Shuffled indices for tea steps
+    # Lesson 1 exercise 2 sorting needs shuffled indices
+    if lesson_num == 1 and ex_num == 2:
         if "tea_shuffle" not in session:
             indices = list(range(6))
             random.shuffle(indices)
@@ -410,23 +573,96 @@ def exercise(num):
         context["tea_steps"] = TEA_STEPS_CORRECT
         context["shuffled_indices"] = session["tea_shuffle"]
 
-    template = f"exercise{num}.html"
+    # Choose template based on exercise type
+    ex_type = ex.get("type", "written_steps")
+    if ex_type == "maze":
+        return render_template("maze.html", level=ex, lesson_num=lesson_num, progress=progress)
+    elif lesson_num == 1:
+        template = f"exercise{ex_num}.html"
+    elif ex_type == "bug_hunt":
+        template = "exercise_bug_hunt.html"
+    elif ex_type == "written_extended":
+        template = "exercise_extended.html"
+    elif ex_type == "written_conditional":
+        template = "exercise_conditional.html"
+    else:
+        template = "exercise_written.html"
+
     return render_template(template, **context)
 
 
-@app.route("/challenge")
-def challenge():
-    progress = get_progress()
+@app.route("/lesson/<int:lesson_num>/challenge")
+def lesson_challenge(lesson_num):
+    if lesson_num != 1:
+        return redirect(url_for("lesson_home", lesson_num=lesson_num))
+    progress = get_progress(1)
     return render_template(
         "challenge.html",
         challenges=CHALLENGES,
         progress=progress,
+        lesson_num=1,
+    )
+
+
+@app.route("/challenge")
+def challenge():
+    return redirect(url_for("lesson_challenge", lesson_num=1))
+
+
+@app.route("/api/maze/complete", methods=["POST"])
+def api_maze_complete():
+    """Mark a maze level as complete (called from JS)."""
+    data = request.json or {}
+    lesson_num = data.get("lesson", 1)
+    level = data.get("level", 1)
+    steps = data.get("steps", 0)
+
+    key = f"lesson_{lesson_num}"
+    lesson_data = session.setdefault(key, {"completed_exercises": [], "exercise_answers": {}})
+    if level not in lesson_data["completed_exercises"]:
+        lesson_data["completed_exercises"].append(level)
+    lesson_data["exercise_answers"][str(level)] = {"steps": steps}
+    session.modified = True
+
+    return jsonify({"success": True})
+
+
+@app.route("/lesson/<int:lesson_num>/quiz", methods=["GET", "POST"])
+def lesson_quiz(lesson_num):
+    """Quiz page after completing maze levels."""
+    if lesson_num != 1:
+        return redirect(url_for("lesson_home", lesson_num=lesson_num))
+
+    result = None
+    if request.method == "POST":
+        answers = []
+        wrong = []
+        for i, q in enumerate(QUIZ_QUESTIONS):
+            ans = request.form.get(f"q{i}")
+            ans = int(ans) if ans is not None else -1
+            answers.append(ans)
+            if ans != q["correct"]:
+                wrong.append(i)
+        score = len(QUIZ_QUESTIONS) - len(wrong)
+        result = {
+            "score": score,
+            "total": len(QUIZ_QUESTIONS),
+            "percent": round(score / len(QUIZ_QUESTIONS) * 100),
+            "answers": answers,
+            "wrong": wrong,
+        }
+
+    return render_template(
+        "lesson1_quiz.html",
+        questions=QUIZ_QUESTIONS,
+        lesson_num=lesson_num,
+        result=result,
     )
 
 
 @app.route("/review", methods=["GET", "POST"])
 def review():
-    progress = get_progress()
+    progress = get_progress(1)
     success = False
 
     if request.method == "POST":

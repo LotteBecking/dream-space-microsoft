@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+{% block title %}Level {{ level.id }} — Guide the Robot{% endblock %}
+
+{% block content %}
+<div style="display:flex; gap:8px; margin-bottom:6px;">
+  <span class="ds-pixel-chip" style="font-size:10px; padding:5px 10px;">LESSON 1</span>
+  <span class="ds-pixel-chip" style="font-size:10px; padding:5px 10px;">{{ level.difficulty | upper }}</span>
+</div>
+<h1 style="font-family:var(--font-silkscreen); font-size:16px; color:var(--color-blue-dark); margin-bottom:4px;">{{ level.title | upper }}</h1>
+<p style="font-size:14px; color:var(--color-muted); margin-bottom:12px;">Guide your robot to the goal using commands!</p>
+
+<!-- Level navigation -->
+<div style="display:flex; gap:8px; margin-bottom:16px;">
+  {% for i in range(1, 4) %}
+  {% if i == level.id %}
+  <span class="ds-btn-secondary" style="opacity:.4; pointer-events:none; font-size:13px;">Level {{ i }}</span>
+  {% else %}
+  <a href="{{ url_for('lesson_exercise', lesson_num=1, ex_num=i) }}" class="ds-btn-secondary" style="font-size:13px;">Level {{ i }}</a>
+  {% endif %}
+  {% endfor %}
+  <a href="{{ url_for('lesson_quiz', lesson_num=1) }}" class="ds-btn-secondary" style="font-size:13px;">Quiz</a>
+</div>
+
+<!-- Desktop two-column / mobile stacked -->
+<div class="maze-layout">
+<!-- LEFT: Maze grid -->
+<div class="maze-col-left">
+<div style="background:#fff; border-radius:22px; border:3px solid var(--color-line); padding:20px; box-shadow:0 4px #bfc8ddcc;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:13px; color:var(--color-blue-dark); margin-bottom:12px;">Maze</h2>
+  <div id="maze-grid" style="display:grid; grid-template-columns:repeat({{ level.size }}, 1fr); gap:6px; margin:0 auto;"></div>
+</div>
+</div>
+<!-- RIGHT: Commands + Program -->
+<div class="maze-col-right">
+
+<!-- Status message -->
+<div id="status-msg" style="display:none; border-radius:16px; padding:12px; margin-bottom:12px; font-weight:600; font-size:14px; text-align:center;"></div>
+
+<!-- Commands -->
+<div style="background:#fff; border-radius:22px; border:3px solid var(--color-line); padding:16px; margin-bottom:16px; box-shadow:0 4px #bfc8ddcc;">
+  <h2 style="font-family:var(--font-silkscreen); font-size:13px; color:var(--color-blue-dark); margin-bottom:12px;">Commands</h2>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+    <button onclick="addCmd('forward')" class="cmd-btn" style="background:#22c55e; color:#fff;">
+      <span style="font-size:18px;">&#8593;</span> Forward
+    </button>
+    {% if 'backward' in level.available_commands %}
+    <button onclick="addCmd('backward')" class="cmd-btn" style="background:#f97316; color:#fff;">
+      <span style="font-size:18px;">&#8595;</span> Backward
+    </button>
+    {% else %}
+    <button disabled class="cmd-btn" style="background:#d1d5db; color:#9ca3af; cursor:not-allowed;">
+      <span style="font-size:18px;">&#8595;</span> Backward
+    </button>
+    {% endif %}
+    <button onclick="addCmd('turn_left')" class="cmd-btn" style="background:#3b82f6; color:#fff;">
+      <span style="font-size:18px;">&#8592;</span> Turn Left
+    </button>
+    <button onclick="addCmd('turn_right')" class="cmd-btn" style="background:#a855f7; color:#fff;">
+      <span style="font-size:18px;">&#8594;</span> Turn Right
+    </button>
+  </div>
+</div>
+
+<!-- Program -->
+<div style="background:#fff; border-radius:22px; border:3px solid var(--color-line); padding:16px; margin-bottom:16px; box-shadow:0 4px #bfc8ddcc;">
+  <h2 id="program-title" style="font-family:var(--font-silkscreen); font-size:13px; color:var(--color-blue-dark); margin-bottom:12px;">Program (0 commands)</h2>
+  <div id="program-list" style="min-height:60px; display:flex; flex-direction:column; gap:6px;">
+    <p id="program-empty" style="font-size:13px; color:var(--color-muted); text-align:center; padding:16px 0;">Add commands to create your program</p>
+  </div>
+  <div style="display:flex; gap:8px; margin-top:12px;">
+    <button onclick="runProgram()" id="run-btn" style="flex:1; border:none; border-radius:16px; padding:14px; font-size:16px; font-weight:700; font-family:var(--font-fredoka); cursor:pointer; color:#fff; background:linear-gradient(135deg,#f472b6,#ec4899); box-shadow:0 4px #be185d;">
+      &#9654; Run
+    </button>
+    <button onclick="removeLastCmd()" style="border:2px solid var(--color-line); background:#fff; border-radius:16px; padding:14px 16px; font-size:16px; cursor:pointer;">&#128465;</button>
+    <button onclick="clearProgram()" style="border:2px solid var(--color-line); background:#fff; border-radius:16px; padding:14px 16px; font-size:14px; font-family:var(--font-fredoka); cursor:pointer; color:var(--color-muted);">Clear</button>
+    <button onclick="resetMaze()" style="border:2px solid var(--color-line); background:#fff; border-radius:16px; padding:14px 16px; font-size:16px; cursor:pointer;">&#8635;</button>
+  </div>
+</div>
+
+<!-- Next level / back -->
+<div id="next-area" style="display:none; margin-bottom:16px;">
+  {% if level.id < 3 %}
+  <a id="next-link" href="{{ url_for('lesson_exercise', lesson_num=1, ex_num=level.id + 1) }}" class="ds-btn-primary">Next: Level {{ level.id + 1 }} &#8594;</a>
+  {% else %}
+  <a id="next-link" href="{{ url_for('lesson_quiz', lesson_num=1) }}" class="ds-btn-primary">Take the Quiz &#8594;</a>
+  {% endif %}
+</div>
+</div><!-- end maze-col-right -->
+</div><!-- end maze-layout -->
+<a href="{{ url_for('lesson_home', lesson_num=1) }}" class="ds-btn-secondary" style="display:block; text-align:center; margin-top:16px;">&#8592; Back to Lesson</a>
+{% endblock %}
+
+{% block scripts %}
+<style>
+  .maze-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: clamp(16px, 2vw, 32px);
+    align-items: start;
+    min-height: calc(100vh - 240px);
+  }
+  @media (max-width: 700px) {
+    .maze-layout { grid-template-columns: 1fr; min-height: auto; }
+  }
+  .maze-col-left, .maze-col-right {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .cmd-btn {
+    border: none; border-radius: 16px; padding: clamp(12px, 1.5vw, 20px) 12px;
+    font-size: clamp(14px, 1.2vw, 17px); font-weight: 700; font-family: var(--font-fredoka);
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; gap: 8px; box-shadow: 0 4px rgba(0,0,0,.15);
+    transition: transform .1s;
+  }
+  .cmd-btn:active:not(:disabled) { transform: scale(.95); }
+  .maze-cell {
+    aspect-ratio: 1; border-radius: clamp(10px, 1.2vw, 16px); border: 3px solid #e8dfff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(20px, 2.5vw, 36px); background: #faf5ff; transition: all .3s;
+  }
+  .maze-cell.obstacle { background: #7c3aed; border-color: #6d28d9; }
+  .maze-cell.robot { background: #dbeafe; border-color: #60a5fa; }
+  .maze-cell.goal { background: #bbf7d0; border-color: #4ade80; }
+  .maze-cell.visited { background: #e0f2fe; }
+  .maze-cell.error { background: #fecdd3; border-color: #f43f5e; }
+  .prog-item {
+    display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+    border-radius: 12px; font-size: 14px; font-weight: 600;
+    font-family: var(--font-fredoka); border: 2px solid #e5e7eb;
+    background: #fff;
+  }
+  .prog-item.active { border-color: #f472b6; background: #fdf2f8; }
+  .prog-item .prog-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+</style>
+<script>
+  // Maze data from server
+  const GRID = {{ level.grid | tojson }};
+  const SIZE = {{ level.size }};
+  const START = {{ level.start | tojson }};
+  const GOAL = {{ level.goal | tojson }};
+  const START_DIR = "{{ level.start_direction }}";
+  const LEVEL_ID = {{ level.id }};
+
+  // Direction logic
+  const DIR_DELTA = { right:[0,1], down:[1,0], left:[0,-1], up:[-1,0] };
+  const TURN_R = { right:'down', down:'left', left:'up', up:'right' };
+  const TURN_L = { right:'up', up:'left', left:'down', down:'right' };
+  const DIR_ARROW = { right:'\u2192', down:'\u2193', left:'\u2190', up:'\u2191' };
+  const CMD_COLOR = { forward:'#22c55e', backward:'#f97316', turn_left:'#3b82f6', turn_right:'#a855f7' };
+  const CMD_LABEL = { forward:'Forward', backward:'Backward', turn_left:'Turn Left', turn_right:'Turn Right' };
+
+  let robot = { row: START[0], col: START[1], dir: START_DIR };
+  let program = [];
+  let running = false;
+  let completed = false;
+
+  function renderGrid() {
+    const g = document.getElementById('maze-grid');
+    g.innerHTML = '';
+    for (let r = 0; r < SIZE; r++) {
+      for (let c = 0; c < SIZE; c++) {
+        const cell = document.createElement('div');
+        cell.className = 'maze-cell';
+        cell.id = `cell-${r}-${c}`;
+        if (GRID[r][c] === 1) {
+          cell.classList.add('obstacle');
+          cell.textContent = '\uD83E\uDEA8';
+        } else if (r === robot.row && c === robot.col) {
+          cell.classList.add('robot');
+          cell.innerHTML = '\uD83E\uDD16<span style="font-size:12px;position:absolute;bottom:2px;right:6px;">' + DIR_ARROW[robot.dir] + '</span>';
+          cell.style.position = 'relative';
+        } else if (r === GOAL[0] && c === GOAL[1]) {
+          cell.classList.add('goal');
+          cell.textContent = '\uD83C\uDFAF';
+        }
+        g.appendChild(cell);
+      }
+    }
+  }
+
+  function renderProgram() {
+    const list = document.getElementById('program-list');
+    const empty = document.getElementById('program-empty');
+    const title = document.getElementById('program-title');
+    title.textContent = `Program (${program.length} command${program.length !== 1 ? 's' : ''})`;
+    if (program.length === 0) {
+      list.innerHTML = '';
+      list.appendChild(empty);
+      empty.style.display = '';
+      return;
+    }
+    list.innerHTML = '';
+    program.forEach((cmd, i) => {
+      const item = document.createElement('div');
+      item.className = 'prog-item';
+      item.id = `prog-${i}`;
+      item.innerHTML = `
+        <span class="prog-dot" style="background:${CMD_COLOR[cmd]}"></span>
+        <span style="flex:1">${i+1}. ${CMD_LABEL[cmd]}</span>
+        <button onclick="removeCmd(${i})" style="background:none;border:none;cursor:pointer;font-size:14px;color:#9ca3af;">&#10005;</button>
+      `;
+      list.appendChild(item);
+    });
+  }
+
+  function addCmd(cmd) {
+    if (running || completed) return;
+    program.push(cmd);
+    renderProgram();
+    hideStatus();
+  }
+
+  function removeCmd(idx) {
+    if (running) return;
+    program.splice(idx, 1);
+    renderProgram();
+  }
+
+  function removeLastCmd() {
+    if (running || program.length === 0) return;
+    program.pop();
+    renderProgram();
+  }
+
+  function clearProgram() {
+    if (running) return;
+    program = [];
+    renderProgram();
+    resetRobot();
+    hideStatus();
+  }
+
+  function resetMaze() {
+    if (running) return;
+    program = [];
+    completed = false;
+    renderProgram();
+    resetRobot();
+    hideStatus();
+    document.getElementById('next-area').style.display = 'none';
+  }
+
+  function resetRobot() {
+    robot = { row: START[0], col: START[1], dir: START_DIR };
+    renderGrid();
+  }
+
+  function showStatus(msg, type) {
+    const el = document.getElementById('status-msg');
+    el.style.display = 'block';
+    el.textContent = msg;
+    if (type === 'success') {
+      el.style.background = '#ecfff0'; el.style.color = '#25633a'; el.style.border = '2px solid #76c48a';
+    } else {
+      el.style.background = '#fff0f5'; el.style.color = '#9f1239'; el.style.border = '2px solid #f43f5e';
+    }
+  }
+
+  function hideStatus() {
+    document.getElementById('status-msg').style.display = 'none';
+  }
+
+  function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  async function runProgram() {
+    if (running || program.length === 0) return;
+    running = true;
+    hideStatus();
+    resetRobot();
+    await delay(300);
+
+    for (let i = 0; i < program.length; i++) {
+      // Highlight current command
+      document.querySelectorAll('.prog-item').forEach(el => el.classList.remove('active'));
+      const progEl = document.getElementById(`prog-${i}`);
+      if (progEl) progEl.classList.add('active');
+
+      const cmd = program[i];
+      const result = executeStep(cmd);
+      renderGrid();
+      await delay(450);
+
+      if (result === 'blocked') {
+        const cell = document.getElementById(`cell-${robot.row}-${robot.col}`);
+        if (cell) cell.classList.add('error');
+        showStatus('\uD83D\uDEA8 Robot hit a wall or obstacle! Fix your program.', 'error');
+        running = false;
+        return;
+      }
+
+      if (robot.row === GOAL[0] && robot.col === GOAL[1]) {
+        showStatus(`\uD83C\uDF89 Level complete in ${program.length} commands! Great algorithm!`, 'success');
+        completed = true;
+        running = false;
+        document.getElementById('next-area').style.display = 'block';
+        // Mark complete
+        fetch('/api/maze/complete', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ lesson: 1, level: LEVEL_ID, steps: program.length })
+        });
+        return;
+      }
+    }
+
+    // Ran out of commands
+    showStatus('\uD83E\uDD14 Robot didn\u2019t reach the goal. Add more commands!', 'error');
+    running = false;
+  }
+
+  function executeStep(cmd) {
+    if (cmd === 'forward' || cmd === 'backward') {
+      const [dr, dc] = DIR_DELTA[robot.dir];
+      const mult = cmd === 'backward' ? -1 : 1;
+      const nr = robot.row + dr * mult;
+      const nc = robot.col + dc * mult;
+      if (nr < 0 || nr >= SIZE || nc < 0 || nc >= SIZE || GRID[nr][nc] === 1) {
+        return 'blocked';
+      }
+      robot.row = nr;
+      robot.col = nc;
+    } else if (cmd === 'turn_right') {
+      robot.dir = TURN_R[robot.dir];
+    } else if (cmd === 'turn_left') {
+      robot.dir = TURN_L[robot.dir];
+    }
+    return 'ok';
+  }
+
+  // Init
+  renderGrid();
+  renderProgram();
+</script>
+{% endblock %}
