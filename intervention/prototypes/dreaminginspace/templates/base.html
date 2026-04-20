@@ -82,6 +82,7 @@
 
     /* ---------- Base ---------- */
     *, *::before, *::after { box-sizing: border-box; }
+    html { overflow-y: scroll; }
     html, body { margin: 0; padding: 0; min-height: 100%; }
     body {
       font-family: var(--font-sans);
@@ -1236,7 +1237,7 @@
   {% block head %}{% endblock %}
 </head>
 <body>
-  {% from "_macros.html" import icon, space_beaver, stepper, callout, hint_card, planet_svg, star_svg, dot_svg, cross_svg with context %}
+  {% from "_macros.html" import icon, space_beaver, stepper, stepper_multi, callout, hint_card, planet_svg, star_svg, dot_svg, cross_svg with context %}
 
   <!-- Decorative space scenery (planets + twinkles) -->
   <div class="space-scenery" aria-hidden="true">

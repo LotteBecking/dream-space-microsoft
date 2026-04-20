@@ -392,7 +392,61 @@
 
 
 {# ============================================================
-   Lesson stepper , 5 steps, progressive sequencing.
+   Multi-lesson stepper for lessons 2+.
+   current_step ∈ {'intro','ex1','ex2','ex3','quiz'}
+   lesson_num is the lesson number (2,3,4…)
+   progress is the dict from get_lesson_progress()
+   ============================================================ #}
+{% macro stepper_multi(current_step, lesson_num, progress) -%}
+{%- set completed = progress.completed_exercises or [] -%}
+{%- set ex1_done = 1 in completed -%}
+{%- set ex2_done = 2 in completed -%}
+{%- set ex3_done = 3 in completed -%}
+{%- set all_done = ex1_done and ex2_done and ex3_done -%}
+
+{%- set steps = [
+  {'key':'intro', 'label':'Briefing', 'href': url_for('lesson_home', lesson_num=lesson_num),
+   'done': True, 'unlocked': True},
+  {'key':'ex1',   'label':'Mission 1', 'href': url_for('lesson_exercise', lesson_num=lesson_num, ex_num=1),
+   'done': ex1_done, 'unlocked': True},
+  {'key':'ex2',   'label':'Mission 2', 'href': url_for('lesson_exercise', lesson_num=lesson_num, ex_num=2),
+   'done': ex2_done, 'unlocked': ex1_done or current_step == 'ex2'},
+  {'key':'ex3',   'label':'Mission 3', 'href': url_for('lesson_exercise', lesson_num=lesson_num, ex_num=3),
+   'done': ex3_done, 'unlocked': ex2_done or current_step == 'ex3'},
+  {'key':'quiz',  'label':'Quiz',      'href': url_for('lesson_quiz', lesson_num=lesson_num),
+   'done': False, 'unlocked': all_done or current_step == 'quiz'}
+] -%}
+
+<nav class="stepper" aria-label="Lesson progress">
+  {%- for step in steps -%}
+    {%- set is_current = (step.key == current_step) -%}
+    {%- set is_complete = step.done and not is_current -%}
+    {%- set state = 'is-current' if is_current else ('is-complete' if is_complete else ('is-available' if step.unlocked else 'is-locked')) -%}
+    {%- if step.unlocked and not is_current -%}
+      <a href="{{ step.href }}" class="stepper-item {{ state }}">
+        <span class="stepper-dot">
+          {%- if is_complete -%}{{ icon('check') }}{%- else -%}{{ loop.index }}{%- endif -%}
+        </span>
+        <span>{{ step.label }}</span>
+      </a>
+    {%- else -%}
+      <span class="stepper-item {{ state }}" aria-current="{{ 'step' if is_current else 'false' }}">
+        <span class="stepper-dot">
+          {%- if is_complete -%}{{ icon('check') }}
+          {%- elif state == 'is-locked' -%}{{ icon('lock') }}
+          {%- else -%}{{ loop.index }}{%- endif -%}
+        </span>
+        <span>{{ step.label }}</span>
+      </span>
+    {%- endif -%}
+    {%- if not loop.last %}<span class="stepper-sep" aria-hidden="true"></span>{% endif -%}
+  {%- endfor %}
+</nav>
+{%- endmacro %}
+
+
+{# ============================================================
+   Lesson stepper (Lesson 1 only), 5 steps, progressive sequencing.
    current_step ∈ {'intro','ex1','ex2','ex3','recap'}
    progress is the dict from get_progress()
    ============================================================ #}

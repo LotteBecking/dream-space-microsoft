@@ -23,6 +23,56 @@ from data.lesson_content import (
     EXERCISES, TEA_STEPS_CORRECT, CHALLENGES,
     INITIAL_SANDWICH_STATE, COMMAND_ALIASES,
 )
+from data.lesson2_content import (
+    LESSON_2, ROLE_MODEL_2, VOCABULARY_2, LEARNING_OBJECTIVES_2,
+    EXERCISES_2, QUIZ_2,
+)
+from data.lesson3_content import (
+    LESSON_3, ROLE_MODEL_3, VOCABULARY_3, LEARNING_OBJECTIVES_3,
+    EXERCISES_3, QUIZ_3,
+)
+from data.lesson4_content import (
+    LESSON_4, ROLE_MODEL_4, VOCABULARY_4, LEARNING_OBJECTIVES_4,
+    EXERCISES_4, QUIZ_4,
+)
+
+# ---------------------------------------------------------------------------
+# All-lessons registry
+# ---------------------------------------------------------------------------
+ALL_LESSONS = {
+    1: {
+        "lesson": LESSON,
+        "role_model": ROLE_MODEL,
+        "vocabulary": VOCABULARY,
+        "objectives": LEARNING_OBJECTIVES,
+        "exercises": EXERCISES,
+    },
+    2: {
+        "lesson": LESSON_2,
+        "role_model": ROLE_MODEL_2,
+        "vocabulary": VOCABULARY_2,
+        "objectives": LEARNING_OBJECTIVES_2,
+        "exercises": EXERCISES_2,
+        "quiz": QUIZ_2,
+    },
+    3: {
+        "lesson": LESSON_3,
+        "role_model": ROLE_MODEL_3,
+        "vocabulary": VOCABULARY_3,
+        "objectives": LEARNING_OBJECTIVES_3,
+        "exercises": EXERCISES_3,
+        "quiz": QUIZ_3,
+    },
+    4: {
+        "lesson": LESSON_4,
+        "role_model": ROLE_MODEL_4,
+        "vocabulary": VOCABULARY_4,
+        "objectives": LEARNING_OBJECTIVES_4,
+        "exercises": EXERCISES_4,
+        "quiz": QUIZ_4,
+    },
+}
+TOTAL_LESSONS = len(ALL_LESSONS)
 
 app = Flask(__name__)
 app.secret_key = os.environ.get(
@@ -475,6 +525,248 @@ def review():
 def reset():
     session.clear()
     return redirect(url_for("home"))
+
+
+# ---------------------------------------------------------------------------
+# Multi-lesson routes (Lessons 2-4, Track 1)
+# ---------------------------------------------------------------------------
+
+def get_lesson_progress(lesson_num):
+    """Get progress for a specific lesson (2+)."""
+    key = f"lesson_{lesson_num}"
+    if key not in session:
+        session[key] = {"completed_exercises": [], "exercise_answers": {}}
+        session.modified = True
+    data = session[key]
+    completed = data.get("completed_exercises", [])
+    return {
+        "completed_exercises": completed,
+        "progress_percent": round(len(completed) / 3 * 100) if 3 else 0,
+        "all_exercises_done": len(completed) >= 3,
+    }
+
+
+@app.route("/lesson/<int:lesson_num>")
+def lesson_home(lesson_num):
+    """Home page for lessons 2+."""
+    if lesson_num not in ALL_LESSONS or lesson_num == 1:
+        return redirect(url_for("home"))
+    info = ALL_LESSONS[lesson_num]
+    progress = get_lesson_progress(lesson_num)
+    return render_template(
+        "lesson_home.html",
+        lesson=info["lesson"],
+        role_model=info["role_model"],
+        vocabulary=info["vocabulary"],
+        objectives=info["objectives"],
+        progress=progress,
+        lesson_num=lesson_num,
+    )
+
+
+@app.route("/lesson/<int:lesson_num>/exercise/<int:ex_num>", methods=["GET", "POST"])
+def lesson_exercise(lesson_num, ex_num):
+    """Exercise pages for lessons 2+."""
+    if lesson_num not in ALL_LESSONS or lesson_num == 1:
+        return redirect(url_for("home"))
+    info = ALL_LESSONS[lesson_num]
+    exercises = info["exercises"]
+    if ex_num < 1 or ex_num > len(exercises):
+        return "Exercise not found", 404
+
+    progress = get_lesson_progress(lesson_num)
+    ex = exercises[ex_num - 1]
+    key = f"lesson_{lesson_num}"
+    lesson_data = session.setdefault(key, {"completed_exercises": [], "exercise_answers": {}})
+    error = None
+    success = False
+
+    if request.method == "POST":
+        ex_type = ex.get("type", "written")
+
+        if ex_type == "spot_loop":
+            problems = ex.get("problems", [])
+            all_filled = True
+            for i in range(len(problems)):
+                if not request.form.get(f"repeat_{i}", "").strip() or not request.form.get(f"count_{i}", "").strip():
+                    all_filled = False
+            if not all_filled:
+                error = "Please answer both questions for each routine!"
+            else:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 10)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+
+        elif ex_type == "rewrite_loop":
+            problems = ex.get("problems", [])
+            all_filled = True
+            for i in range(len(problems)):
+                if not request.form.get(f"times_{i}", "").strip() or not request.form.get(f"body_{i}", "").strip():
+                    all_filled = False
+            if not all_filled:
+                error = "Fill in the loop count AND the steps for each problem!"
+            else:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 15)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+
+        elif ex_type == "bug_hunt":
+            bugs = ex.get("bugs", [])
+            all_filled = True
+            for i in range(len(bugs)):
+                if not request.form.get(f"fix_{i}", "").strip():
+                    all_filled = False
+            if not all_filled:
+                error = "Please write a fix for every bug!"
+            else:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 20)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+
+        elif ex_type == "read_conditional":
+            problems = ex.get("problems", [])
+            correct_count = 0
+            for i, p in enumerate(problems):
+                ans = request.form.get(f"q{i}")
+                if ans is not None and int(ans) == p["correct"]:
+                    correct_count += 1
+            if correct_count < len(problems):
+                error = f"You got {correct_count}/{len(problems)} correct. Try again!"
+            else:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 10)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+
+        elif ex_type == "write_conditional":
+            steps = [request.form.get(f"step_{i}", "").strip() for i in range(1, 21)]
+            steps = [s for s in steps if s]
+            if len(steps) < ex.get("min_lines", 3):
+                error = f"Write at least {ex.get('min_lines', 3)} lines of IF/ELSE logic!"
+            else:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 15)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+
+        elif ex_type == "grouping":
+            items = ex.get("jumbled_steps", [])
+            correct = sum(1 for i, item in enumerate(items) if request.form.get(f"group_{i}", "") == item["group"])
+            if correct < len(items):
+                error = f"You got {correct}/{len(items)} correct. Check the ones you're unsure about!"
+            else:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 10)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+
+        elif ex_type == "decompose":
+            subtasks = []
+            for i in range(1, 5):
+                name = request.form.get(f"subtask_name_{i}", "").strip()
+                steps = [request.form.get(f"subtask_{i}_step_{j}", "").strip() for j in range(1, 4)]
+                steps = [s for s in steps if s]
+                if name and len(steps) >= ex.get("min_steps_per_subtask", 2):
+                    subtasks.append({"name": name, "steps": steps})
+            if len(subtasks) < ex.get("min_subtasks", 3):
+                error = f"You need at least {ex.get('min_subtasks', 3)} sub-tasks with {ex.get('min_steps_per_subtask', 2)}+ steps each!"
+            else:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 15)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+
+        elif ex_type == "ordering_dependencies":
+            scenarios = ex.get("scenarios", [])
+            all_correct = True
+            for si, scenario in enumerate(scenarios):
+                for ti, st in enumerate(scenario["subtasks"]):
+                    val = request.form.get(f"order_{si}_{ti}", "")
+                    if not val.isdigit() or int(val) != st["order"]:
+                        all_correct = False
+            if not all_correct:
+                error = "Not quite right! Think about which steps depend on others."
+            else:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 20)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+
+    session[key] = lesson_data
+    session.modified = True
+
+    context = {
+        "exercise": ex,
+        "num": ex_num,
+        "lesson_num": lesson_num,
+        "lesson": info["lesson"],
+        "progress": progress,
+        "error": error,
+        "success": success,
+        "total_exercises": len(exercises),
+    }
+
+    # Template mapping
+    TEMPLATE_MAP = {
+        "spot_loop": "l2_spot_loop.html",
+        "rewrite_loop": "l2_rewrite_loop.html",
+        "bug_hunt": "l_bug_hunt.html",
+        "read_conditional": "l3_read_conditional.html",
+        "write_conditional": "l3_write_conditional.html",
+        "grouping": "l4_grouping.html",
+        "decompose": "l4_decompose.html",
+        "ordering_dependencies": "l4_ordering.html",
+    }
+    ex_type = ex.get("type", "written")
+    template = TEMPLATE_MAP.get(ex_type, "l_generic.html")
+    return render_template(template, **context)
+
+
+@app.route("/lesson/<int:lesson_num>/quiz", methods=["GET", "POST"])
+def lesson_quiz(lesson_num):
+    """Quiz for lessons 2+."""
+    if lesson_num not in ALL_LESSONS or lesson_num == 1:
+        return redirect(url_for("home"))
+    quiz = ALL_LESSONS[lesson_num].get("quiz", [])
+    lesson = ALL_LESSONS[lesson_num]["lesson"]
+    result = None
+    if request.method == "POST":
+        answers, wrong = [], []
+        for i, q in enumerate(quiz):
+            ans = request.form.get(f"q{i}")
+            ans = int(ans) if ans is not None else -1
+            answers.append(ans)
+            if ans != q["correct"]:
+                wrong.append(i)
+        score = len(quiz) - len(wrong)
+        result = {
+            "score": score, "total": len(quiz),
+            "percent": round(score / len(quiz) * 100) if quiz else 0,
+            "answers": answers, "wrong": wrong,
+        }
+        if result["percent"] >= 75:
+            session["xp"] = session.get("xp", 0) + 10
+            session.modified = True
+    return render_template("l_quiz.html", questions=quiz, lesson_num=lesson_num, lesson=lesson, result=result, progress=get_lesson_progress(lesson_num))
 
 
 if __name__ == "__main__":
