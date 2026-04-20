@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block title %}Rewards &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{{ stepper_multi('quiz', lesson_num, progress) }}
+
+<div style="margin-top: 28px;"></div>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <div class="row-tight">
+      <span class="chip chip-primary">Lesson {{ lesson_num }}</span>
+      <span class="eyebrow">Rewards &amp; Recap</span>
+    </div>
+    <h1 class="display-xl" style="margin-top:6px;">Nice work, Commander!</h1>
+  </div>
+</div>
+
+{% if progress.all_exercises_done %}
+<div style="margin-bottom:24px;">
+  {{ callout('success', 'Lesson ' ~ lesson_num ~ ' complete! You earned your badge.', 'All missions done') }}
+</div>
+{% endif %}
+
+<div class="grid-2" style="margin-bottom:32px;">
+  <div class="stack">
+
+    <!-- Space Beaver recap message -->
+    <div class="card hero-card" style="background: linear-gradient(135deg, var(--color-primary-soft) 0%, var(--color-accent-soft) 100%);">
+      <div class="card-body" style="display:flex; gap:20px; align-items:center;">
+        <div style="flex-shrink:0;">{{ space_beaver(90) }}</div>
+        <div style="flex:1;">
+          <div class="eyebrow" style="margin-bottom:6px;">Space Beaver says</div>
+          <p class="body-lg" style="color: var(--color-text);">{{ lesson.recap_msg }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vocabulary review -->
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('book-open') }}</span>
+          <h2 class="title-lg">Vocabulary review</h2>
+        </div>
+        <div class="vocab-grid">
+          {% for v in vocabulary %}
+          <div class="vocab-card" onclick="this.querySelector('.vocab-card-inner').classList.toggle('flipped')" tabindex="0"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.querySelector('.vocab-card-inner').classList.toggle('flipped')}">
+            <div class="vocab-card-inner">
+              <div class="vocab-card-face vocab-card-face-front">
+                <span class="vocab-word">{{ v.word }}</span>
+                <span class="vocab-flip-hint">{{ icon('refresh') }} Tap to flip</span>
+              </div>
+              <div class="vocab-card-face vocab-card-face-back">
+                <span class="vocab-definition">{{ v.definition }}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- What you learned -->
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('target') }}</span>
+          <h2 class="title-lg">What you learned</h2>
+        </div>
+        <ul class="stack-sm" style="padding-left:18px;">
+          {% for obj in objectives %}
+          <li class="body" style="line-height:1.6;">{{ obj }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Exit ticket -->
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('send') }}</span>
+          <h2 class="title-lg">Reflection</h2>
+        </div>
+        {% if recap_submitted %}
+          {{ callout('success', 'Saved.', 'Reflection submitted') }}
+          <p class="body-lg" style="margin-top:16px; padding:16px; background:var(--color-surface-muted, #f1f5f9); border-radius:var(--radius-input);">
+            {{ recap_answer }}
+          </p>
+        {% else %}
+          <p class="body-muted" style="margin-bottom:12px;">Complete this sentence to reflect on what you learned:</p>
+          <form method="post">
+            <div class="body-lg" style="line-height:2.4; margin-bottom:16px;">
+              "The most important thing I learned is
+              <input type="text" name="reflection" class="input" style="width:100%; display:block; margin-top:8px; padding:10px 14px;" placeholder="Write your reflection here..." value="{{ recap_answer }}" />
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <span>Submit</span>{{ icon('check') }}
+            </button>
+          </form>
+        {% endif %}
+      </div>
+    </section>
+  </div>
+
+  <!-- Right column: progress + actions -->
+  <div class="stack">
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('bar-chart') }}</span>
+          <h2 class="title-lg">Progress</h2>
+        </div>
+        <div style="margin-bottom:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">
+            <span class="caption">Lesson {{ lesson_num }}</span>
+            <span class="title-md">{{ progress.progress_percent }}%</span>
+          </div>
+          <div class="progress">
+            <span class="progress-fill {% if progress.all_exercises_done %}is-complete{% endif %}" style="width:{{ progress.progress_percent }}%;"></span>
+          </div>
+        </div>
+        <ul class="stack-sm" style="list-style:none;">
+          <li class="row-tight" style="justify-content:space-between;">
+            <span class="row-tight" style="gap:8px;">{{ icon('list-checks') }}<span class="body">Missions</span></span>
+            <span class="caption"><strong style="color:var(--color-text);">{{ progress.completed_exercises|length }}/3</strong></span>
+          </li>
+          <li class="row-tight" style="justify-content:space-between;">
+            <span class="row-tight" style="gap:8px;">{{ icon('help-circle') }}<span class="body">Quiz</span></span>
+            <span class="caption">{% if progress.all_exercises_done %}Available{% else %}Locked{% endif %}</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Beaver hint -->
+    <aside class="hint-card">
+      <div class="hint-mascot" style="flex-direction:column; align-items:center; gap:0;">
+        {{ space_beaver(88) }}
+      </div>
+      <div class="speech-bubble" style="margin-top:14px; margin-bottom:0;">
+        <div class="section-bar" style="margin-bottom:8px; border-radius:8px; padding:5px 10px; font-size:9px;">
+          {% if progress.all_exercises_done %}{{ icon('trophy') }} Nice work!{% else %}{{ icon('send') }} Space Beaver says{% endif %}
+        </div>
+        {% if progress.all_exercises_done %}
+        <h3 class="title-md" style="margin-bottom:8px;">Lesson complete!</h3>
+        <p class="body-muted" style="margin:0;">You\u2019ve mastered this topic. Head back to base to continue your journey!</p>
+        {% else %}
+        <h3 class="title-md" style="margin-bottom:8px;">Almost there!</h3>
+        <p class="body-muted" style="margin:0;">Finish all 3 missions to unlock the full recap and earn your badge.</p>
+        {% endif %}
+      </div>
+    </aside>
+
+    <!-- Actions -->
+    <div class="card" style="padding:18px 24px; display:flex; flex-direction:column; gap:10px;">
+      <a href="{{ url_for('lesson_quiz', lesson_num=lesson_num) }}" class="btn btn-secondary" style="width:100%; justify-content:center;">
+        {{ icon('help-circle') }}<span>Take the Quiz</span>
+      </a>
+      <a href="{{ url_for('home') }}" class="btn btn-primary" style="width:100%; justify-content:center;">
+        {{ icon('arrow-left') }}<span>Back to Base</span>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

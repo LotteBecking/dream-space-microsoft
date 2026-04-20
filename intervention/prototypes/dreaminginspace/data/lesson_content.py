@@ -6,8 +6,14 @@ LESSON = {
     "description": "Students discover that computers follow exact step-by-step instructions, and that sequence determines the result.",
     "duration": 60,
     "level": "Beginner",
-    "age_group": "Ages 8-12",
+    "age_group": "Ages 8-18",
+    "color": "#7c3aed",
     "welcome": "Today we learn to think like Ada Lovelace, the world\u2019s first programmer!",
+    "recap_msg": (
+        "Computers follow instructions exactly \u2014 one step at a time, in order. "
+        "If the steps are wrong or unclear, the output is wrong. That\u2019s why "
+        "precision and sequence matter in every program!"
+    ),
 }
 
 ROLE_MODEL = {
@@ -18,7 +24,12 @@ ROLE_MODEL = {
         "for the Analytical Engine, an early idea for a computer that could follow step-by-step "
         "instructions to solve math problems automatically."
     ),
-    "detail": "",
+    "detail": (
+        "Ada wrote detailed instructions for how Charles Babbage\u2019s Analytical "
+        "Engine could calculate a complex mathematical sequence called Bernoulli "
+        "numbers. Those instructions, written in 1843, are considered the world\u2019s "
+        "first computer program \u2014 for a machine that hadn\u2019t even been built yet!"
+    ),
 }
 
 VOCABULARY = [
@@ -45,6 +56,7 @@ EXERCISES = [
         ),
         "type": "Written",
         "difficulty": "Easy",
+        "xp": 10,
         "duration_minutes": 10,
         "task_options": [
             "Getting ready for school in the morning",
@@ -67,6 +79,7 @@ EXERCISES = [
         ),
         "type": "Sorting",
         "difficulty": "Easy",
+        "xp": 15,
         "duration_minutes": 8,
     },
     {
@@ -78,6 +91,7 @@ EXERCISES = [
         ),
         "type": "Extension",
         "difficulty": "Medium",
+        "xp": 20,
         "duration_minutes": 10,
         "rules": [
             "Choose one lunch item from the school canteen menu.",
@@ -197,3 +211,50 @@ COMMAND_ALIASES = {
         "serve sandwich",
     ],
 }
+
+# ---------------------------------------------------------------------------
+# Quiz
+# ---------------------------------------------------------------------------
+
+QUIZ_1 = [
+    {
+        "question": "What is an algorithm?",
+        "options": [
+            "A type of computer",
+            "A set of step-by-step instructions to complete a task",
+            "A kind of sandwich",
+            "A programming language",
+        ],
+        "correct": 1,
+    },
+    {
+        "question": "Why does the ORDER of instructions matter?",
+        "options": [
+            "It doesn\u2019t matter at all",
+            "Because computers like things alphabetical",
+            "Because changing the order changes the result",
+            "Because code runs backwards",
+        ],
+        "correct": 2,
+    },
+    {
+        "question": "What is the OUTPUT of a sandwich algorithm?",
+        "options": [
+            "The bread and ingredients",
+            "The instructions you wrote",
+            "The finished sandwich",
+            "The knife",
+        ],
+        "correct": 2,
+    },
+    {
+        "question": "A robot followed your instructions exactly but the sandwich is wrong. Whose fault is it?",
+        "options": [
+            "The robot\u2019s fault \u2014 it should have known better",
+            "Nobody\u2019s fault",
+            "The programmer\u2019s fault \u2014 the instructions were wrong",
+            "The bread\u2019s fault",
+        ],
+        "correct": 2,
+    },
+]

@@ -1,10 +1,10 @@
-"""Lesson 3: If This, Then That — Conditionals & Decisions.
+"""Lesson 3: The If-Then Gates — Conditionals & Decisions.
 Track 1: Foundations | Dreaming in Space.
 """
 
 LESSON_3 = {
-    "id": "lesson-3",
-    "title": "If This, Then That \u2014 Conditionals",
+    "id": "lesson-4",
+    "title": "The If-Then Gates",
     "description": (
         "Learn that computers make decisions using IF/THEN/ELSE rules. "
         "Read conditional logic, write your own rules, and debug broken decision systems."
@@ -14,14 +14,15 @@ LESSON_3 = {
     "age_group": "Ages 8-18",
     "color": "#d97706",
     "welcome": (
-        "Have you noticed your phone screen turns off by itself? Or that a "
-        "game character takes damage in fire? That\u2019s because someone wrote a "
-        "RULE. Today you\u2019ll learn to write rules like a programmer!"
+        "The ship\u2019s computer needs to make decisions. IF the door is "
+        "locked, THEN we need a key. IF the oxygen is low, THEN sound "
+        "the alarm. Today you\u2019ll build \u2018Choice Gates\u2019 that "
+        "make the ship think for itself!"
     ),
     "recap_msg": (
-        "A conditional is a decision rule. IF something is true, do this. "
-        "ELSE, do that. You just learned how every app, game, and smart "
-        "device thinks. Amazing!"
+        "You gave the ship a brain! Now it can make smart choices based "
+        "on what\u2019s happening around it. IF something is true, do this. "
+        "ELSE, do that. Every app, game, and smart device thinks this way!"
     ),
 }
 
@@ -56,89 +57,89 @@ LEARNING_OBJECTIVES_3 = [
 EXERCISES_3 = [
     {
         "id": 1,
-        "title": "Read the Rule",
+        "title": "Open the Gate",
         "type": "read_conditional",
         "difficulty": "Easy",
         "xp": 10,
-        "description": "Read each IF/THEN/ELSE rule and predict what happens.",
-        "beaver_msg": "Read the rule carefully. Is the condition true or false? Follow the right path!",
+        "description": "The ship has \u2018Choice Gates\u2019 everywhere. Read each rule and predict what happens.",
+        "beaver_msg": "The gate checks a condition. Is it TRUE or FALSE? Follow the right path!",
         "beaver_hint": "Check: is the IF condition true? If yes, follow THEN. If no, follow ELSE.",
         "problems": [
             {
-                "rule": "IF temperature < 18\u00b0C THEN turn heating ON\nELSE turn heating OFF",
-                "situation": "The temperature is 22\u00b0C.",
-                "options": ["Turn heating ON", "Turn heating OFF", "Do nothing", "Check again"],
+                "rule": "IF battery_level < 20% THEN charge_ship()\nELSE keep_flying()",
+                "situation": "Battery is at 85%.",
+                "options": ["Charge the ship", "Keep flying", "Do nothing", "Emergency landing"],
                 "correct": 1,
             },
             {
-                "rule": "IF player touches coin THEN score = score + 10\nELSE score stays the same",
-                "situation": "The player walks past the coin without touching it.",
-                "options": ["Score goes up by 10", "Score stays the same", "Score goes down", "Game ends"],
+                "rule": "IF alien_spotted == True THEN say_hello()\nELSE keep_scanning()",
+                "situation": "The radar shows an alien vessel nearby!",
+                "options": ["Keep scanning", "Say hello", "Run away", "Turn off radar"],
                 "correct": 1,
             },
             {
-                "rule": "IF it is raining THEN take umbrella\nELSE IF it is sunny THEN take sunglasses\nELSE take nothing",
-                "situation": "It\u2019s a sunny day.",
-                "options": ["Take umbrella", "Take sunglasses", "Take nothing", "Take both"],
-                "correct": 1,
+                "rule": "IF oxygen_level >= 100% THEN open_valve()\nELSE close_valve()",
+                "situation": "Oxygen is at 100%.",
+                "options": ["Open the valve", "Close the valve", "Do nothing", "Check again"],
+                "correct": 0,
             },
             {
-                "rule": "IF age >= 12 THEN show teen content\nELSE show kids content",
-                "situation": "The user is 10 years old.",
-                "options": ["Show teen content", "Show kids content", "Show nothing", "Ask again"],
-                "correct": 1,
+                "rule": "IF it_is_dark AND motion_detected THEN activate_lights()\nELSE lights_off()",
+                "situation": "It\u2019s dark but nobody is moving.",
+                "options": ["Activate lights", "Nothing \u2014 both conditions must be true", "Lights off", "Error"],
+                "correct": 2,
             },
         ],
     },
     {
         "id": 2,
-        "title": "Write the Rule",
+        "title": "The Emergency Script",
         "type": "write_conditional",
         "difficulty": "Medium",
         "xp": 15,
-        "description": "Choose a scenario and write a complete IF/ELSE IF/ELSE chain.",
-        "beaver_msg": "Now you\u2019re the rule-maker! Write a rule that handles every possibility.",
+        "description": "The ship needs safety rules! Write IF/ELSE IF/ELSE chains for these emergencies.",
+        "beaver_msg": "Write a rule: IF temperature is greater than 100, THEN activate_cooling()! You\u2019re saving the engines!",
         "beaver_hint": "Make sure you have at least: one IF, one ELSE IF, and one ELSE.",
         "scenarios": [
             {
-                "label": "A \u2014 Smart Alarm Clock",
-                "detail": "Gentle music on weekdays, loud buzzer on Monday, silence on weekends.",
+                "label": "A \u2014 Engine Temperature Alert",
+                "detail": "IF temp > 100\u00b0C THEN activate cooling. ELSE IF temp > 80\u00b0C THEN warning light. ELSE all clear.",
             },
             {
-                "label": "B \u2014 Game Power-Ups",
-                "detail": "Red items = +10 points, gold = double score, black = game over, else nothing.",
+                "label": "B \u2014 Alien Encounter Protocol",
+                "detail": "IF alien is friendly THEN trade resources. ELSE IF alien is neutral THEN observe. ELSE raise shields.",
             },
             {
-                "label": "C \u2014 School Canteen",
-                "detail": "Pre-ordered meals first, then card, then cash. If sold out, back of queue.",
+                "label": "C \u2014 Landing Autopilot",
+                "detail": "IF altitude < 100m AND speed < 50 THEN deploy landing gear. ELSE IF altitude < 500m THEN slow down. ELSE keep descending.",
             },
         ],
         "min_lines": 3,
     },
     {
         "id": 3,
-        "title": "Fix the Smart Home",
+        "title": "Fix the Ship\u2019s Brain",
         "type": "bug_hunt",
         "difficulty": "Medium",
         "xp": 20,
-        "description": "These smart-home systems have bugs! Find what\u2019s wrong and fix them.",
-        "beaver_msg": "The house is going haywire! These rules are buggy \u2014 can you fix them?",
+        "description": "The ship\u2019s decision systems have bugs! Fix them before something explodes!",
+        "beaver_msg": "The ship is going haywire! These rules are buggy \u2014 can you fix them?",
         "beaver_hint": "Look for missing conditions, wrong logic, or loops that interact badly.",
         "bugs": [
             {
                 "label": "Bug 1 \u2014 Heating Never Stops",
                 "code": "IF temperature < 18\u00b0C\n  THEN turn heating ON\n(no ELSE rule exists)",
-                "hint": "What happens when the temperature reaches 18\u00b0C?",
+                "hint": "The heating turns on but never turns off! What happens when temp reaches 18\u00b0C?",
             },
             {
-                "label": "Bug 2 \u2014 Daylight Security Light",
-                "code": "IF motion detected\n  THEN turn light ON",
-                "hint": "This turns on even in bright daylight! What condition is missing?",
+                "label": "Bug 2 \u2014 Shields in Safe Space",
+                "code": "IF enemy_detected\n  THEN raise_shields()",
+                "hint": "Shields go up when enemies appear but never come down! What ELSE is needed?",
             },
             {
-                "label": "Bug 3 \u2014 47 Milk Alerts per Minute",
-                "code": "LOOP FOREVER:\n  IF milk is low\n    THEN send alert to phone",
-                "hint": "The alert sends every loop iteration! How do you send it only once?",
+                "label": "Bug 3 \u2014 999 Distress Signals Per Minute",
+                "code": "LOOP FOREVER:\n  IF fuel_low == True\n    THEN send_distress_signal()",
+                "hint": "The distress signal sends EVERY loop iteration! How do you send it only once?",
             },
         ],
     },

@@ -69,8 +69,8 @@
 
 <div class="card" style="margin-top:20px; padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
   <a href="{{ url_for('lesson_quiz', lesson_num=lesson_num) }}" class="btn btn-ghost">{{ icon('refresh') }}<span>Try Again</span></a>
-  <a href="{{ url_for('home') }}" class="btn btn-primary">
-    <span>Back to Base</span>{{ icon('arrow-right') }}
+  <a href="{{ url_for('lesson_recap', lesson_num=lesson_num) }}" class="btn btn-primary">
+    <span>Rewards &amp; Recap</span>{{ icon('arrow-right') }}
   </a>
 </div>
 
@@ -83,13 +83,13 @@
       {% set qi = loop.index0 %}
       <section class="card">
         <div class="card-body">
-          <p class="title-md" style="margin-bottom:12px;">{{ loop.index }}. {{ q.question }}</p>
+          <p style="margin-bottom:12px; color:#111; font-size:17px; font-weight:700;">{{ loop.index }}. {{ q.question }}</p>
           <ul class="stack-sm" style="list-style:none;">
             {% for opt in q.options %}
             <li>
               <label style="display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:var(--radius-input);
-                     border:2px solid var(--color-border); cursor:pointer; font-family:var(--font-game); font-size:15px;
-                     background:var(--color-surface); transition:all .15s;">
+                     border:2px solid var(--color-border); cursor:pointer; font-family:var(--font-game); font-size:16px;
+                     background:var(--color-surface); color:#111; font-weight:500; transition:all .15s;">
                 <input type="radio" name="q{{ qi }}" value="{{ loop.index0 }}" required
                        style="accent-color:var(--color-primary); width:18px; height:18px;" />
                 {{ opt }}

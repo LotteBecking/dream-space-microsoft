@@ -24,39 +24,39 @@
 <!-- ── OUTER TWO-COLUMN GRID ─────────────────────────────
      Left (4fr): beaver hero + mission map
      Right (1fr): stats panel spanning full height          -->
-<div style="display:grid; grid-template-columns: 1fr 22%; gap: 28px; align-items: stretch;">
+<div style="display:grid; grid-template-columns: 1fr 240px; gap: 24px; align-items: start;">
 
   <!-- ── LEFT COLUMN ──────────────────────────────────── -->
-  <div style="display:flex; flex-direction:column; gap:28px; min-width:0;">
+  <div style="display:flex; flex-direction:column; gap:24px; min-width:0;">
 
     <!-- HERO: beaver + speech bubble/CTA side by side -->
-    <div style="display:flex; gap:24px; align-items:flex-start;">
+    <div style="display:flex; gap:20px; align-items:center;">
 
       <!-- Beaver -->
       <div style="flex-shrink:0;">
         <div style="filter: drop-shadow(0 8px 20px rgba(107,57,217,0.25)); transition: transform .3s ease;"
              onmouseover="this.style.transform='translateY(-6px) scale(1.03)'"
              onmouseout="this.style.transform=''">
-          {{ space_beaver(170) }}
+          {{ space_beaver(140) }}
         </div>
       </div>
 
       <!-- Speech bubble + CTA -->
-      <div style="flex:1; min-width:0; padding-top:8px;">
-        <div class="speech-bubble" style="margin-bottom:20px;">
+      <div style="flex:1; min-width:0;">
+        <div class="speech-bubble" style="margin-bottom:16px;">
           {% if not lesson_started %}
-            Hey, Commander! Your first mission is ready. Let's learn how computers think!
+            Hey, Commander! Your first mission is ready. Let’s learn how computers think!
           {% elif progress.all_exercises_done %}
-            Amazing work, Commander! You've completed all missions. Time to claim your reward!
+            Amazing work, Commander! You’ve completed all missions. Time to claim your reward!
           {% elif sim_done %}
-            Great job in the lab! Your next mission is waiting. You've got this!
+            Great job in the lab! Your next mission is waiting. You’ve got this!
           {% else %}
             Welcome back, Commander! The lab is ready, jump in and keep going!
           {% endif %}
         </div>
 
-        <div style="margin-bottom:14px;">
-          <div class="game-level-badge" style="font-size:13px; padding:7px 16px;">{{ icon('rocket') }} Mission 1 &middot; How Does a Computer Think?</div>
+        <div style="margin-bottom:12px;">
+          <div class="game-level-badge" style="font-size:14px; padding:6px 14px;">{{ icon('rocket') }} Mission 1 &middot; How Does a Computer Think?</div>
         </div>
 
         <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
@@ -72,6 +72,21 @@
         </div>
       </div>
     </div>
+
+    <!-- ══════════════════════════════════════════════════
+         TRACK 1: FOUNDATIONS
+         ══════════════════════════════════════════════════ -->
+    <div class="track-foldout" data-auto-open="true">
+      <button type="button" class="track-foldout-header" style="--track-color:#7c3aed; --track-color-light:#a78bfa;">
+        <span class="track-icon">{{ icon('rocket') }}</span>
+        <div class="track-info">
+          <span class="track-label">Track 1</span>
+          <span class="track-title">Foundations</span>
+        </div>
+        <span class="track-meta">5 lessons</span>
+        <span class="chevron-icon">{{ icon('chevron-down') }}</span>
+      </button>
+      <div class="track-foldout-body"><div class="track-foldout-body-inner">
 
     <!-- MISSION MAP — LESSON 1 -->
     <section>
@@ -188,34 +203,35 @@
       </div></div></div>
     </section>
 
-    <!-- ── LESSON 2: LOOPS ─────────────────────── -->
+    <!-- ── LESSON 2: ROBOT COMMANDS ─────────────────────── -->
     <section>
-      {% set l2 = session.get('lesson_2', {'completed_exercises': []}) %}
-      {% set l2_completed = l2.get('completed_exercises', []) %}
-      {% set l2_ex1 = 1 in l2_completed %}
-      {% set l2_ex2 = 2 in l2_completed %}
-      {% set l2_ex3 = 3 in l2_completed %}
-      {% set l2_all = l2_ex1 and l2_ex2 and l2_ex3 %}
-      {% set l2_started = l2_completed|length > 0 %}
+      {% set lr2 = session.get('lesson_2', {'completed_exercises': []}) %}
+      {% set lr2_completed = lr2.get('completed_exercises', []) %}
+      {% set lr2_ex1 = 1 in lr2_completed %}
+      {% set lr2_ex2 = 2 in lr2_completed %}
+      {% set lr2_ex3 = 3 in lr2_completed %}
+      {% set lr2_all = lr2_ex1 and lr2_ex2 and lr2_ex3 %}
+      {% set lr2_started = lr2_completed|length > 0 %}
 
-      <div class="lesson-foldout" data-auto-open="{% if l2_started and not l2_all %}true{% else %}false{% endif %}">
+      <div class="lesson-foldout" data-auto-open="{% if lr2_started and not lr2_all %}true{% else %}false{% endif %}">
         <button type="button" class="lesson-foldout-header">
-          <span style="color:rgba(255,255,255,.8);">{{ icon('refresh') }}</span>
-          <span style="flex:1;">Lesson 2 &middot; Don&rsquo;t Repeat Yourself</span>
-          {% if l2_all %}<span class="mission-badge done">Complete</span>
-          {% elif l2_started %}<span class="mission-badge active">In Progress</span>{% endif %}
+          <span style="color:rgba(255,255,255,.8);">{{ icon('terminal') }}</span>
+          <span style="flex:1;">Lesson 2 &middot; Give Your Robot Commands</span>
+          {% if lr2_all %}<span class="mission-badge done">Complete</span>
+          {% elif lr2_started %}<span class="mission-badge active">In Progress</span>{% endif %}
           <span class="chevron-icon">{{ icon('chevron-down') }}</span>
         </button>
         <div class="lesson-foldout-body"><div class="lesson-foldout-body-inner">
         <ol class="mission-map" style="margin-top:8px;">
-          {% set l2_missions = [
-            {'href': url_for('lesson_home', lesson_num=2), 'icon': 'book-open', 'title': 'Briefing Room', 'meta': 'Vocabulary, role model &amp; objectives', 'done': l2_started, 'active': not l2_started, 'locked': False},
-            {'href': url_for('lesson_exercise', lesson_num=2, ex_num=1), 'icon': 'search', 'title': 'Mission 1 &middot; Spot the Loop', 'meta': '~8 min &middot; Identify repeating patterns', 'done': l2_ex1, 'active': l2_started and not l2_ex1, 'locked': not l2_started},
-            {'href': url_for('lesson_exercise', lesson_num=2, ex_num=2), 'icon': 'refresh', 'title': 'Mission 2 &middot; Rewrite with a Loop', 'meta': '~8 min &middot; Shrink long code into loops', 'done': l2_ex2, 'active': l2_ex1 and not l2_ex2, 'locked': not l2_ex1},
-            {'href': url_for('lesson_exercise', lesson_num=2, ex_num=3), 'icon': 'alert-triangle', 'title': 'Mission 3 &middot; Fix the Broken Loop', 'meta': '~7 min &middot; Debug 3 buggy loops', 'done': l2_ex3, 'active': l2_ex2 and not l2_ex3, 'locked': not l2_ex2},
-            {'href': url_for('lesson_quiz', lesson_num=2), 'icon': 'help-circle', 'title': 'Quiz', 'meta': 'Test what you learned', 'done': False, 'active': l2_all, 'locked': not l2_all},
+          {% set lr2_missions = [
+            {'href': url_for('lesson_home', lesson_num=2), 'icon': 'book-open', 'title': 'Briefing Room', 'meta': 'Vocabulary, role model &amp; objectives', 'done': lr2_started, 'active': not lr2_started, 'locked': False},
+            {'href': url_for('lesson_exercise', lesson_num=2, ex_num=1), 'icon': 'terminal', 'title': 'Mission 1 &middot; Program the Robot', 'meta': '~10 min &middot; Write precise commands', 'done': lr2_ex1, 'active': lr2_started and not lr2_ex1, 'locked': not lr2_started},
+            {'href': url_for('lesson_exercise', lesson_num=2, ex_num=2), 'icon': 'alert-triangle', 'title': 'Mission 2 &middot; Spot the Bug', 'meta': '~8 min &middot; Debug faulty commands', 'done': lr2_ex2, 'active': lr2_ex1 and not lr2_ex2, 'locked': not lr2_ex1},
+            {'href': url_for('lesson_exercise', lesson_num=2, ex_num=3), 'icon': 'zap', 'title': 'Mission 3 &middot; Precision Challenge', 'meta': '~8 min &middot; Rewrite vague instructions', 'done': lr2_ex3, 'active': lr2_ex2 and not lr2_ex3, 'locked': not lr2_ex2},
+            {'href': url_for('lesson_quiz', lesson_num=2), 'icon': 'help-circle', 'title': 'Quiz', 'meta': 'Test what you learned', 'done': False, 'active': lr2_all, 'locked': not lr2_all},
+            {'href': url_for('lesson_recap', lesson_num=2), 'icon': 'trophy', 'title': 'Rewards &amp; Recap', 'meta': 'Vocabulary review &amp; reflection', 'done': False, 'active': lr2_all, 'locked': not lr2_all},
           ] %}
-          {% for m in l2_missions %}
+          {% for m in lr2_missions %}
           {% set state = 'done' if m.done else ('active' if m.active else 'locked') %}
           <li class="mission-item">
             <div class="mission-spine">
@@ -243,7 +259,7 @@
         </div></div></div>
     </section>
 
-    <!-- ── LESSON 3: CONDITIONALS ─────────────────────── -->
+    <!-- ── LESSON 3: LOOPS ─────────────────────── -->
     <section>
       {% set l3 = session.get('lesson_3', {'completed_exercises': []}) %}
       {% set l3_completed = l3.get('completed_exercises', []) %}
@@ -255,22 +271,23 @@
 
       <div class="lesson-foldout" data-auto-open="{% if l3_started and not l3_all %}true{% else %}false{% endif %}">
         <button type="button" class="lesson-foldout-header">
-          <span style="color:rgba(255,255,255,.8);">{{ icon('git-branch') }}</span>
-          <span style="flex:1;">Lesson 3 &middot; If This, Then That</span>
+          <span style="color:rgba(255,255,255,.8);">{{ icon('refresh') }}</span>
+          <span style="flex:1;">Lesson 3 &middot; Don&rsquo;t Repeat Yourself</span>
           {% if l3_all %}<span class="mission-badge done">Complete</span>
           {% elif l3_started %}<span class="mission-badge active">In Progress</span>{% endif %}
           <span class="chevron-icon">{{ icon('chevron-down') }}</span>
         </button>
         <div class="lesson-foldout-body"><div class="lesson-foldout-body-inner">
         <ol class="mission-map" style="margin-top:8px;">
-          {% set l3_missions = [
+          {% set l3_loop_missions = [
             {'href': url_for('lesson_home', lesson_num=3), 'icon': 'book-open', 'title': 'Briefing Room', 'meta': 'Vocabulary, role model &amp; objectives', 'done': l3_started, 'active': not l3_started, 'locked': False},
-            {'href': url_for('lesson_exercise', lesson_num=3, ex_num=1), 'icon': 'git-branch', 'title': 'Mission 1 &middot; Read the Rule', 'meta': '~8 min &middot; Predict IF/THEN/ELSE outcomes', 'done': l3_ex1, 'active': l3_started and not l3_ex1, 'locked': not l3_started},
-            {'href': url_for('lesson_exercise', lesson_num=3, ex_num=2), 'icon': 'list-checks', 'title': 'Mission 2 &middot; Write the Rule', 'meta': '~8 min &middot; Create conditional chains', 'done': l3_ex2, 'active': l3_ex1 and not l3_ex2, 'locked': not l3_ex1},
-            {'href': url_for('lesson_exercise', lesson_num=3, ex_num=3), 'icon': 'alert-triangle', 'title': 'Mission 3 &middot; Fix the Smart Home', 'meta': '~7 min &middot; Debug broken conditionals', 'done': l3_ex3, 'active': l3_ex2 and not l3_ex3, 'locked': not l3_ex2},
+            {'href': url_for('lesson_exercise', lesson_num=3, ex_num=1), 'icon': 'search', 'title': 'Mission 1 &middot; Spot the Loop', 'meta': '~8 min &middot; Identify repeating patterns', 'done': l3_ex1, 'active': l3_started and not l3_ex1, 'locked': not l3_started},
+            {'href': url_for('lesson_exercise', lesson_num=3, ex_num=2), 'icon': 'refresh', 'title': 'Mission 2 &middot; Rewrite with a Loop', 'meta': '~8 min &middot; Shrink long code into loops', 'done': l3_ex2, 'active': l3_ex1 and not l3_ex2, 'locked': not l3_ex1},
+            {'href': url_for('lesson_exercise', lesson_num=3, ex_num=3), 'icon': 'alert-triangle', 'title': 'Mission 3 &middot; Fix the Broken Loop', 'meta': '~7 min &middot; Debug 3 buggy loops', 'done': l3_ex3, 'active': l3_ex2 and not l3_ex3, 'locked': not l3_ex2},
             {'href': url_for('lesson_quiz', lesson_num=3), 'icon': 'help-circle', 'title': 'Quiz', 'meta': 'Test what you learned', 'done': False, 'active': l3_all, 'locked': not l3_all},
+            {'href': url_for('lesson_recap', lesson_num=3), 'icon': 'trophy', 'title': 'Rewards &amp; Recap', 'meta': 'Vocabulary review &amp; reflection', 'done': False, 'active': l3_all, 'locked': not l3_all},
           ] %}
-          {% for m in l3_missions %}
+          {% for m in l3_loop_missions %}
           {% set state = 'done' if m.done else ('active' if m.active else 'locked') %}
           <li class="mission-item">
             <div class="mission-spine">
@@ -298,34 +315,35 @@
         </div></div></div>
     </section>
 
-    <!-- ── LESSON 4: DECOMPOSITION ─────────────────────── -->
+    <!-- ── LESSON 4: CONDITIONALS ─────────────────────── -->
     <section>
-      {% set l4 = session.get('lesson_4', {'completed_exercises': []}) %}
-      {% set l4_completed = l4.get('completed_exercises', []) %}
-      {% set l4_ex1 = 1 in l4_completed %}
-      {% set l4_ex2 = 2 in l4_completed %}
-      {% set l4_ex3 = 3 in l4_completed %}
-      {% set l4_all = l4_ex1 and l4_ex2 and l4_ex3 %}
-      {% set l4_started = l4_completed|length > 0 %}
+      {% set l4c = session.get('lesson_4', {'completed_exercises': []}) %}
+      {% set l4c_completed = l4c.get('completed_exercises', []) %}
+      {% set l4c_ex1 = 1 in l4c_completed %}
+      {% set l4c_ex2 = 2 in l4c_completed %}
+      {% set l4c_ex3 = 3 in l4c_completed %}
+      {% set l4c_all = l4c_ex1 and l4c_ex2 and l4c_ex3 %}
+      {% set l4c_started = l4c_completed|length > 0 %}
 
-      <div class="lesson-foldout" data-auto-open="{% if l4_started and not l4_all %}true{% else %}false{% endif %}">
+      <div class="lesson-foldout" data-auto-open="{% if l4c_started and not l4c_all %}true{% else %}false{% endif %}">
         <button type="button" class="lesson-foldout-header">
-          <span style="color:rgba(255,255,255,.8);">{{ icon('layers') }}</span>
-          <span style="flex:1;">Lesson 4 &middot; Break It Down</span>
-          {% if l4_all %}<span class="mission-badge done">Complete</span>
-          {% elif l4_started %}<span class="mission-badge active">In Progress</span>{% endif %}
+          <span style="color:rgba(255,255,255,.8);">{{ icon('git-branch') }}</span>
+          <span style="flex:1;">Lesson 4 &middot; If This, Then That</span>
+          {% if l4c_all %}<span class="mission-badge done">Complete</span>
+          {% elif l4c_started %}<span class="mission-badge active">In Progress</span>{% endif %}
           <span class="chevron-icon">{{ icon('chevron-down') }}</span>
         </button>
         <div class="lesson-foldout-body"><div class="lesson-foldout-body-inner">
         <ol class="mission-map" style="margin-top:8px;">
-          {% set l4_missions = [
-            {'href': url_for('lesson_home', lesson_num=4), 'icon': 'book-open', 'title': 'Briefing Room', 'meta': 'Vocabulary, role model &amp; objectives', 'done': l4_started, 'active': not l4_started, 'locked': False},
-            {'href': url_for('lesson_exercise', lesson_num=4, ex_num=1), 'icon': 'layers', 'title': 'Mission 1 &middot; Spot the Sub-tasks', 'meta': '~8 min &middot; Group jumbled steps', 'done': l4_ex1, 'active': l4_started and not l4_ex1, 'locked': not l4_started},
-            {'href': url_for('lesson_exercise', lesson_num=4, ex_num=2), 'icon': 'list-checks', 'title': 'Mission 2 &middot; Decompose It', 'meta': '~10 min &middot; Break a big task into parts', 'done': l4_ex2, 'active': l4_ex1 and not l4_ex2, 'locked': not l4_ex1},
-            {'href': url_for('lesson_exercise', lesson_num=4, ex_num=3), 'icon': 'git-merge', 'title': 'Mission 3 &middot; Connect the Pieces', 'meta': '~8 min &middot; Order by dependencies', 'done': l4_ex3, 'active': l4_ex2 and not l4_ex3, 'locked': not l4_ex2},
-            {'href': url_for('lesson_quiz', lesson_num=4), 'icon': 'help-circle', 'title': 'Quiz', 'meta': 'Test what you learned', 'done': False, 'active': l4_all, 'locked': not l4_all},
+          {% set l4c_missions = [
+            {'href': url_for('lesson_home', lesson_num=4), 'icon': 'book-open', 'title': 'Briefing Room', 'meta': 'Vocabulary, role model &amp; objectives', 'done': l4c_started, 'active': not l4c_started, 'locked': False},
+            {'href': url_for('lesson_exercise', lesson_num=4, ex_num=1), 'icon': 'git-branch', 'title': 'Mission 1 &middot; Read the Rule', 'meta': '~8 min &middot; Predict IF/THEN/ELSE outcomes', 'done': l4c_ex1, 'active': l4c_started and not l4c_ex1, 'locked': not l4c_started},
+            {'href': url_for('lesson_exercise', lesson_num=4, ex_num=2), 'icon': 'list-checks', 'title': 'Mission 2 &middot; Write the Rule', 'meta': '~8 min &middot; Create conditional chains', 'done': l4c_ex2, 'active': l4c_ex1 and not l4c_ex2, 'locked': not l4c_ex1},
+            {'href': url_for('lesson_exercise', lesson_num=4, ex_num=3), 'icon': 'alert-triangle', 'title': 'Mission 3 &middot; Fix the Smart Home', 'meta': '~7 min &middot; Debug broken conditionals', 'done': l4c_ex3, 'active': l4c_ex2 and not l4c_ex3, 'locked': not l4c_ex2},
+            {'href': url_for('lesson_quiz', lesson_num=4), 'icon': 'help-circle', 'title': 'Quiz', 'meta': 'Test what you learned', 'done': False, 'active': l4c_all, 'locked': not l4c_all},
+            {'href': url_for('lesson_recap', lesson_num=4), 'icon': 'trophy', 'title': 'Rewards &amp; Recap', 'meta': 'Vocabulary review &amp; reflection', 'done': False, 'active': l4c_all, 'locked': not l4c_all},
           ] %}
-          {% for m in l4_missions %}
+          {% for m in l4c_missions %}
           {% set state = 'done' if m.done else ('active' if m.active else 'locked') %}
           <li class="mission-item">
             <div class="mission-spine">
@@ -353,21 +371,157 @@
         </div></div></div>
     </section>
 
+    <!-- ── LESSON 5: DECOMPOSITION ─────────────────────── -->
+    <section>
+      {% set l5 = session.get('lesson_5', {'completed_exercises': []}) %}
+      {% set l5_completed = l5.get('completed_exercises', []) %}
+      {% set l5_ex1 = 1 in l5_completed %}
+      {% set l5_ex2 = 2 in l5_completed %}
+      {% set l5_ex3 = 3 in l5_completed %}
+      {% set l5_all = l5_ex1 and l5_ex2 and l5_ex3 %}
+      {% set l5_started = l5_completed|length > 0 %}
+
+      <div class="lesson-foldout" data-auto-open="{% if l5_started and not l5_all %}true{% else %}false{% endif %}">
+        <button type="button" class="lesson-foldout-header">
+          <span style="color:rgba(255,255,255,.8);">{{ icon('layers') }}</span>
+          <span style="flex:1;">Lesson 5 &middot; Break It Down</span>
+          {% if l5_all %}<span class="mission-badge done">Complete</span>
+          {% elif l5_started %}<span class="mission-badge active">In Progress</span>{% endif %}
+          <span class="chevron-icon">{{ icon('chevron-down') }}</span>
+        </button>
+        <div class="lesson-foldout-body"><div class="lesson-foldout-body-inner">
+        <ol class="mission-map" style="margin-top:8px;">
+          {% set l5_missions = [
+            {'href': url_for('lesson_home', lesson_num=5), 'icon': 'book-open', 'title': 'Briefing Room', 'meta': 'Vocabulary, role model &amp; objectives', 'done': l5_started, 'active': not l5_started, 'locked': False},
+            {'href': url_for('lesson_exercise', lesson_num=5, ex_num=1), 'icon': 'layers', 'title': 'Mission 1 &middot; Spot the Sub-tasks', 'meta': '~8 min &middot; Group jumbled steps', 'done': l5_ex1, 'active': l5_started and not l5_ex1, 'locked': not l5_started},
+            {'href': url_for('lesson_exercise', lesson_num=5, ex_num=2), 'icon': 'list-checks', 'title': 'Mission 2 &middot; Decompose It', 'meta': '~10 min &middot; Break a big task into parts', 'done': l5_ex2, 'active': l5_ex1 and not l5_ex2, 'locked': not l5_ex1},
+            {'href': url_for('lesson_exercise', lesson_num=5, ex_num=3), 'icon': 'git-merge', 'title': 'Mission 3 &middot; Connect the Pieces', 'meta': '~8 min &middot; Order by dependencies', 'done': l5_ex3, 'active': l5_ex2 and not l5_ex3, 'locked': not l5_ex2},
+            {'href': url_for('lesson_quiz', lesson_num=5), 'icon': 'help-circle', 'title': 'Quiz', 'meta': 'Test what you learned', 'done': False, 'active': l5_all, 'locked': not l5_all},
+            {'href': url_for('lesson_recap', lesson_num=5), 'icon': 'trophy', 'title': 'Rewards &amp; Recap', 'meta': 'Vocabulary review &amp; reflection', 'done': False, 'active': l5_all, 'locked': not l5_all},
+          ] %}
+          {% for m in l5_missions %}
+          {% set state = 'done' if m.done else ('active' if m.active else 'locked') %}
+          <li class="mission-item">
+            <div class="mission-spine">
+              <div class="mission-node {{ state }}">{% if m.done %}{{ icon('check') }}{% elif m.locked %}{{ icon('lock') }}{% else %}{{ loop.index }}{% endif %}</div>
+              {% if not loop.last %}<div class="mission-connector {{ 'done' if m.done else '' }}"></div>{% endif %}
+            </div>
+            <div class="mission-body">
+              {% if not m.locked %}
+              <a href="{{ m.href }}" class="mission-card {{ state }}">
+                <div class="mission-card-icon">{{ icon(m.icon) }}</div>
+                <div style="flex:1; min-width:0;"><div class="mission-title">{{ m.title|safe }}</div><div class="mission-meta">{{ m.meta|safe }}</div></div>
+                <span class="mission-badge {{ state }}">{% if m.done %}Complete{% elif m.active %}Go{% endif %}</span>
+              </a>
+              {% else %}
+              <span class="mission-card locked">
+                <div class="mission-card-icon">{{ icon(m.icon) }}</div>
+                <div style="flex:1; min-width:0;"><div class="mission-title">{{ m.title|safe }}</div><div class="mission-meta">Finish previous mission to unlock</div></div>
+                <span class="mission-badge locked">Locked</span>
+              </span>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ol>
+        </div></div></div>
+    </section>
+
+      </div></div></div><!-- end Track 1 -->
+
+    <!-- ══════════════════════════════════════════════════
+         TRACKS 2-4: Generated from ALL_LESSONS data
+         ══════════════════════════════════════════════════ -->
+    {% set tracks = [
+      {'num': 2, 'label': 'Track 2', 'title': 'Text-Based Coding', 'icon': 'terminal', 'color': '#2563eb', 'color_light': '#60a5fa', 'lessons': [6, 7, 8, 9]},
+      {'num': 3, 'label': 'Track 3', 'title': 'Creation & Application', 'icon': 'rocket', 'color': '#059669', 'color_light': '#34d399', 'lessons': [10, 11, 12, 13]},
+      {'num': 4, 'label': 'Track 4', 'title': 'Digital World', 'icon': 'globe', 'color': '#d97706', 'color_light': '#fbbf24', 'lessons': [14, 15, 16, 17, 18]},
+    ] %}
+
+    {% for track in tracks %}
+    <div class="track-foldout" data-auto-open="false">
+      <button type="button" class="track-foldout-header" style="--track-color:{{ track.color }}; --track-color-light:{{ track.color_light }};">
+        <span class="track-icon">{{ icon(track.icon) }}</span>
+        <div class="track-info">
+          <span class="track-label">{{ track.label }}</span>
+          <span class="track-title">{{ track.title }}</span>
+        </div>
+        <span class="track-meta">{{ track.lessons|length }} lessons</span>
+        <span class="chevron-icon">{{ icon('chevron-down') }}</span>
+      </button>
+      <div class="track-foldout-body"><div class="track-foldout-body-inner">
+
+        {% for ln in track.lessons %}
+        {% set ls = session.get('lesson_' ~ ln, {'completed_exercises': []}) %}
+        {% set lc = ls.get('completed_exercises', []) %}
+        {% set lex1 = 1 in lc %}
+        {% set lex2 = 2 in lc %}
+        {% set lex3 = 3 in lc %}
+        {% set lall = lex1 and lex2 and lex3 %}
+        {% set lstarted = lc|length > 0 %}
+
+        <div class="lesson-foldout" data-auto-open="{% if lstarted and not lall %}true{% else %}false{% endif %}">
+          <button type="button" class="lesson-foldout-header">
+            <span style="flex:1;">Lesson {{ ln }} &middot; {{ all_lessons[ln].lesson.title }}</span>
+            {% if lall %}<span class="mission-badge done">Complete</span>
+            {% elif lstarted %}<span class="mission-badge active">In Progress</span>{% endif %}
+            <span class="chevron-icon">{{ icon('chevron-down') }}</span>
+          </button>
+          <div class="lesson-foldout-body"><div class="lesson-foldout-body-inner">
+          <ol class="mission-map" style="margin-top:8px;">
+            {% set lmissions = [
+              {'href': url_for('lesson_home', lesson_num=ln), 'icon': 'book-open', 'title': 'Briefing Room', 'done': lstarted, 'active': not lstarted, 'locked': False},
+              {'href': url_for('lesson_exercise', lesson_num=ln, ex_num=1), 'icon': 'list-checks', 'title': 'Mission 1 &middot; ' ~ all_lessons[ln].exercises[0].title, 'done': lex1, 'active': lstarted and not lex1, 'locked': not lstarted},
+              {'href': url_for('lesson_exercise', lesson_num=ln, ex_num=2), 'icon': 'list-checks', 'title': 'Mission 2 &middot; ' ~ all_lessons[ln].exercises[1].title, 'done': lex2, 'active': lex1 and not lex2, 'locked': not lex1},
+              {'href': url_for('lesson_exercise', lesson_num=ln, ex_num=3), 'icon': 'list-checks', 'title': 'Mission 3 &middot; ' ~ all_lessons[ln].exercises[2].title, 'done': lex3, 'active': lex2 and not lex3, 'locked': not lex2},
+              {'href': url_for('lesson_quiz', lesson_num=ln), 'icon': 'help-circle', 'title': 'Quiz', 'done': False, 'active': lall, 'locked': not lall},
+              {'href': url_for('lesson_recap', lesson_num=ln), 'icon': 'trophy', 'title': 'Rewards &amp; Recap', 'done': False, 'active': lall, 'locked': not lall},
+            ] %}
+            {% for m in lmissions %}
+            {% set state = 'done' if m.done else ('active' if m.active else 'locked') %}
+            <li class="mission-item">
+              <div class="mission-spine">
+                <div class="mission-node {{ state }}">{% if m.done %}{{ icon('check') }}{% elif m.locked %}{{ icon('lock') }}{% else %}{{ loop.index }}{% endif %}</div>
+                {% if not loop.last %}<div class="mission-connector {{ 'done' if m.done else '' }}"></div>{% endif %}
+              </div>
+              <div class="mission-body">
+                {% if not m.locked %}
+                <a href="{{ m.href }}" class="mission-card {{ state }}">
+                  <div class="mission-card-icon">{{ icon(m.icon) }}</div>
+                  <div style="flex:1; min-width:0;"><div class="mission-title">{{ m.title|safe }}</div></div>
+                  <span class="mission-badge {{ state }}">{% if m.done %}Complete{% elif m.active %}Go{% endif %}</span>
+                </a>
+                {% else %}
+                <span class="mission-card locked">
+                  <div class="mission-card-icon">{{ icon(m.icon) }}</div>
+                  <div style="flex:1; min-width:0;"><div class="mission-title">{{ m.title|safe }}</div></div>
+                  <span class="mission-badge locked">Locked</span>
+                </span>
+                {% endif %}
+              </div>
+            </li>
+            {% endfor %}
+          </ol>
+          </div></div></div>
+        {% endfor %}
+
+      </div></div></div>
+    {% endfor %}
+
   </div><!-- end left column -->
 
   <!-- ── RIGHT COLUMN: STATS PANEL ───────────────────── -->
-  <aside class="card" style="display:flex; flex-direction:column; min-width:0; border:none; background:transparent; box-shadow:none;">
-    <div style="display:flex; flex-direction:column; gap:16px; height:100%;">
+  <aside style="display:flex; flex-direction:column; gap:12px; min-width:0;">
 
       <!-- Player card header -->
-      <div style="background:linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); border-radius:16px; padding:20px; color:#fff; text-align:center;">
-        <div style="margin-bottom:10px;">{{ space_beaver(72) }}</div>
-        <div style="font-family:var(--font-game, inherit); font-size:18px; font-weight:700; margin-bottom:2px;">Commander</div>
+      <div style="background:linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); border-radius:16px; padding:18px; color:#fff; text-align:center;">
+        <div style="margin-bottom:8px;">{{ space_beaver(56) }}</div>
+        <div style="font-family:var(--font-game, inherit); font-size:16px; font-weight:700; margin-bottom:2px;">Commander</div>
         <div style="font-size:12px; opacity:.7;">Level 1 Explorer</div>
       </div>
 
       <!-- XP Progress -->
-      <div style="background:var(--color-surface, #fff); border:2px solid var(--color-border, #e2e8f0); border-radius:14px; padding:16px;">
+      <div style="background:var(--color-surface, #fff); border:2px solid var(--color-border, #e2e8f0); border-radius:14px; padding:14px;">
         <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
           <span style="font-size:13px; font-weight:700; color:var(--color-text);">Mission XP</span>
           <span style="font-family:var(--font-pixel); font-size:11px; font-weight:700; color:var(--color-primary-ink);">
@@ -381,7 +535,7 @@
       </div>
 
       <!-- Stars -->
-      <div style="background:var(--color-surface, #fff); border:2px solid var(--color-border, #e2e8f0); border-radius:14px; padding:16px; text-align:center;">
+      <div style="background:var(--color-surface, #fff); border:2px solid var(--color-border, #e2e8f0); border-radius:14px; padding:14px; text-align:center;">
         <div style="font-size:13px; font-weight:700; color:var(--color-text); margin-bottom:10px;">Stars Earned</div>
         <div style="display:flex; justify-content:center; gap:6px; margin-bottom:6px;">
           {% for i in range(1, 6) %}
@@ -392,7 +546,7 @@
       </div>
 
       <!-- Mission checklist -->
-      <div style="background:var(--color-surface, #fff); border:2px solid var(--color-border, #e2e8f0); border-radius:14px; padding:16px;">
+      <div style="background:var(--color-surface, #fff); border:2px solid var(--color-border, #e2e8f0); border-radius:14px; padding:14px;">
         <div style="font-size:13px; font-weight:700; color:var(--color-text); margin-bottom:12px;">Lesson 1 Progress</div>
         <div style="display:flex; flex-direction:column; gap:8px;">
           {% for item in [
@@ -420,7 +574,7 @@
       </div>
 
       <!-- Total -->
-      <div style="background:linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%); border:2px solid var(--color-primary, #7c3aed); border-radius:14px; padding:16px; text-align:center;">
+      <div style="background:linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%); border:2px solid var(--color-primary, #7c3aed); border-radius:14px; padding:14px; text-align:center;">
         <div style="font-size:12px; font-weight:600; color:var(--color-primary-ink); margin-bottom:4px;">Total XP</div>
         <div style="font-family:var(--font-pixel); font-size:22px; font-weight:700; color:var(--color-primary-ink);">
           {{ stars_earned * 25 }}
@@ -428,12 +582,121 @@
         <div style="font-size:11px; color:var(--color-text-muted); margin-top:2px;">of 100 XP</div>
       </div>
 
-    </div>
   </aside><!-- end right column -->
 
 </div><!-- end outer grid -->
 
 <style>
+  /* ── TRACK-LEVEL FOLDOUTS ──────────────────── */
+  .track-foldout {
+    border-radius: 20px;
+    margin-bottom: 8px;
+    overflow: visible;
+  }
+  .track-foldout-header {
+    position: relative;
+    background: linear-gradient(135deg, var(--track-color, #4c1d95) 0%, var(--track-color-light, #7c3aed) 100%);
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 15px;
+    padding: 18px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    user-select: none;
+    transition: background-position .4s ease, border-radius .3s ease, transform .15s ease, box-shadow .3s ease;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-game, var(--font-body, inherit));
+    font-weight: 700;
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--track-color, #4c1d95) 30%, transparent);
+    outline: none;
+  }
+  .track-foldout-header:hover:not(:disabled) {
+    background-position: 100% 50%;
+    box-shadow: 0 6px 24px color-mix(in srgb, var(--track-color, #4c1d95) 40%, transparent);
+    transform: translateY(-2px);
+  }
+  .track-foldout-header:active:not(:disabled) {
+    transform: translateY(1px) scale(.998);
+  }
+  .track-foldout.is-open .track-foldout-header {
+    background-position: 100% 50%;
+    border-radius: 20px;
+  }
+  .track-foldout-header .track-icon {
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,.2);
+    border-radius: 12px;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .track-foldout-header .track-info {
+    flex: 1; min-width: 0;
+  }
+  .track-foldout-header .track-label {
+    display: block;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    opacity: .8;
+  }
+  .track-foldout-header .track-title {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+  }
+  .track-foldout-header .track-meta {
+    font-size: 14px;
+    opacity: .8;
+    white-space: nowrap;
+  }
+  .track-foldout-header .chevron-icon {
+    margin-left: auto;
+    transition: transform .3s ease;
+    opacity: .7;
+    flex-shrink: 0;
+  }
+  .track-foldout.is-open .track-foldout-header .chevron-icon {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+  .track-foldout-body {
+    overflow: hidden;
+    height: 0;
+    opacity: 0;
+    transition: height .45s cubic-bezier(.25,.8,.25,1), opacity .35s ease;
+    border-radius: 0 0 20px 20px;
+    background: transparent;
+    border: none;
+    border-top: none;
+  }
+  .track-foldout:not(.is-open) .track-foldout-body {
+    border-color: transparent;
+  }
+  .track-foldout.is-open .track-foldout-body {
+    opacity: 1;
+  }
+  .track-foldout-body-inner {
+    padding: 12px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .track-locked .track-foldout-header {
+    opacity: .55;
+    cursor: not-allowed;
+  }
+  .track-locked .track-foldout-header:hover {
+    transform: none;
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--track-color, #4c1d95) 30%, transparent);
+  }
+
+  /* ── LESSON-LEVEL FOLDOUTS (inside tracks) ── */
   .lesson-foldout {
     border-radius: 16px;
     margin-bottom: 8px;
@@ -446,8 +709,8 @@
     background-position: 0% 50%;
     color: #fff;
     border-radius: 16px;
-    font-size: 16px;
-    padding: 14px 22px;
+    font-size: 18px;
+    padding: 16px 24px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -474,7 +737,7 @@
   }
   .lesson-foldout.is-open .lesson-foldout-header {
     background-position: 100% 50%;
-    border-radius: 16px 16px 0 0;
+    border-radius: 16px;
     box-shadow: 0 2px 8px rgba(76, 29, 149, .2);
   }
   .lesson-foldout-header .chevron-icon {
@@ -517,85 +780,91 @@
 
 <script>
 (function() {
-  var panels = document.querySelectorAll('.lesson-foldout');
-  var busy = false;
+  // Generic accordion factory — works for both track and lesson foldouts
+  function makeAccordion(selector, headerSelector, bodySelector) {
+    var panels = document.querySelectorAll(selector);
+    var busy = false;
 
-  function collapsePanel(el) {
-    return new Promise(function(resolve) {
-      var body = el.querySelector('.lesson-foldout-body');
-      // Set explicit height so transition works
-      body.style.height = body.scrollHeight + 'px';
-      body.offsetHeight; // force reflow
-      requestAnimationFrame(function() {
+    function collapse(el) {
+      return new Promise(function(resolve) {
+        var body = el.querySelector(bodySelector);
+        if (!body) { resolve(); return; }
+        body.style.height = body.scrollHeight + 'px';
+        body.offsetHeight;
+        requestAnimationFrame(function() {
+          body.style.height = '0px';
+          body.style.opacity = '0';
+          el.classList.remove('is-open');
+        });
+        var done = false;
+        body.addEventListener('transitionend', function h(e) {
+          if (e.propertyName !== 'height' || done) return;
+          done = true;
+          body.removeEventListener('transitionend', h);
+          resolve();
+        });
+        setTimeout(function() { if (!done) { done = true; resolve(); } }, 500);
+      });
+    }
+
+    function expand(el) {
+      return new Promise(function(resolve) {
+        var body = el.querySelector(bodySelector);
+        if (!body) { resolve(); return; }
+        el.classList.add('is-open');
+        body.style.height = 'auto';
+        var h = body.scrollHeight;
         body.style.height = '0px';
         body.style.opacity = '0';
-        el.classList.remove('is-open');
-      });
-      body.addEventListener('transitionend', function handler(e) {
-        if (e.propertyName !== 'height') return;
-        body.removeEventListener('transitionend', handler);
-        resolve();
-      });
-      // Safety timeout in case transitionend doesn't fire
-      setTimeout(resolve, 500);
-    });
-  }
-
-  function expandPanel(el) {
-    return new Promise(function(resolve) {
-      var body = el.querySelector('.lesson-foldout-body');
-      el.classList.add('is-open');
-      // Measure natural height
-      body.style.height = 'auto';
-      var h = body.scrollHeight;
-      body.style.height = '0px';
-      body.style.opacity = '0';
-      body.offsetHeight; // force reflow
-      requestAnimationFrame(function() {
-        body.style.height = h + 'px';
-        body.style.opacity = '1';
-      });
-      body.addEventListener('transitionend', function handler(e) {
-        if (e.propertyName !== 'height') return;
-        body.removeEventListener('transitionend', handler);
-        body.style.height = 'auto';
-        resolve();
-      });
-      setTimeout(function() { body.style.height = 'auto'; resolve(); }, 500);
-    });
-  }
-
-  panels.forEach(function(panel) {
-    var btn = panel.querySelector('.lesson-foldout-header');
-
-    btn.addEventListener('click', function() {
-      if (busy) return;
-      busy = true;
-
-      var isOpen = panel.classList.contains('is-open');
-
-      if (isOpen) {
-        collapsePanel(panel).then(function() { busy = false; });
-      } else {
-        // Close any currently open panel, then open this one
-        var currentOpen = document.querySelector('.lesson-foldout.is-open');
-        var closePromise = currentOpen ? collapsePanel(currentOpen) : Promise.resolve();
-        closePromise.then(function() {
-          return expandPanel(panel);
-        }).then(function() {
-          busy = false;
+        body.offsetHeight;
+        requestAnimationFrame(function() {
+          body.style.height = h + 'px';
+          body.style.opacity = '1';
         });
+        var done = false;
+        body.addEventListener('transitionend', function handler(e) {
+          if (e.propertyName !== 'height' || done) return;
+          done = true;
+          body.removeEventListener('transitionend', handler);
+          body.style.height = 'auto';
+          resolve();
+        });
+        setTimeout(function() { if (!done) { done = true; body.style.height = 'auto'; resolve(); } }, 500);
+      });
+    }
+
+    panels.forEach(function(panel) {
+      var btn = panel.querySelector(headerSelector);
+      if (!btn || btn.disabled) return;
+
+      btn.addEventListener('click', function() {
+        if (busy) return;
+        busy = true;
+        var isOpen = panel.classList.contains('is-open');
+        if (isOpen) {
+          collapse(panel).then(function() { busy = false; });
+        } else {
+          var sibling = panel.parentElement.querySelector(selector + '.is-open');
+          var p = (sibling && sibling !== panel) ? collapse(sibling) : Promise.resolve();
+          p.then(function() { return expand(panel); }).then(function() { busy = false; });
+        }
+      });
+
+      // Auto-open
+      if (panel.getAttribute('data-auto-open') === 'true') {
+        panel.classList.add('is-open');
+        var body = panel.querySelector(bodySelector);
+        if (body) { body.style.height = 'auto'; body.style.opacity = '1'; }
       }
     });
+  }
 
-    // Auto-open on load
-    if (panel.getAttribute('data-auto-open') === 'true') {
-      panel.classList.add('is-open');
-      var body = panel.querySelector('.lesson-foldout-body');
-      body.style.height = 'auto';
-      body.style.opacity = '1';
-    }
-  });
+  // Track-level accordion
+  makeAccordion('.track-foldout', '.track-foldout-header', '.track-foldout-body');
+
+  // Lesson-level accordion (inside each track)
+  makeAccordion('.lesson-foldout', '.lesson-foldout-header', '.lesson-foldout-body');
 })();
+</script>
 </script>
 {% endblock %}

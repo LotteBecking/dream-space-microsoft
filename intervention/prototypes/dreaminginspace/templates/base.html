@@ -23,9 +23,9 @@
       --color-border-strong: #cdb8ec;
       --color-border-subtle: #efe8fa;
 
-      --color-text: #2a1e3d;           /* deep ink purple */
-      --color-text-muted: #6b5b82;
-      --color-text-subtle: #9a8cb0;
+      --color-text: #111111;           /* true black for readability */
+      --color-text-muted: #333333;
+      --color-text-subtle: #666666;
       --color-text-inverse: #ffffff;
 
       /* Primary: the vibrant grape purple from the Canva slide */
@@ -319,11 +319,11 @@
     .nav-item.is-locked:hover { background: transparent; color: var(--color-text-subtle); transform: none; }
 
     /* ---------- Typography ---------- */
-    .display-xl { font-family: var(--font-game); font-size: 46px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.12; }
-    .display-lg { font-family: var(--font-game); font-size: 34px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.18; }
-    .display-md { font-family: var(--font-game); font-size: 27px; font-weight: 600; letter-spacing: 0; line-height: 1.22; }
-    .title-lg   { font-family: var(--font-game); font-size: 22px; font-weight: 600; line-height: 1.3; }
-    .title-md   { font-family: var(--font-game); font-size: 19px; font-weight: 600; line-height: 1.38; }
+    .display-xl { font-family: var(--font-game); font-size: 46px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.12; color: var(--color-text); }
+    .display-lg { font-family: var(--font-game); font-size: 34px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.18; color: var(--color-text); }
+    .display-md { font-family: var(--font-game); font-size: 27px; font-weight: 600; letter-spacing: 0; line-height: 1.22; color: var(--color-text); }
+    .title-lg   { font-family: var(--font-game); font-size: 22px; font-weight: 600; line-height: 1.3; color: var(--color-text); }
+    .title-md   { font-family: var(--font-game); font-size: 19px; font-weight: 600; line-height: 1.38; color: var(--color-text); }
     .eyebrow    { font-family: var(--font-pixel); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-primary-ink); text-shadow: 1px 1px 0 rgba(63,31,145,0.12); }
     .body-lg    { font-size: 18px; line-height: 1.6; color: var(--color-text); }
     .body       { font-size: 16px; line-height: 1.55; color: var(--color-text); }
@@ -339,7 +339,11 @@
       border-radius: var(--radius-card);
       box-shadow: inset -1px -1px 0 rgba(107,57,217,0.06), inset 1px 1px 0 rgba(255,255,255,0.6), var(--shadow-sm);
     }
-    .card-body { padding: 24px; }
+    .card-body { padding: 24px; color: #111; }
+    .card-body label, .card-body p, .card-body li, .card-body h2, .card-body h3, .card-body span { color: #111; }
+    .card-body .title-lg { color: #111; font-size: 20px; }
+    .card-body .title-md { color: #111; font-size: 17px; }
+    .card-body .body, .card-body .body-muted { color: #333; font-size: 15px; }
     .card-section { padding: 20px 24px; border-top: 1px solid var(--color-border-subtle); }
     .card-section:first-child { border-top: 0; }
 
@@ -674,11 +678,11 @@
       background: #fff;
       border: 2.5px solid var(--color-primary);
       border-radius: 20px;
-      padding: 14px 18px;
+      padding: 16px 20px;
       font-family: var(--font-game);
-      font-size: 15px;
+      font-size: 18px;
       line-height: 1.5;
-      color: var(--color-text);
+      color: #111;
       box-shadow: 0 4px 0 var(--color-primary-border), var(--shadow-md);
     }
     .speech-bubble::after {
@@ -832,8 +836,8 @@
     }
     .mission-card.done   .mission-card-icon { background: var(--color-success-soft); }
     .mission-card.active .mission-card-icon { background: var(--color-primary-soft); }
-    .mission-title { font-family: var(--font-game); font-size: 19px; font-weight: 700; color: var(--color-text); }
-    .mission-meta  { font-size: 14px; color: var(--color-text-muted); margin-top: 2px; }
+    .mission-title { font-family: var(--font-game); font-size: 17px; font-weight: 700; color: #111; }
+    .mission-meta  { font-size: 14px; color: #333; margin-top: 2px; }
     .mission-badge {
       margin-left: auto;
       font-family: var(--font-pixel);
@@ -881,9 +885,9 @@
       background: linear-gradient(90deg, var(--color-primary-ink) 0%, var(--color-primary) 100%);
       color: #fff;
       font-family: var(--font-pixel);
-      font-size: 10px;
+      font-size: 14px;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       padding: 5px 12px;
       border-radius: var(--radius-button);
@@ -1319,5 +1323,147 @@
   </nav>
 
   {% block scripts %}{% endblock %}
+
+  <!-- Rocket launch transition -->
+  <div id="rocket-overlay" style="position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:0; transition:opacity .2s;">
+    <div style="position:absolute; inset:0; background:radial-gradient(ellipse at 50% 80%, #1e1b4b 0%, #0f0a2e 60%, #000 100%);"></div>
+    <div id="rocket-stars" style="position:absolute; inset:0; overflow:hidden;"></div>
+    <div id="rocket-wrap" style="position:absolute; left:50%; bottom:-160px; transform:translateX(-50%); z-index:2;">
+      <div id="rocket-ship" style="font-size:80px; filter:drop-shadow(0 0 30px rgba(251,146,60,0.8)); transform-origin:center bottom;">🚀</div>
+      <div id="rocket-flame" style="width:60px; text-align:center; opacity:0; margin-top:-10px;">
+        <div style="font-size:50px; animation:flame-flicker .15s infinite alternate;">🔥</div>
+        <div style="font-size:35px; margin-top:-15px; animation:flame-flicker .1s infinite alternate-reverse;">🔥</div>
+      </div>
+    </div>
+    <div id="rocket-text" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:3; opacity:0; text-align:center;">
+      <p style="font-family:var(--font-game,sans-serif); font-size:28px; font-weight:800; color:#fff; text-shadow:0 0 20px rgba(139,92,246,0.6); margin:0;">Launching...</p>
+    </div>
+    <div id="rocket-smoke" style="position:absolute; bottom:0; left:0; right:0; height:120px; z-index:1; opacity:0;
+      background:linear-gradient(to top, rgba(200,200,200,0.5), transparent);
+      filter:blur(20px);"></div>
+  </div>
+
+  <style>
+    @keyframes flame-flicker {
+      0% { transform: scaleX(1) scaleY(1); opacity:0.9; }
+      100% { transform: scaleX(1.15) scaleY(1.1); opacity:1; }
+    }
+    @keyframes star-fall {
+      0% { transform: translateY(-10px); opacity:0; }
+      10% { opacity:1; }
+      100% { transform: translateY(110vh); opacity:0; }
+    }
+    @keyframes rumble {
+      0%, 100% { transform: translateX(-50%) translateX(0); }
+      25% { transform: translateX(-50%) translateX(-3px); }
+      75% { transform: translateX(-50%) translateX(3px); }
+    }
+    .rocket-star {
+      position:absolute; color:#fff; border-radius:50%;
+      background:#fff;
+      animation: star-fall linear forwards;
+    }
+  </style>
+
+  <script>
+  (function(){
+    const overlay = document.getElementById('rocket-overlay');
+    const wrap = document.getElementById('rocket-wrap');
+    const ship = document.getElementById('rocket-ship');
+    const flame = document.getElementById('rocket-flame');
+    const stars = document.getElementById('rocket-stars');
+    const rText = document.getElementById('rocket-text');
+    const smoke = document.getElementById('rocket-smoke');
+    if(!overlay) return;
+
+    function spawnStars(){
+      stars.innerHTML = '';
+      for(let i=0; i<60; i++){
+        const s = document.createElement('div');
+        s.className = 'rocket-star';
+        s.style.left = Math.random()*100 + '%';
+        s.style.top = '-5px';
+        s.style.animationDuration = (0.5 + Math.random()*0.6) + 's';
+        s.style.animationDelay = (Math.random()*2) + 's';
+        s.style.width = (2 + Math.random()*3) + 'px';
+        s.style.height = s.style.width;
+        s.style.opacity = (0.4 + Math.random()*0.6);
+        stars.appendChild(s);
+      }
+    }
+
+    function launchRocket(href){
+      overlay.style.pointerEvents = 'all';
+      overlay.style.opacity = '1';
+      spawnStars();
+
+      // Reset
+      wrap.style.transition = 'none';
+      wrap.style.bottom = '-160px';
+      wrap.style.left = '50%';
+      wrap.style.transform = 'translateX(-50%)';
+      ship.style.transform = 'rotate(0deg)';
+      flame.style.opacity = '0';
+      rText.style.opacity = '0';
+      smoke.style.opacity = '0';
+
+      // Phase 1: Rumble + smoke + flame ignition
+      setTimeout(() => {
+        smoke.style.transition = 'opacity .3s';
+        smoke.style.opacity = '1';
+        flame.style.transition = 'opacity .2s';
+        flame.style.opacity = '1';
+        wrap.style.animation = 'rumble .08s linear infinite';
+        wrap.style.transition = 'bottom 0.7s cubic-bezier(0.1, 0, 0.3, 1)';
+        wrap.style.bottom = '25vh';
+        rText.style.transition = 'opacity .3s';
+        rText.style.opacity = '1';
+      }, 200);
+
+      // Phase 2: Hover + tilt
+      setTimeout(() => {
+        wrap.style.animation = 'none';
+        rText.style.opacity = '0';
+        smoke.style.opacity = '0';
+        ship.style.transition = 'transform .4s ease-in-out';
+        ship.style.transform = 'rotate(-18deg)';
+        wrap.style.transition = 'bottom 0.4s ease-in, left 0.4s ease-in';
+        wrap.style.bottom = '40vh';
+        wrap.style.left = '55%';
+      }, 950);
+
+      // Phase 3: Blast off in an arc!
+      setTimeout(() => {
+        ship.style.transition = 'transform .1s';
+        ship.style.transform = 'rotate(-5deg)';
+        wrap.style.transition = 'bottom 0.4s cubic-bezier(0.4, 0, 1, 0.3), left 0.4s cubic-bezier(0.4, 0, 1, 0.3)';
+        wrap.style.bottom = '130vh';
+        wrap.style.left = '42%';
+        document.querySelectorAll('.rocket-star').forEach(s => {
+          s.style.animationDuration = '0.25s';
+        });
+      }, 1350);
+
+      // Phase 4: Navigate
+      setTimeout(() => {
+        window.location.href = href;
+      }, 1800);
+    }
+
+    // Intercept only Mission 1 / first exercise links
+    document.addEventListener('click', function(e){
+      const link = e.target.closest('a.btn-primary, a.btn-secondary');
+      if(!link) return;
+      const href = link.href || '';
+      const text = link.textContent.toLowerCase().trim();
+      // Only trigger rocket for Mission 1 links (exercise/1, first mission start)
+      if((text.includes('mission 1') || text === 'start mission') &&
+         (href.includes('/exercise/1') || href.includes('/intro'))) {
+        e.preventDefault();
+        launchRocket(href);
+      }
+    });
+  })();
+  </script>
 </body>
 </html>

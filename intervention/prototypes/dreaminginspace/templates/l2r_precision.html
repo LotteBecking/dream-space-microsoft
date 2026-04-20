@@ -18,7 +18,7 @@
 
 {% if success %}
 <div style="margin-bottom:20px;">
-  {{ callout('success', 'Loops make everything shorter! +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
+  {{ callout('success', 'Crystal clear! A robot could follow every command. +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
 </div>
 <div class="card" style="padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
   <span>{{ space_beaver(56) }}</span>
@@ -39,26 +39,26 @@
     {% if error %}{{ callout('error', error) }}{% endif %}
 
     <form method="post">
-      {% for prob in exercise.problems %}
+      {% for item in exercise.vague_instructions %}
+      {% set vi = loop.index0 %}
       <section class="card" style="margin-bottom:16px;">
         <div class="card-body">
           <div class="section-title">
-            <span class="section-title-icon">{{ icon('refresh') }}</span>
-            <h2 class="title-lg">{{ prob.label }}</h2>
+            <span class="section-title-icon">{{ icon('alert-triangle') }}</span>
+            <h2 class="title-lg">{{ item.label }}</h2>
           </div>
-          <div style="background:var(--color-ink); color:#f1f5f9; border-radius:var(--radius-card); padding:16px 18px; margin:12px 0; font-family:var(--font-mono, monospace); font-size:15px; line-height:1.7; white-space:pre-wrap; font-weight:500;">{{ prob.long_code }}</div>
-          <div style="display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; margin-top:12px;">
-            <div>
-              <label class="eyebrow" style="display:block; margin-bottom:4px;">LOOP</label>
-              <div style="display:flex; align-items:center; gap:6px;">
-                <input type="number" name="times_{{ loop.index0 }}" class="input" style="width:80px;" placeholder="?" min="1" max="100" />
-                <span class="eyebrow" style="white-space:nowrap;">TIMES:</span>
-              </div>
+          <div style="background:#fef3c7; border:2px solid #fbbf24; border-radius:var(--radius-card); padding:12px 16px; margin:10px 0;">
+            <p class="body" style="color:#92400e; font-weight:600;">Why is this vague?</p>
+            <p class="body-muted" style="color:#92400e; margin-top:4px;">{{ item.why_vague }}</p>
+          </div>
+          <p class="eyebrow" style="margin:12px 0 8px;">Rewrite as precise robot commands ({{ item.min_steps }}+ steps):</p>
+          <div class="stack-sm">
+            {% for j in range(1, 7) %}
+            <div class="step-row">
+              <span class="step-index">{{ j }}</span>
+              <input type="text" name="rewrite_{{ vi }}_step_{{ j }}" class="input" placeholder="Step {{ j }}..." />
             </div>
-            <div style="flex:1; min-width:200px;">
-              <label class="eyebrow" style="display:block; margin-bottom:4px;">Steps inside the loop</label>
-              <textarea name="body_{{ loop.index0 }}" class="input" rows="3" placeholder="Write the steps that repeat..."></textarea>
-            </div>
+            {% endfor %}
           </div>
         </div>
       </section>

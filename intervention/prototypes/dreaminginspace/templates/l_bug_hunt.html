@@ -12,14 +12,45 @@
       <span class="chip chip-primary">Mission {{ num }} of {{ total_exercises }}</span>
       <span class="chip">{{ icon('zap') }}{{ exercise.xp }} XP</span>
     </div>
-    <h1 class="display-xl" style="margin-top:8px;">{{ exercise.title }}</h1>
+    <h1 style="font-family:var(--font-game); font-size:36px; font-weight:700; color:#111; margin-top:8px;">{{ exercise.title }}</h1>
+    <p style="font-size:16px; color:#111; margin-top:6px;">{{ exercise.description }}</p>
   </div>
 </div>
 
 {% if success %}
 <div style="margin-bottom:20px;">
-  {{ callout('success', 'You earned ' ~ exercise.xp ~ ' XP!', 'Mission complete!') }}
+  {{ callout('success', 'You squashed all the bugs! +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
 </div>
+
+{# Show results #}
+{% for bug in exercise.bugs %}
+{% set bi = loop.index0 %}
+{% set user_answer = result.get('answers', {}).get(bi|string, -1) if result else -1 %}
+<section class="card" style="margin-bottom:16px;">
+  <div class="card-body" style="padding:24px;">
+    <h2 style="font-size:20px; font-weight:700; color:#111; margin:0 0 10px 0;">
+      {% if result and bi in result.get('correct_bugs', []) %}
+        <span style="color:#16a34a;">✅</span>
+      {% elif result %}
+        <span style="color:#dc2626;">❌</span>
+      {% endif %}
+      {{ bug.label }}
+    </h2>
+    <div style="background:#1e1b4b; color:#e0e7ff; border-radius:12px; padding:14px 16px; margin-bottom:10px; font-family:monospace; font-size:14px; line-height:1.7; white-space:pre-wrap;">{{ bug.code }}</div>
+    {% if bug.fixes %}
+    {% for fix in bug.fixes %}
+    <div style="padding:10px 14px; border-radius:10px; margin-bottom:4px; font-size:15px; font-weight:500;
+      {% if loop.index0 == bug.correct_fix %}background:#dcfce7; color:#166534; border:2px solid #22c55e;
+      {% elif loop.index0 == user_answer and loop.index0 != bug.correct_fix %}background:#fee2e2; color:#991b1b; border:2px solid #ef4444; text-decoration:line-through;
+      {% else %}color:#666; border:2px solid #e5e7eb;{% endif %}">
+      {% if loop.index0 == bug.correct_fix %}✅{% endif %} {{ fix }}
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+</section>
+{% endfor %}
+
 <div class="card" style="padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
   <span>{{ space_beaver(56) }}</span>
   {% if num < total_exercises %}
@@ -32,31 +63,116 @@
   </a>
   {% endif %}
 </div>
+
 {% else %}
 
-<div class="grid-2">
-  <div class="stack">
-    {% if error %}{{ callout('error', error) }}{% endif %}
+<div style="display:grid; grid-template-columns:1.6fr 1fr; gap:24px; align-items:start;">
+  <div>
+    {% if error %}
+    <div style="background:#fee2e2; border:2px solid #ef4444; border-radius:12px; padding:14px 18px; margin-bottom:16px;">
+      <p style="color:#991b1b; font-size:15px; font-weight:600; margin:0;">{{ error }}</p>
+    </div>
+    {% endif %}
 
     <form method="post">
       {% for bug in exercise.bugs %}
-      <section class="card" style="margin-bottom:16px;">
-        <div class="card-body">
-          <div class="section-title">
-            <span class="section-title-icon">{{ icon('alert-triangle') }}</span>
-            <h2 class="title-lg">{{ bug.label }}</h2>
+      {% set bi = loop.index0 %}
+      <section class="card" style="margin-bottom:20px;">
+        <div class="card-body" style="padding:24px;">
+          {# Bug title with number #}
+          <h2 style="font-family:var(--font-game); font-size:20px; font-weight:700; color:#111; margin:0 0 14px 0; display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#7c3aed; color:#fff; font-size:16px; font-weight:800;">{{ loop.index }}</span>
+            {{ bug.label }}
+          </h2>
+
+          {# The buggy code - dark box #}
+          <div style="background:#1e1b4b; color:#e0e7ff; border-radius:12px; padding:18px 20px; margin-bottom:14px; font-family:'Fira Code',Consolas,monospace; font-size:15px; line-height:1.8; white-space:pre-wrap; font-weight:500; border:2px solid #312e81;">{{ bug.code }}</div>
+
+          {# Visual diagrams side by side #}
+          {% if bug.diagram_what_should_happen or bug.diagram_what_actually_happened %}
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+            {% if bug.diagram_what_should_happen %}
+            <div style="background:#f0fdf4; border:2px solid #22c55e; border-radius:12px; padding:14px;">
+              <p style="font-size:13px; font-weight:700; color:#166534; margin:0 0 8px 0; text-align:center;">✅ What SHOULD happen</p>
+              <div style="font-size:22px; line-height:1.6; text-align:center;">
+                {% for row in bug.diagram_what_should_happen %}
+                <div style="display:flex; justify-content:center; gap:2px;">
+                  {% for cell in row %}
+                  <span style="display:inline-block; width:36px; height:36px; line-height:36px; text-align:center; font-size:20px;">{{ cell if cell else '·' }}</span>
+                  {% endfor %}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+            {% if bug.diagram_what_actually_happened %}
+            <div style="background:#fef2f2; border:2px solid #ef4444; border-radius:12px; padding:14px;">
+              <p style="font-size:13px; font-weight:700; color:#991b1b; margin:0 0 8px 0; text-align:center;">❌ What ACTUALLY happened</p>
+              <div style="font-size:22px; line-height:1.6; text-align:center;">
+                {% for row in bug.diagram_what_actually_happened %}
+                <div style="display:flex; justify-content:center; gap:2px;">
+                  {% for cell in row %}
+                  <span style="display:inline-block; width:36px; height:36px; line-height:36px; text-align:center; font-size:{% if cell|length > 2 %}13{% else %}20{% endif %}px;">{{ cell if cell else '·' }}</span>
+                  {% endfor %}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
           </div>
-          <div style="background:var(--color-ink); color:#e2e8f0; border-radius:var(--radius-card); padding:16px; margin:12px 0; font-family:var(--font-mono, monospace); font-size:14px; line-height:1.7; white-space:pre-wrap;">{{ bug.code }}</div>
-          <p class="body-muted" style="font-style:italic; margin-bottom:10px;">{{ icon('lightbulb') }} {{ bug.hint }}</p>
-          <textarea name="fix_{{ loop.index0 }}" class="input" rows="3" placeholder="Write your fix here..."></textarea>
+          {% endif %}
+
+          {# What happened - yellow warning box #}
+          {% if bug.scenario %}
+          <div style="background:#fef3c7; border-left:4px solid #f59e0b; border-radius:0 10px 10px 0; padding:14px 16px; margin-bottom:14px;">
+            <p style="color:#78350f; font-size:15px; font-weight:600; margin:0; line-height:1.5;">
+              ⚠️ <strong>What went wrong:</strong> {{ bug.scenario }}
+            </p>
+          </div>
+          {% endif %}
+
+          {# Hint - blue info box #}
+          {% if bug.hint %}
+          <div style="background:#eff6ff; border-left:4px solid #3b82f6; border-radius:0 10px 10px 0; padding:12px 16px; margin-bottom:16px;">
+            <p style="color:#1e40af; font-size:14px; font-weight:600; margin:0; line-height:1.5;">
+              💡 <strong>Hint:</strong> {{ bug.hint }}
+            </p>
+          </div>
+          {% endif %}
+
+          {# Fix options as radio buttons (if available) #}
+          {% if bug.fixes %}
+          <p style="font-size:16px; font-weight:700; color:#111; margin:0 0 10px 0;">🔧 Pick the correct fix:</p>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            {% for fix in bug.fixes %}
+            <label style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:12px;
+                   border:2px solid #d1d5db; cursor:pointer; background:#fff; color:#111; font-size:15px; font-weight:500;
+                   transition:all .15s; line-height:1.4;"
+                   onmouseover="this.style.borderColor='#7c3aed'; this.style.background='#faf5ff';"
+                   onmouseout="if(!this.querySelector('input').checked){this.style.borderColor='#d1d5db'; this.style.background='#fff';}">
+              <input type="radio" name="fix_{{ bi }}" value="{{ loop.index0 }}" required
+                     style="accent-color:#7c3aed; width:20px; height:20px; flex-shrink:0;"
+                     onchange="this.closest('label').style.borderColor='#7c3aed'; this.closest('label').style.background='#faf5ff';
+                               document.querySelectorAll('input[name=fix_{{ bi }}]').forEach(r => { if(r!==this) { r.closest('label').style.borderColor='#d1d5db'; r.closest('label').style.background='#fff'; } });" />
+              <span>{{ fix }}</span>
+            </label>
+            {% endfor %}
+          </div>
+
+          {% else %}
+          {# Fallback textarea for lessons that don't have fix options #}
+          <label style="display:block; font-size:15px; font-weight:700; color:#111; margin-bottom:6px;">✍️ Write your fix:</label>
+          <textarea name="fix_{{ bi }}" rows="3" placeholder="Write the corrected commands here..."
+            style="width:100%; background:#fff; border:2px solid #d1d5db; border-radius:10px; padding:12px 14px; font-family:inherit; font-size:15px; color:#111; line-height:1.6; resize:vertical; min-height:80px;"></textarea>
+          {% endif %}
         </div>
       </section>
       {% endfor %}
 
       <div class="card" style="padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
         <a href="{{ url_for('lesson_home', lesson_num=lesson_num) }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
-        <button type="submit" class="btn btn-primary">
-          <span>Submit Fixes</span>{{ icon('check') }}
+        <button type="submit" class="btn btn-primary" style="font-size:16px; padding:12px 28px;">
+          <span>🐛 Check My Fixes</span>
         </button>
       </div>
     </form>
@@ -68,11 +184,8 @@
         {{ space_beaver(88) }}
       </div>
       <div class="speech-bubble" style="margin-top:14px; margin-bottom:0;">
-        <div class="section-bar" style="margin-bottom:8px; border-radius:8px; padding:5px 10px; font-size:9px;">
-          {{ icon('lightbulb') }} Tip from Space Beaver
-        </div>
-        <h3 class="title-md" style="margin-bottom:8px;">{{ exercise.beaver_msg }}</h3>
-        <p class="body-muted" style="margin:0;">{{ exercise.beaver_hint }}</p>
+        <h3 style="font-size:16px; font-weight:700; color:#111; margin-bottom:8px;">{{ exercise.beaver_msg }}</h3>
+        <p style="margin:0; color:#333; font-size:14px; line-height:1.5;">{{ exercise.beaver_hint }}</p>
       </div>
     </aside>
   </div>

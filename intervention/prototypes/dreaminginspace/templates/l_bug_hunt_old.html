@@ -18,7 +18,7 @@
 
 {% if success %}
 <div style="margin-bottom:20px;">
-  {{ callout('success', 'Loops make everything shorter! +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
+  {{ callout('success', 'You earned ' ~ exercise.xp ~ ' XP!', 'Mission complete!') }}
 </div>
 <div class="card" style="padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
   <span>{{ space_beaver(56) }}</span>
@@ -39,27 +39,21 @@
     {% if error %}{{ callout('error', error) }}{% endif %}
 
     <form method="post">
-      {% for prob in exercise.problems %}
+      {% for bug in exercise.bugs %}
       <section class="card" style="margin-bottom:16px;">
         <div class="card-body">
           <div class="section-title">
-            <span class="section-title-icon">{{ icon('refresh') }}</span>
-            <h2 class="title-lg">{{ prob.label }}</h2>
+            <span class="section-title-icon">{{ icon('alert-triangle') }}</span>
+            <h2 class="title-lg">{{ bug.label }}</h2>
           </div>
-          <div style="background:var(--color-ink); color:#f1f5f9; border-radius:var(--radius-card); padding:16px 18px; margin:12px 0; font-family:var(--font-mono, monospace); font-size:15px; line-height:1.7; white-space:pre-wrap; font-weight:500;">{{ prob.long_code }}</div>
-          <div style="display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; margin-top:12px;">
-            <div>
-              <label class="eyebrow" style="display:block; margin-bottom:4px;">LOOP</label>
-              <div style="display:flex; align-items:center; gap:6px;">
-                <input type="number" name="times_{{ loop.index0 }}" class="input" style="width:80px;" placeholder="?" min="1" max="100" />
-                <span class="eyebrow" style="white-space:nowrap;">TIMES:</span>
-              </div>
-            </div>
-            <div style="flex:1; min-width:200px;">
-              <label class="eyebrow" style="display:block; margin-bottom:4px;">Steps inside the loop</label>
-              <textarea name="body_{{ loop.index0 }}" class="input" rows="3" placeholder="Write the steps that repeat..."></textarea>
-            </div>
+          <div style="background:var(--color-ink); color:#f1f5f9; border-radius:var(--radius-card); padding:16px 18px; margin:12px 0; font-family:var(--font-mono, monospace); font-size:15px; line-height:1.7; white-space:pre-wrap; font-weight:500;">{{ bug.code }}</div>
+          {% if bug.scenario %}
+          <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:10px; padding:12px 16px; margin-bottom:10px;">
+            <p style="color:#92400e; font-size:15px; font-weight:600; margin:0;">⚠️ What happened: {{ bug.scenario }}</p>
           </div>
+          {% endif %}
+          <p style="font-style:italic; margin-bottom:10px; color:#111; font-size:15px; font-weight:500;">{{ icon('lightbulb') }} {{ bug.hint }}</p>
+          <textarea name="fix_{{ loop.index0 }}" class="input" rows="3" placeholder="Write your fix here..."></textarea>
         </div>
       </section>
       {% endfor %}
@@ -67,7 +61,7 @@
       <div class="card" style="padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
         <a href="{{ url_for('lesson_home', lesson_num=lesson_num) }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
         <button type="submit" class="btn btn-primary">
-          <span>Submit</span>{{ icon('check') }}
+          <span>Submit Fixes</span>{{ icon('check') }}
         </button>
       </div>
     </form>

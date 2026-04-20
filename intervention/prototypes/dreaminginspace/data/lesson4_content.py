@@ -68,7 +68,7 @@ EXERCISES_4 = [
             {"step": "Put on shoes", "group": "Getting dressed"},
             {"step": "Eat breakfast", "group": "Breakfast"},
             {"step": "Pack notebook and pencils", "group": "Packing"},
-            {"step": "Brush teeth", "group": "Breakfast"},
+            {"step": "Brush teeth", "group": "Getting dressed"},
             {"step": "Check the weather", "group": "Getting dressed"},
             {"step": "Put on jacket if cold", "group": "Getting dressed"},
             {"step": "Pour cereal and milk", "group": "Breakfast"},

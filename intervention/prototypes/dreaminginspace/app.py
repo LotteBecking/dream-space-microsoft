@@ -21,7 +21,11 @@ from difflib import get_close_matches
 from data.lesson_content import (
     LESSON, ROLE_MODEL, VOCABULARY, LEARNING_OBJECTIVES,
     EXERCISES, TEA_STEPS_CORRECT, CHALLENGES,
-    INITIAL_SANDWICH_STATE, COMMAND_ALIASES,
+    INITIAL_SANDWICH_STATE, COMMAND_ALIASES, QUIZ_1,
+)
+from data.lesson2_robot_content import (
+    LESSON_2_ROBOT, ROLE_MODEL_2_ROBOT, VOCABULARY_2_ROBOT,
+    LEARNING_OBJECTIVES_2_ROBOT, EXERCISES_2_ROBOT, QUIZ_2_ROBOT,
 )
 from data.lesson2_content import (
     LESSON_2, ROLE_MODEL_2, VOCABULARY_2, LEARNING_OBJECTIVES_2,
@@ -35,42 +39,51 @@ from data.lesson4_content import (
     LESSON_4, ROLE_MODEL_4, VOCABULARY_4, LEARNING_OBJECTIVES_4,
     EXERCISES_4, QUIZ_4,
 )
+from data.lesson6_content import LESSON_6, ROLE_MODEL_6, VOCABULARY_6, OBJECTIVES_6, EXERCISES_6, QUIZ_6
+from data.lesson7_content import LESSON_7, ROLE_MODEL_7, VOCABULARY_7, OBJECTIVES_7, EXERCISES_7, QUIZ_7
+from data.lesson8_content import LESSON_8, ROLE_MODEL_8, VOCABULARY_8, OBJECTIVES_8, EXERCISES_8, QUIZ_8
+from data.lesson9_content import LESSON_9, ROLE_MODEL_9, VOCABULARY_9, OBJECTIVES_9, EXERCISES_9, QUIZ_9
+from data.lesson10_content import LESSON_10, ROLE_MODEL_10, VOCABULARY_10, OBJECTIVES_10, EXERCISES_10, QUIZ_10
+from data.lesson11_content import LESSON_11, ROLE_MODEL_11, VOCABULARY_11, OBJECTIVES_11, EXERCISES_11, QUIZ_11
+from data.lesson12_content import LESSON_12, ROLE_MODEL_12, VOCABULARY_12, OBJECTIVES_12, EXERCISES_12, QUIZ_12
+from data.lesson13_content import LESSON_13, ROLE_MODEL_13, VOCABULARY_13, OBJECTIVES_13, EXERCISES_13, QUIZ_13
+from data.lesson14_content import LESSON_14, ROLE_MODEL_14, VOCABULARY_14, OBJECTIVES_14, EXERCISES_14, QUIZ_14
+from data.lesson15_content import LESSON_15, ROLE_MODEL_15, VOCABULARY_15, OBJECTIVES_15, EXERCISES_15, QUIZ_15
+from data.lesson16_content import LESSON_16, ROLE_MODEL_16, VOCABULARY_16, OBJECTIVES_16, EXERCISES_16, QUIZ_16
+from data.lesson17_content import LESSON_17, ROLE_MODEL_17, VOCABULARY_17, OBJECTIVES_17, EXERCISES_17, QUIZ_17
+from data.lesson18_content import LESSON_18, ROLE_MODEL_18, VOCABULARY_18, OBJECTIVES_18, EXERCISES_18, QUIZ_18
 
 # ---------------------------------------------------------------------------
-# All-lessons registry
+# All-lessons registry (16 lessons across 4 tracks)
 # ---------------------------------------------------------------------------
+def _lesson(l, rm, v, o, ex, q=None):
+    d = {"lesson": l, "role_model": rm, "vocabulary": v, "objectives": o, "exercises": ex}
+    if q: d["quiz"] = q
+    return d
+
 ALL_LESSONS = {
-    1: {
-        "lesson": LESSON,
-        "role_model": ROLE_MODEL,
-        "vocabulary": VOCABULARY,
-        "objectives": LEARNING_OBJECTIVES,
-        "exercises": EXERCISES,
-    },
-    2: {
-        "lesson": LESSON_2,
-        "role_model": ROLE_MODEL_2,
-        "vocabulary": VOCABULARY_2,
-        "objectives": LEARNING_OBJECTIVES_2,
-        "exercises": EXERCISES_2,
-        "quiz": QUIZ_2,
-    },
-    3: {
-        "lesson": LESSON_3,
-        "role_model": ROLE_MODEL_3,
-        "vocabulary": VOCABULARY_3,
-        "objectives": LEARNING_OBJECTIVES_3,
-        "exercises": EXERCISES_3,
-        "quiz": QUIZ_3,
-    },
-    4: {
-        "lesson": LESSON_4,
-        "role_model": ROLE_MODEL_4,
-        "vocabulary": VOCABULARY_4,
-        "objectives": LEARNING_OBJECTIVES_4,
-        "exercises": EXERCISES_4,
-        "quiz": QUIZ_4,
-    },
+    # Track 1: Foundations
+    1:  _lesson(LESSON, ROLE_MODEL, VOCABULARY, LEARNING_OBJECTIVES, EXERCISES, QUIZ_1),
+    2:  _lesson(LESSON_2_ROBOT, ROLE_MODEL_2_ROBOT, VOCABULARY_2_ROBOT, LEARNING_OBJECTIVES_2_ROBOT, EXERCISES_2_ROBOT, QUIZ_2_ROBOT),
+    3:  _lesson(LESSON_2, ROLE_MODEL_2, VOCABULARY_2, LEARNING_OBJECTIVES_2, EXERCISES_2, QUIZ_2),
+    4:  _lesson(LESSON_3, ROLE_MODEL_3, VOCABULARY_3, LEARNING_OBJECTIVES_3, EXERCISES_3, QUIZ_3),
+    5:  _lesson(LESSON_4, ROLE_MODEL_4, VOCABULARY_4, LEARNING_OBJECTIVES_4, EXERCISES_4, QUIZ_4),
+    # Track 2: Text-Based Coding
+    6:  _lesson(LESSON_6, ROLE_MODEL_6, VOCABULARY_6, OBJECTIVES_6, EXERCISES_6, QUIZ_6),
+    7:  _lesson(LESSON_7, ROLE_MODEL_7, VOCABULARY_7, OBJECTIVES_7, EXERCISES_7, QUIZ_7),
+    8:  _lesson(LESSON_8, ROLE_MODEL_8, VOCABULARY_8, OBJECTIVES_8, EXERCISES_8, QUIZ_8),
+    9:  _lesson(LESSON_9, ROLE_MODEL_9, VOCABULARY_9, OBJECTIVES_9, EXERCISES_9, QUIZ_9),
+    # Track 3: Creation & Application
+    10: _lesson(LESSON_10, ROLE_MODEL_10, VOCABULARY_10, OBJECTIVES_10, EXERCISES_10, QUIZ_10),
+    11: _lesson(LESSON_11, ROLE_MODEL_11, VOCABULARY_11, OBJECTIVES_11, EXERCISES_11, QUIZ_11),
+    12: _lesson(LESSON_12, ROLE_MODEL_12, VOCABULARY_12, OBJECTIVES_12, EXERCISES_12, QUIZ_12),
+    13: _lesson(LESSON_13, ROLE_MODEL_13, VOCABULARY_13, OBJECTIVES_13, EXERCISES_13, QUIZ_13),
+    # Track 4: Digital World
+    14: _lesson(LESSON_14, ROLE_MODEL_14, VOCABULARY_14, OBJECTIVES_14, EXERCISES_14, QUIZ_14),
+    15: _lesson(LESSON_15, ROLE_MODEL_15, VOCABULARY_15, OBJECTIVES_15, EXERCISES_15, QUIZ_15),
+    16: _lesson(LESSON_16, ROLE_MODEL_16, VOCABULARY_16, OBJECTIVES_16, EXERCISES_16, QUIZ_16),
+    17: _lesson(LESSON_17, ROLE_MODEL_17, VOCABULARY_17, OBJECTIVES_17, EXERCISES_17, QUIZ_17),
+    18: _lesson(LESSON_18, ROLE_MODEL_18, VOCABULARY_18, OBJECTIVES_18, EXERCISES_18, QUIZ_18),
 }
 TOTAL_LESSONS = len(ALL_LESSONS)
 
@@ -280,6 +293,7 @@ def home():
         "home.html",
         lesson=LESSON,
         progress=progress,
+        all_lessons=ALL_LESSONS,
     )
 
 
@@ -584,7 +598,96 @@ def lesson_exercise(lesson_num, ex_num):
     if request.method == "POST":
         ex_type = ex.get("type", "written")
 
-        if ex_type == "spot_loop":
+        if ex_type == "robot_maze":
+            cmds = request.form.get("commands", "")
+            if cmds:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 10)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+            else:
+                error = "Run your program and reach the goal first!"
+
+        elif ex_type == "robot_commands":
+            steps = [request.form.get(f"step_{i}", "").strip() for i in range(1, 21)]
+            steps = [s for s in steps if s]
+            min_steps = ex.get("min_steps", 5)
+            if len(steps) < min_steps:
+                error = f"Your robot needs at least {min_steps} commands. Keep going!"
+            else:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 10)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+
+        elif ex_type == "robot_debug" or ex_type == "bug_hunt":
+            bugs = ex.get("bugs", [])
+            has_mcq = any("fixes" in b for b in bugs)
+
+            if has_mcq:
+                # MCQ mode: check radio selections
+                all_answered = True
+                correct_bugs = []
+                answers = {}
+                for i, bug in enumerate(bugs):
+                    val = request.form.get(f"fix_{i}", "")
+                    if val == "":
+                        all_answered = False
+                    else:
+                        answers[str(i)] = int(val)
+                        if int(val) == bug.get("correct_fix", -1):
+                            correct_bugs.append(i)
+
+                if not all_answered:
+                    error = "Pick a fix for every bug before submitting!"
+                else:
+                    result = {"correct_bugs": correct_bugs, "answers": answers}
+                    if ex_num not in lesson_data["completed_exercises"]:
+                        lesson_data["completed_exercises"].append(ex_num)
+                    session["xp"] = session.get("xp", 0) + ex.get("xp", 15)
+                    session.modified = True
+                    success = True
+                    progress = get_lesson_progress(lesson_num)
+                    _debug_result = result
+            else:
+                # Textarea mode (fallback)
+                all_filled = True
+                for i in range(len(bugs)):
+                    if not request.form.get(f"fix_{i}", "").strip():
+                        all_filled = False
+                if not all_filled:
+                    error = "Please write a fix for every bug!"
+                else:
+                    if ex_num not in lesson_data["completed_exercises"]:
+                        lesson_data["completed_exercises"].append(ex_num)
+                    session["xp"] = session.get("xp", 0) + ex.get("xp", 15)
+                    session.modified = True
+                    success = True
+                    progress = get_lesson_progress(lesson_num)
+
+        elif ex_type == "precision_rewrite":
+            vague = ex.get("vague_instructions", [])
+            all_filled = True
+            for i in range(len(vague)):
+                steps = [request.form.get(f"rewrite_{i}_step_{j}", "").strip() for j in range(1, 10)]
+                steps = [s for s in steps if s]
+                if len(steps) < vague[i].get("min_steps", 3):
+                    all_filled = False
+            if not all_filled:
+                error = "Each vague instruction needs enough precise steps. Keep going!"
+            else:
+                if ex_num not in lesson_data["completed_exercises"]:
+                    lesson_data["completed_exercises"].append(ex_num)
+                session["xp"] = session.get("xp", 0) + ex.get("xp", 20)
+                session.modified = True
+                success = True
+                progress = get_lesson_progress(lesson_num)
+
+        elif ex_type == "spot_loop":
             problems = ex.get("problems", [])
             all_filled = True
             for i in range(len(problems)):
@@ -724,9 +827,16 @@ def lesson_exercise(lesson_num, ex_num):
         "success": success,
         "total_exercises": len(exercises),
     }
+    # Add debug result if MCQ bug hunt was submitted
+    if "_debug_result" in dir() or "_debug_result" in locals():
+        context["result"] = _debug_result
 
     # Template mapping
     TEMPLATE_MAP = {
+        "robot_maze": "l2r_maze.html",
+        "robot_commands": "l2r_commands.html",
+        "robot_debug": "l_bug_hunt.html",
+        "precision_rewrite": "l2r_precision.html",
         "spot_loop": "l2_spot_loop.html",
         "rewrite_loop": "l2_rewrite_loop.html",
         "bug_hunt": "l_bug_hunt.html",
@@ -767,6 +877,40 @@ def lesson_quiz(lesson_num):
             session["xp"] = session.get("xp", 0) + 10
             session.modified = True
     return render_template("l_quiz.html", questions=quiz, lesson_num=lesson_num, lesson=lesson, result=result, progress=get_lesson_progress(lesson_num))
+
+
+@app.route("/lesson/<int:lesson_num>/recap", methods=["GET", "POST"])
+def lesson_recap(lesson_num):
+    """Recap/rewards page for lessons 2+."""
+    if lesson_num not in ALL_LESSONS or lesson_num == 1:
+        return redirect(url_for("home"))
+    info = ALL_LESSONS[lesson_num]
+    progress = get_lesson_progress(lesson_num)
+    recap_key = f"recap_{lesson_num}"
+    recap_submitted = False
+    recap_answer = session.get(recap_key, "")
+
+    if request.method == "POST":
+        reflection = request.form.get("reflection", "").strip()
+        if reflection:
+            session[recap_key] = reflection
+            recap_answer = reflection
+            recap_submitted = True
+            session.modified = True
+
+    if recap_answer:
+        recap_submitted = True
+
+    return render_template(
+        "l_recap.html",
+        lesson=info["lesson"],
+        vocabulary=info["vocabulary"],
+        objectives=info["objectives"],
+        progress=progress,
+        lesson_num=lesson_num,
+        recap_submitted=recap_submitted,
+        recap_answer=recap_answer,
+    )
 
 
 if __name__ == "__main__":
