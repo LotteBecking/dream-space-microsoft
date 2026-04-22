@@ -49,13 +49,26 @@ LEARNING_OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "title": "Sequence Sorting: Make Tea",
+        "description": (
+            "These six steps for making tea got mixed up! "
+            "Drag them into the right order. Think about which step "
+            "has to come before the next one."
+        ),
+        "type": "Sorting",
+        "difficulty": "Easy",
+        "xp": 15,
+        "duration_minutes": 8,
+    },
+    {
+        "id": 2,
         "title": "Write the Perfect Algorithm",
         "description": (
             "Write a numbered algorithm (at least 6 steps, one action per step) "
             "for one task: getting ready for school, making chocolate milk, or feeding a pet."
         ),
         "type": "Written",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "xp": 10,
         "duration_minutes": 10,
         "task_options": [
@@ -71,23 +84,12 @@ EXERCISES = [
         ],
     },
     {
-        "id": 2,
-        "title": "Sequence Sorting: Make Tea",
-        "description": (
-            "Order six shuffled instruction cards into a logical sequence, "
-            "compare with a partner, and discuss where sequence is fixed versus flexible."
-        ),
-        "type": "Sorting",
-        "difficulty": "Easy",
-        "xp": 15,
-        "duration_minutes": 8,
-    },
-    {
         "id": 3,
-        "title": "Extension: Robot Chef Algorithm",
+        "title": "Robot Chef Challenge",
         "description": (
-            "Write a canteen robot algorithm for one lunch item, then extend it "
-            "with allergy safety and missing-ingredient handling."
+            "Write an algorithm for a robot chef in the school canteen. "
+            "Your goal: make it so precise that a robot with NO common sense "
+            "can follow it perfectly — and handle allergies and missing ingredients too!"
         ),
         "type": "Extension",
         "difficulty": "Medium",
@@ -110,6 +112,177 @@ TEA_STEPS_CORRECT = [
     "Wait 3 minutes to steep",
     "Remove the tea bag",
     "Add milk or sugar if you like",
+]
+
+# Steps 5 and 6 can be swapped — both are valid
+TEA_STEPS_ALT = [
+    "Boil the water",
+    "Place the tea bag in the cup",
+    "Pour the hot water into the cup",
+    "Wait 3 minutes to steep",
+    "Add milk or sugar if you like",
+    "Remove the tea bag",
+]
+
+# ---------------------------------------------------------------------------
+# Exercise 2: Pre-made action blocks per task (for the block builder)
+# ---------------------------------------------------------------------------
+TASK_BLOCKS = [
+    # Task 0: Getting ready for school
+    [
+        {"emoji": "\U0001f514", "text": "Wake up when the alarm rings"},
+        {"emoji": "\U0001f6cf\ufe0f", "text": "Get out of bed"},
+        {"emoji": "\U0001f6bf", "text": "Take a shower"},
+        {"emoji": "\U0001faa5", "text": "Brush your teeth"},
+        {"emoji": "\U0001f9f4", "text": "Wash your face"},
+        {"emoji": "\U0001f455", "text": "Put on your school uniform"},
+        {"emoji": "\U0001f9e6", "text": "Put on your socks"},
+        {"emoji": "\U0001f45f", "text": "Put on your shoes"},
+        {"emoji": "\U0001f963", "text": "Pour cereal into a bowl"},
+        {"emoji": "\U0001f95b", "text": "Pour milk into the bowl"},
+        {"emoji": "\U0001f944", "text": "Eat your breakfast"},
+        {"emoji": "\U0001f392", "text": "Pack your school bag"},
+        {"emoji": "\U0001f4da", "text": "Check you have all your books"},
+        {"emoji": "\U0001f9e5", "text": "Put on your coat"},
+        {"emoji": "\U0001f6aa", "text": "Open the front door"},
+        {"emoji": "\U0001f6b6", "text": "Walk to school"},
+    ],
+    # Task 1: Making chocolate milk
+    [
+        {"emoji": "\U0001f95b", "text": "Get a clean glass from the cupboard"},
+        {"emoji": "\U0001f4e6", "text": "Open the fridge door"},
+        {"emoji": "\U0001f95b", "text": "Take out the milk carton"},
+        {"emoji": "\U0001f6aa", "text": "Close the fridge door"},
+        {"emoji": "\U0001f36b", "text": "Get the chocolate powder from the shelf"},
+        {"emoji": "\U0001f513", "text": "Open the chocolate powder lid"},
+        {"emoji": "\U0001f95b", "text": "Pour milk into the glass"},
+        {"emoji": "\U0001f944", "text": "Get a spoon from the drawer"},
+        {"emoji": "\U0001f36b", "text": "Add 2 spoons of chocolate powder"},
+        {"emoji": "\U0001f504", "text": "Stir with the spoon until mixed"},
+        {"emoji": "\U0001f445", "text": "Taste the chocolate milk"},
+        {"emoji": "\U0001f9f9", "text": "Wipe the counter clean"},
+        {"emoji": "\U0001f4e6", "text": "Put the milk back in the fridge"},
+        {"emoji": "\U0001f512", "text": "Close the chocolate powder lid"},
+    ],
+    # Task 2: Feeding a pet
+    [
+        {"emoji": "\U0001f550", "text": "Check the clock \u2014 is it feeding time?"},
+        {"emoji": "\U0001f963", "text": "Get the food bowl from the floor"},
+        {"emoji": "\U0001f6b0", "text": "Wash the food bowl with water"},
+        {"emoji": "\U0001f4e6", "text": "Open the pet food bag"},
+        {"emoji": "\U0001f944", "text": "Scoop one cup of food into the bowl"},
+        {"emoji": "\U0001f963", "text": "Place the food bowl on the floor"},
+        {"emoji": "\U0001f4a7", "text": "Check if the water bowl is empty"},
+        {"emoji": "\U0001f6b0", "text": "Fill the water bowl with fresh water"},
+        {"emoji": "\U0001f415", "text": "Call your pet to come and eat"},
+        {"emoji": "\U0001f440", "text": "Watch your pet eat"},
+        {"emoji": "\U0001f9f9", "text": "Clean up any spills on the floor"},
+        {"emoji": "\U0001f4e6", "text": "Close and seal the pet food bag"},
+        {"emoji": "\U0001f963", "text": "Pick up the empty food bowl"},
+        {"emoji": "\U0001f6b0", "text": "Wash the food bowl for next time"},
+    ],
+]
+
+# ---------------------------------------------------------------------------
+# Exercise 3: Robot Chef data (lunch items, cooking blocks, IF/THEN pieces)
+# ---------------------------------------------------------------------------
+CHEF_LUNCH_ITEMS = [
+    {"emoji": "\U0001f354", "name": "Burger", "color": "#fef3c7"},
+    {"emoji": "\U0001f355", "name": "Pizza", "color": "#fce7f3"},
+    {"emoji": "\U0001f32e", "name": "Tacos", "color": "#dbeafe"},
+    {"emoji": "\U0001f95e", "name": "Pancakes", "color": "#fef2f2"},
+]
+
+CHEF_BLOCKS = [
+    # Item 0: Burger
+    [
+        {"emoji": "\U0001f6bf", "text": "Wash hands with soap and water"},
+        {"emoji": "\U0001f35e", "text": "Take a burger bun from the bag"},
+        {"emoji": "\U0001f52a", "text": "Cut the bun in half"},
+        {"emoji": "\U0001f7e1", "text": "Place the bottom bun on the plate"},
+        {"emoji": "\U0001f356", "text": "Take a burger patty from the fridge"},
+        {"emoji": "\U0001f525", "text": "Turn on the grill to medium heat"},
+        {"emoji": "\U0001f356", "text": "Place the patty on the grill"},
+        {"emoji": "\u23f3", "text": "Cook for 4 minutes on each side"},
+        {"emoji": "\U0001f356", "text": "Place the cooked patty on the bun"},
+        {"emoji": "\U0001f9c0", "text": "Add a slice of cheese on the patty"},
+        {"emoji": "\U0001f345", "text": "Wash and slice a tomato"},
+        {"emoji": "\U0001f345", "text": "Place a tomato slice on the cheese"},
+        {"emoji": "\U0001f96c", "text": "Add a lettuce leaf on top"},
+        {"emoji": "\U0001f35e", "text": "Place the top bun on the burger"},
+        {"emoji": "\U0001f37d\ufe0f", "text": "Place burger on the serving tray"},
+    ],
+    # Item 1: Pizza
+    [
+        {"emoji": "\U0001f6bf", "text": "Wash hands with soap and water"},
+        {"emoji": "\U0001f355", "text": "Take a pizza base from the fridge"},
+        {"emoji": "\U0001f37d\ufe0f", "text": "Place the base on a baking tray"},
+        {"emoji": "\U0001f345", "text": "Open the jar of tomato sauce"},
+        {"emoji": "\U0001f944", "text": "Spread tomato sauce on the base"},
+        {"emoji": "\U0001f9c0", "text": "Sprinkle grated cheese on top"},
+        {"emoji": "\U0001f336\ufe0f", "text": "Add sliced peppers on the cheese"},
+        {"emoji": "\U0001f33d", "text": "Add sweetcorn on top"},
+        {"emoji": "\U0001f525", "text": "Turn on the oven to 200\u00b0C"},
+        {"emoji": "\u23f3", "text": "Wait for the oven to heat up"},
+        {"emoji": "\U0001f525", "text": "Put the tray in the oven"},
+        {"emoji": "\u23f3", "text": "Bake for 12 minutes until golden"},
+        {"emoji": "\U0001f9f4", "text": "Use oven gloves to take tray out"},
+        {"emoji": "\U0001f52a", "text": "Cut the pizza into slices"},
+        {"emoji": "\U0001f37d\ufe0f", "text": "Place pizza on the serving tray"},
+    ],
+    # Item 2: Tacos
+    [
+        {"emoji": "\U0001f6bf", "text": "Wash hands with soap and water"},
+        {"emoji": "\U0001f356", "text": "Take the mince meat from the fridge"},
+        {"emoji": "\U0001f525", "text": "Turn on the stove to medium heat"},
+        {"emoji": "\U0001f373", "text": "Put a frying pan on the stove"},
+        {"emoji": "\U0001f356", "text": "Add the mince to the pan"},
+        {"emoji": "\U0001f944", "text": "Stir the mince until cooked"},
+        {"emoji": "\U0001f9c2", "text": "Add taco seasoning and mix"},
+        {"emoji": "\U0001f32e", "text": "Take taco shells from the box"},
+        {"emoji": "\U0001f32e", "text": "Place shells on the plate"},
+        {"emoji": "\U0001f944", "text": "Spoon the mince into each shell"},
+        {"emoji": "\U0001f9c0", "text": "Sprinkle grated cheese on top"},
+        {"emoji": "\U0001f96c", "text": "Add shredded lettuce"},
+        {"emoji": "\U0001f345", "text": "Add diced tomatoes"},
+        {"emoji": "\U0001f37d\ufe0f", "text": "Place tacos on the serving tray"},
+        {"emoji": "\U0001f9f9", "text": "Wipe the counter clean"},
+    ],
+    # Item 3: Pancakes
+    [
+        {"emoji": "\U0001f6bf", "text": "Wash hands with soap and water"},
+        {"emoji": "\U0001f963", "text": "Get a mixing bowl from the shelf"},
+        {"emoji": "\U0001f95a", "text": "Crack two eggs into the bowl"},
+        {"emoji": "\U0001f95b", "text": "Pour milk into the bowl"},
+        {"emoji": "\U0001f33e", "text": "Add flour to the bowl"},
+        {"emoji": "\U0001f944", "text": "Whisk until the batter is smooth"},
+        {"emoji": "\U0001f525", "text": "Turn on the stove to medium heat"},
+        {"emoji": "\U0001f373", "text": "Put a frying pan on the stove"},
+        {"emoji": "\U0001f9c8", "text": "Add a little butter to the pan"},
+        {"emoji": "\U0001f95e", "text": "Pour batter into the pan"},
+        {"emoji": "\u23f3", "text": "Cook for 2 minutes until bubbles form"},
+        {"emoji": "\U0001f95e", "text": "Flip the pancake over"},
+        {"emoji": "\u23f3", "text": "Cook for 1 more minute"},
+        {"emoji": "\U0001f95e", "text": "Slide pancake onto the plate"},
+        {"emoji": "\U0001f37d\ufe0f", "text": "Add toppings and serve"},
+    ],
+]
+
+CHEF_IF_CONDITIONS = [
+    {"emoji": "\U0001f95c", "text": "student has a nut allergy"},
+    {"emoji": "\U0001f9c0", "text": "student is allergic to dairy (milk, cheese)"},
+    {"emoji": "\U0001f33e", "text": "student is allergic to gluten (bread, flour)"},
+    {"emoji": "\U0001f95a", "text": "student is allergic to eggs"},
+    {"emoji": "\U0001f346", "text": "student is vegetarian (no meat)"},
+]
+
+CHEF_THEN_ACTIONS = [
+    {"emoji": "\U0001f6ab", "text": "skip that ingredient completely"},
+    {"emoji": "\U0001f504", "text": "swap it for a safe ingredient instead"},
+    {"emoji": "\u2705", "text": "check the allergy list on the wall first"},
+    {"emoji": "\U0001f4e2", "text": "tell the teacher before cooking"},
+    {"emoji": "\U0001f6d1", "text": "stop and ask what they can eat"},
+    {"emoji": "\U0001f504", "text": "make a different dish instead"},
 ]
 
 CHALLENGES = [
@@ -180,6 +353,8 @@ COMMAND_ALIASES = {
     "TAKE_BREAD_SLICE": [
         "take bread", "take a slice", "get bread", "remove bread",
         "take out bread", "grab bread", "take slice", "take bread slice",
+        "place bread on plate", "put bread on plate", "place bread slice",
+        "place first slice", "put first slice",
     ],
     "OPEN_PB_JAR": [
         "open peanut butter", "open pb", "open the peanut butter",

@@ -16,6 +16,34 @@
   </div>
 </div>
 
+<!-- Concept explainer -->
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #93c5fd;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 What is Decomposition?</h3>
+    <p style="font-size:16px; color:#1e3a5f; line-height:1.7; margin:0 0 12px 0;">
+      <strong>Decomposition</strong> means breaking a big problem into <strong>smaller, manageable pieces</strong>.
+      It's like sorting LEGO bricks by colour before building — much easier!
+    </p>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:140px; padding:12px; border-radius:10px; background:white; border:1px solid #bfdbfe; text-align:center;">
+        <div style="font-size:24px; margin-bottom:4px;">🍕</div>
+        <div style="font-size:13px; font-weight:600; color:#1e40af;">"Make pizza" = big task</div>
+      </div>
+      <div style="flex:1; min-width:140px; padding:12px; border-radius:10px; background:white; border:1px solid #bfdbfe; text-align:center;">
+        <div style="font-size:24px; margin-bottom:4px;">📦</div>
+        <div style="font-size:13px; font-weight:600; color:#1e40af;">Group into: Prep, Cook, Serve</div>
+      </div>
+      <div style="flex:1; min-width:140px; padding:12px; border-radius:10px; background:white; border:1px solid #bfdbfe; text-align:center;">
+        <div style="font-size:24px; margin-bottom:4px;">✅</div>
+        <div style="font-size:13px; font-weight:600; color:#1e40af;">Now solve each group!</div>
+      </div>
+    </div>
+    <p style="font-size:15px; color:#1e3a5f; margin:12px 0 0 0;">
+      Below are some jumbled steps. <strong>Sort each step into the right group!</strong>
+    </p>
+  </div>
+</section>
+
 {% if success %}
 <div style="margin-bottom:20px;">
   {{ callout('success', 'Great grouping! You found the sub-tasks. +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
@@ -32,6 +60,7 @@
   </a>
   {% endif %}
 </div>
+
 {% else %}
 
 <div class="grid-2">

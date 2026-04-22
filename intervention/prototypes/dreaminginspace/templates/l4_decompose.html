@@ -16,6 +16,23 @@
   </div>
 </div>
 
+<!-- Concept explainer -->
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #93c5fd;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 Decompose It Yourself!</h3>
+    <p style="font-size:16px; color:#1e3a5f; line-height:1.7; margin:0 0 12px 0;">
+      Now it's YOUR turn! Pick a big task and break it into <strong>smaller sub-tasks</strong>.
+      Each sub-task should have <strong>at least {{ exercise.min_steps_per_subtask|default(2) }} steps</strong>.
+    </p>
+    <div style="padding:12px 14px; border-radius:10px; background:white; border:2px solid #93c5fd;">
+      <div style="font-size:14px; margin-bottom:4px;"><strong>Example:</strong> Plan a Birthday Party</div>
+      <div style="font-size:14px; color:#333;">📋 <strong>Sub-task 1: Food</strong> → Buy cake, make sandwiches, get drinks</div>
+      <div style="font-size:14px; color:#333;">🎈 <strong>Sub-task 2: Decorations</strong> → Buy balloons, hang banners</div>
+      <div style="font-size:14px; color:#333;">📨 <strong>Sub-task 3: Invitations</strong> → Write cards, deliver to friends</div>
+    </div>
+  </div>
+</section>
+
 {% if success %}
 <div style="margin-bottom:20px;">
   {{ callout('success', 'Excellent decomposition! +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
@@ -32,6 +49,7 @@
   </a>
   {% endif %}
 </div>
+
 {% else %}
 
 <div class="grid-2">

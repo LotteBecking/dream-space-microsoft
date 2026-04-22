@@ -16,6 +16,23 @@
   </div>
 </div>
 
+<!-- Concept explainer -->
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #6ee7b7;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 How to Write a Loop</h3>
+    <p style="font-size:16px; color:#064e3b; line-height:1.7; margin:0 0 12px 0;">
+      When you see the same steps repeated, you can wrap them in a <strong>LOOP</strong>.
+      A loop has two parts: <strong>how many times</strong> to repeat, and <strong>what steps</strong> to repeat.
+    </p>
+    <div style="padding:14px 16px; border-radius:10px; background:white; border:2px solid #6ee7b7; font-size:15px; text-align:center;">
+      <strong style="color:#059669;">LOOP</strong> <em>[number]</em> <strong style="color:#059669;">TIMES:</strong> <em>[steps that repeat]</em>
+    </div>
+    <p style="font-size:14px; color:#064e3b; margin:10px 0 0 0;">
+      Look at the long code below. Find the repeating part, count how many times it repeats, then write it as a loop!
+    </p>
+  </div>
+</section>
+
 {% if success %}
 <div style="margin-bottom:20px;">
   {{ callout('success', 'Loops make everything shorter! +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
@@ -32,6 +49,7 @@
   </a>
   {% endif %}
 </div>
+
 {% else %}
 
 <div class="grid-2">

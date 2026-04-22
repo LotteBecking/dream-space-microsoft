@@ -16,6 +16,30 @@
   </div>
 </div>
 
+<!-- Concept explainer -->
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #fefce8, #fef9c3); border-color: #fde047;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 What are Dependencies?</h3>
+    <p style="font-size:16px; color:#713f12; line-height:1.7; margin:0 0 12px 0;">
+      A <strong>dependency</strong> is when one step <strong>can't happen until another is done first</strong>.
+      Just like you can't bake a cake until you've mixed the batter!
+    </p>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:160px; padding:12px; border-radius:10px; background:white; border:2px solid #fde68a;">
+        <div style="font-size:14px; font-weight:600; color:#16a34a; margin-bottom:4px;">✅ Right order:</div>
+        <div style="font-size:13px;">1. Write script → 2. Film → 3. Edit</div>
+      </div>
+      <div style="flex:1; min-width:160px; padding:12px; border-radius:10px; background:white; border:2px solid #fecaca;">
+        <div style="font-size:14px; font-weight:600; color:#dc2626; margin-bottom:4px;">❌ Wrong order:</div>
+        <div style="font-size:13px;">1. Edit → 2. Film → 3. Write script</div>
+      </div>
+    </div>
+    <p style="font-size:15px; color:#713f12; margin:12px 0 0 0;">
+      Put the sub-tasks below in the right order. <strong>Think: what must happen FIRST?</strong>
+    </p>
+  </div>
+</section>
+
 {% if success %}
 <div style="margin-bottom:20px;">
   {{ callout('success', 'You connected the pieces in the right order! +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
@@ -32,6 +56,7 @@
   </a>
   {% endif %}
 </div>
+
 {% else %}
 
 <div class="grid-2">

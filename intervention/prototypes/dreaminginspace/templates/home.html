@@ -2,14 +2,9 @@
 {% block title %}Base Camp &middot; Dreaming in Space{% endblock %}
 
 {% block header_context %}
-  {% set xp_total = (progress.completed_exercises | length) * 25 + (25 if progress.simulator_completed else 0) %}
-  <span class="game-level-badge" style="margin-bottom:0; box-shadow:none; padding:4px 10px;">{{ icon('sparkles') }} LVL 1</span>
+  <span class="game-level-badge" style="margin-bottom:0; box-shadow:none; padding:4px 10px;">{{ icon('sparkles') }} LVL {{ global_level }}</span>
   <span class="dot"></span>
-  <div class="xp-bar-wrap">
-    <span class="xp-label">XP</span>
-    <div class="xp-bar"><div class="xp-bar-fill" style="width: {{ [xp_total, 100]|min }}%;"></div></div>
-    <span class="xp-label">{{ [xp_total, 100]|min }}%</span>
-  </div>
+  <span style="font-family:var(--font-pixel); font-size:11px; font-weight:700; color:var(--color-primary-ink);">{{ global_xp }} XP</span>
 {% endblock %}
 
 {% block content %}
@@ -29,47 +24,88 @@
   <!-- ── LEFT COLUMN ──────────────────────────────────── -->
   <div style="display:flex; flex-direction:column; gap:24px; min-width:0;">
 
-    <!-- HERO: beaver + speech bubble/CTA side by side -->
-    <div style="display:flex; gap:20px; align-items:center;">
+    <!-- HERO: beaver welcome + "up next" card -->
+    <div style="display:flex; gap:20px; align-items:stretch;">
 
       <!-- Beaver -->
-      <div style="flex-shrink:0;">
+      <div style="flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
         <div style="filter: drop-shadow(0 8px 20px rgba(107,57,217,0.25)); transition: transform .3s ease;"
              onmouseover="this.style.transform='translateY(-6px) scale(1.03)'"
              onmouseout="this.style.transform=''">
-          {{ space_beaver(140) }}
+          {{ space_beaver(120) }}
         </div>
       </div>
 
-      <!-- Speech bubble + CTA -->
-      <div style="flex:1; min-width:0;">
-        <div class="speech-bubble" style="margin-bottom:16px;">
+      <!-- Welcome + Up Next -->
+      <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:12px;">
+        <div class="speech-bubble" style="margin:0;">
           {% if not lesson_started %}
-            Hey, Commander! Your first mission is ready. Let’s learn how computers think!
+            Hey, Commander! Welcome to your coding adventure. Let's learn how computers think!
           {% elif progress.all_exercises_done %}
-            Amazing work, Commander! You’ve completed all missions. Time to claim your reward!
+            You've crushed Lesson 1, Commander! Ready to keep exploring? 🚀
           {% elif sim_done %}
-            Great job in the lab! Your next mission is waiting. You’ve got this!
+            Great job in the lab! Keep going — you're doing brilliantly!
           {% else %}
-            Welcome back, Commander! The lab is ready, jump in and keep going!
+            Welcome back, Commander! Ready for your next challenge?
           {% endif %}
         </div>
 
-        <div style="margin-bottom:12px;">
-          <div class="game-level-badge" style="font-size:14px; padding:6px 14px;">{{ icon('rocket') }} Mission 1 &middot; How Does a Computer Think?</div>
-        </div>
-
-        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
-          <a href="{{ progress.resume.href }}" class="btn btn-primary btn-lg">
-            {{ icon('play') }}
-            {% if lesson_started %}Continue Mission{% else %}Start Mission{% endif %}
+        {% if not progress.all_exercises_done %}
+        <a href="{{ progress.resume.href }}" style="text-decoration:none; display:block;">
+          <div style="display:flex; align-items:center; gap:14px; padding:14px 18px; border-radius:14px;
+                      background:linear-gradient(135deg, var(--color-primary-soft), var(--color-accent-soft));
+                      border:2px solid var(--color-primary-border);
+                      transition: transform .15s, box-shadow .15s; cursor:pointer;"
+               onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(107,57,217,0.15)'"
+               onmouseout="this.style.transform=''; this.style.boxShadow=''">
+            <div style="width:44px; height:44px; border-radius:12px; background:var(--color-primary); color:white; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              {% if not sim_done %}{{ icon('terminal') }}
+              {% elif 1 not in completed %}{{ icon('list-checks') }}
+              {% elif 2 not in completed %}{{ icon('edit') }}
+              {% elif 3 not in completed %}{{ icon('sandwich') }}
+              {% else %}{{ icon('trophy') }}{% endif %}
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:12px; font-weight:700; color:var(--color-primary-ink); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:2px;">Up Next</div>
+              <div style="font-family:var(--font-game); font-size:17px; font-weight:700; color:var(--color-text);">{{ progress.resume.label }}</div>
+            </div>
+            <div style="color:var(--color-primary); flex-shrink:0;">{{ icon('arrow-right') }}</div>
+          </div>
+        </a>
+        {% else %}
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a href="{{ url_for('lesson_home', lesson_num=2) }}" style="text-decoration:none; flex:1; min-width:150px;">
+            <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:14px;
+                        background:linear-gradient(135deg, var(--color-primary-soft), var(--color-accent-soft));
+                        border:2px solid var(--color-primary-border);
+                        transition: transform .15s, box-shadow .15s; cursor:pointer;"
+                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(107,57,217,0.15)'"
+                 onmouseout="this.style.transform=''; this.style.boxShadow=''">
+              <div style="font-size:24px; flex-shrink:0;">🎮</div>
+              <div style="flex:1;">
+                <div style="font-size:11px; font-weight:700; color:var(--color-primary-ink); text-transform:uppercase; letter-spacing:0.05em;">Keep going</div>
+                <div style="font-family:var(--font-game); font-size:15px; font-weight:700; color:var(--color-text);">Try Lesson 2</div>
+              </div>
+              <div style="color:var(--color-primary); flex-shrink:0;">{{ icon('arrow-right') }}</div>
+            </div>
           </a>
-          <form method="post" action="{{ url_for('reset') }}" style="margin:0;">
-            <button type="submit" class="btn btn-ghost btn-sm" title="Reset all progress">
-              {{ icon('refresh') }}<span>Reset</span>
-            </button>
-          </form>
+          <a href="{{ url_for('profile') }}" style="text-decoration:none; flex:1; min-width:150px;">
+            <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:14px;
+                        background:linear-gradient(135deg, #fef3c7, #fde68a);
+                        border:2px solid #fbbf24;
+                        transition: transform .15s, box-shadow .15s; cursor:pointer;"
+                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(251,191,36,0.2)'"
+                 onmouseout="this.style.transform=''; this.style.boxShadow=''">
+              <div style="font-size:24px; flex-shrink:0;">🏆</div>
+              <div style="flex:1;">
+                <div style="font-size:11px; font-weight:700; color:#92400e; text-transform:uppercase; letter-spacing:0.05em;">Your medals</div>
+                <div style="font-family:var(--font-game); font-size:15px; font-weight:700; color:#92400e;">View Profile</div>
+              </div>
+              <div style="color:#92400e; flex-shrink:0;">{{ icon('arrow-right') }}</div>
+            </div>
+          </a>
         </div>
+        {% endif %}
       </div>
     </div>
 
@@ -104,7 +140,7 @@
         {
           'href':    url_for('lesson_intro'),
           'icon':    'book-open',
-          'title':   'Briefing Room',
+          'title':   'Learn',
           'meta':    'Objectives, vocabulary &amp; role model',
           'done':    lesson_started,
           'active':  not lesson_started,
@@ -114,7 +150,7 @@
         {
           'href':    url_for('simulator'),
           'icon':    'terminal',
-          'title':   'Robot Lab, PB&amp;J Simulator',
+          'title':   'Practice &mdash; PB&amp;J Simulator',
           'meta':    'Send commands to a robot. See what precision means!',
           'done':    sim_done,
           'active':  not sim_done and lesson_started,
@@ -124,8 +160,8 @@
         {
           'href':    url_for('exercise', num=1),
           'icon':    'list-checks',
-          'title':   'Mission 1, Write the Algorithm',
-          'meta':    '~10 min · Write 6+ clear steps',
+          'title':   'Mission 1 &mdash; Sort the Steps',
+          'meta':    '~8 min &middot; Put steps in the right order',
           'done':    ex1_done,
           'active':  sim_done and not ex1_done,
           'locked':  not sim_done,
@@ -133,9 +169,9 @@
         },
         {
           'href':    url_for('exercise', num=2),
-          'icon':    'refresh',
-          'title':   'Mission 2, Sequence Sorting',
-          'meta':    '~8 min · Put steps back in order',
+          'icon':    'edit',
+          'title':   'Mission 2 &mdash; Write the Algorithm',
+          'meta':    '~10 min &middot; Write 6+ clear steps',
           'done':    ex2_done,
           'active':  ex1_done and not ex2_done,
           'locked':  not ex1_done,
@@ -144,8 +180,8 @@
         {
           'href':    url_for('exercise', num=3),
           'icon':    'sandwich',
-          'title':   'Mission 3, Robot Chef',
-          'meta':    '~10 min · Design an algorithm with safety rules',
+          'title':   'Mission 3 &mdash; Robot Chef',
+          'meta':    '~10 min &middot; Design an algorithm with safety rules',
           'done':    ex3_done,
           'active':  ex2_done and not ex3_done,
           'locked':  not ex2_done,
@@ -565,82 +601,288 @@
   </div><!-- end left column -->
 
   <!-- ── RIGHT COLUMN: STATS PANEL ───────────────────── -->
-  <aside style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+  <aside style="display:flex; flex-direction:column; gap:12px; min-width:0;" id="stats-panel">
 
-      <!-- Player card header -->
-      <div style="background:linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); border-radius:16px; padding:18px; color:#fff; text-align:center;">
-        <div style="margin-bottom:8px;">{{ space_beaver(56) }}</div>
-        <div style="font-family:var(--font-game, inherit); font-size:16px; font-weight:700; margin-bottom:2px;">Commander</div>
-        <div style="font-size:12px; opacity:.7;">Level 1 Explorer</div>
+      <!-- Player card -->
+      <div id="player-card" style="background:linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); border-radius:16px; padding:18px; color:#fff; text-align:center; position:relative; overflow:hidden;">
+        <div id="player-particles" style="position:absolute; inset:0; pointer-events:none;"></div>
+        <div style="margin-bottom:8px; position:relative;">{{ space_beaver(56) }}</div>
+        <div style="font-family:var(--font-game); font-size:16px; font-weight:700; margin-bottom:2px; position:relative;">Commander</div>
+        <div style="font-size:13px; opacity:.8; position:relative;">Level {{ global_level }} {{ global_level_title }}</div>
       </div>
 
-      <!-- XP Progress -->
-      <div style="background:var(--color-surface, #fff); border:2px solid var(--color-border, #e2e8f0); border-radius:14px; padding:14px;">
-        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
-          <span style="font-size:13px; font-weight:700; color:var(--color-text);">Mission XP</span>
-          <span style="font-family:var(--font-pixel); font-size:11px; font-weight:700; color:var(--color-primary-ink);">
-            {{ progress.progress_percent }}%
-          </span>
+      <!-- Total XP (animated count-up) -->
+      <div style="background:linear-gradient(135deg, #faf5ff, #ede9fe); border:2px solid var(--color-primary); border-radius:14px; padding:14px; text-align:center; position:relative; overflow:hidden;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">
+          <span style="font-size:13px; font-weight:700; color:var(--color-primary-ink);">Total XP</span>
+          <span style="font-family:var(--font-pixel); font-size:11px; color:var(--color-primary-ink);">LVL {{ global_level }}</span>
         </div>
-        <div class="progress" style="height:10px; border-radius:10px;">
-          <span class="progress-fill {% if progress.all_exercises_done %}is-complete{% endif %}"
-                style="width: {{ progress.progress_percent }}%; border-radius:10px;"></span>
+        <div id="total-xp-num" data-from="{{ prev_xp }}" data-to="{{ current_xp }}"
+             style="font-family:var(--font-pixel); font-size:28px; font-weight:700; color:var(--color-primary-ink);">
+          {{ prev_xp }}
         </div>
+        {% if xp_gained > 0 %}
+        <div id="xp-gain-badge" style="position:absolute; top:8px; right:8px; background:#16a34a; color:white; font-family:var(--font-pixel); font-size:12px; font-weight:700; padding:4px 10px; border-radius:20px; opacity:0; transform:translateY(10px) scale(0.8);">
+          +{{ xp_gained }} XP
+        </div>
+        {% endif %}
       </div>
 
-      <!-- Stars -->
-      <div style="background:var(--color-surface, #fff); border:2px solid var(--color-border, #e2e8f0); border-radius:14px; padding:14px; text-align:center;">
-        <div style="font-size:13px; font-weight:700; color:var(--color-text); margin-bottom:10px;">Stars Earned</div>
+      <!-- Track 1 Stars (1 per completed lesson) -->
+      <div style="background:var(--color-surface); border:2px solid var(--color-border); border-radius:14px; padding:14px; text-align:center;">
+        <div style="font-size:13px; font-weight:700; color:var(--color-text); margin-bottom:10px;">Track 1 Stars</div>
         <div style="display:flex; justify-content:center; gap:6px; margin-bottom:6px;">
           {% for i in range(1, 6) %}
-            <span style="font-size:24px; {% if i > stars_earned %}opacity:.2;{% endif %} transition:opacity .3s;">⭐</span>
+            <span class="home-star" data-index="{{ i }}" data-earned="{% if i <= track1_lessons_done %}1{% else %}0{% endif %}"
+                  data-new="{% if i > (track1_lessons_done - stars_gained) and i <= track1_lessons_done %}1{% else %}0{% endif %}"
+                  style="font-size:28px; {% if i > track1_lessons_done %}opacity:.15; filter:grayscale(1);{% endif %} display:inline-block; transition:all .4s;">⭐</span>
           {% endfor %}
         </div>
-        <span style="font-family:var(--font-pixel); font-size:11px; color:var(--color-text-muted);">{{ stars_earned }} / 5</span>
+        <span style="font-family:var(--font-pixel); font-size:12px; color:var(--color-text-muted);">{{ track1_lessons_done }} / 5 lessons</span>
       </div>
 
-      <!-- Mission checklist -->
-      <div style="background:var(--color-surface, #fff); border:2px solid var(--color-border, #e2e8f0); border-radius:14px; padding:14px;">
-        <div style="font-size:13px; font-weight:700; color:var(--color-text); margin-bottom:12px;">Lesson 1 Progress</div>
+      <!-- Track 1 Lesson Progress -->
+      <div style="background:var(--color-surface); border:2px solid var(--color-border); border-radius:14px; padding:14px;">
+        <div style="font-size:13px; font-weight:700; color:var(--color-text); margin-bottom:12px;">Track 1 Progress</div>
         <div style="display:flex; flex-direction:column; gap:8px;">
-          {% for item in [
-            {'label':'Lab Run',   'done': sim_done, 'xp': 25},
-            {'label':'Mission 1', 'done': ex1_done, 'xp': 25},
-            {'label':'Mission 2', 'done': ex2_done, 'xp': 25},
-            {'label':'Mission 3', 'done': ex3_done, 'xp': 25},
-          ] %}
-          <div style="display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:10px;
-            background:{% if item.done %}rgba(22,163,74,.08){% else %}transparent{% endif %};
-            transition: background .3s;">
-            <span style="font-size:18px; flex-shrink:0;">
-              {% if item.done %}✅{% else %}⬜{% endif %}
-            </span>
-            <span style="flex:1; font-size:14px; font-weight:{% if item.done %}600{% else %}400{% endif %}; color:{% if item.done %}var(--color-text){% else %}var(--color-text-muted){% endif %};">
-              {{ item.label }}
-            </span>
-            <span style="font-family:var(--font-pixel); font-size:10px; font-weight:700;
-              color:{% if item.done %}#16a34a{% else %}var(--color-text-subtle, #94a3b8){% endif %};">
-              {% if item.done %}+{{ item.xp }} XP{% else %}{{ item.xp }} XP{% endif %}
+          {% set lesson_icons = {1: '🥪', 2: '🤖', 3: '🔄', 4: '🧠', 5: '🏗️'} %}
+          {% for lnum in [1, 2, 3, 4, 5] %}
+          {% set ls = track1[lnum] %}
+          <div class="checklist-row" data-done="{{ 'true' if ls.completed else 'false' }}"
+               style="display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:10px;
+            background:{% if ls.completed %}rgba(22,163,74,.08){% else %}transparent{% endif %};
+            opacity:0; transform:translateX(20px);
+            transition: all .4s cubic-bezier(0.4,0,0.2,1);">
+            <span style="font-size:16px; flex-shrink:0;">{% if ls.completed %}✅{% else %}{{ lesson_icons[lnum] }}{% endif %}</span>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:13px; font-weight:{% if ls.completed %}700{% else %}500{% endif %}; color:{% if ls.completed %}var(--color-text){% else %}var(--color-text-muted){% endif %};">
+                L{{ lnum }}: {{ ls.title[:20] }}{% if ls.title|length > 20 %}...{% endif %}
+              </div>
+              <div style="height:4px; border-radius:2px; background:#e5e7eb; margin-top:4px;">
+                <div style="height:100%; width:{{ (ls.exercises_done / ls.total * 100)|int }}%; background:{% if ls.completed %}#16a34a{% else %}var(--color-primary){% endif %}; border-radius:2px; transition:width .6s;"></div>
+              </div>
+            </div>
+            <span style="font-family:var(--font-pixel); font-size:10px; font-weight:700; color:{% if ls.completed %}#16a34a{% else %}var(--color-text-subtle){% endif %};">
+              {{ ls.exercises_done }}/{{ ls.total }}
             </span>
           </div>
           {% endfor %}
         </div>
       </div>
 
-      <!-- Total -->
-      <div style="background:linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%); border:2px solid var(--color-primary, #7c3aed); border-radius:14px; padding:14px; text-align:center;">
-        <div style="font-size:12px; font-weight:600; color:var(--color-primary-ink); margin-bottom:4px;">Total XP</div>
-        <div style="font-family:var(--font-pixel); font-size:22px; font-weight:700; color:var(--color-primary-ink);">
-          {{ stars_earned * 25 }}
+      <!-- Achievements -->
+      <div style="background:var(--color-surface); border:2px solid var(--color-border); border-radius:14px; padding:14px;">
+        <div style="font-size:13px; font-weight:700; color:var(--color-text); margin-bottom:12px;">🏆 Achievements</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          {% set home_achievements = [
+            {'icon': '🚀', 'title': 'First Launch', 'done': progress.simulator_completed},
+            {'icon': '🌟', 'title': 'Lesson 1', 'done': track1[1].completed},
+            {'icon': '🤖', 'title': 'Robot Pilot', 'done': track1[2].completed},
+            {'icon': '🔄', 'title': 'Loop Master', 'done': track1[3].completed},
+            {'icon': '🧠', 'title': 'Decision Maker', 'done': track1[4].completed},
+            {'icon': '🏗️', 'title': 'Architect', 'done': track1[5].completed},
+            {'icon': '🏆', 'title': 'Track 1 Complete', 'done': track1_lessons_done >= 5},
+          ] %}
+          {% for ach in home_achievements %}
+          <div class="ach-row" style="display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px;
+            background:{% if ach.done %}linear-gradient(135deg, #fef3c7, #fde68a){% else %}transparent{% endif %};
+            {% if not ach.done %}opacity:.4;{% endif %}
+            opacity:0; transform:translateY(6px);
+            transition: all .3s;">
+            <span style="font-size:18px;">{% if ach.done %}{{ ach.icon }}{% else %}🔒{% endif %}</span>
+            <span style="font-size:13px; font-weight:{% if ach.done %}700{% else %}500{% endif %}; color:{% if ach.done %}#92400e{% else %}var(--color-text-muted){% endif %};">{{ ach.title }}</span>
+          </div>
+          {% endfor %}
         </div>
-        <div style="font-size:11px; color:var(--color-text-muted); margin-top:2px;">of 100 XP</div>
       </div>
+
+      <!-- Reset -->
+      <form method="post" action="{{ url_for('reset') }}" style="margin:0; text-align:center;">
+        <button type="submit" class="btn btn-ghost btn-sm" title="Reset all progress" style="opacity:.4; font-size:12px;">
+          {{ icon('refresh') }}<span>Reset progress</span>
+        </button>
+      </form>
 
   </aside><!-- end right column -->
 
 </div><!-- end outer grid -->
 
+<!-- ── CONFETTI CANVAS (for completion celebrations) ── -->
+<canvas id="confetti-canvas" style="position:fixed; inset:0; z-index:9998; pointer-events:none;"></canvas>
+
+<script>
+(function() {
+  // ── 1. XP Bar fill animation (Duolingo-style smooth fill + glow) ──
+  var xpFill = document.getElementById('xp-bar-fill');
+  var xpGlow = document.getElementById('xp-bar-glow');
+  if (xpFill) {
+    setTimeout(function() {
+      xpFill.style.width = xpFill.dataset.target + '%';
+      if (xpGlow) { xpGlow.style.opacity = '1'; }
+      setTimeout(function() {
+        if (xpGlow) xpGlow.style.opacity = '0';
+      }, 1400);
+    }, 400);
+  }
+
+  // ── 2. XP gain badge pop-in ──
+  var xpBadge = document.getElementById('xp-gain-badge');
+  if (xpBadge) {
+    setTimeout(function() {
+      xpBadge.style.transition = 'opacity .4s, transform .4s cubic-bezier(0.34,1.56,0.64,1)';
+      xpBadge.style.opacity = '1';
+      xpBadge.style.transform = 'translateY(0) scale(1)';
+      setTimeout(function() {
+        xpBadge.style.transition = 'opacity .6s, transform .6s';
+        xpBadge.style.opacity = '0';
+        xpBadge.style.transform = 'translateY(-10px) scale(0.8)';
+      }, 2500);
+    }, 800);
+  }
+
+  // ── 3. Total XP count-up animation ──
+  var xpNum = document.getElementById('total-xp-num');
+  if (xpNum) {
+    var from = parseInt(xpNum.dataset.from) || 0;
+    var to = parseInt(xpNum.dataset.to) || 0;
+    if (from !== to) {
+      var duration = 1200;
+      var start = null;
+      function countUp(ts) {
+        if (!start) start = ts;
+        var elapsed = ts - start;
+        var progress = Math.min(elapsed / duration, 1);
+        // Ease out cubic
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var current = Math.round(from + (to - from) * eased);
+        xpNum.textContent = current;
+        if (progress < 1) requestAnimationFrame(countUp);
+      }
+      setTimeout(function() { requestAnimationFrame(countUp); }, 600);
+    }
+  }
+
+  // ── 4. Star pop-in animation (new stars bounce) ──
+  document.querySelectorAll('.home-star').forEach(function(star, i) {
+    if (star.dataset.new === '1') {
+      star.style.transform = 'scale(0)';
+      star.style.opacity = '0';
+      setTimeout(function() {
+        star.style.transition = 'transform .5s cubic-bezier(0.34,1.56,0.64,1), opacity .3s, filter .3s';
+        star.style.transform = 'scale(1.3)';
+        star.style.opacity = '1';
+        star.style.filter = '';
+        setTimeout(function() {
+          star.style.transform = 'scale(1)';
+        }, 300);
+      }, 1000 + i * 200);
+    } else if (star.dataset.earned === '1') {
+      // Already earned - just make sure visible
+      star.style.opacity = '1';
+      star.style.filter = '';
+    }
+  });
+
+  // ── 5. Checklist staggered entrance ──
+  document.querySelectorAll('.checklist-row').forEach(function(row, i) {
+    setTimeout(function() {
+      row.style.opacity = '1';
+      row.style.transform = 'translateX(0)';
+      // Bounce the checkmark if done
+      if (row.dataset.done === 'true') {
+        var icon = row.querySelector('.checklist-icon');
+        if (icon) {
+          setTimeout(function() {
+            icon.style.transform = 'scale(1.3)';
+            setTimeout(function() { icon.style.transform = 'scale(1)'; }, 200);
+          }, 200);
+        }
+      }
+    }, 300 + i * 120);
+  });
+
+  // ── 6. Achievement rows staggered entrance ──
+  document.querySelectorAll('.ach-row').forEach(function(row, i) {
+    setTimeout(function() {
+      row.style.opacity = row.style.opacity === '0' ? '' : row.style.opacity;
+      row.style.transform = 'translateY(0)';
+      // Restore proper opacity for locked ones
+      if (!row.style.background.includes('fef3c7')) {
+        row.style.opacity = '.5';
+      } else {
+        row.style.opacity = '1';
+      }
+    }, 800 + i * 100);
+  });
+
+  // ── 7. Player card floating particles ──
+  var particles = document.getElementById('player-particles');
+  if (particles) {
+    for (var p = 0; p < 8; p++) {
+      var dot = document.createElement('div');
+      dot.style.cssText = 'position:absolute; width:' + (3 + Math.random()*4) + 'px; height:' + (3 + Math.random()*4) + 'px; border-radius:50%; background:rgba(255,255,255,' + (0.15 + Math.random()*0.2) + '); left:' + (Math.random()*100) + '%; top:' + (Math.random()*100) + '%; animation:particle-float ' + (3 + Math.random()*4) + 's ease-in-out infinite alternate; animation-delay:' + (Math.random()*3) + 's;';
+      particles.appendChild(dot);
+    }
+  }
+
+  // ── 8. Confetti burst (when all exercises done + xp gained) ──
+  var canvas = document.getElementById('confetti-canvas');
+  var xpGained = {{ xp_gained }};
+  var allDone = {{ 'true' if track1_lessons_done >= 5 else 'false' }};
+  if (canvas && xpGained > 0 && allDone) {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    var ctx = canvas.getContext('2d');
+    var confetti = [];
+    var colors = ['#fbbf24', '#7c3aed', '#ec4899', '#16a34a', '#2563eb', '#f97316', '#06b6d4'];
+    for (var c = 0; c < 120; c++) {
+      confetti.push({
+        x: Math.random() * canvas.width,
+        y: -20 - Math.random() * 200,
+        w: 6 + Math.random() * 6,
+        h: 4 + Math.random() * 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 4,
+        vy: 2 + Math.random() * 4,
+        rot: Math.random() * 360,
+        vr: (Math.random() - 0.5) * 8,
+        opacity: 1,
+      });
+    }
+    var frame = 0;
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      var alive = false;
+      confetti.forEach(function(p) {
+        if (p.opacity <= 0) return;
+        alive = true;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.vy += 0.08;
+        if (frame > 60) p.opacity -= 0.008;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot * Math.PI / 180);
+        ctx.globalAlpha = Math.max(0, p.opacity);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+        ctx.restore();
+      });
+      frame++;
+      if (alive && frame < 200) requestAnimationFrame(drawConfetti);
+      else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    setTimeout(function() { requestAnimationFrame(drawConfetti); }, 1500);
+  }
+})();
+</script>
+
 <style>
+  @keyframes particle-float {
+    0% { transform: translateY(0) translateX(0); }
+    100% { transform: translateY(-12px) translateX(6px); }
+  }
   /* ── TRACK-LEVEL FOLDOUTS ──────────────────── */
   .track-foldout {
     border-radius: 20px;
@@ -919,6 +1161,5 @@
   // Lesson-level accordion (inside each track)
   makeAccordion('.lesson-foldout', '.lesson-foldout-header', '.lesson-foldout-body');
 })();
-</script>
 </script>
 {% endblock %}

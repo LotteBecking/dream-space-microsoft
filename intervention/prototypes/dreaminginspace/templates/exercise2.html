@@ -18,7 +18,7 @@
 
 {% if success %}
 <div style="margin-bottom:20px;">
-  {{ callout('success', 'One more mission to go.', 'Perfect sequence!') }}
+  {{ callout('success', 'One more to go! On to Mission 3.', 'Mission complete!') }}
 </div>
 <div class="card" style="padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
   <span>{{ space_beaver(56) }}</span>
@@ -28,50 +28,161 @@
 </div>
 {% else %}
 
+<!-- Concept explanation -->
+<section class="card" style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #93c5fd; margin-bottom:20px;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 What makes a good algorithm?</h3>
+    <p style="font-size:16px; color:#1e3a5f; line-height:1.7; margin:0 0 12px 0;">
+      An <strong>algorithm</strong> is a set of step-by-step instructions. Think of it like a recipe —
+      if you miss a step or put them in the wrong order, things go wrong!
+      Each step should be <strong>one clear action</strong> that even a robot with <strong>no common sense</strong> can follow.
+    </p>
+    <details style="margin-top:10px;">
+      <summary style="cursor:pointer; font-weight:600; color:#2563eb; font-size:15px;">🔍 See an example</summary>
+      <div style="margin-top:8px; padding:12px; background:white; border-radius:8px; font-size:14px;">
+        <div style="color:#dc2626; margin-bottom:8px;">❌ <strong>Bad:</strong> "Make a sandwich"</div>
+        <div style="color:#16a34a;">✅ <strong>Good:</strong></div>
+        <ol style="margin:4px 0 0 20px; color:#16a34a;">
+          <li>Open the bread bag</li>
+          <li>Take out two slices of bread</li>
+          <li>Place one slice on the plate</li>
+          <li>Open the peanut butter jar</li>
+          <li>Pick up the knife</li>
+          <li>Spread peanut butter on the bread</li>
+        </ol>
+      </div>
+    </details>
+  </div>
+</section>
+
 <div class="grid-2">
   <div class="stack">
     {% if error %}{{ callout('error', error) }}{% endif %}
 
-    <form method="post" id="sort-form">
+    <!-- Task selector -->
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon">{{ icon('flag') }}</span>
+          <h2 class="title-lg">Choose your task</h2>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;" id="task-options">
+          {% for task in exercise.task_options %}
+          <button type="button"
+            class="task-option-btn{% if loop.first %} selected{% endif %}"
+            data-task-index="{{ loop.index0 }}"
+            style="flex:1; min-width:150px; text-align:center; padding:14px 16px; border-radius:var(--radius-input);
+                   border:2px solid {% if loop.first %}var(--color-primary-border){% else %}var(--color-border){% endif %};
+                   background:{% if loop.first %}var(--color-primary-soft){% else %}var(--color-surface){% endif %};
+                   font-family:var(--font-game); font-size:14px; color:var(--color-text);
+                   cursor:pointer; transition:all .15s;">
+            <span>{{ task }}</span>
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Block palette -->
+    <section class="card">
+      <div class="card-body">
+        <div class="section-title">
+          <span class="section-title-icon" style="background:#e0f2fe;">🧩</span>
+          <h2 class="title-lg">Action Blocks</h2>
+        </div>
+        <p class="body-muted" style="margin-bottom:12px;">Click blocks to add them to your algorithm. You can also drag to reorder!</p>
+        <div id="block-palette" style="display:flex; flex-wrap:wrap; gap:8px;">
+        </div>
+      </div>
+    </section>
+
+    <!-- Algorithm builder -->
+    <form method="post" id="algo-form">
+      <input type="hidden" name="task_index" id="task-index-input" value="0" />
       <section class="card">
         <div class="card-body">
           <div class="section-title">
             <span class="section-title-icon">{{ icon('list-checks') }}</span>
-            <h2 class="title-lg">Put these steps in order</h2>
+            <h2 class="title-lg">Your Algorithm <span id="step-count" style="font-weight:400; color:var(--color-text-muted); font-size:14px;">(0 steps)</span></h2>
           </div>
-          <div id="sort-list" class="stack-sm">
-            {% for idx in shuffled_indices %}
-            <div class="sort-card" data-index="{{ idx }}">
-              <span class="sort-index card-num">{{ loop.index }}</span>
-              <span class="sort-text">{{ tea_steps[idx] }}</span>
-              <div class="sort-controls">
-                <button type="button" class="icon-btn move-btn" data-dir="up" title="Move up">{{ icon('chevron-up') }}</button>
-                <button type="button" class="icon-btn move-btn" data-dir="down" title="Move down">{{ icon('chevron-down') }}</button>
-              </div>
-              <input type="hidden" name="order" value="{{ idx }}" />
+          <div id="algo-list" class="stack-sm">
+            <div id="algo-empty" style="text-align:center; padding:32px 20px; color:var(--color-text-muted); border:2px dashed var(--color-border); border-radius:var(--radius-card);">
+              <div style="font-size:32px; margin-bottom:8px;">👆</div>
+              <p style="font-size:15px; margin:0;">Click action blocks above to build your algorithm!</p>
+              <p style="font-size:13px; margin-top:4px;">You need at least 6 steps.</p>
             </div>
-            {% endfor %}
+          </div>
+          <div style="display:flex; gap:8px; margin-top:12px;">
+            <button type="button" id="add-custom-btn" class="add-step-btn" style="flex:1;">✏️ Add custom step</button>
+            <button type="button" id="clear-btn" class="btn btn-ghost btn-sm">{{ icon('trash') }} Clear</button>
           </div>
         </div>
       </section>
 
+      <!-- Robot test -->
+      <section class="card" style="margin-top:16px;">
+        <div class="card-body">
+          <button type="button" id="robot-test-btn" class="btn btn-secondary btn-block" style="gap:8px;">
+            🤖 <span>Test with Robot</span>
+          </button>
+          <div id="robot-result" style="display:none; margin-top:12px; padding:16px; border-radius:var(--radius-card); border:2px solid var(--color-border); background:var(--color-surface-muted);">
+          </div>
+        </div>
+      </section>
+
+      <div id="hidden-steps"></div>
       <div class="card" style="margin-top:20px; padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
         <a href="{{ url_for('exercise', num=1) }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
         <button type="submit" class="btn btn-primary">
-          <span>Check order</span>{{ icon('check') }}
+          <span>Submit</span>{{ icon('check') }}
         </button>
       </div>
     </form>
   </div>
 
   <div>
+    {% if show_hint %}
+    <div class="card" style="margin-bottom:14px; background:linear-gradient(135deg, #fefce8, #fef9c3); border-color:#fde047;">
+      <div class="card-body">
+        <div style="font-size:18px; margin-bottom:6px;">💡</div>
+        <h3 class="title-md" style="margin-bottom:8px; color:#92400e;">Need a hint?</h3>
+        <p style="font-size:15px; color:#713f12; line-height:1.6; margin:0 0 10px 0;">
+          Make sure you have <strong>at least 6 steps</strong>. Each step should be <strong>one single action</strong>.
+        </p>
+        <p style="font-size:14px; color:#92400e; margin:0;">
+          <strong>Try this:</strong> Start with the very first thing you'd do (like picking something up or opening something), then think about each tiny action after that.
+        </p>
+      </div>
+    </div>
+    {% endif %}
     <aside class="hint-card">
       <div class="hint-mascot">{{ space_beaver(80) }}</div>
-      <div class="eyebrow" style="margin-bottom:8px;">Tip from Space Beaver</div>
-      <h3 class="title-md">Follow the dependencies</h3>
-      <p class="body-muted" style="margin-top:8px;">
-        Some steps can only happen <em>after</em> another is done. What needs to happen before the tea can steep?
+      <div class="eyebrow" style="margin-bottom:6px;">Tip from Space Beaver</div>
+      <h3 class="title-md" style="margin-bottom:8px;">Write like a robot reads it</h3>
+      <p class="body-muted" style="margin:0 0 10px 0;">
+        Remember: a robot has <strong style="color:var(--color-text);">NO common sense</strong>!
+        Every action needs its own step.
       </p>
+      <div style="padding:12px; border-radius:8px; background:var(--color-surface-muted); font-size:14px;">
+        <div style="margin-bottom:8px; font-weight:600;">3 Rules:</div>
+        <div style="margin-bottom:4px;">1️⃣ Each step = <strong>one action</strong></div>
+        <div style="margin-bottom:4px;">2️⃣ Be <strong>specific</strong> (not vague)</div>
+        <div>3️⃣ Use <strong>action verbs</strong> (open, pour, pick up...)</div>
+      </div>
+      <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--color-border);">
+        <div class="eyebrow" style="margin-bottom:8px;">Bad vs Good</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="padding:8px 12px; border-radius:8px; background:#fef2f2; border:1px solid #fecaca; font-size:14px;">
+            ❌ "Make breakfast"
+          </div>
+          <div style="padding:8px 12px; border-radius:8px; background:#f0fdf4; border:1px solid #bbf7d0; font-size:14px;">
+            ✅ "Open the cereal box"<br>
+            ✅ "Pour cereal into bowl"<br>
+            ✅ "Open the fridge"<br>
+            ✅ "Take out the milk"
+          </div>
+        </div>
+      </div>
     </aside>
   </div>
 </div>
@@ -81,22 +192,235 @@
 {% block scripts %}
 <script>
   (function() {
-    var list = document.getElementById('sort-list');
-    if (!list) return;
-    list.addEventListener('click', function(e) {
-      var btn = e.target.closest('.move-btn');
-      if (!btn) return;
-      var card = btn.closest('.sort-card');
-      var dir = btn.dataset.dir;
-      if (dir === 'up' && card.previousElementSibling) {
-        list.insertBefore(card, card.previousElementSibling);
-      } else if (dir === 'down' && card.nextElementSibling) {
-        list.insertBefore(card.nextElementSibling, card);
+    var TASK_BLOCKS = {{ task_blocks | tojson }};
+    var currentTask = 0;
+    var algoSteps = []; // [{emoji, text, custom}]
+    var dragSrcIdx = null;
+
+    var palette = document.getElementById('block-palette');
+    var algoList = document.getElementById('algo-list');
+    var emptyMsg = document.getElementById('algo-empty');
+    var stepCount = document.getElementById('step-count');
+    var hiddenSteps = document.getElementById('hidden-steps');
+
+    function renderPalette() {
+      palette.innerHTML = '';
+      var blocks = TASK_BLOCKS[currentTask] || [];
+      blocks.forEach(function(block) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'action-block-btn';
+        btn.innerHTML = '<span style="font-size:18px;">' + block.emoji + '</span> <span>' + block.text + '</span>';
+        btn.style.cssText = 'display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:10px; border:2px solid var(--color-border); background:white; cursor:pointer; font-size:13px; font-family:var(--font-game); color:var(--color-text); transition:all .15s;';
+        btn.addEventListener('mouseenter', function() {
+          if (!btn.classList.contains('used')) {
+            btn.style.borderColor = 'var(--color-primary-border)';
+            btn.style.background = 'var(--color-primary-soft)';
+          }
+        });
+        btn.addEventListener('mouseleave', function() {
+          if (!btn.classList.contains('used')) {
+            btn.style.borderColor = 'var(--color-border)';
+            btn.style.background = 'white';
+          }
+        });
+        btn.addEventListener('click', function() {
+          addStep(block.emoji, block.text, false);
+          btn.classList.add('used');
+          btn.style.borderColor = '#86efac';
+          btn.style.background = '#f0fdf4';
+          btn.style.transform = 'scale(0.95)';
+          setTimeout(function() { btn.style.transform = ''; }, 150);
+        });
+        palette.appendChild(btn);
+      });
+    }
+
+    function addStep(emoji, text, isCustom) {
+      algoSteps.push({emoji: emoji, text: text, custom: isCustom});
+      renderAlgo();
+    }
+
+    function renderAlgo() {
+      while (algoList.firstChild && algoList.firstChild !== emptyMsg) {
+        algoList.removeChild(algoList.firstChild);
       }
-      list.querySelectorAll('.sort-card').forEach(function(c, i) {
-        c.querySelector('.card-num').textContent = (i + 1);
+      // Remove emptyMsg too for clean rebuild
+      if (emptyMsg.parentNode === algoList) algoList.removeChild(emptyMsg);
+
+      if (algoSteps.length === 0) {
+        emptyMsg.style.display = '';
+        algoList.appendChild(emptyMsg);
+      } else {
+        emptyMsg.style.display = 'none';
+        algoSteps.forEach(function(step, i) {
+          var row = document.createElement('div');
+          row.className = 'algo-block-row';
+          row.draggable = true;
+          row.dataset.index = i;
+          row.style.cssText = 'display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; border:2px solid var(--color-border); background:white; cursor:grab; transition:all .15s;';
+
+          row.innerHTML =
+            '<span style="width:28px; height:28px; border-radius:50%; background:var(--color-primary); color:white; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0;">' + (i+1) + '</span>' +
+            '<span style="font-size:20px; flex-shrink:0;">' + step.emoji + '</span>' +
+            (step.custom
+              ? '<input type="text" class="input algo-custom-input" data-idx="' + i + '" placeholder="Type your custom step..." value="' + (step.text || '').replace(/"/g, '&quot;') + '" style="flex:1; font-size:14px; padding:6px 10px;">'
+              : '<span style="flex:1; font-size:14px; font-family:var(--font-game);">' + step.text + '</span>') +
+            '<button type="button" class="algo-remove-btn" data-idx="' + i + '" style="width:28px; height:28px; border-radius:50%; border:none; background:#fee2e2; color:#dc2626; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">✕</button>';
+
+          algoList.appendChild(row);
+        });
+      }
+      stepCount.textContent = '(' + algoSteps.length + ' step' + (algoSteps.length !== 1 ? 's' : '') + ')';
+    }
+
+    // Event delegation for remove buttons and custom inputs
+    algoList.addEventListener('click', function(e) {
+      var removeBtn = e.target.closest('.algo-remove-btn');
+      if (removeBtn) {
+        var idx = parseInt(removeBtn.dataset.idx);
+        algoSteps.splice(idx, 1);
+        renderAlgo();
+      }
+    });
+    algoList.addEventListener('input', function(e) {
+      if (e.target.classList.contains('algo-custom-input')) {
+        var idx = parseInt(e.target.dataset.idx);
+        algoSteps[idx].text = e.target.value;
+      }
+    });
+
+    // Drag-to-reorder for algo list
+    algoList.addEventListener('dragstart', function(e) {
+      var row = e.target.closest('.algo-block-row');
+      if (!row) return;
+      dragSrcIdx = parseInt(row.dataset.index);
+      row.style.opacity = '0.4';
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    algoList.addEventListener('dragend', function(e) {
+      var row = e.target.closest('.algo-block-row');
+      if (row) row.style.opacity = '1';
+      dragSrcIdx = null;
+    });
+    algoList.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      var row = e.target.closest('.algo-block-row');
+      if (row) row.style.borderColor = 'var(--color-primary-border)';
+    });
+    algoList.addEventListener('dragleave', function(e) {
+      var row = e.target.closest('.algo-block-row');
+      if (row) row.style.borderColor = 'var(--color-border)';
+    });
+    algoList.addEventListener('drop', function(e) {
+      e.preventDefault();
+      var row = e.target.closest('.algo-block-row');
+      if (!row || dragSrcIdx === null) return;
+      row.style.borderColor = 'var(--color-border)';
+      var toIdx = parseInt(row.dataset.index);
+      if (dragSrcIdx !== toIdx) {
+        var item = algoSteps.splice(dragSrcIdx, 1)[0];
+        algoSteps.splice(toIdx, 0, item);
+        renderAlgo();
+      }
+      dragSrcIdx = null;
+    });
+
+    // Task switching
+    document.querySelectorAll('.task-option-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var idx = parseInt(btn.dataset.taskIndex);
+        currentTask = idx;
+        document.getElementById('task-index-input').value = idx;
+        document.querySelectorAll('.task-option-btn').forEach(function(b, i) {
+          b.style.borderColor = (i === idx) ? 'var(--color-primary-border)' : 'var(--color-border)';
+          b.style.background = (i === idx) ? 'var(--color-primary-soft)' : 'var(--color-surface)';
+        });
+        algoSteps = [];
+        renderPalette();
+        renderAlgo();
       });
     });
+
+    // Custom step
+    document.getElementById('add-custom-btn').addEventListener('click', function() {
+      addStep('✏️', '', true);
+      setTimeout(function() {
+        var inputs = algoList.querySelectorAll('.algo-custom-input');
+        if (inputs.length) inputs[inputs.length - 1].focus();
+      }, 50);
+    });
+
+    // Clear
+    document.getElementById('clear-btn').addEventListener('click', function() {
+      algoSteps = [];
+      renderPalette();
+      renderAlgo();
+    });
+
+    // Form submit: populate hidden fields
+    document.getElementById('algo-form').addEventListener('submit', function() {
+      hiddenSteps.innerHTML = '';
+      algoSteps.forEach(function(step, i) {
+        var inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = 'step_' + (i + 1);
+        inp.value = step.text;
+        hiddenSteps.appendChild(inp);
+      });
+    });
+
+    // Robot test
+    document.getElementById('robot-test-btn').addEventListener('click', function() {
+      var steps = algoSteps.map(function(s) { return s.text.trim(); }).filter(Boolean);
+      var result = document.getElementById('robot-result');
+
+      if (steps.length === 0) {
+        result.style.display = 'block';
+        result.innerHTML = '<p style="font-size:15px; margin:0;">🤖 <em>"I have no instructions! I\'m just standing here..."</em></p>';
+        return;
+      }
+
+      var html = '<div style="font-size:15px;">';
+      html += '<p style="font-weight:700; margin:0 0 10px 0;">🤖 Robot reads your algorithm:</p>';
+
+      var actionVerbs = ['open','close','pick','put','pour','mix','turn','press','wait','check','place','remove','fill','stir','take','get','grab','spread','add','move','walk','go','sit','stand','pull','push','brush','wash','wake','eat','drink','pack','wear','scoop','call','watch','clean','wipe','taste','set'];
+      var vagueWords = ['make','do','get ready','prepare','fix','handle','stuff','thing','breakfast','lunch','dinner'];
+      var issues = 0;
+
+      steps.forEach(function(step, i) {
+        var lower = step.toLowerCase();
+        var hasAction = actionVerbs.some(function(v) { return lower.includes(v); });
+        var isVague = vagueWords.some(function(v) { return lower.includes(v); });
+        var tooShort = step.split(/\s+/).length < 3;
+
+        var emoji = '✅', note = '';
+        if (isVague) {
+          emoji = '😵'; note = ' <span style="color:#dc2626; font-size:13px;">(too vague!)</span>'; issues++;
+        } else if (!hasAction) {
+          emoji = '🤔'; note = ' <span style="color:#d97706; font-size:13px;">(missing action verb)</span>'; issues++;
+        } else if (tooShort) {
+          emoji = '😬'; note = ' <span style="color:#d97706; font-size:13px;">(could be more specific)</span>'; issues++;
+        }
+        html += '<div style="padding:6px 0; border-bottom:1px solid var(--color-border);">' + emoji + ' Step ' + (i+1) + ': "' + step + '"' + note + '</div>';
+      });
+
+      if (issues === 0 && steps.length >= 6) {
+        html += '<p style="margin-top:12px; color:#16a34a; font-weight:700;">🎉 The robot completed the task perfectly!</p>';
+      } else if (issues === 0) {
+        html += '<p style="margin-top:12px; color:#d97706; font-weight:700;">👍 Good steps, but you need at least 6!</p>';
+      } else {
+        html += '<p style="margin-top:12px; color:#dc2626; font-weight:700;">🤖 Robot got confused ' + issues + ' time(s). Fix the flagged steps!</p>';
+      }
+      html += '</div>';
+      result.style.display = 'block';
+      result.innerHTML = html;
+    });
+
+    // Initial render
+    renderPalette();
+    renderAlgo();
   })();
 </script>
 {% endblock %}

@@ -18,7 +18,7 @@
 
 {% if success %}
 <div style="margin-bottom:20px;">
-  {{ callout('success', 'Move on to Mission 2.', 'Mission complete!') }}
+  {{ callout('success', 'Nice one! On to Mission 2.', 'Perfect sequence!') }}
 </div>
 <div class="card" style="padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
   <span>{{ space_beaver(56) }}</span>
@@ -30,94 +30,94 @@
 
 <div class="grid-2">
   <div class="stack">
-    {% if error %}{{ callout('error', error) }}{% endif %}
-
-    <!-- Task selector -->
-    <section class="card">
+    <!-- Concept explanation -->
+    <section class="card" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-color: #86efac;">
       <div class="card-body">
-        <div class="section-title">
-          <span class="section-title-icon">{{ icon('flag') }}</span>
-          <h2 class="title-lg">Choose your task</h2>
+        <h3 class="title-lg" style="margin-bottom:10px;">💡 What is Sequencing?</h3>
+        <p style="font-size:16px; color:#14532d; line-height:1.7; margin:0 0 14px 0;">
+          <strong>Sequencing</strong> means putting steps in the <strong>right order</strong>.
+          In computing, if you put instructions in the wrong order, you get the wrong result!
+        </p>
+        <p style="font-size:15px; color:#14532d; line-height:1.6; margin:0 0 14px 0;">
+          Think about getting dressed in the morning:
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
+          <div style="flex:1; min-width:180px; padding:14px; border-radius:10px; background:white; border:2px solid #bbf7d0;">
+            <div style="font-size:15px; font-weight:600; color:#16a34a; margin-bottom:6px;">✅ Right order</div>
+            <div style="font-size:14px; color:#14532d;">Step 1: Put on your socks</div>
+            <div style="font-size:14px; color:#14532d;">Step 2: Put on your shoes</div>
+            <div style="font-size:13px; color:#16a34a; margin-top:6px; font-weight:600;">👍 This makes sense!</div>
+          </div>
+          <div style="flex:1; min-width:180px; padding:14px; border-radius:10px; background:white; border:2px solid #fecaca;">
+            <div style="font-size:15px; font-weight:600; color:#dc2626; margin-bottom:6px;">❌ Wrong order</div>
+            <div style="font-size:14px; color:#14532d;">Step 1: Put on your shoes</div>
+            <div style="font-size:14px; color:#14532d;">Step 2: Put on your socks</div>
+            <div style="font-size:13px; color:#dc2626; margin-top:6px; font-weight:600;">😬 That doesn't work!</div>
+          </div>
         </div>
-        <ul class="stack-sm" style="list-style:none;" id="task-options">
-          {% for task in exercise.task_options %}
-          <li>
-            <button type="button"
-              class="task-option-btn{% if loop.first %} selected{% endif %}"
-              data-task-index="{{ loop.index0 }}"
-              style="width:100%; text-align:left; display:flex; align-items:center;
-                     padding:12px 14px; border-radius:var(--radius-input);
-                     border:2px solid {% if loop.first %}var(--color-primary-border){% else %}var(--color-border){% endif %};
-                     background:{% if loop.first %}var(--color-primary-soft){% else %}var(--color-surface){% endif %};
-                     font-family:var(--font-game); font-size:16px; color:var(--color-text);
-                     cursor:pointer; transition:all .15s;">
-              <span>{{ task }}</span>
-            </button>
-          </li>
-          {% endfor %}
-        </ul>
+        <p style="font-size:15px; color:#14532d; line-height:1.6; margin:0;">
+          The steps below for making tea are all mixed up. <strong>Your job is to drag them into the right order!</strong>
+        </p>
       </div>
     </section>
 
-    <!-- Algorithm form, steps saved per task -->
-    <form method="post" id="algo-form">
-      <input type="hidden" name="task_index" id="task-index-input" value="0" />
+    {% if error %}{{ callout('error', error) }}{% endif %}
+
+    <form method="post" id="sort-form">
       <section class="card">
         <div class="card-body">
           <div class="section-title">
             <span class="section-title-icon">{{ icon('list-checks') }}</span>
-            <h2 class="title-lg">Your algorithm</h2>
+            <h2 class="title-lg">Put these steps in order</h2>
           </div>
-          <div id="steps-container" class="stack-sm">
-            {% for i in range(1, 9) %}
-            <div class="step-row">
-              <span class="step-index">{{ i }}</span>
-              <input type="text" name="step_{{ i }}" id="step_{{ i }}" class="input" placeholder="Step {{ i }}..." />
+          <div id="sort-list" class="stack-sm">
+            {% for idx in shuffled_indices %}
+            <div class="sort-card" data-index="{{ idx }}">
+              <span class="sort-index card-num">{{ loop.index }}</span>
+              <span class="sort-text">{{ tea_steps[idx] }}</span>
+              <div class="sort-controls">
+                <button type="button" class="icon-btn move-btn" data-dir="up" title="Move up">{{ icon('chevron-up') }}</button>
+                <button type="button" class="icon-btn move-btn" data-dir="down" title="Move down">{{ icon('chevron-down') }}</button>
+              </div>
+              <input type="hidden" name="order" value="{{ idx }}" />
             </div>
             {% endfor %}
-          </div>
-          <div style="display:flex; gap:8px; margin-top:12px;">
-            <button type="button" id="add-step-btn" class="add-step-btn" style="flex:1;">+ Add step</button>
-            <button type="button" id="clear-btn" class="btn btn-ghost btn-sm">{{ icon('trash') }} Clear</button>
           </div>
         </div>
       </section>
 
       <div class="card" style="margin-top:20px; padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
-        <a href="{{ url_for('lesson_intro') }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
+        <a href="{{ url_for('simulator') }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
         <button type="submit" class="btn btn-primary">
-          <span>Submit</span>{{ icon('check') }}
+          <span>Check order</span>{{ icon('check') }}
         </button>
       </div>
     </form>
   </div>
 
   <div>
+    {% if show_hint %}
+    <div class="card" style="margin-bottom:14px; background:linear-gradient(135deg, #fefce8, #fef9c3); border-color:#fde047;">
+      <div class="card-body">
+        <div style="font-size:18px; margin-bottom:6px;">💡</div>
+        <h3 class="title-md" style="margin-bottom:8px; color:#92400e;">Need a hint?</h3>
+        <p style="font-size:15px; color:#713f12; line-height:1.6; margin:0 0 10px 0;">
+          Think about what has to happen <strong>first</strong>. You can't pour water into a cup until the water is boiled!
+        </p>
+        <p style="font-size:14px; color:#92400e; margin:0;">
+          <strong>Try this:</strong> The first step is something you need to do with the kettle.
+          The last step is something optional you add at the end.
+        </p>
+      </div>
+    </div>
+    {% endif %}
     <aside class="hint-card">
-      <div class="eyebrow" style="margin-bottom:6px;">Tip from Space Beaver</div>
-      <div style="display:flex; align-items:center;">
-        <div style="flex:1;">
-          <h3 class="title-md" style="margin-bottom:8px;">Write like a robot reads it</h3>
-          <p class="body-muted" style="margin:0;">
-            Use physical actions:<br>
-            <strong style="color:var(--color-text);">open</strong>, <strong style="color:var(--color-text);">pick up</strong>, <strong style="color:var(--color-text);">place</strong>,<br>
-            <strong style="color:var(--color-text);">pour</strong>, <strong style="color:var(--color-text);">press</strong>.
-          </p>
-        </div>
-        <div style="flex:1; display:flex; justify-content:center; align-items:center;">
-          {{ space_beaver(110) }}
-        </div>
-      </div>
-      <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--color-border);">
-        <div class="eyebrow" style="margin-bottom:8px;">Try these</div>
-        <ul class="stack-sm" style="list-style:none;">
-          <li class="caption">"open the bread bag"</li>
-          <li class="caption">"take a slice of bread"</li>
-          <li class="caption">"pick up the knife"</li>
-          <li class="caption">"spread peanut butter"</li>
-          <li class="caption">"place the second slice"</li>
-        </ul>
-      </div>
+      <div class="hint-mascot">{{ space_beaver(80) }}</div>
+      <div class="eyebrow" style="margin-bottom:8px;">Tip from Space Beaver</div>
+      <h3 class="title-md">Follow the dependencies</h3>
+      <p class="body-muted" style="margin-top:8px;">
+        Some steps can only happen <em>after</em> another is done. What needs to happen before the tea can steep?
+      </p>
     </aside>
   </div>
 </div>
@@ -127,83 +127,83 @@
 {% block scripts %}
 <script>
   (function() {
-    // Per-task step storage: array of arrays (one per task)
-    var NUM_TASKS = {{ exercise.task_options | length }};
-    var savedSteps = [];
-    for (var t = 0; t < NUM_TASKS; t++) savedSteps.push([]);
+    var list = document.getElementById('sort-list');
+    if (!list) return;
 
-    var currentTask = 0;
-    var dynamicCount = 8; // tracks how many step rows exist
-
-    function getStepInputs() {
-      return Array.from(document.querySelectorAll('#steps-container input[type="text"]'));
-    }
-
-    function saveCurrentTask() {
-      savedSteps[currentTask] = getStepInputs().map(function(i) { return i.value; });
-    }
-
-    function rebuildSteps(steps) {
-      var container = document.getElementById('steps-container');
-      container.innerHTML = '';
-      var count = Math.max(steps.length, 8);
-      for (var n = 1; n <= count; n++) {
-        var row = document.createElement('div');
-        row.className = 'step-row';
-        row.innerHTML = '<span class="step-index">' + n + '</span>' +
-          '<input type="text" name="step_' + n + '" class="input" placeholder="Step ' + n + '..." />';
-        container.appendChild(row);
-        if (steps[n - 1] !== undefined) row.querySelector('input').value = steps[n - 1];
+    // Click-based move buttons
+    list.addEventListener('click', function(e) {
+      var btn = e.target.closest('.move-btn');
+      if (!btn) return;
+      var card = btn.closest('.sort-card');
+      var dir = btn.dataset.dir;
+      if (dir === 'up' && card.previousElementSibling) {
+        list.insertBefore(card, card.previousElementSibling);
+      } else if (dir === 'down' && card.nextElementSibling) {
+        list.insertBefore(card.nextElementSibling, card);
       }
-      dynamicCount = count;
-    }
+      renumber();
+    });
 
-    function switchTask(idx) {
-      saveCurrentTask();
-      currentTask = idx;
-      document.getElementById('task-index-input').value = idx;
-
-      // Update button styles
-      document.querySelectorAll('.task-option-btn').forEach(function(btn, i) {
-        var selected = (i === idx);
-        btn.style.borderColor = selected ? 'var(--color-primary-border)' : 'var(--color-border)';
-        btn.style.background  = selected ? 'var(--color-primary-soft)' : 'var(--color-surface)';
+    function renumber() {
+      list.querySelectorAll('.sort-card').forEach(function(c, i) {
+        c.querySelector('.card-num').textContent = (i + 1);
       });
-
-      rebuildSteps(savedSteps[idx]);
     }
 
-    // Task option click handlers
-    document.querySelectorAll('.task-option-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        switchTask(parseInt(btn.dataset.taskIndex, 10));
+    // Drag-to-reorder
+    var dragItem = null;
+    list.querySelectorAll('.sort-card').forEach(function(card) {
+      card.setAttribute('draggable', 'true');
+      card.style.cursor = 'grab';
+      card.style.transition = 'opacity .15s, border-color .2s, background .2s';
+
+      card.addEventListener('dragstart', function(e) {
+        dragItem = card;
+        card.style.opacity = '0.4';
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      card.addEventListener('dragend', function() {
+        card.style.opacity = '1';
+        dragItem = null;
+        renumber();
+        // update hidden inputs
+        list.querySelectorAll('.sort-card').forEach(function(c) {
+          c.querySelector('input[name="order"]').value = c.dataset.index;
+        });
+      });
+      card.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+      });
+      card.addEventListener('drop', function(e) {
+        e.preventDefault();
+        if (dragItem && dragItem !== card) {
+          var allCards = Array.from(list.querySelectorAll('.sort-card'));
+          var fromIdx = allCards.indexOf(dragItem);
+          var toIdx = allCards.indexOf(card);
+          if (fromIdx < toIdx) {
+            list.insertBefore(dragItem, card.nextSibling);
+          } else {
+            list.insertBefore(dragItem, card);
+          }
+        }
       });
     });
 
-    // Add step button
-    var addBtn = document.getElementById('add-step-btn');
-    if (addBtn) {
-      addBtn.addEventListener('click', function() {
-        saveCurrentTask(); // snapshot before adding
-        dynamicCount++;
-        var container = document.getElementById('steps-container');
-        var row = document.createElement('div');
-        row.className = 'step-row';
-        row.innerHTML = '<span class="step-index">' + dynamicCount + '</span>' +
-          '<input type="text" name="step_' + dynamicCount + '" class="input" placeholder="Step ' + dynamicCount + '..." />';
-        container.appendChild(row);
-        row.querySelector('input').focus();
-      });
-    }
-
-    // Clear button, clears only current task
-    var clearBtn = document.getElementById('clear-btn');
-    if (clearBtn) {
-      clearBtn.addEventListener('click', function() {
-        savedSteps[currentTask] = [];
-        rebuildSteps([]);
-      });
-    }
+    // Highlight correct/wrong on error (don't reset order)
+    {% if error %}
+    var correctOrder = [{% for s in tea_steps %}"{{ s }}"{% if not loop.last %}, {% endif %}{% endfor %}];
+    list.querySelectorAll('.sort-card').forEach(function(card, i) {
+      var text = card.querySelector('.sort-text').textContent.trim();
+      if (text === correctOrder[i]) {
+        card.style.borderColor = '#22c55e';
+        card.style.background = '#f0fdf4';
+      } else {
+        card.style.borderColor = '#ef4444';
+        card.style.background = '#fef2f2';
+      }
+    });
+    {% endif %}
   })();
 </script>
 {% endblock %}

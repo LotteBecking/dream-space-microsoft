@@ -85,9 +85,9 @@
     html { overflow-y: scroll; }
     html, body { margin: 0; padding: 0; min-height: 100%; }
     body {
-      font-family: var(--font-sans);
+      font-family: var(--font-game);
       font-size: 16px;
-      line-height: 1.55;
+      line-height: 1.6;
       color: var(--color-text);
       background:
         radial-gradient(1100px 600px at 85% -5%, var(--color-bg-grad-2) 0%, transparent 65%),
@@ -269,20 +269,12 @@
       z-index: 1;
       max-width: var(--container-max);
       margin: 0 auto;
-      padding: 32px 32px calc(var(--nav-height) + 48px);
+      padding: 32px 32px 48px;
     }
 
     /* ---------- Bottom nav ---------- */
     .app-bottom-nav {
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      z-index: 30;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: saturate(180%) blur(10px);
-      -webkit-backdrop-filter: saturate(180%) blur(10px);
-      border-top: 1px solid var(--color-border);
-      height: var(--nav-height);
-      box-shadow: 0 -2px 12px rgba(60, 32, 110, 0.06);
+      display: none; /* removed - nav moved to top header */
     }
     .app-bottom-nav-inner {
       max-width: var(--container-max);
@@ -318,6 +310,27 @@
     .nav-item.is-locked { color: var(--color-text-subtle); cursor: not-allowed; }
     .nav-item.is-locked:hover { background: transparent; color: var(--color-text-subtle); transform: none; }
 
+    /* ---------- Top nav pills ---------- */
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-button);
+      font-family: var(--font-game);
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: background .12s, color .12s;
+    }
+    .nav-pill svg { width: 16px; height: 16px; }
+    .nav-pill:hover { background: var(--color-surface-muted); color: var(--color-text); }
+    .nav-pill.is-active {
+      background: var(--color-primary-soft);
+      color: var(--color-primary-ink);
+    }
+
     /* ---------- Typography ---------- */
     .display-xl { font-family: var(--font-game); font-size: 46px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.12; color: var(--color-text); }
     .display-lg { font-family: var(--font-game); font-size: 34px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.18; color: var(--color-text); }
@@ -325,11 +338,11 @@
     .title-lg   { font-family: var(--font-game); font-size: 22px; font-weight: 600; line-height: 1.3; color: var(--color-text); }
     .title-md   { font-family: var(--font-game); font-size: 19px; font-weight: 600; line-height: 1.38; color: var(--color-text); }
     .eyebrow    { font-family: var(--font-pixel); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-primary-ink); text-shadow: 1px 1px 0 rgba(63,31,145,0.12); }
-    .body-lg    { font-size: 18px; line-height: 1.6; color: var(--color-text); }
-    .body       { font-size: 16px; line-height: 1.55; color: var(--color-text); }
-    .body-muted { font-size: 16px; line-height: 1.55; color: var(--color-text-muted); }
-    .caption    { font-size: 14px; line-height: 1.5; color: var(--color-text-muted); }
-    .micro      { font-size: 13px; line-height: 1.4; color: var(--color-text-subtle); }
+    .body-lg    { font-size: 18px; line-height: 1.65; color: var(--color-text); }
+    .body       { font-size: 16px; line-height: 1.6; color: var(--color-text); }
+    .body-muted { font-size: 16px; line-height: 1.6; color: var(--color-text-muted); }
+    .caption    { font-size: 15px; line-height: 1.55; color: var(--color-text-muted); }
+    .micro      { font-size: 14px; line-height: 1.45; color: var(--color-text-subtle); }
 
     /* ---------- Cards & panels ---------- */
     .card {
@@ -343,7 +356,7 @@
     .card-body label, .card-body p, .card-body li, .card-body h2, .card-body h3, .card-body span { color: #111; }
     .card-body .title-lg { color: #111; font-size: 20px; }
     .card-body .title-md { color: #111; font-size: 17px; }
-    .card-body .body, .card-body .body-muted { color: #333; font-size: 15px; }
+    .card-body .body, .card-body .body-muted { color: #333; font-size: 16px; }
     .card-section { padding: 20px 24px; border-top: 1px solid var(--color-border-subtle); }
     .card-section:first-child { border-top: 0; }
 
@@ -1128,10 +1141,10 @@
       align-items: center;
       text-align: center;
     }
-    .vocab-word { font-size: 18px; font-weight: 700; color: var(--color-text); }
-    .vocab-flip-hint { font-size: 13px; color: var(--color-text-muted); display: flex; align-items: center; gap: 4px; }
-    .vocab-flip-hint svg { width: 13px; height: 13px; }
-    .vocab-definition { font-size: 15px; line-height: 1.5; color: var(--color-primary-ink); }
+    .vocab-word { font-family: var(--font-game); font-size: 20px; font-weight: 700; color: var(--color-text); }
+    .vocab-flip-hint { font-size: 14px; color: var(--color-text-muted); display: flex; align-items: center; gap: 4px; }
+    .vocab-flip-hint svg { width: 14px; height: 14px; }
+    .vocab-definition { font-family: var(--font-game); font-size: 16px; line-height: 1.55; color: var(--color-primary-ink); }
 
     /* ---------- Lesson path (home) , kept for non-home pages ---------- */
     .path-list {
@@ -1285,14 +1298,28 @@
         <span class="brand-mark">{{ icon('orbit') }}</span>
         <span>Dreaming in Space</span>
       </a>
+      <nav class="header-nav" style="display:flex; align-items:center; gap:4px;">
+        <a href="{{ url_for('home') }}" class="nav-pill {% if request.path == '/' %}is-active{% endif %}">
+          {{ icon('home') }}<span>Home</span>
+        </a>
+        <a href="{{ url_for('simulator') }}" class="nav-pill {% if '/simulator' in request.path %}is-active{% endif %}">
+          {{ icon('terminal') }}<span>Practice</span>
+        </a>
+        <a href="{{ url_for('exercise', num=1) }}" class="nav-pill {% if '/exercise' in request.path %}is-active{% endif %}">
+          {{ icon('list-checks') }}<span>Missions</span>
+        </a>
+        <a href="{{ url_for('review') }}" class="nav-pill {% if '/review' in request.path %}is-active{% endif %}">
+          {{ icon('trophy') }}<span>Rewards</span>
+        </a>
+        <a href="{{ url_for('profile') }}" class="nav-pill {% if '/profile' in request.path %}is-active{% endif %}">
+          {{ icon('user') }}<span>Profile</span>
+        </a>
+      </nav>
       <div class="header-context">
         {% block header_context %}
-          <span class="game-level-badge" style="margin-bottom:0; box-shadow:none; padding:4px 10px;">{{ icon('sparkles') }} LVL 1</span>
+          <span class="game-level-badge" style="margin-bottom:0; box-shadow:none; padding:4px 10px;">{{ icon('sparkles') }} LVL {{ global_level }}</span>
           <span class="dot"></span>
-          <div class="xp-bar-wrap">
-            <span class="xp-label">XP</span>
-            <div class="xp-bar"><div class="xp-bar-fill" style="width: 0%;"></div></div>
-          </div>
+          <span style="font-family:var(--font-pixel); font-size:11px; font-weight:700; color:var(--color-primary-ink);">{{ global_xp }} XP</span>
         {% endblock %}
       </div>
     </div>
@@ -1302,27 +1329,172 @@
     {% block content %}{% endblock %}
   </main>
 
-  <nav class="app-bottom-nav" aria-label="Primary">
-    <div class="app-bottom-nav-inner">
-      <a href="{{ url_for('home') }}" class="nav-item {% if request.path == '/' %}is-active{% endif %}">
-        {{ icon('home') }}<span>Base</span>
-      </a>
-      <a href="{{ url_for('lesson_intro') }}" class="nav-item {% if request.path == '/lesson/1/intro' %}is-active{% endif %}">
-        {{ icon('book-open') }}<span>Briefing</span>
-      </a>
-      <a href="{{ url_for('simulator') }}" class="nav-item {% if '/simulator' in request.path %}is-active{% endif %}">
-        {{ icon('terminal') }}<span>Lab</span>
-      </a>
-      <a href="{{ url_for('exercise', num=1) }}" class="nav-item {% if '/exercise' in request.path %}is-active{% endif %}">
-        {{ icon('list-checks') }}<span>Missions</span>
-      </a>
-      <a href="{{ url_for('review') }}" class="nav-item {% if '/review' in request.path %}is-active{% endif %}">
-        {{ icon('trophy') }}<span>Rewards</span>
-      </a>
-    </div>
-  </nav>
+  <!-- bottom nav removed - navigation is now in the top header -->
 
   {% block scripts %}{% endblock %}
+
+  <!-- Achievement notification container -->
+  <div id="achievement-toasts" style="position:fixed; top:20px; right:20px; z-index:10000; display:flex; flex-direction:column; gap:12px; pointer-events:none; max-width:380px;">
+  </div>
+
+  <style>
+    @keyframes toast-slide-in {
+      0% { transform: translateX(420px); opacity: 0; }
+      60% { transform: translateX(-8px); opacity: 1; }
+      80% { transform: translateX(4px); }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes toast-slide-out {
+      0% { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(420px); opacity: 0; }
+    }
+    @keyframes toast-shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes toast-star-burst {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+    .achievement-toast {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      border: 2px solid #fbbf24;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(251,191,36,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+      pointer-events: auto;
+      animation: toast-slide-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+    .achievement-toast::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(251,191,36,0.08) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: toast-shimmer 2s ease-in-out infinite;
+    }
+    .achievement-toast.leaving {
+      animation: toast-slide-out 0.4s ease-in forwards;
+    }
+    .achievement-toast-icon {
+      font-size: 36px;
+      flex-shrink: 0;
+      animation: toast-star-burst 0.6s ease-in-out;
+      animation-delay: 0.5s;
+      filter: drop-shadow(0 0 8px rgba(251,191,36,0.5));
+      position: relative;
+      z-index: 1;
+    }
+    .achievement-toast-body {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .achievement-toast-label {
+      font-family: var(--font-pixel, monospace);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fbbf24;
+      margin-bottom: 2px;
+    }
+    .achievement-toast-title {
+      font-family: var(--font-game, sans-serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .achievement-toast-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.4;
+    }
+    .achievement-toast-star {
+      position: absolute;
+      font-size: 12px;
+      opacity: 0;
+      animation: toast-sparkle 1s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes toast-sparkle {
+      0% { opacity: 0; transform: scale(0) rotate(0deg); }
+      40% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+      100% { opacity: 0; transform: scale(0.5) rotate(360deg) translateY(-20px); }
+    }
+  </style>
+
+  <script>
+  (function() {
+    var NEW_ACHIEVEMENTS = {{ new_achievements | tojson }};
+    if (!NEW_ACHIEVEMENTS || !NEW_ACHIEVEMENTS.length) return;
+
+    var container = document.getElementById('achievement-toasts');
+    if (!container) return;
+
+    function createSparkles(toast) {
+      var positions = [
+        {top: '5px', left: '10px'}, {top: '8px', right: '20px'},
+        {bottom: '5px', left: '40px'}, {top: '15px', right: '40px'},
+        {bottom: '10px', right: '10px'}, {top: '2px', left: '60%'},
+      ];
+      positions.forEach(function(pos, i) {
+        var star = document.createElement('span');
+        star.className = 'achievement-toast-star';
+        star.textContent = ['✨', '⭐', '💫', '✨', '⭐', '💫'][i];
+        star.style.animationDelay = (0.3 + i * 0.15) + 's';
+        Object.keys(pos).forEach(function(k) { star.style[k] = pos[k]; });
+        toast.appendChild(star);
+      });
+    }
+
+    NEW_ACHIEVEMENTS.forEach(function(ach, i) {
+      setTimeout(function() {
+        var toast = document.createElement('div');
+        toast.className = 'achievement-toast';
+        toast.innerHTML =
+          '<div class="achievement-toast-icon">' + ach.icon + '</div>' +
+          '<div class="achievement-toast-body">' +
+            '<div class="achievement-toast-label">Achievement Unlocked!</div>' +
+            '<div class="achievement-toast-title">' + ach.title + '</div>' +
+            '<div class="achievement-toast-desc">' + ach.desc + '</div>' +
+          '</div>';
+        createSparkles(toast);
+        container.appendChild(toast);
+
+        // Play sound-like visual feedback: briefly pulse the whole page
+        document.body.style.transition = 'filter 0.15s';
+        document.body.style.filter = 'brightness(1.05)';
+        setTimeout(function() { document.body.style.filter = ''; }, 200);
+
+        // Auto-dismiss after 5 seconds
+        setTimeout(function() {
+          toast.classList.add('leaving');
+          setTimeout(function() {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+          }, 500);
+        }, 5000);
+
+        // Click to dismiss early
+        toast.addEventListener('click', function() {
+          toast.classList.add('leaving');
+          setTimeout(function() {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+          }, 500);
+        });
+      }, i * 800); // Stagger multiple notifications
+    });
+  })();
+  </script>
 
   <!-- Rocket launch transition -->
   <div id="rocket-overlay" style="position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:0; transition:opacity .2s;">

@@ -17,6 +17,31 @@
   </div>
 </div>
 
+<!-- Concept explainer -->
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #93c5fd;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 What are Commands?</h3>
+    <p style="font-size:16px; color:#1e3a5f; line-height:1.7; margin:0 0 12px 0;">
+      A <strong>command</strong> is a single instruction you give to a robot or computer.
+      The robot follows your commands <strong>one by one, in order</strong> — just like an algorithm!
+    </p>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:140px; padding:12px; border-radius:10px; background:white; border:1px solid #bfdbfe; text-align:center;">
+        <div style="font-size:24px; margin-bottom:4px;">⬆️</div>
+        <div style="font-size:14px; font-weight:600; color:#1e40af;">Up = move forward</div>
+      </div>
+      <div style="flex:1; min-width:140px; padding:12px; border-radius:10px; background:white; border:1px solid #bfdbfe; text-align:center;">
+        <div style="font-size:24px; margin-bottom:4px;">➡️</div>
+        <div style="font-size:14px; font-weight:600; color:#1e40af;">Right = turn right</div>
+      </div>
+      <div style="flex:1; min-width:140px; padding:12px; border-radius:10px; background:white; border:1px solid #bfdbfe; text-align:center;">
+        <div style="font-size:24px; margin-bottom:4px;">🤖</div>
+        <div style="font-size:14px; font-weight:600; color:#1e40af;">Robot follows exactly!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 {% if success %}
 <div style="margin-bottom:20px;">
   {{ callout('success', 'Your robot reached the goal! +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}

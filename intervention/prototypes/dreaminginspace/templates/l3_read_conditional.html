@@ -16,6 +16,35 @@
   </div>
 </div>
 
+<!-- Concept explainer -->
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #fdf4ff, #f5d0fe); border-color: #e879f9;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 What is a Conditional?</h3>
+    <p style="font-size:16px; color:#4a044e; line-height:1.7; margin:0 0 12px 0;">
+      A <strong>conditional</strong> is a rule that makes a <strong>decision</strong>.
+      The computer checks if something is true, then decides what to do!
+    </p>
+    <div style="padding:14px 16px; border-radius:10px; background:white; border:2px solid #e879f9; margin-bottom:10px;">
+      <p style="font-size:16px; color:#111; margin:0; font-weight:600; text-align:center;">
+        <span style="color:#9333ea;">IF</span> condition is true →
+        <span style="color:#059669;">THEN</span> do this
+        <span style="color:#dc2626;">ELSE</span> do that instead
+      </p>
+    </div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:180px; padding:10px 12px; border-radius:8px; background:white; border:1px solid #f0abfc; font-size:14px;">
+        🌧️ <strong style="color:#9333ea;">IF</strong> raining <strong style="color:#059669;">THEN</strong> umbrella <strong style="color:#dc2626;">ELSE</strong> sunglasses
+      </div>
+      <div style="flex:1; min-width:180px; padding:10px 12px; border-radius:8px; background:white; border:1px solid #f0abfc; font-size:14px;">
+        🔋 <strong style="color:#9333ea;">IF</strong> battery low <strong style="color:#059669;">THEN</strong> charge <strong style="color:#dc2626;">ELSE</strong> keep going
+      </div>
+    </div>
+    <p style="font-size:15px; color:#4a044e; margin:12px 0 0 0;">
+      Read the rules below and <strong>predict what will happen</strong> in each situation!
+    </p>
+  </div>
+</section>
+
 {% if success %}
 <div style="margin-bottom:20px;">
   {{ callout('success', 'You read those rules perfectly! +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
@@ -32,6 +61,7 @@
   </a>
   {% endif %}
 </div>
+
 {% else %}
 
 <div class="grid-2">

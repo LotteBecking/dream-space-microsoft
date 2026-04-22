@@ -20,8 +20,9 @@ import copy
 from difflib import get_close_matches
 from data.lesson_content import (
     LESSON, ROLE_MODEL, VOCABULARY, LEARNING_OBJECTIVES,
-    EXERCISES, TEA_STEPS_CORRECT, CHALLENGES,
+    EXERCISES, TEA_STEPS_CORRECT, TEA_STEPS_ALT, TASK_BLOCKS, CHALLENGES,
     INITIAL_SANDWICH_STATE, COMMAND_ALIASES, QUIZ_1,
+    CHEF_LUNCH_ITEMS, CHEF_BLOCKS, CHEF_IF_CONDITIONS, CHEF_THEN_ACTIONS,
 )
 from data.lesson2_robot_content import (
     LESSON_2_ROBOT, ROLE_MODEL_2_ROBOT, VOCABULARY_2_ROBOT,
@@ -121,7 +122,12 @@ def get_progress():
         session["simulator_state"] = copy.deepcopy(INITIAL_SANDWICH_STATE)
         session["simulator_log"] = []
         session["simulator_commands"] = []
+        session["attempt_counts"] = {"1": 0, "2": 0, "3": 0}
         session["initialized"] = True
+
+    # Backfill attempt_counts for older sessions
+    if "attempt_counts" not in session:
+        session["attempt_counts"] = {"1": 0, "2": 0, "3": 0}
 
     completed = session.get("completed_exercises", [])
     all_done = len(completed) >= 3
@@ -129,17 +135,17 @@ def get_progress():
 
     # Figure out the next resumable step for the Continue card.
     if not sim_done and not completed:
-        resume = {"label": "Start lesson intro", "href": "/lesson/1/intro", "step": "intro"}
+        resume = {"label": "Start practicing", "href": "/simulator", "step": "intro"}
     elif not sim_done:
         resume = {"label": "Try the Simulator", "href": "/simulator", "step": "intro"}
     elif 1 not in completed:
-        resume = {"label": "Exercise 1", "href": "/exercise/1", "step": "ex1"}
+        resume = {"label": "Mission 1: Sort the Steps", "href": "/exercise/1", "step": "ex1"}
     elif 2 not in completed:
-        resume = {"label": "Exercise 2", "href": "/exercise/2", "step": "ex2"}
+        resume = {"label": "Mission 2: Write the Algorithm", "href": "/exercise/2", "step": "ex2"}
     elif 3 not in completed:
-        resume = {"label": "Exercise 3", "href": "/exercise/3", "step": "ex3"}
+        resume = {"label": "Mission 3: Robot Chef", "href": "/exercise/3", "step": "ex3"}
     else:
-        resume = {"label": "Review & Recap", "href": "/review", "step": "recap"}
+        resume = {"label": "Claim your Rewards!", "href": "/review", "step": "recap"}
 
     return {
         "completed_exercises": completed,
@@ -149,6 +155,171 @@ def get_progress():
         "all_exercises_done": all_done,
         "resume": resume,
     }
+
+
+# ---------------------------------------------------------------------------
+# Universal XP & Achievement system (all lessons)
+# ---------------------------------------------------------------------------
+
+TRACK_1_LESSONS = [1, 2, 3, 4, 5]
+XP_PER_EXERCISE = 25
+XP_PER_QUIZ = 10
+XP_PER_SIMULATOR = 25
+
+
+def get_total_xp():
+    """Calculate total XP earned across all lessons."""
+    xp = 0
+    # Lesson 1 (special)
+    if session.get("simulator_completed"):
+        xp += XP_PER_SIMULATOR
+    xp += len(session.get("completed_exercises", [])) * XP_PER_EXERCISE
+    # Lessons 2+
+    for lnum in range(2, 19):
+        key = f"lesson_{lnum}"
+        if key in session:
+            completed = session[key].get("completed_exercises", [])
+            xp += len(completed) * XP_PER_EXERCISE
+    # Quiz bonuses
+    xp += session.get("quiz_bonuses", 0)
+    return xp
+
+
+def get_player_level(xp):
+    """Calculate level from XP. Levels: 1 (0), 2 (100), 3 (250), 4 (500), 5 (800)."""
+    thresholds = [(800, 5), (500, 4), (250, 3), (100, 2)]
+    for threshold, level in thresholds:
+        if xp >= threshold:
+            return level
+    return 1
+
+
+def get_level_title(level):
+    """Get title for a given level."""
+    titles = {1: "Explorer", 2: "Coder", 3: "Developer", 4: "Engineer", 5: "Commander"}
+    return titles.get(level, "Explorer")
+
+
+def get_track1_progress():
+    """Get completion stats for all Track 1 lessons."""
+    stats = {}
+    # Lesson 1
+    l1_completed = session.get("completed_exercises", [])
+    sim_done = session.get("simulator_completed", False)
+    stats[1] = {
+        "completed": len(l1_completed) >= 3 and sim_done,
+        "exercises_done": len(l1_completed) + (1 if sim_done else 0),
+        "total": 4,
+        "title": "How Does a Computer Think?",
+    }
+    # Lessons 2-5
+    lesson_titles = {
+        2: "Give Your Robot Commands",
+        3: "The Loop Station",
+        4: "The If-Then Gates",
+        5: "Break It Down",
+    }
+    for lnum in [2, 3, 4, 5]:
+        key = f"lesson_{lnum}"
+        completed = session.get(key, {}).get("completed_exercises", [])
+        stats[lnum] = {
+            "completed": len(completed) >= 3,
+            "exercises_done": len(completed),
+            "total": 3,
+            "title": lesson_titles.get(lnum, ""),
+        }
+    return stats
+
+
+ALL_ACHIEVEMENTS = [
+    # Lesson 1
+    {"id": "first_launch", "icon": "🚀", "title": "First Launch", "desc": "You completed the PB&J Simulator!"},
+    {"id": "l1_champion", "icon": "🌟", "title": "Lesson 1 Champion", "desc": "All of Lesson 1 complete!"},
+    # Lesson 2
+    {"id": "robot_pilot", "icon": "🤖", "title": "Robot Pilot", "desc": "You can navigate and debug robots!"},
+    # Lesson 3
+    {"id": "loop_master", "icon": "🔄", "title": "Loop Master", "desc": "You've mastered loops and patterns!"},
+    # Lesson 4
+    {"id": "decision_maker", "icon": "🧠", "title": "Decision Maker", "desc": "You can write IF/THEN logic!"},
+    # Lesson 5
+    {"id": "architect", "icon": "🏗️", "title": "Architect", "desc": "You can break any problem down!"},
+    # Track-wide
+    {"id": "track1_complete", "icon": "🏆", "title": "Track 1 Complete", "desc": "All 5 Foundation lessons done!"},
+    # Skill-based
+    {"id": "first_try", "icon": "🎯", "title": "First Try!", "desc": "You nailed a mission on the first attempt!"},
+    {"id": "perseverance", "icon": "💪", "title": "Never Give Up", "desc": "You kept trying and succeeded!"},
+    {"id": "level_2", "icon": "⬆️", "title": "Level Up!", "desc": "You reached Level 2 — Coder!"},
+    {"id": "xp_100", "icon": "💎", "title": "Century Club", "desc": "You earned 100 XP!"},
+    {"id": "quiz_ace", "icon": "📝", "title": "Quiz Ace", "desc": "You scored 100% on a quiz!"},
+]
+
+
+def check_new_achievements():
+    """Check which achievements are newly earned and return them."""
+    seen = set(session.get("seen_achievements", []))
+    earned = set()
+
+    # Lesson 1
+    if session.get("simulator_completed"):
+        earned.add("first_launch")
+    l1_completed = session.get("completed_exercises", [])
+    if len(l1_completed) >= 3:
+        earned.add("l1_champion")
+
+    # Lessons 2-5
+    lesson_ach = {2: "robot_pilot", 3: "loop_master", 4: "decision_maker", 5: "architect"}
+    all_track1_done = len(l1_completed) >= 3
+    for lnum, ach_id in lesson_ach.items():
+        key = f"lesson_{lnum}"
+        completed = session.get(key, {}).get("completed_exercises", [])
+        if len(completed) >= 3:
+            earned.add(ach_id)
+        else:
+            all_track1_done = False
+
+    if all_track1_done and session.get("simulator_completed"):
+        earned.add("track1_complete")
+
+    # Skill-based (check lesson 1 attempts + all lesson attempts)
+    l1_attempts = session.get("attempt_counts", {})
+    if any(l1_attempts.get(str(i), 99) == 1 for i in l1_completed):
+        earned.add("first_try")
+    if any(l1_attempts.get(str(i), 0) >= 3 for i in l1_completed):
+        earned.add("perseverance")
+
+    # XP-based
+    xp = get_total_xp()
+    if xp >= 100:
+        earned.add("xp_100")
+    if get_player_level(xp) >= 2:
+        earned.add("level_2")
+
+    # Quiz ace
+    if session.get("quiz_perfect"):
+        earned.add("quiz_ace")
+
+    new_ids = earned - seen
+    if new_ids:
+        session["seen_achievements"] = list(earned)
+        session.modified = True
+
+    return [a for a in ALL_ACHIEVEMENTS if a["id"] in new_ids]
+
+
+@app.context_processor
+def inject_globals():
+    """Make XP, level, and achievements available in every template."""
+    try:
+        xp = get_total_xp()
+        level = get_player_level(xp)
+        return {
+            "new_achievements": check_new_achievements() if "initialized" in session else [],
+            "global_xp": xp,
+            "global_level": level,
+            "global_level_title": get_level_title(level),
+        }
+    except Exception:
+        return {"new_achievements": [], "global_xp": 0, "global_level": 1, "global_level_title": "Explorer"}
 
 
 # ---------------------------------------------------------------------------
@@ -302,11 +473,43 @@ def process_user_command(user_input: str, state: dict) -> dict:
 @app.route("/")
 def home():
     progress = get_progress()
+
+    # Universal XP tracking
+    current_xp = get_total_xp()
+    prev_xp = session.get("last_seen_xp", 0)
+    xp_gained = max(0, current_xp - prev_xp)
+    level = get_player_level(current_xp)
+    prev_level = session.get("last_seen_level", 1)
+    level_up = level > prev_level
+    session["last_seen_xp"] = current_xp
+    session["last_seen_level"] = level
+    session.modified = True
+
+    # Track 1 progress
+    track1 = get_track1_progress()
+    track1_lessons_done = sum(1 for s in track1.values() if s["completed"])
+    track1_total_exercises = sum(s["exercises_done"] for s in track1.values())
+
+    # Stars: 1 per completed lesson (5 total for Track 1)
+    stars_earned = track1_lessons_done
+    prev_stars = session.get("last_seen_stars", 0)
+    stars_gained = max(0, stars_earned - prev_stars)
+    session["last_seen_stars"] = stars_earned
+    session.modified = True
+
     return render_template(
         "home.html",
         lesson=LESSON,
         progress=progress,
         all_lessons=ALL_LESSONS,
+        xp_gained=xp_gained,
+        stars_gained=stars_gained,
+        prev_xp=prev_xp,
+        current_xp=current_xp,
+        track1=track1,
+        track1_lessons_done=track1_lessons_done,
+        track1_total_exercises=track1_total_exercises,
+        level_up=level_up,
     )
 
 
@@ -348,12 +551,18 @@ def simulator():
                 session["simulator_commands"] = commands
 
         if action == "run":
+            # If reordered commands were sent, use those instead
+            reordered = request.form.getlist("cmd_order")
+            if reordered:
+                commands = reordered
+                session["simulator_commands"] = commands
             state = copy.deepcopy(INITIAL_SANDWICH_STATE)
             log = []
             confusion = 0
             for cmd_text in commands:
+                command_key = parse_command(cmd_text)
                 result = process_user_command(cmd_text, state)
-                log.append({"command": cmd_text, **result})
+                log.append({"command": cmd_text, "command_key": command_key or "UNKNOWN", **result})
                 if result["type"] == "literal_interpretation":
                     confusion += 1
             session["simulator_state"] = state
@@ -432,7 +641,34 @@ def exercise(num):
     success = False
 
     if request.method == "POST":
+        # Track attempt count
+        attempts = session.get("attempt_counts", {"1": 0, "2": 0, "3": 0})
+        attempts[str(num)] = attempts.get(str(num), 0) + 1
+        session["attempt_counts"] = attempts
+        session.modified = True
+
         if num == 1:
+            # Sorting exercise (tea steps)
+            order = request.form.getlist("order")
+            if len(order) != 6:
+                error = "Please put all 6 steps in order."
+            else:
+                submitted = [TEA_STEPS_CORRECT[int(i)] for i in order]
+                session["exercise_answers"][str(num)] = submitted
+                # Preserve user's submitted order for re-display
+                session["tea_shuffle"] = [int(i) for i in order]
+                if submitted == TEA_STEPS_CORRECT or submitted == TEA_STEPS_ALT:
+                    if num not in session["completed_exercises"]:
+                        session["completed_exercises"].append(num)
+                    session.modified = True
+                    success = True
+                    progress = get_progress()
+                else:
+                    error = "Not quite right! The green ones are correct — fix the red ones."
+                    session.modified = True
+
+        elif num == 2:
+            # Writing exercise (algorithm steps)
             steps = [
                 request.form.get(f"step_{i}", "").strip()
                 for i in range(1, 21)
@@ -448,22 +684,6 @@ def exercise(num):
                 success = True
                 progress = get_progress()
 
-        elif num == 2:
-            order = request.form.getlist("order")
-            if len(order) != 6:
-                error = "Please put all 6 steps in order."
-            else:
-                submitted = [TEA_STEPS_CORRECT[int(i)] for i in order]
-                session["exercise_answers"][str(num)] = submitted
-                if submitted == TEA_STEPS_CORRECT:
-                    if num not in session["completed_exercises"]:
-                        session["completed_exercises"].append(num)
-                    session.modified = True
-                    success = True
-                    progress = get_progress()
-                else:
-                    error = "Not quite right! Check the order and try again."
-
         elif num == 3:
             lunch_item = request.form.get("lunch_item", "").strip()
             steps = [
@@ -472,17 +692,14 @@ def exercise(num):
             ]
             steps = [s for s in steps if s]
             allergy = request.form.get("allergy", "").strip()
-            missing = request.form.get("missing_ingredient", "").strip()
 
             errors = []
             if not lunch_item:
-                errors.append("Choose a lunch item.")
+                errors.append("Pick what to cook first!")
             if len(steps) < 6:
-                errors.append("You need at least 6 steps.")
+                errors.append("You need at least 6 cooking steps.")
             if not allergy:
-                errors.append("Add allergy safety instructions.")
-            if not missing:
-                errors.append("Add a rule for missing ingredients.")
+                errors.append("Add at least one allergy safety rule.")
             if errors:
                 error = " ".join(errors)
             else:
@@ -490,7 +707,6 @@ def exercise(num):
                     "lunch_item": lunch_item,
                     "steps": steps,
                     "allergy": allergy,
-                    "missing_ingredient": missing,
                 }
                 if num not in session["completed_exercises"]:
                     session["completed_exercises"].append(num)
@@ -498,15 +714,20 @@ def exercise(num):
                 success = True
                 progress = get_progress()
 
+    attempts = session.get("attempt_counts", {"1": 0, "2": 0, "3": 0})
+    current_attempts = attempts.get(str(num), 0)
+
     context = {
         "exercise": ex,
         "num": num,
         "progress": progress,
         "error": error,
         "success": success,
+        "attempts": current_attempts,
+        "show_hint": current_attempts >= 2 and not success,
     }
 
-    if num == 2:
+    if num == 1:
         if "tea_shuffle" not in session:
             indices = list(range(6))
             random.shuffle(indices)
@@ -514,6 +735,15 @@ def exercise(num):
             session.modified = True
         context["tea_steps"] = TEA_STEPS_CORRECT
         context["shuffled_indices"] = session["tea_shuffle"]
+
+    if num == 2:
+        context["task_blocks"] = TASK_BLOCKS
+
+    if num == 3:
+        context["chef_items"] = CHEF_LUNCH_ITEMS
+        context["chef_blocks"] = CHEF_BLOCKS
+        context["chef_conditions"] = CHEF_IF_CONDITIONS
+        context["chef_actions"] = CHEF_THEN_ACTIONS
 
     template = f"exercise{num}.html"
     return render_template(template, **context)
@@ -552,6 +782,84 @@ def review():
 def reset():
     session.clear()
     return redirect(url_for("home"))
+
+
+@app.route("/profile")
+def profile():
+    progress = get_progress()
+    track1 = get_track1_progress()
+    xp = get_total_xp()
+    level = get_player_level(xp)
+    attempts = session.get("attempt_counts", {"1": 0, "2": 0, "3": 0})
+    completed = session.get("completed_exercises", [])
+
+    # Build all achievements
+    seen = set(session.get("seen_achievements", []))
+    achievements = [
+        {**a, "done": a["id"] in seen or _ach_earned(a["id"])}
+        for a in ALL_ACHIEVEMENTS
+    ]
+
+    # Track 1 lesson stats
+    lesson_stats = []
+    for lnum in TRACK_1_LESSONS:
+        s = track1[lnum]
+        lesson_stats.append({
+            "num": lnum,
+            "title": s["title"],
+            "completed": s["completed"],
+            "exercises_done": s["exercises_done"],
+            "total": s["total"],
+        })
+
+    track1_lessons_done = sum(1 for s in track1.values() if s["completed"])
+
+    return render_template(
+        "profile.html",
+        progress=progress,
+        achievements=achievements,
+        lesson_stats=lesson_stats,
+        total_xp=xp,
+        level=level,
+        level_title=get_level_title(level),
+        track1_lessons_done=track1_lessons_done,
+        medals_earned=sum(1 for a in achievements if a["done"]),
+        total_medals=len(achievements),
+    )
+
+
+def _ach_earned(ach_id):
+    """Check if an achievement is currently earned (for profile display)."""
+    l1 = session.get("completed_exercises", [])
+    sim = session.get("simulator_completed", False)
+    lesson_ach = {2: "robot_pilot", 3: "loop_master", 4: "decision_maker", 5: "architect"}
+
+    if ach_id == "first_launch":
+        return sim
+    if ach_id == "l1_champion":
+        return len(l1) >= 3
+    if ach_id in lesson_ach.values():
+        for lnum, aid in lesson_ach.items():
+            if aid == ach_id:
+                return len(session.get(f"lesson_{lnum}", {}).get("completed_exercises", [])) >= 3
+    if ach_id == "track1_complete":
+        return all(
+            len(session.get(f"lesson_{n}", {}).get("completed_exercises", [])) >= 3
+            for n in [2, 3, 4, 5]
+        ) and len(l1) >= 3 and sim
+    if ach_id == "first_try":
+        atts = session.get("attempt_counts", {})
+        return any(atts.get(str(i), 99) == 1 for i in l1)
+    if ach_id == "perseverance":
+        atts = session.get("attempt_counts", {})
+        return any(atts.get(str(i), 0) >= 3 for i in l1)
+    if ach_id == "xp_100":
+        return get_total_xp() >= 100
+    if ach_id == "level_2":
+        return get_player_level(get_total_xp()) >= 2
+    if ach_id == "quiz_ace":
+        return session.get("quiz_perfect", False)
+    return False
 
 
 # ---------------------------------------------------------------------------
@@ -607,6 +915,7 @@ def lesson_exercise(lesson_num, ex_num):
     lesson_data = session.setdefault(key, {"completed_exercises": [], "exercise_answers": {}})
     error = None
     success = False
+    _debug_result = None
 
     if request.method == "POST":
         ex_type = ex.get("type", "written")
@@ -616,7 +925,6 @@ def lesson_exercise(lesson_num, ex_num):
             if cmds:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 10)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -632,7 +940,6 @@ def lesson_exercise(lesson_num, ex_num):
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 10)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -659,13 +966,16 @@ def lesson_exercise(lesson_num, ex_num):
                     error = "Pick a fix for every bug before submitting!"
                 else:
                     result = {"correct_bugs": correct_bugs, "answers": answers}
-                    if ex_num not in lesson_data["completed_exercises"]:
-                        lesson_data["completed_exercises"].append(ex_num)
-                    session["xp"] = session.get("xp", 0) + ex.get("xp", 15)
-                    session.modified = True
-                    success = True
-                    progress = get_lesson_progress(lesson_num)
                     _debug_result = result
+                    if len(correct_bugs) == len(bugs):
+                        # All correct!
+                        if ex_num not in lesson_data["completed_exercises"]:
+                            lesson_data["completed_exercises"].append(ex_num)
+                        session.modified = True
+                        success = True
+                        progress = get_lesson_progress(lesson_num)
+                    else:
+                        error = f"You got {len(correct_bugs)}/{len(bugs)} correct. The wrong ones are highlighted in red — try again!"
             else:
                 # Textarea mode (fallback)
                 all_filled = True
@@ -677,7 +987,6 @@ def lesson_exercise(lesson_num, ex_num):
                 else:
                     if ex_num not in lesson_data["completed_exercises"]:
                         lesson_data["completed_exercises"].append(ex_num)
-                    session["xp"] = session.get("xp", 0) + ex.get("xp", 15)
                     session.modified = True
                     success = True
                     progress = get_lesson_progress(lesson_num)
@@ -695,7 +1004,6 @@ def lesson_exercise(lesson_num, ex_num):
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 20)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -711,7 +1019,6 @@ def lesson_exercise(lesson_num, ex_num):
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 10)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -727,7 +1034,6 @@ def lesson_exercise(lesson_num, ex_num):
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 15)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -743,7 +1049,6 @@ def lesson_exercise(lesson_num, ex_num):
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 20)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -760,7 +1065,6 @@ def lesson_exercise(lesson_num, ex_num):
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 10)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -773,7 +1077,6 @@ def lesson_exercise(lesson_num, ex_num):
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 15)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -786,7 +1089,6 @@ def lesson_exercise(lesson_num, ex_num):
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 10)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -804,7 +1106,6 @@ def lesson_exercise(lesson_num, ex_num):
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 15)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -822,7 +1123,6 @@ def lesson_exercise(lesson_num, ex_num):
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
-                session["xp"] = session.get("xp", 0) + ex.get("xp", 20)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
@@ -840,8 +1140,8 @@ def lesson_exercise(lesson_num, ex_num):
         "success": success,
         "total_exercises": len(exercises),
     }
-    # Add debug result if MCQ bug hunt was submitted
-    if "_debug_result" in dir() or "_debug_result" in locals():
+    # Always pass debug result (None if not submitted)
+    if _debug_result is not None:
         context["result"] = _debug_result
 
     # Template mapping
@@ -887,7 +1187,10 @@ def lesson_quiz(lesson_num):
             "answers": answers, "wrong": wrong,
         }
         if result["percent"] >= 75:
-            session["xp"] = session.get("xp", 0) + 10
+            session["quiz_bonuses"] = session.get("quiz_bonuses", 0) + XP_PER_QUIZ
+            session.modified = True
+        if result["percent"] == 100:
+            session["quiz_perfect"] = True
             session.modified = True
     return render_template("l_quiz.html", questions=quiz, lesson_num=lesson_num, lesson=lesson, result=result, progress=get_lesson_progress(lesson_num))
 
@@ -974,7 +1277,6 @@ def world_mission(slug, n):
         wdata = session.setdefault(key, {"completed_missions": [], "tools_unlocked": []})
         if n not in wdata["completed_missions"]:
             wdata["completed_missions"].append(n)
-            session["xp"] = session.get("xp", 0) + 25
         session[key] = wdata
         session.modified = True
         if n < 3:

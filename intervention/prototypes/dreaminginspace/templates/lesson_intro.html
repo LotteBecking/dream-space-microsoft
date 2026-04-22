@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Briefing Room &middot; Dreaming in Space{% endblock %}
+{% block title %}Learn &middot; Dreaming in Space{% endblock %}
 
 {% block content %}
 {{ stepper('intro', progress) }}
@@ -27,6 +27,68 @@
   </div>
 </div>
 
+<!-- What is an Algorithm? -->
+<section class="card" style="margin-bottom:28px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #93c5fd;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:12px;">💡 What is an Algorithm?</h3>
+    <p style="font-size:17px; line-height:1.7; color:#1e3a5f; margin:0 0 14px 0;">
+      An <strong>algorithm</strong> is just a fancy word for <strong>a set of step-by-step instructions</strong>
+      that tell someone (or something!) exactly what to do.
+    </p>
+    <p style="font-size:16px; line-height:1.7; color:#1e3a5f; margin:0 0 16px 0;">
+      You already use algorithms every day without even knowing it!
+    </p>
+    <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+      <div style="flex:1; min-width:140px; padding:14px 16px; border-radius:12px; background:white; border:1px solid #bfdbfe; text-align:center;">
+        <div style="font-size:32px; margin-bottom:6px;">🍳</div>
+        <div style="font-size:15px; font-weight:600; color:#1e40af;">Following a recipe</div>
+      </div>
+      <div style="flex:1; min-width:140px; padding:14px 16px; border-radius:12px; background:white; border:1px solid #bfdbfe; text-align:center;">
+        <div style="font-size:32px; margin-bottom:6px;">🧱</div>
+        <div style="font-size:15px; font-weight:600; color:#1e40af;">Building LEGO</div>
+      </div>
+      <div style="flex:1; min-width:140px; padding:14px 16px; border-radius:12px; background:white; border:1px solid #bfdbfe; text-align:center;">
+        <div style="font-size:32px; margin-bottom:6px;">🗺️</div>
+        <div style="font-size:15px; font-weight:600; color:#1e40af;">Directions to school</div>
+      </div>
+      <div style="flex:1; min-width:140px; padding:14px 16px; border-radius:12px; background:white; border:1px solid #bfdbfe; text-align:center;">
+        <div style="font-size:32px; margin-bottom:6px;">🎮</div>
+        <div style="font-size:15px; font-weight:600; color:#1e40af;">Game instructions</div>
+      </div>
+    </div>
+    <div style="padding:14px 18px; border-radius:12px; background:#fff7ed; border:1px solid #fed7aa;">
+      <p style="font-size:15px; color:#9a3412; margin:0; line-height:1.6;">
+        <strong>⚠️ Important:</strong> Computers and robots follow instructions <strong>EXACTLY</strong>.
+        They can't guess what you mean! If your instructions are wrong or unclear, the output will be wrong too.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Key Vocabulary -->
+<section class="card" style="margin-bottom:28px;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">📖 Key Words You'll Learn</h3>
+    <p style="font-size:16px; color:var(--color-text-muted); margin-bottom:16px;">Tap any card to flip it and see the definition!</p>
+    <div class="vocab-grid">
+      {% for v in vocabulary %}
+      <div class="vocab-card" onclick="this.querySelector('.vocab-card-inner').classList.toggle('flipped')" tabindex="0"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.querySelector('.vocab-card-inner').classList.toggle('flipped')}">
+        <div class="vocab-card-inner">
+          <div class="vocab-card-face vocab-card-face-front">
+            <span class="vocab-word">{{ v.word }}</span>
+            <span class="vocab-flip-hint">{{ icon('refresh') }} Tap to flip</span>
+          </div>
+          <div class="vocab-card-face vocab-card-face-back">
+            <span class="vocab-definition">{{ v.definition }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
 <!-- Role model: full width above vocabulary + practice room -->
 <section class="card" style="margin-bottom:28px;">
   <div class="card-body" style="display:flex; gap:20px; align-items:flex-start;">
@@ -41,42 +103,51 @@
 
 <div class="grid-2" style="margin-bottom: 28px; align-items: stretch;">
   <div style="display:flex; flex-direction:column;">
-    <!-- Vocabulary -->
-    <section class="card" style="flex:1;">
-      <div class="card-body">
-        <div class="section-title">
-          <span class="section-title-icon">{{ icon('book-open') }}</span>
-          <h2 class="title-lg">Key vocabulary</h2>
-        </div>
-        <div class="vocab-grid">
-          {% for v in vocabulary %}
-          <div class="vocab-card" onclick="this.querySelector('.vocab-card-inner').classList.toggle('flipped')" tabindex="0"
-               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.querySelector('.vocab-card-inner').classList.toggle('flipped')}">
-            <div class="vocab-card-inner">
-              <div class="vocab-card-face vocab-card-face-front">
-                <span class="vocab-word">{{ v.word }}</span>
-                <span class="vocab-flip-hint">{{ icon('refresh') }} Tap to flip</span>
-              </div>
-              <div class="vocab-card-face vocab-card-face-back">
-                <span class="vocab-definition">{{ v.definition }}</span>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
+    <!-- Simulator CTA -->
+    <section class="card" style="flex:1; background:var(--color-accent-soft); border-color:#efc5e2;">
+      <div class="card-body" style="height:100%; display:flex; flex-direction:column; justify-content:center;">
+        <div class="eyebrow" style="color:var(--color-accent-ink); margin-bottom:6px;">Practice room</div>
+        <h3 class="title-lg" style="margin-bottom:8px;">Try the PB&amp;J Simulator</h3>
+        <p style="font-size:15px; color:var(--color-text-muted); margin-bottom:14px;">
+          Practice giving step-by-step instructions to a robot that makes sandwiches.
+          See what happens when your instructions are right — and when they're wrong!
+        </p>
+        <a href="{{ url_for('simulator') }}" class="btn btn-secondary" style="align-self:flex-start;">
+          {{ icon('terminal') }}<span>Open the simulator</span>
+        </a>
       </div>
     </section>
   </div>
 
   <div style="display:flex; flex-direction:column;">
-    <!-- Simulator CTA -->
-    <section class="card" style="flex:1; background:var(--color-accent-soft); border-color:#efc5e2;">
-      <div class="card-body" style="height:100%; display:flex; flex-direction:column; justify-content:center;">
-        <div class="eyebrow" style="color:var(--color-accent-ink); margin-bottom:6px;">Practice room</div>
-        <h3 class="title-lg" style="margin-bottom:14px;">Try the PB&amp;J Simulator</h3>
-        <a href="{{ url_for('simulator') }}" class="btn btn-secondary" style="align-self:flex-start;">
-          {{ icon('terminal') }}<span>Open the simulator</span>
-        </a>
+    <!-- What you'll do -->
+    <section class="card" style="flex:1;">
+      <div class="card-body">
+        <div class="eyebrow" style="margin-bottom:6px;">Your missions today</div>
+        <h3 class="title-lg" style="margin-bottom:12px;">3 Missions to Complete</h3>
+        <div class="stack-sm">
+          <div style="display:flex; align-items:center; gap:10px; padding:8px 0;">
+            <span style="width:32px; height:32px; border-radius:50%; background:#dbeafe; display:flex; align-items:center; justify-content:center; font-size:16px;">1</span>
+            <div>
+              <div style="font-weight:600; font-size:16px;">Sort the Steps</div>
+              <div style="font-size:15px; color:var(--color-text-muted);">Put mixed-up steps in the right order</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; padding:8px 0;">
+            <span style="width:32px; height:32px; border-radius:50%; background:#dbeafe; display:flex; align-items:center; justify-content:center; font-size:16px;">2</span>
+            <div>
+              <div style="font-weight:600; font-size:16px;">Build an Algorithm</div>
+              <div style="font-size:15px; color:var(--color-text-muted);">Create your own step-by-step instructions</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; padding:8px 0;">
+            <span style="width:32px; height:32px; border-radius:50%; background:#dbeafe; display:flex; align-items:center; justify-content:center; font-size:16px;">3</span>
+            <div>
+              <div style="font-weight:600; font-size:16px;">Robot Chef Challenge</div>
+              <div style="font-size:15px; color:var(--color-text-muted);">Write an algorithm for a robot with NO common sense</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>

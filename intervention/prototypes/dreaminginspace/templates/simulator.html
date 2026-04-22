@@ -21,6 +21,21 @@
 
 <div class="grid-2" style="margin-bottom: 28px;">
   <div class="stack">
+    <!-- What you're learning -->
+    <section class="card" style="background: linear-gradient(135deg, #fefce8, #fef9c3); border-color: #fde047;">
+      <div class="card-body">
+        <h3 class="title-lg" style="margin-bottom:8px;">🤖 What are Instructions?</h3>
+        <p style="font-size:16px; line-height:1.7; color:#713f12; margin:0 0 10px 0;">
+          Computers and robots can only understand <strong>very specific instructions</strong>.
+          They have <strong>no common sense</strong> — they can't guess what you mean!
+        </p>
+        <p style="font-size:15px; line-height:1.6; color:#713f12; margin:0;">
+          In this simulator, you'll give a robot instructions to make a PB&amp;J sandwich.
+          Use the buttons below to add steps, then press <strong>Run</strong> to see if the robot can follow them!
+        </p>
+      </div>
+    </section>
+
     <!-- Kitchen counter -->
     <section class="card">
       <div class="card-body">
@@ -115,7 +130,7 @@
             ('spread peanut butter', 'Spread PB'),
             ('open jam jar', 'Open jam jar'),
             ('spread jam', 'Spread jam'),
-            ('place second slice', 'Place second slice'),
+            ('place second slice', 'Place 2nd slice on top'),
             ('serve', 'Serve'),
           ] %}
           {% for value, label in hints %}
@@ -130,8 +145,9 @@
         </form>
 
         <div class="row" style="gap:8px; justify-content:space-between;">
-          <form method="post" style="flex:1;">
+          <form method="post" style="flex:1;" id="run-form">
             <input type="hidden" name="action" value="run" />
+            <div id="run-order-fields"></div>
             <button type="submit" class="btn btn-primary btn-block" {% if not commands %}disabled{% endif %}>
               {{ icon('play') }}<span>Run</span>
             </button>
@@ -181,6 +197,10 @@
             <span>Mission 1</span>{{ icon('arrow-right') }}
           </a>
         </div>
+        {% elif log and not state.sandwich_complete %}
+        <div style="margin-top:14px;">
+          {{ callout('warning', 'Your sandwich is not finished yet! Check the checklist above — did you miss a step?', 'Not done yet!') }}
+        </div>
         {% endif %}
       </div>
     </section>
@@ -221,11 +241,88 @@
 
 {% block scripts %}
 <script>
-  document.querySelectorAll('.cmd-hint-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.getElementById('cmd-input').value = btn.dataset.cmd;
-      document.getElementById('cmd-input').focus();
+  (function() {
+    // Hint button click: fills the input
+    document.querySelectorAll('.cmd-hint-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.getElementById('cmd-input').value = btn.dataset.cmd;
+        document.getElementById('cmd-input').focus();
+      });
     });
-  });
+
+    // Randomize the hint buttons order on page load
+    var hintContainer = document.getElementById('cmd-hint-buttons');
+    if (hintContainer) {
+      var btns = Array.from(hintContainer.children);
+      for (var i = btns.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        hintContainer.appendChild(btns[j]);
+        btns.splice(j, 1, btns[i]);
+      }
+    }
+
+    // Drag-to-reorder for command list
+    var cmdRows = document.querySelectorAll('.cmd-row');
+    if (cmdRows.length > 0) {
+      var cmdList = cmdRows[0].parentElement;
+      var dragItem = null;
+
+      cmdRows.forEach(function(row) {
+        row.setAttribute('draggable', 'true');
+        row.style.cursor = 'grab';
+        row.style.transition = 'opacity .15s';
+
+        row.addEventListener('dragstart', function(e) {
+          dragItem = row;
+          row.style.opacity = '0.4';
+          e.dataTransfer.effectAllowed = 'move';
+        });
+        row.addEventListener('dragend', function() {
+          row.style.opacity = '1';
+          dragItem = null;
+          renumberCmds();
+        });
+        row.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+        });
+        row.addEventListener('drop', function(e) {
+          e.preventDefault();
+          if (dragItem && dragItem !== row) {
+            var allRows = Array.from(cmdList.querySelectorAll('.cmd-row'));
+            var fromIdx = allRows.indexOf(dragItem);
+            var toIdx = allRows.indexOf(row);
+            if (fromIdx < toIdx) {
+              cmdList.insertBefore(dragItem, row.nextSibling);
+            } else {
+              cmdList.insertBefore(dragItem, row);
+            }
+          }
+        });
+      });
+
+      function renumberCmds() {
+        cmdList.querySelectorAll('.cmd-row').forEach(function(r, i) {
+          r.querySelector('.cmd-index').textContent = i + 1;
+        });
+      }
+    }
+
+    // On Run form submit: inject current command order as hidden fields
+    var runForm = document.getElementById('run-form');
+    if (runForm) {
+      runForm.addEventListener('submit', function() {
+        var container = document.getElementById('run-order-fields');
+        container.innerHTML = '';
+        document.querySelectorAll('.cmd-row .cmd-text').forEach(function(el) {
+          var inp = document.createElement('input');
+          inp.type = 'hidden';
+          inp.name = 'cmd_order';
+          inp.value = el.textContent.trim();
+          container.appendChild(inp);
+        });
+      });
+    }
+  })();
 </script>
 {% endblock %}

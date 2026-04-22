@@ -17,6 +17,27 @@
   </div>
 </div>
 
+<!-- Concept explainer -->
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #fef2f2, #fecaca); border-color: #f87171;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 What is a Bug?</h3>
+    <p style="font-size:16px; color:#7f1d1d; line-height:1.7; margin:0 0 12px 0;">
+      A <strong>bug</strong> is a mistake in your code that makes it do the <strong>wrong thing</strong>.
+      <strong>Debugging</strong> means finding the mistake and fixing it!
+    </p>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:160px; padding:12px; border-radius:10px; background:white; border:2px solid #fca5a5;">
+        <div style="font-size:14px; font-weight:600; color:#dc2626; margin-bottom:4px;">🐛 Common bugs:</div>
+        <div style="font-size:14px; color:#333;">Missing a step, wrong order, or wrong direction</div>
+      </div>
+      <div style="flex:1; min-width:160px; padding:12px; border-radius:10px; background:white; border:2px solid #86efac;">
+        <div style="font-size:14px; font-weight:600; color:#16a34a; margin-bottom:4px;">🔧 How to debug:</div>
+        <div style="font-size:14px; color:#333;">Read each step slowly. Act it out in your head!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 {% if success %}
 <div style="margin-bottom:20px;">
   {{ callout('success', 'You squashed all the bugs! +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
@@ -36,7 +57,7 @@
       {% endif %}
       {{ bug.label }}
     </h2>
-    <div style="background:#1e1b4b; color:#e0e7ff; border-radius:12px; padding:14px 16px; margin-bottom:10px; font-family:monospace; font-size:14px; line-height:1.7; white-space:pre-wrap;">{{ bug.code }}</div>
+    <div style="background:#1e1b4b; color:#e0e7ff; border-radius:12px; padding:14px 16px; margin-bottom:10px; font-family:monospace; font-size:16px; line-height:1.7; white-space:pre-wrap;">{{ bug.code }}</div>
     {% if bug.fixes %}
     {% for fix in bug.fixes %}
     <div style="padding:10px 14px; border-radius:10px; margin-bottom:4px; font-size:15px; font-weight:500;
@@ -86,7 +107,7 @@
           </h2>
 
           {# The buggy code - dark box #}
-          <div style="background:#1e1b4b; color:#e0e7ff; border-radius:12px; padding:18px 20px; margin-bottom:14px; font-family:'Fira Code',Consolas,monospace; font-size:15px; line-height:1.8; white-space:pre-wrap; font-weight:500; border:2px solid #312e81;">{{ bug.code }}</div>
+          <div style="background:#1e1b4b; color:#e0e7ff; border-radius:12px; padding:18px 20px; margin-bottom:14px; font-family:'Fira Code',Consolas,monospace; font-size:16px; line-height:1.8; white-space:pre-wrap; font-weight:500; border:2px solid #312e81;">{{ bug.code }}</div>
 
           {# Visual diagrams side by side #}
           {% if bug.diagram_what_should_happen or bug.diagram_what_actually_happened %}
@@ -145,16 +166,33 @@
           <p style="font-size:16px; font-weight:700; color:#111; margin:0 0 10px 0;">🔧 Pick the correct fix:</p>
           <div style="display:flex; flex-direction:column; gap:8px;">
             {% for fix in bug.fixes %}
+            {% set user_val = result.get('answers', {}).get(bi|string, -1) if result else -1 %}
+            {% set is_correct_fix = loop.index0 == bug.correct_fix %}
+            {% set user_picked_this = loop.index0 == user_val %}
+            {% set show_feedback = result is not none %}
             <label style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:12px;
-                   border:2px solid #d1d5db; cursor:pointer; background:#fff; color:#111; font-size:15px; font-weight:500;
-                   transition:all .15s; line-height:1.4;"
+                   cursor:pointer; color:#111; font-size:15px; font-weight:500;
+                   transition:all .15s; line-height:1.4;
+                   {% if show_feedback and user_picked_this and is_correct_fix %}border:2px solid #22c55e; background:#f0fdf4;
+                   {% elif show_feedback and user_picked_this and not is_correct_fix %}border:2px solid #ef4444; background:#fef2f2;
+                   {% elif show_feedback and is_correct_fix %}border:2px solid #22c55e; background:#f0fdf4;
+                   {% else %}border:2px solid #d1d5db; background:#fff;{% endif %}"
+                   {% if not show_feedback %}
                    onmouseover="this.style.borderColor='#7c3aed'; this.style.background='#faf5ff';"
-                   onmouseout="if(!this.querySelector('input').checked){this.style.borderColor='#d1d5db'; this.style.background='#fff';}">
+                   onmouseout="if(!this.querySelector('input').checked){this.style.borderColor='#d1d5db'; this.style.background='#fff';}"
+                   {% endif %}>
               <input type="radio" name="fix_{{ bi }}" value="{{ loop.index0 }}" required
+                     {% if user_picked_this %}checked{% endif %}
                      style="accent-color:#7c3aed; width:20px; height:20px; flex-shrink:0;"
+                     {% if not show_feedback %}
                      onchange="this.closest('label').style.borderColor='#7c3aed'; this.closest('label').style.background='#faf5ff';
-                               document.querySelectorAll('input[name=fix_{{ bi }}]').forEach(r => { if(r!==this) { r.closest('label').style.borderColor='#d1d5db'; r.closest('label').style.background='#fff'; } });" />
-              <span>{{ fix }}</span>
+                               document.querySelectorAll('input[name=fix_{{ bi }}]').forEach(r => { if(r!==this) { r.closest('label').style.borderColor='#d1d5db'; r.closest('label').style.background='#fff'; } });"
+                     {% endif %} />
+              <span>
+                {% if show_feedback and is_correct_fix %}✅ {% endif %}
+                {% if show_feedback and user_picked_this and not is_correct_fix %}❌ {% endif %}
+                {{ fix }}
+              </span>
             </label>
             {% endfor %}
           </div>

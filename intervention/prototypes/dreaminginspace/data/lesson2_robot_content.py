@@ -115,20 +115,20 @@ EXERCISES_2_ROBOT = [
             {
                 "label": "Bug 1 \u2014 The Robot Walked Into a Wall",
                 "code": (
-                    "1. Move Forward\n"
-                    "2. Move Forward\n"
-                    "3. Move Forward\n"
-                    "4. Move Forward\n"
-                    "5. Move Forward"
+                    "1. Move Forward  \u27a1\ufe0f\n"
+                    "2. Move Forward  \u27a1\ufe0f\n"
+                    "3. Move Forward  \u27a1\ufe0f\n"
+                    "4. Move Forward  \u27a1\ufe0f\n"
+                    "5. Move Forward  \u27a1\ufe0f"
                 ),
                 "diagram_what_should_happen": [
-                    ["\U0001f916", "\u2b07\ufe0f", "\u2b07\ufe0f", "\u2b07\ufe0f", "\u27a1\ufe0f", ""],
+                    ["\U0001f916", "\u27a1\ufe0f", "\u27a1\ufe0f", "\u27a1\ufe0f", "\u2935\ufe0f", ""],
                     ["", "", "", "", "\u2b07\ufe0f", ""],
                     ["", "", "", "", "\U0001f3c1", ""],
                 ],
                 "diagram_labels": ["Start", "", "", "Turn Right here!", "", "Goal"],
                 "diagram_what_actually_happened": [
-                    ["\U0001f916", "\u2b07\ufe0f", "\u2b07\ufe0f", "\u2b07\ufe0f", "\u2b07\ufe0f", "\U0001f4a5"],
+                    ["\U0001f916", "\u27a1\ufe0f", "\u27a1\ufe0f", "\u27a1\ufe0f", "\u27a1\ufe0f", "\U0001f4a5"],
                 ],
                 "scenario": (
                     "The robot should go 3 steps forward, turn right, then 2 more "
@@ -147,11 +147,11 @@ EXERCISES_2_ROBOT = [
             {
                 "label": "Bug 2 \u2014 The Robot Dropped the Cup",
                 "code": (
-                    "1. Move Forward\n"
-                    "2. Move Forward\n"
-                    "3. Lower Arm  \u2b07\ufe0f\n"
-                    "4. Lift Arm   \u2b06\ufe0f\n"
-                    "5. Turn Right"
+                    "1. Move Forward  \u27a1\ufe0f\n"
+                    "2. Move Forward  \u27a1\ufe0f\n"
+                    "3. Lower Arm     \u2b07\ufe0f\n"
+                    "4. Lift Arm      \u2b06\ufe0f\n"
+                    "5. Turn Right    \u2935\ufe0f"
                 ),
                 "diagram_what_should_happen": [
                     ["\U0001f916\u27a1\ufe0f", "\u27a1\ufe0f", "\u2615"],
@@ -182,22 +182,22 @@ EXERCISES_2_ROBOT = [
             {
                 "label": "Bug 3 \u2014 The Robot Went the Wrong Way",
                 "code": (
-                    "1. Turn Left   \u2b05\ufe0f\n"
-                    "2. Move Forward\n"
-                    "3. Move Forward\n"
-                    "4. Turn Left   \u2b05\ufe0f\n"
-                    "5. Move Forward"
+                    "1. Turn Left     \u2b05\ufe0f\n"
+                    "2. Move Forward  \u27a1\ufe0f\n"
+                    "3. Move Forward  \u27a1\ufe0f\n"
+                    "4. Turn Left     \u2b05\ufe0f\n"
+                    "5. Move Forward  \u27a1\ufe0f"
                 ),
                 "diagram_what_should_happen": [
                     ["", "", "\U0001f3c1"],
                     ["", "", "\u2b06\ufe0f"],
-                    ["\U0001f916", "\u27a1\ufe0f", "\u27a1\ufe0f"],
+                    ["\U0001f916", "\u27a1\ufe0f", "\u2935\ufe0f"],
                 ],
                 "diagram_what_actually_happened": [
                     ["", "", ""],
                     ["", "", ""],
                     ["\u2b05\ufe0f", "\u2b05\ufe0f", "\U0001f916"],
-                    ["\U0001f4a5 Wrong corner!", "", ""],
+                    ["\U0001f4a5 Wrong way!", "", ""],
                 ],
                 "scenario": (
                     "The robot should turn RIGHT first, go forward 2 steps, "
