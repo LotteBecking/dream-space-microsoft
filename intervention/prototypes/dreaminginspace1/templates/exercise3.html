@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Mission 3 &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{{ stepper('ex3', progress) }}
+
+<div style="margin-top: 28px;"></div>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <div class="row-tight">
+      <span class="chip chip-primary">Mission 3 of 3</span>
+      <span class="chip">{{ icon('clock') }}{{ exercise.duration_minutes }} min</span>
+    </div>
+    <h1 class="display-xl" style="margin-top:8px;">{{ exercise.title }}</h1>
+  </div>
+</div>
+
+{% if success %}
+<div style="margin-bottom:20px;">
+  {{ callout('success', 'All missions complete. Your rewards are unlocked.', 'Excellent work!') }}
+</div>
+<div class="card" style="padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+  <span>{{ space_beaver(56) }}</span>
+  <a href="{{ url_for('review') }}" class="btn btn-primary">
+    <span>Claim rewards</span>{{ icon('arrow-right') }}
+  </a>
+</div>
+{% else %}
+
+<div class="grid-2">
+  <div class="stack">
+    {% if error %}{{ callout('error', error) }}{% endif %}
+
+    <form method="post">
+      <!-- Lunch item -->
+      <section class="card">
+        <div class="card-body">
+          <label class="field-label" for="lunch_item">Lunch item</label>
+          <input type="text" name="lunch_item" id="lunch_item" class="input" placeholder="e.g. cheese sandwich, pasta, soup..." />
+        </div>
+      </section>
+
+      <!-- Algorithm -->
+      <section class="card" style="margin-top:16px;">
+        <div class="card-body">
+          <div class="section-title">
+            <span class="section-title-icon">{{ icon('list-checks') }}</span>
+            <h2 class="title-lg">Your algorithm</h2>
+          </div>
+          <div id="steps-container" class="stack-sm">
+            {% for i in range(1, 9) %}
+            <div class="step-row">
+              <span class="step-index">{{ i }}</span>
+              <input type="text" name="step_{{ i }}" class="input" placeholder="Step {{ i }}..." />
+            </div>
+            {% endfor %}
+          </div>
+          <button type="button" id="add-step-btn" class="add-step-btn" style="margin-top:12px;">+ Add step</button>
+        </div>
+      </section>
+
+      <!-- Allergy -->
+      <section class="card" style="margin-top:16px;">
+        <div class="card-body">
+          <div class="section-title">
+            <span class="section-title-icon" style="background:var(--color-warning-soft); color:var(--color-warning-ink);">{{ icon('alert-triangle') }}</span>
+            <h2 class="title-lg">Allergy safety</h2>
+          </div>
+          <textarea name="allergy" class="textarea" rows="3" placeholder="e.g. Before touching any ingredient, check the allergy list..."></textarea>
+        </div>
+      </section>
+
+      <!-- Missing ingredient -->
+      <section class="card" style="margin-top:16px;">
+        <div class="card-body">
+          <div class="section-title">
+            <span class="section-title-icon" style="background:var(--color-highlight-soft); color:var(--color-highlight-ink);">{{ icon('help') }}</span>
+            <h2 class="title-lg">Missing ingredient</h2>
+          </div>
+          <textarea name="missing_ingredient" class="textarea" rows="3" placeholder="e.g. IF cheese is empty, THEN..."></textarea>
+        </div>
+      </section>
+
+      <div class="card" style="margin-top:20px; padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
+        <a href="{{ url_for('exercise', num=2) }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
+        <button type="submit" class="btn btn-primary">
+          <span>Submit</span>{{ icon('check') }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <aside class="hint-card">
+      <div class="hint-mascot">{{ space_beaver(80) }}</div>
+      <div class="eyebrow" style="margin-bottom:8px;">Tip from Space Beaver</div>
+      <h3 class="title-md">Think in IF, THEN</h3>
+      <ul class="stack-sm" style="list-style:none; margin-top:10px;">
+        <li class="caption"><strong style="color:var(--color-text);">IF</strong> allergy, <strong style="color:var(--color-text);">THEN</strong> skip that ingredient.</li>
+        <li class="caption"><strong style="color:var(--color-text);">IF</strong> ingredient empty, <strong style="color:var(--color-text);">THEN</strong> ask for a substitute.</li>
+      </ul>
+    </aside>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function() {
+    var btn = document.getElementById('add-step-btn');
+    if (!btn) return;
+    var count = 8;
+    btn.addEventListener('click', function() {
+      count++;
+      var container = document.getElementById('steps-container');
+      var row = document.createElement('div');
+      row.className = 'step-row';
+      row.innerHTML = '<span class="step-index">' + count + '</span>' +
+        '<input type="text" name="step_' + count + '" class="input" placeholder="Step ' + count + '..." />';
+      container.appendChild(row);
+      row.querySelector('input').focus();
+    });
+  })();
+</script>
+{% endblock %}

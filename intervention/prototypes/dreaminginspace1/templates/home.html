@@ -438,6 +438,60 @@
       {'num': 4, 'label': 'Track 4', 'title': 'Digital World', 'icon': 'globe', 'color': '#d97706', 'color_light': '#fbbf24', 'lessons': [14, 15, 16, 17, 18]},
     ] %}
 
+    <!-- ══════════════════════════════════════════════════
+         TRACK 5: DIGITAL MISSIONS (5 game worlds)
+         ══════════════════════════════════════════════════ -->
+    <div class="track-foldout" data-auto-open="false">
+      <button type="button" class="track-foldout-header" style="--track-color:#6B39D9; --track-color-light:#a78bfa;">
+        <span class="track-icon">🌍</span>
+        <div class="track-info">
+          <span class="track-label">Track 5</span>
+          <span class="track-title">Digital Missions</span>
+        </div>
+        <span class="track-meta">5 worlds</span>
+        <span class="chevron-icon">{{ icon('chevron-down') }}</span>
+      </button>
+      <div class="track-foldout-body"><div class="track-foldout-body-inner">
+        <div style="font-size:13px;color:rgba(255,255,255,.7);padding:4px 4px 10px;font-style:italic;">
+          You learned this in class. Now use it. Each world is a mission-based practice game.
+        </div>
+        {% set worlds = [
+          ('data-defender', '🛡️', 'Data Defender', 'Conditional Logic · Classification', '#6B39D9'),
+          ('city-fixer',    '🏙️', 'City Fixer',    'Sequencing · Optimization',         '#059669'),
+          ('truth-quest',   '🔍', 'Truth Quest',   'Pattern Recognition · Evidence',    '#d97706'),
+          ('fair-future',   '🔬', 'Fair Future Lab','Abstraction · Rule Testing',        '#0d9488'),
+          ('build-for-good','🚀', 'Build for Good','Decomposition · Logic Flow',         '#7c3aed'),
+        ] %}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 0 8px;">
+          {% for w_slug, w_emoji, w_title, w_skill, w_color in worlds %}
+          {% set wp = session.get('world_' ~ w_slug, {'completed_missions':[]}) %}
+          {% set wc = wp.get('completed_missions', []) %}
+          {% set wall = wc|length >= 3 %}
+          <a href="{{ url_for('world_home', slug=w_slug) }}"
+             style="display:flex;align-items:center;gap:10px;
+                    background:var(--color-surface);border:2px solid {% if wall %}var(--color-success){% else %}var(--color-border){% endif %};
+                    border-radius:14px;padding:12px 14px;text-decoration:none;
+                    transition:border-color .2s,transform .15s;"
+             onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='{{ w_color }}'"
+             onmouseout="this.style.transform='';this.style.borderColor='{% if wall %}var(--color-success){% else %}var(--color-border){% endif %}'">
+            <span style="font-size:28px;">{{ w_emoji }}</span>
+            <div style="flex:1;min-width:0;">
+              <div style="font-family:var(--font-game);font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ w_title }}</div>
+              <div style="font-size:10px;color:var(--color-text-subtle);">{{ w_skill }}</div>
+            </div>
+            {% if wall %}
+              <span style="font-size:14px;">✅</span>
+            {% elif wc|length > 0 %}
+              <span style="font-family:var(--font-pixel);font-size:9px;background:var(--color-warning-soft);color:var(--color-warning-ink);padding:2px 6px;border-radius:4px;">{{ wc|length }}/3</span>
+            {% else %}
+              <span style="font-family:var(--font-pixel);font-size:9px;background:var(--color-primary-soft);color:var(--color-primary-ink);padding:2px 6px;border-radius:4px;">PLAY</span>
+            {% endif %}
+          </a>
+          {% endfor %}
+        </div>
+      </div></div>
+    </div><!-- end Track 5 -->
+
     {% for track in tracks %}
     <div class="track-foldout" data-auto-open="false">
       <button type="button" class="track-foldout-header" style="--track-color:{{ track.color }}; --track-color-light:{{ track.color_light }};">
@@ -507,60 +561,6 @@
 
       </div></div></div>
     {% endfor %}
-
-    <!-- ══════════════════════════════════════════════════
-         TRACK 5: DIGITAL MISSIONS (5 game worlds)
-         ══════════════════════════════════════════════════ -->
-    <div class="track-foldout" data-auto-open="false">
-      <button type="button" class="track-foldout-header" style="--track-color:#6B39D9; --track-color-light:#a78bfa;">
-        <span class="track-icon">🌍</span>
-        <div class="track-info">
-          <span class="track-label">Track 5</span>
-          <span class="track-title">Digital Missions</span>
-        </div>
-        <span class="track-meta">5 worlds</span>
-        <span class="chevron-icon">{{ icon('chevron-down') }}</span>
-      </button>
-      <div class="track-foldout-body"><div class="track-foldout-body-inner">
-        <div style="font-size:14px;color:#555;padding:4px 4px 10px;font-style:italic;">
-          You learned this in class. Now use it. Each world is a mission-based practice game.
-        </div>
-        {% set worlds = [
-          ('data-defender', '\U0001f6e1\ufe0f', 'Data Defender', 'Conditional Logic', '#6B39D9'),
-          ('city-fixer',    '\U0001f3d9\ufe0f', 'City Fixer',    'Sequencing',         '#059669'),
-          ('truth-quest',   '\U0001f50d', 'Truth Quest',   'Pattern Recognition',    '#d97706'),
-          ('fair-future',   '\U0001f52c', 'Fair Future Lab','Abstraction',        '#0d9488'),
-          ('build-for-good','\U0001f680', 'Build for Good','Decomposition',         '#7c3aed'),
-        ] %}
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 0 8px;">
-          {% for w_slug, w_emoji, w_title, w_skill, w_color in worlds %}
-          {% set wp = session.get('world_' ~ w_slug, {'completed_missions':[]}) %}
-          {% set wc = wp.get('completed_missions', []) %}
-          {% set wall = wc|length >= 3 %}
-          <a href="{{ url_for('world_home', slug=w_slug) }}"
-             style="display:flex;align-items:center;gap:10px;
-                    background:var(--color-surface);border:2px solid {% if wall %}var(--color-success){% else %}var(--color-border){% endif %};
-                    border-radius:14px;padding:12px 14px;text-decoration:none;color:#111;
-                    transition:border-color .2s,transform .15s;"
-             onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='{{ w_color }}'"
-             onmouseout="this.style.transform='';this.style.borderColor='{% if wall %}var(--color-success){% else %}var(--color-border){% endif %}'">
-            <span style="font-size:28px;">{{ w_emoji }}</span>
-            <div style="flex:1;min-width:0;">
-              <div style="font-family:var(--font-game);font-size:15px;font-weight:700;color:#111;">{{ w_title }}</div>
-              <div style="font-size:12px;color:#666;">{{ w_skill }}</div>
-            </div>
-            {% if wall %}
-              <span style="font-size:14px;">&#x2705;</span>
-            {% elif wc|length > 0 %}
-              <span style="font-family:var(--font-pixel);font-size:10px;background:var(--color-warning-soft);color:var(--color-warning-ink);padding:2px 6px;border-radius:4px;">{{ wc|length }}/3</span>
-            {% else %}
-              <span style="font-family:var(--font-pixel);font-size:10px;background:var(--color-primary-soft);color:var(--color-primary-ink);padding:2px 6px;border-radius:4px;">PLAY</span>
-            {% endif %}
-          </a>
-          {% endfor %}
-        </div>
-      </div></div>
-    </div>
 
   </div><!-- end left column -->
 

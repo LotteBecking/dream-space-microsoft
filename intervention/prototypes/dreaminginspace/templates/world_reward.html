@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, space_beaver %}
+{% block title %}{{ world.badge_name }} Earned! · Dreaming in Space{% endblock %}
+
+{% block header_context %}
+  <span class="chip chip-success" style="font-family:var(--font-pixel);font-size:10px;">🏆 MISSION COMPLETE</span>
+{% endblock %}
+
+{% block content %}
+<style>
+  .reward-hero {
+    text-align:center;
+    padding:48px 32px 32px;
+  }
+  .badge-anim {
+    display:inline-block;
+    animation:badgePop .6s cubic-bezier(.34,1.56,.64,1) forwards;
+    font-size:80px;
+    margin-bottom:16px;
+  }
+  @keyframes badgePop {
+    from { transform:scale(0) rotate(-10deg); opacity:0; }
+    to   { transform:scale(1) rotate(0deg);  opacity:1; }
+  }
+  .confetti {
+    position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden;
+  }
+  .confetti-piece {
+    position:absolute;width:10px;height:10px;border-radius:2px;
+    animation:fall linear forwards;
+  }
+  @keyframes fall {
+    0%   { transform:translateY(-20px) rotate(0deg);   opacity:1; }
+    100% { transform:translateY(110vh) rotate(720deg); opacity:0; }
+  }
+  .reward-card {
+    background:linear-gradient(135deg, {{ world.color }}, {{ world.color_light }});
+    border-radius:24px;padding:32px;color:#fff;margin-bottom:24px;
+    text-align:center;position:relative;overflow:hidden;
+  }
+  .reward-card::before {
+    content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 1px,transparent 1px,transparent 16px);
+  }
+  .reward-card-inner { position:relative;z-index:1; }
+  .summary-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0; }
+  @media(max-width:580px){ .summary-grid { grid-template-columns:1fr; } }
+  .summary-stat {
+    background:var(--color-surface);border:2px solid var(--color-border);
+    border-radius:16px;padding:16px;text-align:center;
+  }
+  .stat-val { font-family:var(--font-pixel);font-size:24px;font-weight:700;color:var(--color-primary-ink); }
+  .stat-label { font-size:12px;color:var(--color-text-subtle);margin-top:4px; }
+  .ct-recap {
+    background:var(--color-surface-muted);border:1.5px solid var(--color-border);
+    border-radius:14px;padding:16px 20px;margin-bottom:16px;
+  }
+  .next-worlds { display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px; }
+  @media(max-width:560px){ .next-worlds { grid-template-columns:1fr; } }
+  .next-world-card {
+    background:var(--color-surface);border:2px solid var(--color-border);
+    border-radius:16px;padding:16px;cursor:pointer;text-decoration:none;
+    display:flex;align-items:center;gap:12px;
+    transition:border-color .2s,transform .15s;
+  }
+  .next-world-card:hover { border-color:var(--color-primary-border);transform:translateY(-2px);box-shadow:var(--shadow-md); }
+</style>
+
+<!-- Confetti -->
+<div class="confetti" id="confetti"></div>
+
+<div class="reward-hero">
+  <div class="badge-anim">{{ world.badge_emoji }}</div>
+  <h1 style="font-family:var(--font-game);font-size:36px;font-weight:800;margin-bottom:8px;">
+    {{ world.badge_name }} Earned!
+  </h1>
+  <p style="font-size:17px;color:var(--color-text-muted);">You completed all 3 missions in <strong>{{ world.title }}</strong>.</p>
+</div>
+
+<div class="reward-card">
+  <div class="reward-card-inner">
+    <div style="font-size:56px;margin-bottom:12px;">{{ world.badge_emoji }}</div>
+    <div style="font-family:var(--font-game);font-size:28px;font-weight:800;margin-bottom:4px;">{{ world.badge_name }}</div>
+    <div style="font-size:16px;opacity:.85;margin-bottom:16px;">{{ world.tagline }}</div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <span style="background:rgba(255,255,255,.2);border-radius:999px;padding:6px 16px;font-family:var(--font-pixel);font-size:11px;letter-spacing:.06em;">
+        🧠 {{ world.ct_skill }}
+      </span>
+      <span style="background:rgba(255,255,255,.2);border-radius:999px;padding:6px 16px;font-family:var(--font-pixel);font-size:11px;letter-spacing:.06em;">
+        💡 {{ world.ct_skill_2 }}
+      </span>
+      <span style="background:rgba(255,255,255,.2);border-radius:999px;padding:6px 16px;font-family:var(--font-pixel);font-size:11px;letter-spacing:.06em;">
+        +{{ world.xp }} XP
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-stat">
+    <div class="stat-val">3/3</div>
+    <div class="stat-label">Missions Complete</div>
+  </div>
+  <div class="summary-stat">
+    <div class="stat-val">+{{ world.xp }}</div>
+    <div class="stat-label">XP Earned</div>
+  </div>
+  <div class="summary-stat">
+    <div class="stat-val">{{ xp }}</div>
+    <div class="stat-label">Total XP</div>
+  </div>
+</div>
+
+<div class="ct-recap">
+  <div style="font-family:var(--font-pixel);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-subtle);margin-bottom:10px;">SKILLS YOU USED</div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    {% for skill, desc in [
+      (world.ct_skill, 'Applied in every mission to reason through real-world scenarios'),
+      (world.ct_skill_2, 'Used to categorise, evaluate, and decide with incomplete information'),
+    ] %}
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--color-surface);border-radius:10px;border:1px solid var(--color-border);">
+      <span class="chip chip-primary" style="font-size:12px;">{{ skill }}</span>
+      <span style="font-size:13px;color:var(--color-text-muted);">{{ desc }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Other worlds -->
+<div style="margin-top:20px;">
+  <h2 style="font-family:var(--font-game);font-size:18px;font-weight:700;margin-bottom:12px;">Explore more worlds:</h2>
+  <div class="next-worlds">
+    {% set all_worlds = [
+      ('data-defender','🛡️','Data Defender','Conditional Logic'),
+      ('city-fixer','🏙️','City Fixer','Sequencing'),
+      ('truth-quest','🔍','Truth Quest','Pattern Recognition'),
+      ('fair-future','🔬','Fair Future Lab','Abstraction'),
+      ('build-for-good','🚀','Build for Good','Decomposition'),
+    ] %}
+    {% for w_slug, w_emoji, w_title, w_skill in all_worlds %}
+    {% if w_slug != slug %}
+    <a href="{{ url_for('world_home', slug=w_slug) }}" class="next-world-card">
+      <span style="font-size:32px;">{{ w_emoji }}</span>
+      <div>
+        <div style="font-family:var(--font-game);font-size:15px;font-weight:700;">{{ w_title }}</div>
+        <span class="chip" style="font-size:11px;margin-top:4px;">{{ w_skill }}</span>
+      </div>
+    </a>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+  <a href="{{ url_for('world_home', slug=slug) }}" class="btn btn-ghost">{{ icon('rotate-ccw') }} Play Again</a>
+  <a href="{{ url_for('home') }}" class="btn btn-primary">{{ icon('home') }} Back to Base Camp</a>
+</div>
+
+<script>
+(function(){
+  var confetti=document.getElementById('confetti');
+  var colors=['#6B39D9','#e38bd0','#e9b84a','#5fae83','#d36369','#60a5fa'];
+  for(var i=0;i<60;i++){
+    var el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=Math.random()*100+'%';
+    el.style.top='-20px';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.width=(6+Math.random()*10)+'px';
+    el.style.height=(6+Math.random()*10)+'px';
+    el.style.animationDuration=(1.5+Math.random()*2)+'s';
+    el.style.animationDelay=(Math.random()*.8)+'s';
+    confetti.appendChild(el);
+  }
+  setTimeout(function(){ confetti.innerHTML=''; },4000);
+})();
+</script>
+{% endblock %}

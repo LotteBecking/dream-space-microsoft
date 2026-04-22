@@ -1,0 +1,377 @@
+{% extends "base.html" %}
+{% block title %}Mission {{ num }} &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{{ stepper_multi('ex' ~ num, lesson_num, progress) }}
+
+<div style="margin-top: 28px;"></div>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <div class="row-tight">
+      <span class="chip chip-primary">Mission {{ num }} of {{ total_exercises }}</span>
+      <span class="chip">{{ icon('zap') }}{{ exercise.xp }} XP</span>
+    </div>
+    <h1 class="display-xl" style="margin-top:8px;">{{ exercise.title }}</h1>
+    <p style="color:#111; font-size:16px; margin-top:6px;">{{ exercise.description }}</p>
+  </div>
+</div>
+
+{% if success %}
+<div style="margin-bottom:20px;">
+  {{ callout('success', 'Your robot reached the goal! +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
+</div>
+<div class="card" style="padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+  <span>{{ space_beaver(56) }}</span>
+  {% if num < total_exercises %}
+  <a href="{{ url_for('lesson_exercise', lesson_num=lesson_num, ex_num=num+1) }}" class="btn btn-primary">
+    <span>Mission {{ num + 1 }}</span>{{ icon('arrow-right') }}
+  </a>
+  {% else %}
+  <a href="{{ url_for('lesson_quiz', lesson_num=lesson_num) }}" class="btn btn-primary">
+    <span>Take the Quiz</span>{{ icon('arrow-right') }}
+  </a>
+  {% endif %}
+</div>
+{% else %}
+
+<div style="display:grid; grid-template-columns:1.2fr 1fr; gap:24px; align-items:start;">
+  <!-- LEFT: Maze grid -->
+  <div>
+    <section class="card">
+      <div class="card-body" style="padding:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <h2 style="font-size:20px; font-weight:800; color:#111; margin:0;">Maze</h2>
+          <span id="maze-status" style="font-size:14px; font-weight:600; color:#666; padding:4px 12px; border-radius:8px; background:#f1f5f9;">Preview</span>
+        </div>
+        <div id="maze-grid" style="display:grid; grid-template-columns:repeat(6,1fr); gap:4px; aspect-ratio:1; max-width:420px; margin:0 auto;"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- RIGHT: Commands + Program -->
+  <div class="stack">
+    <!-- Command buttons -->
+    <section class="card">
+      <div class="card-body" style="padding:20px;">
+        <h2 style="font-size:20px; font-weight:800; color:#111; margin:0 0 14px 0;">Commands</h2>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+          <div></div>
+          <button class="maze-cmd-btn" data-cmd="up" style="background:#22c55e; color:#fff; border:none; border-radius:14px; padding:16px 10px; font-size:17px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:transform .1s, box-shadow .1s;">
+            <span style="font-size:20px;">↑</span> Up
+          </button>
+          <div></div>
+          <button class="maze-cmd-btn" data-cmd="left" style="background:#3b82f6; color:#fff; border:none; border-radius:14px; padding:16px 10px; font-size:17px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:transform .1s, box-shadow .1s;">
+            <span style="font-size:20px;">←</span> Left
+          </button>
+          <button class="maze-cmd-btn" data-cmd="down" style="background:#f97316; color:#fff; border:none; border-radius:14px; padding:16px 10px; font-size:17px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:transform .1s, box-shadow .1s;">
+            <span style="font-size:20px;">↓</span> Down
+          </button>
+          <button class="maze-cmd-btn" data-cmd="right" style="background:#a855f7; color:#fff; border:none; border-radius:14px; padding:16px 10px; font-size:17px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:transform .1s, box-shadow .1s;">
+            <span style="font-size:20px;">→</span> Right
+          </button>
+          <div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Program queue -->
+    <section class="card">
+      <div class="card-body" style="padding:20px;">
+        <h2 style="font-size:20px; font-weight:800; color:#111; margin:0 0 14px 0;">Program (<span id="cmd-count">0</span> commands)</h2>
+        <div id="program-list" style="min-height:80px; border:2px dashed #d4d4d8; border-radius:12px; padding:12px; margin-bottom:14px; background:#fafafa;">
+          <p id="program-empty" style="text-align:center; color:#999; font-size:15px; margin:20px 0;">Add commands to create your program</p>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button id="btn-run" style="flex:1; background:linear-gradient(135deg,#f472b6,#fb923c); color:#fff; border:none; border-radius:12px; padding:14px; font-size:17px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; opacity:0.5;" disabled>
+            <span style="font-size:18px;">▶</span> Run
+          </button>
+          <button id="btn-undo" style="background:#f1f5f9; border:2px solid #e2e8f0; border-radius:12px; padding:14px 16px; font-size:16px; cursor:pointer;" title="Undo last">🗑</button>
+          <button id="btn-clear" style="background:#f1f5f9; border:2px solid #e2e8f0; border-radius:12px; padding:14px 16px; font-size:14px; font-weight:600; color:#666; cursor:pointer;">Clear</button>
+          <button id="btn-reset" style="background:#f1f5f9; border:2px solid #e2e8f0; border-radius:12px; padding:14px 16px; font-size:16px; cursor:pointer;" title="Reset maze">↺</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Space Beaver hint -->
+    <aside class="hint-card">
+      <div class="hint-mascot" style="flex-direction:column; align-items:center; gap:0;">
+        {{ space_beaver(72) }}
+      </div>
+      <div class="speech-bubble" style="margin-top:10px; margin-bottom:0;">
+        <h3 style="font-size:15px; font-weight:700; color:#111; margin-bottom:6px;">{{ exercise.beaver_msg }}</h3>
+        <p style="margin:0; color:#555; font-size:14px;">{{ exercise.beaver_hint }}</p>
+      </div>
+    </aside>
+
+    <!-- Hidden form for server submission -->
+    <form id="maze-form" method="post" style="display:none;">
+      <input type="hidden" name="commands" id="commands-input" value="" />
+    </form>
+  </div>
+</div>
+{% endif %}
+
+<style>
+  .maze-cell {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    transition: background .3s, transform .2s;
+    border: 2px solid rgba(139,92,246,0.15);
+    background: rgba(245,240,255,0.5);
+  }
+  .maze-cell.wall {
+    background: #7c3aed;
+    border-color: #6d28d9;
+  }
+  .maze-cell.robot {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    animation: pulse-robot 1.5s ease infinite;
+  }
+  .maze-cell.goal {
+    background: #dcfce7;
+    border-color: #22c55e;
+  }
+  .maze-cell.fire {
+    background: #fef2f2;
+    border-color: #ef4444;
+    animation: flicker 0.8s ease infinite alternate;
+  }
+  @keyframes flicker {
+    0% { background: #fef2f2; }
+    100% { background: #fee2e2; }
+  }
+  .maze-cell.path-highlight {
+    background: #fef3c7;
+    border-color: #f59e0b;
+  }
+  .maze-cell.crash {
+    background: #fee2e2;
+    border-color: #ef4444;
+    animation: shake .4s ease;
+  }
+  @keyframes pulse-robot {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX(4px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+  .maze-cmd-btn:hover { transform: scale(1.04); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .maze-cmd-btn:active { transform: scale(0.96); }
+  .program-step {
+    display: inline-flex; align-items: center; gap:6px;
+    padding: 6px 12px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    margin: 3px; color: #fff;
+  }
+  .program-step.up { background: #22c55e; }
+  .program-step.down { background: #f97316; }
+  .program-step.left { background: #3b82f6; }
+  .program-step.right { background: #a855f7; }
+</style>
+
+<script>
+(function(){
+  // Maze layout: 0=open, 1=wall, 2=robot start, 3=goal, 4=fire
+  const MAZES = {
+    1: [
+      [2,0,0,0,0,1],
+      [1,1,1,1,0,1],
+      [0,0,0,0,0,0],
+      [0,1,1,1,1,0],
+      [0,0,0,0,1,0],
+      [1,1,1,0,0,3],
+    ],
+    2: [
+      [2,0,1,0,0,0,0,1,0,0],
+      [0,0,1,0,1,4,0,1,0,1],
+      [0,1,1,0,1,0,0,0,0,0],
+      [0,0,0,0,1,0,1,1,1,0],
+      [1,1,0,1,1,0,0,4,0,0],
+      [0,0,0,0,0,0,1,1,0,1],
+      [0,1,1,1,0,1,1,0,0,0],
+      [0,0,4,0,0,0,0,0,1,0],
+      [1,0,1,1,1,1,0,1,1,0],
+      [1,0,0,0,0,0,0,0,0,3],
+    ],
+  };
+
+  const level = {{ exercise.get('maze_level', 1) }};
+  const grid = MAZES[level] || MAZES[1];
+  const ROWS = grid.length;
+  const COLS = grid[0].length;
+
+  // Update grid columns for maze size
+  document.getElementById('maze-grid').style.gridTemplateColumns = 'repeat('+COLS+',1fr)';
+
+  // Find start & goal
+  let startR=0, startC=0, goalR=0, goalC=0;
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+    if(grid[r][c]===2){startR=r; startC=c;}
+    if(grid[r][c]===3){goalR=r; goalC=c;}
+  }
+
+  let robotR=startR, robotC=startC;
+  let commands = [];
+  let running = false;
+  let visited = new Set();
+
+  const gridEl = document.getElementById('maze-grid');
+  const programList = document.getElementById('program-list');
+  const cmdCount = document.getElementById('cmd-count');
+  const btnRun = document.getElementById('btn-run');
+  const statusEl = document.getElementById('maze-status');
+
+  const CMD_LABELS = {up:'↑ Up', down:'↓ Down', left:'← Left', right:'→ Right'};
+  const DELTAS = {up:[-1,0], down:[1,0], left:[0,-1], right:[0,1]};
+  const cellFontSize = level >= 2 ? '20px' : '28px';
+
+  function renderMaze(){
+    gridEl.innerHTML = '';
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+      const cell = document.createElement('div');
+      cell.className = 'maze-cell';
+      cell.id = 'cell-'+r+'-'+c;
+      cell.style.fontSize = cellFontSize;
+      const v = grid[r][c];
+      if(v===1){
+        cell.classList.add('wall');
+        cell.textContent = '🪨';
+      } else if(v===4){
+        cell.classList.add('fire');
+        cell.textContent = '🔥';
+      } else if(r===robotR && c===robotC){
+        cell.classList.add('robot');
+        cell.textContent = '🤖';
+      } else if(r===goalR && c===goalC){
+        cell.classList.add('goal');
+        cell.textContent = '🎯';
+      } else if(visited.has(r+','+c)){
+        cell.classList.add('path-highlight');
+        cell.textContent = '👣';
+        cell.style.fontSize = '14px';
+      }
+      gridEl.appendChild(cell);
+    }
+  }
+
+  function updateProgram(){
+    cmdCount.textContent = commands.length;
+    if(commands.length===0){
+      programList.innerHTML = '<p style="text-align:center;color:#999;font-size:15px;margin:20px 0;">Add commands to create your program</p>';
+      btnRun.disabled = true;
+      btnRun.style.opacity = '0.5';
+    } else {
+      programList.innerHTML = commands.map((cmd,i) =>
+        '<span class="program-step '+cmd+'">'+(i+1)+'. '+CMD_LABELS[cmd]+'</span>'
+      ).join('');
+      btnRun.disabled = false;
+      btnRun.style.opacity = '1';
+    }
+  }
+
+  document.querySelectorAll('.maze-cmd-btn').forEach(btn => {
+    btn.addEventListener('click', () => { if(!running){ commands.push(btn.dataset.cmd); updateProgram(); } });
+  });
+  document.getElementById('btn-undo').addEventListener('click', () => { if(!running){ commands.pop(); updateProgram(); } });
+  document.getElementById('btn-clear').addEventListener('click', () => { if(!running){ commands=[]; updateProgram(); } });
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    if(running) return;
+    commands=[]; robotR=startR; robotC=startC; visited=new Set();
+    statusEl.textContent='Preview'; statusEl.style.background='#f1f5f9'; statusEl.style.color='#666';
+    updateProgram(); renderMaze();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if(running) return;
+    const map = {ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right'};
+    if(map[e.key]){ e.preventDefault(); commands.push(map[e.key]); updateProgram(); }
+    else if(e.key==='Enter'){ e.preventDefault(); btnRun.click(); }
+    else if(e.key==='Backspace'){ e.preventDefault(); commands.pop(); updateProgram(); }
+  });
+
+  btnRun.addEventListener('click', async () => {
+    if(running || commands.length===0) return;
+    running = true;
+    statusEl.textContent = '▶ Running...';
+    statusEl.style.background = '#fef3c7'; statusEl.style.color = '#92400e';
+    btnRun.disabled = true; btnRun.style.opacity = '0.5';
+
+    robotR=startR; robotC=startC; visited=new Set();
+    renderMaze();
+
+    let crashed=false, won=false;
+    const speed = level >= 2 ? 280 : 450;
+
+    for(let i=0; i<commands.length; i++){
+      const steps = programList.querySelectorAll('.program-step');
+      steps.forEach((s,j) => { s.style.outline=j===i?'3px solid #111':'none'; s.style.outlineOffset=j===i?'2px':'0'; });
+
+      await sleep(speed);
+      const d = DELTAS[commands[i]];
+      const nr = robotR+d[0], nc = robotC+d[1];
+
+      // Wall / boundary
+      if(nr<0||nr>=ROWS||nc<0||nc>=COLS||grid[nr][nc]===1){
+        crashed=true;
+        document.getElementById('cell-'+robotR+'-'+robotC).classList.add('crash');
+        document.getElementById('cell-'+robotR+'-'+robotC).textContent='💥';
+        statusEl.textContent='💥 Crashed into '+(nr<0||nr>=ROWS||nc<0||nc>=COLS?'the wall!':'an asteroid!');
+        statusEl.style.background='#fee2e2'; statusEl.style.color='#991b1b';
+        break;
+      }
+      // Fire trap
+      if(grid[nr][nc]===4){
+        crashed=true;
+        visited.add(robotR+','+robotC);
+        robotR=nr; robotC=nc; renderMaze();
+        const fc=document.getElementById('cell-'+nr+'-'+nc);
+        fc.classList.add('crash'); fc.textContent='💀'; fc.style.fontSize='26px';
+        statusEl.textContent='🔥 Burned! The robot walked into fire!';
+        statusEl.style.background='#fee2e2'; statusEl.style.color='#991b1b';
+        break;
+      }
+
+      visited.add(robotR+','+robotC);
+      robotR=nr; robotC=nc;
+      renderMaze();
+
+      if(robotR===goalR && robotC===goalC){
+        won=true;
+        statusEl.textContent='🎉 Goal reached in '+(i+1)+' moves!';
+        statusEl.style.background='#dcfce7'; statusEl.style.color='#166534';
+        const gc=document.getElementById('cell-'+robotR+'-'+robotC);
+        gc.textContent='🏆'; gc.style.fontSize='28px'; gc.style.background='#bbf7d0';
+        break;
+      }
+    }
+
+    programList.querySelectorAll('.program-step').forEach(s => s.style.outline='none');
+    if(!crashed&&!won){
+      statusEl.textContent="🤔 Didn't reach the goal — try more commands!";
+      statusEl.style.background='#fef3c7'; statusEl.style.color='#92400e';
+    }
+    if(won){
+      document.getElementById('commands-input').value=commands.join(',');
+      await sleep(1200);
+      document.getElementById('maze-form').submit();
+    }
+    running=false; btnRun.disabled=false; btnRun.style.opacity='1';
+  });
+
+  function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+  renderMaze();
+  updateProgram();
+})();
+</script>
+
+{% endblock %}

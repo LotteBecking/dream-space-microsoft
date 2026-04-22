@@ -1,0 +1,387 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, space_beaver %}
+{% block title %}{{ world.title }} · Mission {{ mission_num }} · Dreaming in Space{% endblock %}
+
+{% block header_context %}
+  <span class="chip chip-primary" style="font-family:var(--font-pixel);font-size:10px;">🔍 TRUTH QUEST</span>
+  <span class="dot"></span>
+  <span style="font-size:13px;color:var(--color-text-subtle);">Mission {{ mission_num }} / 3</span>
+{% endblock %}
+
+{% block content %}
+<style>
+  .tq-header {
+    background:linear-gradient(135deg,#d97706,#fbbf24);
+    border-radius:20px; padding:24px 28px; color:#fff; margin-bottom:24px;
+  }
+  .ct-tag {
+    display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);
+    border-radius:999px;padding:4px 12px;font-family:var(--font-pixel);font-size:10px;
+    letter-spacing:.07em;text-transform:uppercase;margin-bottom:12px;color:#fff;
+  }
+  .evidence-bar-wrap {
+    background:rgba(255,255,255,.2);border-radius:10px;padding:12px 18px;
+    margin-bottom:16px;flex-shrink:0;min-width:200px;
+  }
+  .evidence-label { font-size:11px;opacity:.8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px; }
+  .evidence-track { height:12px;background:rgba(255,255,255,.2);border-radius:6px;overflow:hidden; }
+  .evidence-fill { height:100%;border-radius:6px;background:#fff;transition:width .5s ease; }
+  .evidence-count { font-family:var(--font-pixel);font-size:11px;margin-top:4px;opacity:.8; }
+
+  /* Case file */
+  .case-card {
+    background:var(--color-surface);border:2px solid var(--color-border);
+    border-radius:18px;overflow:hidden;margin-bottom:20px;
+  }
+  .case-header {
+    padding:16px 20px;border-bottom:1px solid var(--color-border);
+    background:var(--color-surface-muted);
+  }
+  .case-source {
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--color-warning-soft);border:1px solid var(--color-warning);
+    border-radius:8px;padding:4px 10px;font-size:12px;margin-bottom:8px;
+  }
+  .case-headline { font-family:var(--font-game);font-size:20px;font-weight:700; }
+  .case-summary { font-size:14px;color:var(--color-text-muted);margin-top:4px; }
+
+  /* Clue cards */
+  .clue-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:20px; }
+  @media(max-width:640px){ .clue-grid { grid-template-columns:1fr; } }
+  .clue-card {
+    perspective:600px;cursor:pointer;height:120px;
+  }
+  .clue-inner {
+    position:relative;width:100%;height:100%;
+    transform-style:preserve-3d;transition:transform .5s ease;
+  }
+  .clue-card.flipped .clue-inner { transform:rotateY(180deg); }
+  .clue-front, .clue-back {
+    position:absolute;inset:0;border-radius:14px;
+    backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    display:flex;align-items:center;justify-content:center;
+    padding:14px;border:2px solid var(--color-border);
+  }
+  .clue-front {
+    background:linear-gradient(135deg,var(--color-primary-soft),var(--color-accent-soft));
+    flex-direction:column;gap:6px;text-align:center;
+  }
+  .clue-front-icon { font-size:28px; }
+  .clue-front-label { font-family:var(--font-game);font-size:14px;font-weight:700;color:var(--color-primary-ink); }
+  .clue-back {
+    background:var(--color-surface);transform:rotateY(180deg);
+    flex-direction:column;align-items:flex-start;justify-content:flex-start;
+    gap:6px;
+  }
+  .clue-back.flagged { border-color:var(--color-error); }
+  .clue-flag {
+    font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    padding:2px 8px;border-radius:999px;
+    background:var(--color-error-soft);color:var(--color-error-ink);
+  }
+  .clue-finding { font-size:12px;color:var(--color-text-muted);line-height:1.5; }
+  .clue-hint { font-size:11px;color:var(--color-text-subtle);font-style:italic; }
+
+  /* Verdict */
+  .verdict-opts { display:flex;flex-direction:column;gap:10px;margin:16px 0; }
+  .verdict-opt {
+    padding:14px 16px;border-radius:12px;border:2px solid var(--color-border);
+    background:var(--color-surface);cursor:pointer;font-size:14px;font-weight:500;
+    text-align:left;transition:border-color .15s,transform .1s;
+  }
+  .verdict-opt:hover { border-color:var(--color-primary-border);transform:translateX(4px); }
+  .verdict-opt.correct-v { border-color:var(--color-success);background:var(--color-success-soft); }
+  .verdict-opt.wrong-v   { border-color:var(--color-error);background:var(--color-error-soft); }
+  .verdict-opt.also-ok   { border-color:var(--color-warning);background:var(--color-warning-soft); }
+
+  /* Action cards */
+  .action-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0; }
+  @media(max-width:640px){ .action-grid { grid-template-columns:1fr; } }
+  .action-card {
+    padding:14px;border-radius:14px;border:2px solid var(--color-border);
+    background:var(--color-surface);cursor:pointer;
+    text-align:left;font-size:13px;font-weight:500;
+    transition:all .15s;
+  }
+  .action-card:hover { border-color:var(--color-primary-border);transform:translateY(-2px); }
+  .action-card.correct-a { border-color:var(--color-success);background:var(--color-success-soft); }
+  .action-card.wrong-a   { border-color:var(--color-error);background:var(--color-error-soft); }
+
+  /* Confidence meter */
+  .confidence-bar {
+    display:flex;align-items:center;gap:10px;
+    background:var(--color-surface-muted);border-radius:12px;padding:12px 16px;margin-bottom:16px;
+  }
+  .conf-track { flex:1;height:12px;background:var(--color-border);border-radius:6px;overflow:hidden; }
+  .conf-fill { height:100%;border-radius:6px;background:var(--color-warning);transition:width .5s,background .3s; }
+
+  /* Not enough info box */
+  .nei-box {
+    background:linear-gradient(135deg,#fef3c7,#fde68a);
+    border:2px solid #f59e0b;border-radius:16px;padding:20px;
+    text-align:center;margin:16px 0;
+  }
+</style>
+
+<div class="tq-header">
+  <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+    <div style="flex:1;">
+      <div class="ct-tag">🧠 {{ world.ct_skill }} · {{ world.ct_skill_2 }}</div>
+      <h1 style="font-family:var(--font-game);font-size:28px;font-weight:800;margin-bottom:6px;">{{ mission.title }}</h1>
+      <p style="opacity:.85;font-size:15px;margin:0;">{{ mission.goal }}</p>
+    </div>
+    <div class="evidence-bar-wrap" id="evidenceWrap" style="display:{% if mission_num <= 2 %}flex{% else %}none{% endif %};flex-direction:column;">
+      <div class="evidence-label">🔍 Evidence</div>
+      <div class="evidence-track">
+        <div class="evidence-fill" id="evidenceFill" style="width:0%;"></div>
+      </div>
+      <div class="evidence-count" id="evidenceCount">0 / {% if mission_num <= 2 %}{{ case.clues|length if mission_num <= 2 else 0 }}{% endif %} clues</div>
+    </div>
+  </div>
+</div>
+
+{% if mission_num in (1, 2) %}
+{% set c = case %}
+{# ── CASE FILE ── #}
+<div class="case-card">
+  <div class="case-header">
+    <div class="case-source">{{ c.source_icon }} {{ c.source }}</div>
+    <div style="font-size:11px;color:var(--color-text-subtle);margin-bottom:6px;">Posted: {{ c.date_shown }}</div>
+    <div class="case-headline">{{ c.title }}</div>
+    <div class="case-summary">{{ c.summary }}</div>
+  </div>
+
+  <div style="padding:16px 20px 8px;font-size:13px;font-weight:700;color:var(--color-text-subtle);">
+    FLIP THE CLUE CARDS — gather your evidence before deciding:
+  </div>
+
+  <div class="clue-grid">
+    {% for clue in c.clues %}
+    <div class="clue-card" id="clue{{ loop.index0 }}" onclick="flipClue({{ loop.index0 }}, {{ clue.weight }})">
+      <div class="clue-inner">
+        <div class="clue-front">
+          <span class="clue-front-icon">{{ clue.icon }}</span>
+          <span class="clue-front-label">{{ clue.front }}</span>
+          <span style="font-size:11px;opacity:.6;">Click to investigate</span>
+        </div>
+        <div class="clue-back {% if clue.flag %}flagged{% endif %}">
+          {% if clue.flag %}<span class="clue-flag">⚑ {{ clue.flag_type|replace('_',' ') }}</span>{% endif %}
+          <div class="clue-finding">{{ clue.finding }}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{# ── CONFIDENCE METER ── #}
+<div class="confidence-bar">
+  <span style="font-size:13px;font-weight:700;flex-shrink:0;">Confidence:</span>
+  <div class="conf-track">
+    <div class="conf-fill" id="confFill" style="width:0%;"></div>
+  </div>
+  <span id="confLabel" style="font-size:12px;font-weight:600;white-space:nowrap;color:var(--color-text-subtle);">Gathering clues…</span>
+</div>
+
+{# ── VERDICT (Mission 1) ── #}
+{% if mission_num == 1 %}
+<div id="verdictSection" style="display:none;" class="card">
+  <div style="font-size:16px;font-weight:700;margin-bottom:4px;">Your verdict on this case:</div>
+  <div style="font-size:14px;color:var(--color-text-subtle);margin-bottom:12px;">(You can select more than one if multiple apply)</div>
+  <div class="verdict-opts" id="verdictOpts">
+    {% for v in c.verdict_options %}
+    <button class="verdict-opt" onclick="answerVerdict(this, {{ loop.index0 }}, {{ v.correct|tojson }}, {{ v.feedback|tojson }})">
+      {{ v.label }}
+    </button>
+    {% endfor %}
+  </div>
+  <div id="verdictFeedback" style="display:none;margin-top:12px;"></div>
+  <button id="verdictNext" class="btn btn-primary btn-lg" style="display:none;margin-top:16px;" onclick="submitV1()">
+    Next: What do you do? →
+  </button>
+</div>
+
+{# ── ACTIONS (Mission 2) ── #}
+{% elif mission_num == 2 %}
+<div id="verdictSection" style="display:none;" class="card">
+  <div style="font-size:16px;font-weight:700;margin-bottom:4px;">What should you do?</div>
+  <div style="font-size:14px;color:var(--color-text-subtle);margin-bottom:12px;">Choose all that apply:</div>
+  <div class="action-grid" id="actionGrid">
+    {% for a in c.actions %}
+    <button class="action-card" onclick="answerAction(this, {{ loop.index0 }}, {{ a.correct|tojson }}, {{ a.feedback|tojson }})">
+      {{ a.label }}
+    </button>
+    {% endfor %}
+  </div>
+  <div id="actionFeedback" style="display:none;margin-top:12px;"></div>
+  <button id="actionNext" class="btn btn-primary btn-lg" style="display:none;margin-top:16px;" onclick="submitV2()">
+    Final Mission →
+  </button>
+</div>
+{% endif %}
+
+<script>
+var totalClues = {{ c.clues|length }};
+var flippedClues = 0;
+var totalWeight = {{ c.clues|map(attribute='weight')|sum }};
+var evidenceSoFar = 0;
+var verdictShown = false;
+var actionsAnswered = 0;
+
+function flipClue(idx, weight){
+  var el=document.getElementById('clue'+idx);
+  if(el.classList.contains('flipped')) return;
+  el.classList.add('flipped');
+  flippedClues++;
+  evidenceSoFar += weight;
+  var pct = Math.min(100, Math.round(evidenceSoFar/totalWeight*100));
+  document.getElementById('evidenceFill').style.width=pct+'%';
+  document.getElementById('evidenceCount').textContent=flippedClues+' / '+totalClues+' clues';
+  // Confidence
+  var confFill=document.getElementById('confFill');
+  confFill.style.width=pct+'%';
+  confFill.style.background=pct>60?'var(--color-success)':pct>30?'var(--color-warning)':'var(--color-error)';
+  var labels=['Gathering clues…','Some clues found','Building a picture','Getting clearer','Strong evidence','Ready to decide'];
+  document.getElementById('confLabel').textContent=labels[Math.floor(pct/20)];
+  if(flippedClues>=totalClues && !verdictShown){
+    verdictShown=true;
+    document.getElementById('verdictSection').style.display='block';
+    document.getElementById('verdictSection').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+
+{% if mission_num == 1 %}
+var verdictsDone=[];
+function answerVerdict(btn, idx, correct, feedback){
+  if(verdictsDone.includes(idx)) return;
+  verdictsDone.push(idx);
+  btn.classList.add(correct?'correct-v':'wrong-v');
+  btn.onclick=null;
+  var fb=document.getElementById('verdictFeedback');
+  fb.style.display='block';
+  fb.innerHTML+='<div style="padding:10px 14px;border-radius:10px;font-size:13px;background:'+(correct?'var(--color-success-soft)':'var(--color-error-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-error)')+';margin-bottom:6px;">'+feedback+'</div>';
+  if(correct){ document.getElementById('verdictNext').style.display='inline-flex'; }
+}
+function submitV1(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+
+{% elif mission_num == 2 %}
+var actsDone=[];
+function answerAction(btn, idx, correct, feedback){
+  if(actsDone.includes(idx)) return;
+  actsDone.push(idx);
+  btn.classList.add(correct?'correct-a':'wrong-a');
+  btn.onclick=null;
+  var fb=document.getElementById('actionFeedback');
+  fb.style.display='block';
+  fb.innerHTML+='<div style="padding:10px 14px;border-radius:10px;font-size:13px;background:'+(correct?'var(--color-success-soft)':'var(--color-error-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-error)')+';margin-bottom:6px;">'+feedback+'</div>';
+  if(correct){ document.getElementById('actionNext').style.display='inline-flex'; }
+}
+function submitV2(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+{% endif %}
+</script>
+
+{% elif mission_num == 3 %}
+{# ── MISSION 3: AMBIGUOUS CASE ── #}
+{% set ac = amb_case %}
+<div class="nei-box" style="margin-bottom:20px;">
+  <div style="font-size:32px;margin-bottom:6px;">🌫️</div>
+  <div style="font-family:var(--font-game);font-size:18px;font-weight:700;margin-bottom:4px;">The Ambiguous Case</div>
+  <div style="font-size:14px;opacity:.8;">Some cases can't be fully resolved yet. 'Not enough information' is a valid and correct answer.</div>
+</div>
+
+<div class="case-card">
+  <div class="case-header">
+    <div class="case-source">{{ ac.source_icon if ac.source_icon is defined else '💬' }} {{ ac.source }}</div>
+    <div class="case-headline">{{ ac.title }}</div>
+    <div class="case-summary">{{ ac.summary }}</div>
+  </div>
+
+  <div style="padding:16px 20px 8px;font-size:13px;font-weight:700;color:var(--color-text-subtle);">
+    Investigate the clues:
+  </div>
+
+  <div class="clue-grid">
+    {% for clue in ac.clues %}
+    <div class="clue-card" id="ambClue{{ loop.index0 }}" onclick="flipAmbClue({{ loop.index0 }})">
+      <div class="clue-inner">
+        <div class="clue-front">
+          <span class="clue-front-icon">{{ clue.icon }}</span>
+          <span class="clue-front-label">{{ clue.front }}</span>
+          <span style="font-size:11px;opacity:.6;">Click to investigate</span>
+        </div>
+        <div class="clue-back">
+          <div class="clue-finding">{{ clue.finding }}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div id="ambVerdictSection" style="display:none;" class="card">
+  <div style="font-size:16px;font-weight:700;margin-bottom:8px;">What's your verdict?</div>
+  <div class="verdict-opts">
+    <button class="verdict-opt" onclick="ambAnswer(this,'reliable',false)">Likely reliable — this is probably true</button>
+    <button class="verdict-opt" onclick="ambAnswer(this,'suspicious',false)">Suspicious — I don't trust it</button>
+    <button class="verdict-opt" onclick="ambAnswer(this,'not_enough',true)">⚠️ Not enough information to decide yet</button>
+    <button class="verdict-opt" onclick="ambAnswer(this,'misleading',false)">Definitely misleading</button>
+  </div>
+  <div id="ambFeedback" style="display:none;margin-top:12px;"></div>
+  <div style="display:none;margin-top:16px;" id="ambActions">
+    <div style="font-size:15px;font-weight:700;margin-bottom:8px;">What should you do next?</div>
+    <div class="action-grid">
+      {% for a in ac.actions %}
+      <button class="action-card" onclick="ambActionAns(this,{{loop.index0}},{{a.correct|tojson}},{{a.feedback|tojson}})">
+        {{ a.label }}
+      </button>
+      {% endfor %}
+    </div>
+    <div id="ambActFeedback" style="display:none;margin-top:10px;"></div>
+    <button id="ambNext" class="btn btn-primary btn-lg" style="display:none;margin-top:16px;" onclick="submitAmb()">Claim Reward →</button>
+  </div>
+</div>
+
+<script>
+var ambFlipped=0;
+var ambTotal={{ ac.clues|length }};
+var ambShown=false;
+
+function flipAmbClue(idx){
+  var el=document.getElementById('ambClue'+idx);
+  if(el.classList.contains('flipped')) return;
+  el.classList.add('flipped');
+  ambFlipped++;
+  if(ambFlipped>=ambTotal && !ambShown){
+    ambShown=true;
+    document.getElementById('ambVerdictSection').style.display='block';
+    document.getElementById('ambVerdictSection').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+var ambVerdictDone=false;
+function ambAnswer(btn, verdict, correct){
+  if(ambVerdictDone) return; ambVerdictDone=true;
+  document.querySelectorAll('.verdict-opt').forEach(function(b){b.onclick=null;});
+  btn.classList.add(correct?'correct-v':'wrong-v');
+  var fb=document.getElementById('ambFeedback');
+  fb.style.display='block';
+  var explanation={{ ac.explanation|tojson }};
+  fb.innerHTML='<div style="padding:14px;border-radius:12px;font-size:14px;background:'+(correct?'var(--color-success-soft)':'var(--color-warning-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-warning)')+';margin-bottom:10px;">'+(correct?'✅ Correct — ':'⚠️ Not quite — ')+explanation+'</div>'
+  +'<div style="background:var(--color-primary-soft);border-radius:10px;padding:12px;font-size:13px;font-weight:600;color:var(--color-primary-ink);">💡 '+{{ ac.key_lesson|tojson }}+'</div>';
+  document.getElementById('ambActions').style.display='block';
+}
+function ambActionAns(btn, idx, correct, feedback){
+  btn.classList.add(correct?'correct-a':'wrong-a');
+  btn.onclick=null;
+  var fb=document.getElementById('ambActFeedback');
+  fb.style.display='block';
+  fb.innerHTML+='<div style="padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:4px;background:'+(correct?'var(--color-success-soft)':'var(--color-error-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-error)')+';">'+feedback+'</div>';
+  if(correct){ document.getElementById('ambNext').style.display='inline-flex'; }
+}
+function submitAmb(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+</script>
+{% endif %}
+
+<div style="margin-top:24px;">
+  <a href="{{ url_for('world_home', slug=slug) }}" class="btn btn-ghost btn-sm">{{ icon('arrow-left') }} World Map</a>
+</div>
+{% endblock %}

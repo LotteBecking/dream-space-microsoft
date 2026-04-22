@@ -1,0 +1,256 @@
+"""World: City Fixer — civic map puzzle game.
+Track 5: Digital Missions | Dreaming in Space.
+"""
+
+WORLD = {
+    "slug": "city-fixer",
+    "title": "City Fixer",
+    "tagline": "Every route is a trade-off.",
+    "description": "Fix broken city systems by weighing speed, fairness, and accessibility.",
+    "color": "#059669",
+    "color_light": "#34d399",
+    "icon": "map",
+    "ct_skill": "Sequencing",
+    "ct_skill_2": "Optimization",
+    "recap": "You learned about systems and trade-offs in class. Now apply them.",
+    "badge_name": "City Planner",
+    "badge_emoji": "🏙️",
+    "xp": 75,
+    "missions": [
+        {
+            "id": 1,
+            "title": "Fix the Route",
+            "goal": "The school bus route is broken. Put the stops in the right order.",
+            "phase": "puzzle",
+            "type": "route_order",
+        },
+        {
+            "id": 2,
+            "title": "The Trade-Off Board",
+            "goal": "No perfect answer exists. Choose the best available option.",
+            "phase": "twist",
+            "type": "tradeoff",
+        },
+        {
+            "id": 3,
+            "title": "Emergency Response",
+            "goal": "The city has a crisis. Adapt the route — fast.",
+            "phase": "fix",
+            "type": "disruption",
+        },
+    ],
+}
+
+# --- Mission 1: Route Ordering ---
+ROUTES = [
+    {
+        "id": "school_route",
+        "name": "North School Bus Route",
+        "scenario": "The school bus route was scrambled after a system update. Students are confused and late.",
+        "stops": [
+            {"id": "A", "name": "Bus Depot", "icon": "🚌", "order": 1, "note": "Where the bus starts every morning"},
+            {"id": "B", "name": "Maple Street", "icon": "🏘️", "order": 2, "note": "Large residential area — many students here"},
+            {"id": "C", "name": "Community Centre", "icon": "🏛️", "order": 3, "note": "Accessible stop for wheelchair users"},
+            {"id": "D", "name": "Hill Top Road", "icon": "⛰️", "order": 4, "note": "Steep road — must be taken going uphill only"},
+            {"id": "E", "name": "North Primary School", "icon": "🏫", "order": 5, "note": "The destination"},
+        ],
+        "shuffled": [2, 4, 0, 1, 3],
+        "constraints": [
+            "The bus must start at the depot",
+            "Hill Top Road is one-way uphill — must come after Maple Street",
+            "Community Centre should be before school (wheelchair user needs the accessible ramp at school)",
+        ],
+        "stakeholders": [
+            {"name": "Wheelchair user", "emoji": "♿", "impact_good": "Gets accessible stops in the right order", "impact_bad": "Misses the accessible ramp"},
+            {"name": "Students on Maple St", "emoji": "🧒", "impact_good": "Bus comes before the hill detour", "impact_bad": "Very late to school"},
+            {"name": "Bus driver", "emoji": "🧑‍✈️", "impact_good": "Efficient route, no backtracking", "impact_bad": "Stuck at bottom of Hill Top Road"},
+        ],
+        "correct_order": [0, 1, 2, 3, 4],
+        "wrong_order_feedback": "This route has issues — check the constraints and stakeholder needs.",
+    },
+    {
+        "id": "clinic_route",
+        "name": "Clinic Access Route",
+        "scenario": "The community shuttle to the health clinic was rerouted and now misses key stops.",
+        "stops": [
+            {"id": "A", "name": "Town Square", "icon": "🏙️", "order": 1, "note": "Central hub — many connections here"},
+            {"id": "B", "name": "Elder Care Home", "icon": "🏡", "order": 2, "note": "Residents need the earliest possible pick-up"},
+            {"id": "C", "name": "Pharmacy", "icon": "💊", "order": 3, "note": "Many clinic visitors pick up prescriptions here"},
+            {"id": "D", "name": "Family Housing Block", "icon": "🏢", "order": 4, "note": "Families with young children — stroller accessible needed"},
+            {"id": "E", "name": "Community Clinic", "icon": "🏥", "order": 5, "note": "The destination"},
+        ],
+        "shuffled": [3, 0, 4, 2, 1],
+        "constraints": [
+            "Elder care home residents need the earliest pick-up",
+            "The pharmacy should come before the clinic (patients collect medication first)",
+            "Family Housing needs a stroller-accessible stop — must not be on the hill section",
+        ],
+        "stakeholders": [
+            {"name": "Elder care residents", "emoji": "👴", "impact_good": "Early pick-up, less waiting", "impact_bad": "Long wait, health risk"},
+            {"name": "Parents with strollers", "emoji": "👶", "impact_good": "Accessible, flat stop", "impact_bad": "Can't get on the shuttle"},
+            {"name": "Clinic patients", "emoji": "🤒", "impact_good": "Can collect medication before appointment", "impact_bad": "Arrive without medication"},
+        ],
+        "correct_order": [0, 1, 2, 3, 4],
+        "wrong_order_feedback": "This order leaves some stakeholders with problems. Revisit the constraints.",
+    },
+]
+
+# --- Mission 2: Trade-Off Scenarios ---
+TRADEOFF_SCENARIOS = [
+    {
+        "id": "bus_frequency",
+        "title": "More buses — but where?",
+        "context": "The city has budget for 3 extra buses. There are two options.",
+        "options": [
+            {
+                "id": "A",
+                "label": "Option A: Add 3 buses to the busy city centre route",
+                "speed": 4,
+                "fairness": 1,
+                "accessibility": 2,
+                "energy": 3,
+                "summary": "Faster for city centre commuters, but outlying areas (where many elderly and low-income residents live) get nothing.",
+            },
+            {
+                "id": "B",
+                "label": "Option B: Spread buses across 3 underserved outer routes",
+                "speed": 2,
+                "fairness": 4,
+                "accessibility": 4,
+                "energy": 2,
+                "summary": "Slower overall, but reaches people who currently have almost no service.",
+            },
+        ],
+        "question": "Which is the better trade-off for the city?",
+        "verdict_a": "Best for speed. But it mostly helps people who already have good service.",
+        "verdict_b": "More fair. Helps people currently underserved — even if it's slower overall.",
+        "best": "B",
+        "best_label": "More fair option",
+        "note": "Neither is 'wrong' — cities make these trade-offs every day. The key is being honest about who benefits and who doesn't.",
+        "stakeholders": [
+            {"name": "City centre commuter", "emoji": "👔", "benefits_from": "A"},
+            {"name": "Outer suburb family", "emoji": "👨‍👩‍👧", "benefits_from": "B"},
+            {"name": "Elderly resident (outer area)", "emoji": "👵", "benefits_from": "B"},
+        ],
+    },
+    {
+        "id": "accessibility_vs_speed",
+        "title": "Accessible stops vs. faster route",
+        "context": "Re-routing a bus to include an accessible medical centre stop adds 8 minutes to the journey.",
+        "options": [
+            {
+                "id": "A",
+                "label": "Option A: Keep the fast route (no medical centre stop)",
+                "speed": 5,
+                "fairness": 2,
+                "accessibility": 1,
+                "energy": 4,
+                "summary": "Fastest route. Wheelchair users and clinic patients must use another option.",
+            },
+            {
+                "id": "B",
+                "label": "Option B: Re-route to include accessible medical centre stop",
+                "speed": 2,
+                "fairness": 4,
+                "accessibility": 5,
+                "energy": 3,
+                "summary": "8 minutes slower but opens public transport to people who couldn't use it before.",
+            },
+        ],
+        "question": "Which trade-off would you make?",
+        "verdict_a": "Faster. But this effectively excludes wheelchair users from this service.",
+        "verdict_b": "Good for access. Slower for speed — but improves fairness significantly.",
+        "best": "B",
+        "best_label": "Better accessibility option",
+        "note": "This is a real design decision city planners face. Speed and accessibility often conflict.",
+        "stakeholders": [
+            {"name": "Wheelchair user", "emoji": "♿", "benefits_from": "B"},
+            {"name": "Commuter on route", "emoji": "🧑‍💼", "benefits_from": "A"},
+            {"name": "Clinic patient", "emoji": "🤕", "benefits_from": "B"},
+        ],
+    },
+]
+
+# --- Mission 3: Disruption Events ---
+DISRUPTIONS = [
+    {
+        "id": "road_block",
+        "title": "Road Block Ahead!",
+        "context": "A burst water main has closed Bridge Road — the main bus route to the school.",
+        "normal_route": ["Depot", "Maple St", "Bridge Road", "School"],
+        "blocked": "Bridge Road",
+        "options": [
+            {
+                "id": "reroute_park",
+                "label": "Reroute via Park Lane (longer but accessible)",
+                "speed": 2,
+                "fairness": 4,
+                "accessibility": 4,
+                "summary": "Students arrive 12 minutes late — but everyone can still get there.",
+                "outcome": "Improved — not perfect",
+                "stakeholder_note": "Wheelchair user can still board. Everyone arrives late together.",
+            },
+            {
+                "id": "reroute_hill",
+                "label": "Reroute via Hill Road (shorter detour but steep)",
+                "speed": 3,
+                "fairness": 2,
+                "accessibility": 1,
+                "summary": "Faster, but the wheelchair user can't board at the hill stop.",
+                "outcome": "Good for speed, bad for access",
+                "stakeholder_note": "Faster — but leaves the wheelchair user behind.",
+            },
+            {
+                "id": "cancel",
+                "label": "Cancel route until road is clear",
+                "speed": 1,
+                "fairness": 3,
+                "accessibility": 3,
+                "summary": "Same outcome for everyone — but everyone misses school.",
+                "outcome": "Equal — but not good",
+                "stakeholder_note": "Equally bad for everyone. No one benefits.",
+            },
+        ],
+        "best": "reroute_park",
+        "best_label": "Best available option",
+    },
+    {
+        "id": "clinic_emergency",
+        "title": "Clinic Emergency",
+        "context": "A medical emergency means the clinic shuttle needs to be at the elder care home in the next 20 minutes. The normal route takes 35 minutes.",
+        "options": [
+            {
+                "id": "skip_stops",
+                "label": "Skip the pharmacy and family stop — go direct",
+                "speed": 5,
+                "fairness": 2,
+                "accessibility": 3,
+                "summary": "Gets to elder care in 15 min. Families and pharmacy patients have to wait.",
+                "outcome": "Best for speed — trade-off for others",
+                "stakeholder_note": "Elder care residents get help fast. Others miss their connection.",
+            },
+            {
+                "id": "split_service",
+                "label": "Send a second smaller vehicle to elder care — keep main route running",
+                "speed": 4,
+                "fairness": 5,
+                "accessibility": 4,
+                "summary": "Best for everyone if the second vehicle is available.",
+                "outcome": "Best available option",
+                "stakeholder_note": "Emergency covered. Normal service continues.",
+            },
+            {
+                "id": "normal_route",
+                "label": "Keep the normal route — don't disrupt other passengers",
+                "speed": 1,
+                "fairness": 3,
+                "accessibility": 4,
+                "summary": "Normal service maintained — but the emergency response is dangerously slow.",
+                "outcome": "Not appropriate for emergency",
+                "stakeholder_note": "Elder residents don't get help in time.",
+            },
+        ],
+        "best": "split_service",
+        "best_label": "Best available option",
+    },
+]

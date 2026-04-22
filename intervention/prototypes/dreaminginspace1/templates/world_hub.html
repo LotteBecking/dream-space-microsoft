@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, space_beaver %}
+{% block title %}{{ world.title }} &middot; Dreaming in Space{% endblock %}
+
+{% block header_context %}
+  <span class="chip chip-primary" style="font-family:var(--font-pixel);font-size:10px;letter-spacing:.06em;">
+    🏆 TRACK 5 &middot; DIGITAL MISSIONS
+  </span>
+  <span class="dot"></span>
+  <span style="font-size:13px;color:var(--color-text-subtle);">{{ world.ct_skill }}</span>
+{% endblock %}
+
+{% block content %}
+
+<style>
+  .world-hero {
+    background: linear-gradient(135deg, {{ world.color }} 0%, {{ world.color_light }} 100%);
+    border-radius: 24px;
+    padding: 36px 40px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .world-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(45deg, rgba(255,255,255,.04) 0, rgba(255,255,255,.04) 1px, transparent 1px, transparent 16px);
+  }
+  .world-hero-inner { position: relative; z-index: 1; }
+  .world-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .world-hero h1 {
+    font-family: var(--font-game);
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .world-hero .tagline {
+    font-size: 17px;
+    opacity: .85;
+    margin-bottom: 20px;
+  }
+  .world-recap-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,0,0,.2);
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-style: italic;
+    opacity: .9;
+  }
+  .ct-skill-badge {
+    position: absolute; top: 28px; right: 36px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.3);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 10px 16px;
+    text-align: center;
+  }
+  .ct-skill-badge .skill-label {
+    font-family: var(--font-pixel);
+    font-size: 9px;
+    letter-spacing: .1em;
+    opacity: .7;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .ct-skill-badge .skill-name {
+    font-family: var(--font-game);
+    font-size: 15px;
+    font-weight: 700;
+    display: block;
+  }
+  .mission-loop {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 18px;
+    padding: 20px 28px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  .loop-step {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; flex: 1; min-width: 80px; text-align: center;
+  }
+  .loop-step-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: grid; place-items: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .loop-step-label {
+    font-family: var(--font-game);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  .loop-step-sub {
+    font-size: 11px;
+    color: var(--color-text-subtle);
+  }
+  .loop-arrow {
+    font-size: 18px;
+    color: var(--color-border-strong);
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+  .world-missions-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .mission-world-card {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 20px;
+    border: 2px solid var(--color-border);
+    border-radius: 16px;
+    background: var(--color-surface);
+    text-decoration: none;
+    transition: border-color .2s, transform .15s, box-shadow .2s;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .mission-world-card:hover {
+    border-color: var(--color-primary-border);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .mission-world-card.is-done {
+    background: var(--color-success-soft);
+    border-color: var(--color-success);
+  }
+  .mission-world-card.is-locked {
+    opacity: .55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .mission-world-card.is-active {
+    border-color: {{ world.color }};
+    box-shadow: 0 0 0 3px {{ world.color }}22;
+  }
+  .mission-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--font-game);
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+    color: #fff;
+    background: {{ world.color }};
+  }
+  .mission-num.done { background: var(--color-success); }
+  .mission-num.locked { background: var(--color-border-strong); }
+  .mission-phase-tag {
+    font-family: var(--font-pixel);
+    font-size: 9px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--color-surface-muted);
+    color: var(--color-text-subtle);
+    border: 1px solid var(--color-border);
+  }
+</style>
+
+<div style="display:grid; grid-template-columns:1fr 240px; gap:24px; align-items:start;">
+
+  <div style="display:flex;flex-direction:column;gap:0;">
+
+    <!-- World Hero -->
+    <div class="world-hero">
+      <div class="world-hero-inner">
+        <div class="world-tag">🏆 Track 5 &middot; Digital Mission</div>
+        <h1>{{ world.title }}</h1>
+        <div class="tagline">{{ world.description }}</div>
+        <div class="world-recap-pill">
+          💡 {{ world.recap }}
+        </div>
+      </div>
+      <div class="ct-skill-badge">
+        <span class="skill-label">CT SKILL</span>
+        <span class="skill-name">{{ world.ct_skill }}</span>
+      </div>
+    </div>
+
+    <!-- Mission Loop Visual -->
+    <div class="mission-loop">
+      {% for step in [
+        ('🎯', 'Mission', 'Get the goal'),
+        ('🧩', 'Puzzle', 'Solve it'),
+        ('🌀', 'Twist', 'Harder case'),
+        ('🔧', 'Fix', 'Repair/build'),
+        ('🏆', 'Reward', 'Earn badge'),
+      ] %}
+      <div class="loop-step">
+        <div class="loop-step-icon" style="background:var(--color-surface-muted);">{{ step[0] }}</div>
+        <div class="loop-step-label">{{ step[1] }}</div>
+        <div class="loop-step-sub">{{ step[2] }}</div>
+      </div>
+      {% if not loop.last %}<div class="loop-arrow">→</div>{% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Missions -->
+    <div class="world-missions-header">
+      <h2 style="font-family:var(--font-game);font-size:20px;font-weight:700;">Your Missions</h2>
+      {% if progress.all_done %}
+        <span class="chip chip-success">All Complete ✓</span>
+      {% else %}
+        <span class="chip">{{ progress.completed_missions|length }}/3 done</span>
+      {% endif %}
+    </div>
+
+    {% for m in world.missions %}
+      {% set done = m.id in progress.completed_missions %}
+      {% set prev_done = m.id == 1 or (m.id - 1) in progress.completed_missions %}
+      {% set is_active = prev_done and not done %}
+      {% set locked = not prev_done and not done %}
+      <div class="mission-world-card {% if done %}is-done{% elif locked %}is-locked{% elif is_active %}is-active{% endif %}"
+           {% if not locked %}onclick="window.location='/world/{{ slug }}/mission/{{ m.id }}'"{% endif %}>
+        <div class="mission-num {% if done %}done{% elif locked %}locked{% endif %}">
+          {% if done %}✓{% else %}{{ m.id }}{% endif %}
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="font-family:var(--font-game);font-size:16px;font-weight:700;">{{ m.title }}</span>
+            <span class="mission-phase-tag">{{ m.phase }}</span>
+          </div>
+          <div style="font-size:14px;color:var(--color-text-subtle);">{{ m.goal }}</div>
+        </div>
+        {% if done %}
+          <span class="chip chip-success">Done ✓</span>
+        {% elif locked %}
+          <span class="chip">{{ icon('lock') }} Locked</span>
+        {% else %}
+          <span class="btn btn-primary btn-sm">Play →</span>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    {% if progress.all_done %}
+    <div style="margin-top:16px;text-align:center;">
+      <a href="{{ url_for('world_reward', slug=slug) }}" class="btn btn-primary btn-lg">
+        {{ icon('trophy') }} Claim Your Badge
+      </a>
+    </div>
+    {% endif %}
+
+    <div style="margin-top:20px;">
+      <a href="{{ url_for('home') }}" class="btn btn-ghost btn-sm">{{ icon('arrow-left') }} Back to Mission Map</a>
+    </div>
+
+  </div><!-- end left col -->
+
+  <!-- Right sidebar -->
+  <aside style="display:flex;flex-direction:column;gap:12px;">
+
+    <!-- World card -->
+    <div style="background:linear-gradient(135deg,{{ world.color }},{{ world.color_light }});border-radius:16px;padding:20px;color:#fff;text-align:center;">
+      <div style="font-size:48px;margin-bottom:8px;">{{ world.badge_emoji }}</div>
+      <div style="font-family:var(--font-game);font-size:18px;font-weight:700;margin-bottom:2px;">{{ world.badge_name }}</div>
+      <div style="font-size:12px;opacity:.7;">Complete all 3 missions to earn</div>
+    </div>
+
+    <!-- Progress -->
+    <div style="background:var(--color-surface);border:2px solid var(--color-border);border-radius:14px;padding:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+        <span style="font-size:13px;font-weight:700;">Progress</span>
+        <span style="font-family:var(--font-pixel);font-size:11px;color:var(--color-primary-ink);">{{ progress.progress_percent }}%</span>
+      </div>
+      <div class="progress" style="height:10px;border-radius:10px;">
+        <span class="progress-fill {% if progress.all_done %}is-complete{% endif %}" style="width:{{ progress.progress_percent }}%;border-radius:10px;background:{{ world.color }};"></span>
+      </div>
+    </div>
+
+    <!-- CT Skills -->
+    <div style="background:var(--color-surface);border:2px solid var(--color-border);border-radius:14px;padding:14px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px;">CT Skills Used</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <span class="chip chip-primary" style="font-size:12px;">🧠 {{ world.ct_skill }}</span>
+        <span class="chip" style="font-size:12px;">💡 {{ world.ct_skill_2 }}</span>
+      </div>
+    </div>
+
+    <!-- XP -->
+    <div style="background:linear-gradient(135deg,#faf5ff,#ede9fe);border:2px solid var(--color-primary-border);border-radius:14px;padding:14px;text-align:center;">
+      <div style="font-size:12px;font-weight:600;color:var(--color-primary-ink);margin-bottom:4px;">XP Available</div>
+      <div style="font-family:var(--font-pixel);font-size:22px;font-weight:700;color:var(--color-primary-ink);">+{{ world.xp }}</div>
+      <div style="font-size:11px;color:var(--color-text-subtle);margin-top:2px;">Complete all 3 missions</div>
+    </div>
+
+  </aside>
+
+</div>
+{% endblock %}

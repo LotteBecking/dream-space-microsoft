@@ -1,0 +1,458 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, space_beaver %}
+{% block title %}{{ world.title }} · Mission {{ mission_num }} · Dreaming in Space{% endblock %}
+
+{% block header_context %}
+  <span class="chip chip-primary" style="font-family:var(--font-pixel);font-size:10px;">🛡️ DATA DEFENDER</span>
+  <span class="dot"></span>
+  <span style="font-size:13px;color:var(--color-text-subtle);">Mission {{ mission_num }} / 3</span>
+{% endblock %}
+
+{% block content %}
+<style>
+  .dd-header {
+    display:flex; align-items:center; gap:16px;
+    background: linear-gradient(135deg,#6B39D9,#a78bfa);
+    border-radius:20px; padding:24px 28px; color:#fff; margin-bottom:24px;
+  }
+  .dd-shield-meter {
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    background:rgba(255,255,255,.15); border-radius:14px; padding:12px 20px;
+    flex-shrink:0;
+  }
+  .shield-val { font-family:var(--font-pixel); font-size:20px; font-weight:700; }
+  .shield-label { font-size:10px; opacity:.7; letter-spacing:.06em; text-transform:uppercase; }
+  .shield-bar-wrap { width:80px; height:8px; background:rgba(255,255,255,.2); border-radius:4px; overflow:hidden; margin-top:4px; }
+  .shield-bar-fill { height:100%; background:#fff; border-radius:4px; transition:width .4s ease; }
+
+  /* Permission cards */
+  .perm-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+  @media(max-width:680px){ .perm-grid { grid-template-columns:1fr; } }
+  .perm-card {
+    background:var(--color-surface); border:2px solid var(--color-border);
+    border-radius:18px; padding:20px; display:flex; flex-direction:column; gap:12px;
+    transition: border-color .2s, transform .15s;
+  }
+  .perm-card:not(.answered):hover { border-color:var(--color-primary-border); transform:translateY(-2px); }
+  .perm-card.answered { opacity:.75; pointer-events:none; }
+  .perm-card.answered.good { border-color:var(--color-success); background:var(--color-success-soft); }
+  .perm-card.answered.bad  { border-color:var(--color-error); background:var(--color-error-soft); }
+  .perm-card.answered.ok   { border-color:var(--color-warning); background:var(--color-warning-soft); }
+  .app-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--color-surface-muted); border-radius:999px;
+    padding:4px 12px; font-size:13px; font-weight:600;
+  }
+  .perm-text { font-size:15px; font-weight:700; color:var(--color-text); }
+  .perm-desc { font-size:13px; color:var(--color-text-subtle); line-height:1.5; }
+  .perm-actions { display:flex; gap:6px; flex-wrap:wrap; }
+  .perm-btn {
+    padding:6px 14px; border-radius:10px; font-size:13px; font-weight:600;
+    border:2px solid var(--color-border); background:var(--color-surface);
+    cursor:pointer; transition:background .15s, border-color .15s, transform .1s;
+    font-family:var(--font-game);
+  }
+  .perm-btn:hover { background:var(--color-primary-soft); border-color:var(--color-primary-border); transform:scale(1.03); }
+  .perm-btn.allow    { border-color:#ef4444; color:#ef4444; }
+  .perm-btn.allow-using { border-color:#f59e0b; color:#a16207; }
+  .perm-btn.deny     { border-color:var(--color-success); color:var(--color-success-ink); }
+  .perm-btn.inspect  { border-color:var(--color-primary); color:var(--color-primary-ink); }
+  .perm-feedback {
+    display:none; margin-top:8px; padding:10px 14px;
+    border-radius:10px; font-size:13px; font-weight:500;
+    background:rgba(0,0,0,.05); border-left:3px solid currentColor;
+  }
+  .secondary-layer {
+    display:none; border-top:1px dashed var(--color-border); padding-top:10px; margin-top:2px;
+  }
+  .secondary-q { font-size:12px; color:var(--color-text-subtle); margin-bottom:8px; font-weight:600; }
+  .secondary-opts { display:flex; gap:6px; flex-wrap:wrap; }
+  .secondary-btn {
+    padding:4px 12px; border-radius:8px; font-size:12px; font-weight:600;
+    border:1.5px solid var(--color-border); background:transparent; cursor:pointer;
+    transition:background .12s;
+  }
+  .secondary-btn:hover { background:var(--color-surface-muted); }
+  .secondary-btn.correct-sec { border-color:var(--color-success); color:var(--color-success-ink); background:var(--color-success-soft); }
+  .secondary-btn.wrong-sec   { border-color:var(--color-error); color:var(--color-error-ink); }
+
+  /* Trick case */
+  .trick-card { background:var(--color-surface); border:2px solid var(--color-warning); border-radius:18px; padding:24px; }
+  .trick-opts { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+  .trick-opt {
+    padding:14px 16px; border-radius:12px;
+    border:2px solid var(--color-border); background:var(--color-surface);
+    cursor:pointer; transition:border-color .15s, transform .1s;
+    font-size:14px; font-weight:500; text-align:left;
+  }
+  .trick-opt:hover { border-color:var(--color-primary-border); transform:translateX(4px); }
+  .trick-opt.correct-ans { border-color:var(--color-success); background:var(--color-success-soft); }
+  .trick-opt.wrong-ans   { border-color:var(--color-error); background:var(--color-error-soft); }
+
+  /* Repair task */
+  .repair-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0; }
+  @media(max-width:680px){ .repair-grid { grid-template-columns:1fr; } }
+  .repair-fix {
+    padding:12px 16px; border-radius:12px;
+    border:2px solid var(--color-border); background:var(--color-surface);
+    cursor:pointer; transition:all .15s;
+    display:flex; align-items:center; gap:10px; font-size:14px;
+  }
+  .repair-fix:hover { border-color:var(--color-primary-border); }
+  .repair-fix.selected.correct-fix { border-color:var(--color-success); background:var(--color-success-soft); }
+  .repair-fix.selected.wrong-fix   { border-color:var(--color-error); background:var(--color-error-soft); }
+  .repair-fix .fix-icon { font-size:22px; flex-shrink:0; }
+
+  /* Phase wrappers */
+  .phase { display:none; }
+  .phase.active { display:block; }
+
+  .progress-dots { display:flex; gap:8px; margin-bottom:20px; }
+  .progress-dot {
+    width:10px; height:10px; border-radius:50%;
+    background:var(--color-border-strong); transition:background .3s;
+  }
+  .progress-dot.done { background:var(--color-success); }
+  .progress-dot.active { background:var(--color-primary); transform:scale(1.3); }
+
+  .ct-tag {
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--color-primary-soft); color:var(--color-primary-ink);
+    border-radius:999px; padding:4px 12px;
+    font-family:var(--font-pixel); font-size:10px; letter-spacing:.07em;
+    margin-bottom:16px;
+  }
+  .reveal-box {
+    display:none; background:linear-gradient(135deg,#faf5ff,#ede9fe);
+    border:2px solid var(--color-primary-border); border-radius:14px; padding:16px; margin-top:16px;
+  }
+  .next-btn { margin-top:20px; }
+</style>
+
+<!-- Header with shield meter -->
+<div class="dd-header">
+  <div style="flex:1;">
+    <div class="ct-tag" style="background:rgba(255,255,255,.2);color:#fff;border:none;">🧠 {{ world.ct_skill }} · {{ world.ct_skill_2 }}</div>
+    <h1 style="font-family:var(--font-game);font-size:28px;font-weight:800;margin-bottom:6px;">{{ mission.title }}</h1>
+    <p style="opacity:.85;font-size:15px;margin:0;">{{ mission.goal }}</p>
+  </div>
+  <div class="dd-shield-meter">
+    <div style="font-size:28px;">🛡️</div>
+    <div class="shield-val" id="shieldVal">100</div>
+    <div class="shield-label">Shield</div>
+    <div class="shield-bar-wrap">
+      <div class="shield-bar-fill" id="shieldBar" style="width:100%;"></div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-dots" id="progressDots"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MISSION 1: Permission Patrol
+     ══════════════════════════════════════════════════════════ -->
+{% if mission_num == 1 %}
+<div class="phase active" id="phaseGame">
+
+  <div style="background:var(--color-surface-muted);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;">
+    <span style="font-size:20px;flex-shrink:0;">⚡</span>
+    <div>
+      <strong style="font-size:14px;">How it works:</strong>
+      <span style="font-size:14px;color:var(--color-text-muted);"> For each app request, choose your response. Then answer one more question about it.</span>
+    </div>
+  </div>
+
+  <div class="perm-grid" id="permGrid">
+    {% for s in picked_scenarios %}
+    <div class="perm-card" id="card{{ loop.index0 }}" data-id="{{ s.id }}" data-best="{{ s.best_choice }}">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:28px;">{{ s.app_emoji }}</span>
+        <div>
+          <div class="app-badge">{{ s.app }} · {{ s.app_type }}</div>
+        </div>
+      </div>
+      <div class="perm-text">🔐 {{ s.permission }}</div>
+      <div class="perm-desc">{{ s.description }}</div>
+      <div class="perm-actions">
+        {% for choice_id, choice in s.choices.items() %}
+        <button class="perm-btn {{ choice_id }}"
+          onclick="handleChoice({{ loop.index0 - 1 }}, '{{ choice_id }}', this, {{ s.choices|tojson|replace("'", "\\'") }}, '{{ s.secondary }}', {{ s.secondary_options|tojson }}, {{ s.secondary_correct }}, {{ s.choices[s.best_choice].shield }})">
+          {{ choice.label }}
+        </button>
+        {% endfor %}
+      </div>
+      <div class="perm-feedback" id="fb{{ loop.index0 }}"></div>
+      <div class="secondary-layer" id="sec{{ loop.index0 }}">
+        <div class="secondary-q" id="secQ{{ loop.index0 }}"></div>
+        <div class="secondary-opts" id="secOpts{{ loop.index0 }}"></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div id="allDoneMsg" style="display:none;text-align:center;padding:24px;">
+    <div style="font-size:48px;margin-bottom:8px;">🛡️</div>
+    <div style="font-family:var(--font-game);font-size:22px;font-weight:700;margin-bottom:8px;">Permission Patrol Complete!</div>
+    <div style="color:var(--color-text-subtle);margin-bottom:20px;">You reviewed all {{ picked_scenarios|length }} requests. See how your choices affected the shield.</div>
+    <button class="btn btn-primary btn-lg" onclick="submitMission()">Next Mission →</button>
+  </div>
+</div>
+
+<script>
+var answered = 0;
+var total = {{ picked_scenarios|length }};
+var shield = 100;
+
+// Progress dots
+(function(){
+  var dots = document.getElementById('progressDots');
+  for(var i=0;i<total;i++){
+    var d=document.createElement('div');
+    d.className='progress-dot';d.id='dot'+i;dots.appendChild(d);
+  }
+  dots.children[0].classList.add('active');
+})();
+
+function updateShield(delta){
+  shield = Math.max(0, Math.min(100, shield + delta));
+  document.getElementById('shieldVal').textContent = shield;
+  document.getElementById('shieldBar').style.width = shield + '%';
+  var color = shield > 60 ? '#fff' : shield > 30 ? '#fbbf24' : '#f87171';
+  document.getElementById('shieldBar').style.background = color;
+}
+
+function handleChoice(idx, choiceId, btn, choices, secQ, secOpts, secCorrect, bestShield){
+  var card = btn.closest('.perm-card');
+  if(card.classList.contains('answered')) return;
+  card.classList.add('answered');
+
+  var choice = choices[choiceId];
+  updateShield(choice.shield);
+
+  var fb = document.getElementById('fb'+(idx+1));
+  fb.style.display='block';
+  fb.textContent = choice.feedback;
+  if(choice.shield > 0){ fb.style.color='var(--color-success-ink)'; fb.style.borderLeftColor='var(--color-success)'; card.classList.add('good'); }
+  else if(choice.shield < 0){ fb.style.color='var(--color-error-ink)'; fb.style.borderLeftColor='var(--color-error)'; card.classList.add('bad'); }
+  else { fb.style.color='var(--color-warning-ink)'; fb.style.borderLeftColor='var(--color-warning)'; card.classList.add('ok'); }
+
+  // Show secondary layer
+  var sec = document.getElementById('sec'+(idx+1));
+  var secQEl = document.getElementById('secQ'+(idx+1));
+  var secOptsEl = document.getElementById('secOpts'+(idx+1));
+  sec.style.display='block';
+  secQEl.textContent = secQ;
+  secOpts.forEach(function(opt,i){
+    var b=document.createElement('button');
+    b.className='secondary-btn';
+    b.textContent=opt;
+    b.onclick=function(){
+      secOptsEl.querySelectorAll('.secondary-btn').forEach(function(x){x.onclick=null;x.style.pointerEvents='none';});
+      if(i===secCorrect){ b.classList.add('correct-sec'); }
+      else { b.classList.add('wrong-sec'); secOptsEl.children[secCorrect].classList.add('correct-sec'); }
+      checkAllAnswered();
+    };
+    secOptsEl.appendChild(b);
+  });
+
+  // Update progress dot
+  var dot = document.getElementById('dot'+idx);
+  if(dot){ dot.classList.remove('active'); dot.classList.add('done'); }
+  if(idx+1 < total){ var next=document.getElementById('dot'+(idx+1)); if(next) next.classList.add('active'); }
+}
+
+function checkAllAnswered(){
+  var cards = document.querySelectorAll('.perm-card.answered');
+  // Check if all secondary questions answered too
+  var secDone = document.querySelectorAll('.secondary-btn.correct-sec, .secondary-btn.wrong-sec');
+  var perCard = secDone.length;
+  if(cards.length === total && perCard >= total){
+    document.getElementById('allDoneMsg').style.display='block';
+    document.getElementById('permGrid').style.opacity='.6';
+    document.getElementById('permGrid').style.pointerEvents='none';
+  }
+}
+
+function submitMission(){
+  var form=document.createElement('form');
+  form.method='POST';form.action='';
+  document.body.appendChild(form);form.submit();
+}
+</script>
+
+<!-- ══════════════════════════════════════════════════════════
+     MISSION 2: Trick Cases
+     ══════════════════════════════════════════════════════════ -->
+{% elif mission_num == 2 %}
+{% set tc = trick_case %}
+<div class="phase active">
+  <div class="ct-tag">🌀 TWIST — Spot the hidden problem</div>
+
+  <div class="trick-card">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <span style="font-size:36px;">{{ tc.app_emoji }}</span>
+      <div>
+        <div style="font-family:var(--font-game);font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-subtle);margin-bottom:2px;">Incoming Request</div>
+        <div style="font-family:var(--font-game);font-size:20px;font-weight:800;">{{ tc.title }}</div>
+      </div>
+    </div>
+
+    <div style="background:var(--color-surface-muted);border-radius:12px;padding:16px;margin-bottom:8px;font-size:15px;line-height:1.6;">
+      {{ tc.setup }}
+    </div>
+
+    <div style="font-size:15px;font-weight:700;margin-bottom:4px;color:var(--color-text);">{{ tc.question }}</div>
+
+    <div class="trick-opts" id="trickOpts">
+      {% for opt in tc.options %}
+      <button class="trick-opt" onclick="answerTrick(this, {{ loop.index0 }}, {{ opt.correct|tojson }}, {{ tc.options|tojson|replace('"correct"', '"_correct"') }})">
+        {{ opt.text }}
+      </button>
+      {% endfor %}
+    </div>
+
+    <div id="trickFeedback" style="display:none;margin-top:16px;"></div>
+
+    <div id="trickReveal" class="reveal-box">
+      <div style="font-family:var(--font-pixel);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primary-ink);margin-bottom:8px;">WHAT'S HAPPENING HERE</div>
+      <div style="font-size:14px;line-height:1.6;margin-bottom:10px;">{{ tc.reveal }}</div>
+      <div style="background:var(--color-primary-soft);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;color:var(--color-primary-ink);">
+        🧠 {{ tc.ct_moment }}
+      </div>
+    </div>
+  </div>
+
+  <button id="trickNext" class="btn btn-primary btn-lg next-btn" style="display:none;" onclick="submitMission2()">
+    Next Mission → Fix the App
+  </button>
+</div>
+
+<script>
+function answerTrick(btn, idx, isCorrect, opts){
+  document.querySelectorAll('.trick-opt').forEach(function(b){ b.onclick=null; b.style.cursor='default'; });
+  btn.classList.add(isCorrect ? 'correct-ans' : 'wrong-ans');
+  opts.forEach(function(o,i){
+    if(o._correct){ document.querySelectorAll('.trick-opt')[i].classList.add('correct-ans'); }
+  });
+  var fb=document.getElementById('trickFeedback');
+  fb.style.display='block';
+  var msg=opts[idx].feedback||'';
+  fb.innerHTML='<div style="padding:12px 16px;border-radius:12px;font-size:14px;background:'+(isCorrect?'var(--color-success-soft)':'var(--color-error-soft)')+';border-left:3px solid '+(isCorrect?'var(--color-success)':'var(--color-error)')+';">'+msg+'</div>';
+  document.getElementById('trickReveal').style.display='block';
+  document.getElementById('trickNext').style.display='inline-flex';
+  document.getElementById('shieldVal').textContent=isCorrect?'🛡️ +10':'⚠️';
+}
+function submitMission2(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+</script>
+
+<!-- ══════════════════════════════════════════════════════════
+     MISSION 3: App Repair
+     ══════════════════════════════════════════════════════════ -->
+{% elif mission_num == 3 %}
+{% set rt = repair_task %}
+<div class="phase active">
+  <div class="ct-tag">🔧 FIX — Repair the badly designed app</div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div style="font-family:var(--font-game);font-size:18px;font-weight:700;margin-bottom:8px;">{{ rt.title }}</div>
+    <div style="background:var(--color-error-soft);border:1px solid var(--color-error);border-radius:10px;padding:14px;margin-bottom:14px;font-size:14px;">
+      <strong>🚨 Broken design:</strong> {{ rt.broken_design }}
+    </div>
+    <div style="margin-bottom:8px;font-size:13px;font-weight:700;color:var(--color-text-subtle);">PROBLEMS WITH THIS DESIGN:</div>
+    <ul style="padding-left:20px;margin:0 0 16px;display:flex;flex-direction:column;gap:4px;">
+      {% for issue in rt.broken_issues %}
+      <li style="font-size:14px;color:var(--color-error-ink);">{{ issue }}</li>
+      {% endfor %}
+    </ul>
+
+    <div style="font-size:15px;font-weight:700;margin-bottom:12px;">Select the fixes to apply (choose at least {{ rt.min_correct }}):</div>
+
+    <div class="repair-grid" id="repairGrid">
+      {% for fix in rt.fix_options %}
+      <button class="repair-fix" id="fix{{ loop.index0 }}"
+        data-correct="{{ fix.correct|tojson }}"
+        onclick="toggleFix(this, {{ loop.index0 }})">
+        <span class="fix-icon">{{ fix.icon }}</span>
+        <span style="font-size:13px;font-weight:500;">{{ fix.label }}</span>
+      </button>
+      {% endfor %}
+    </div>
+
+    <div id="repairFeedback" style="display:none;margin-top:16px;"></div>
+
+    <div style="margin-top:16px;display:flex;gap:12px;align-items:center;">
+      <button class="btn btn-primary" onclick="checkRepair()">✓ Apply Fixes</button>
+      <span id="repairCount" style="font-size:13px;color:var(--color-text-subtle);">0 fixes selected</span>
+    </div>
+  </div>
+
+  {% if tools %}
+  <div class="card" style="margin-bottom:20px;">
+    <div style="font-family:var(--font-game);font-size:15px;font-weight:700;margin-bottom:12px;">🧰 Tools Collected</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      {% for tool in tools %}
+      <div style="background:var(--color-primary-soft);border:1.5px solid var(--color-primary-border);border-radius:12px;padding:10px 14px;text-align:center;min-width:90px;">
+        <div style="font-size:24px;margin-bottom:4px;">{{ tool.emoji }}</div>
+        <div style="font-family:var(--font-game);font-size:12px;font-weight:700;">{{ tool.name }}</div>
+        <div style="font-size:11px;color:var(--color-text-subtle);">{{ tool.desc }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div id="repairDone" style="display:none;text-align:center;padding:20px;">
+    <div style="font-size:40px;margin-bottom:8px;">✅</div>
+    <div style="font-family:var(--font-game);font-size:20px;font-weight:700;margin-bottom:16px;">App Repaired!</div>
+    <button class="btn btn-primary btn-lg" onclick="submitMission3()">Claim Reward →</button>
+  </div>
+</div>
+
+<script>
+var selected = new Set();
+var minCorrect = {{ rt.min_correct }};
+var fixes = {{ rt.fix_options|tojson }};
+var applied = false;
+
+function toggleFix(btn, idx){
+  if(applied) return;
+  if(selected.has(idx)){ selected.delete(idx); btn.classList.remove('selected'); }
+  else { selected.add(idx); btn.classList.add('selected'); }
+  document.getElementById('repairCount').textContent = selected.size + ' fix' + (selected.size!==1?'es':'') + ' selected';
+}
+
+function checkRepair(){
+  if(applied) return;
+  applied = true;
+  var correctCount=0; var hasWrong=false;
+  fixes.forEach(function(f,i){
+    var btn=document.getElementById('fix'+i);
+    if(selected.has(i)){
+      if(f.correct){ correctCount++; btn.classList.add('correct-fix'); }
+      else { hasWrong=true; btn.classList.add('wrong-fix'); }
+    }
+  });
+  document.querySelectorAll('.repair-fix').forEach(function(b){ b.onclick=null; });
+  var fb=document.getElementById('repairFeedback');
+  fb.style.display='block';
+  if(correctCount>=minCorrect && !hasWrong){
+    fb.innerHTML='<div style="padding:14px;border-radius:12px;background:var(--color-success-soft);border-left:3px solid var(--color-success);font-size:14px;"><strong>'+{{ rt.feedback_good|tojson }}+'</strong></div>';
+    setTimeout(function(){ document.getElementById('repairDone').style.display='block'; }, 800);
+  } else {
+    fb.innerHTML='<div style="padding:14px;border-radius:12px;background:var(--color-warning-soft);border-left:3px solid var(--color-warning);font-size:14px;">'+{{ rt.feedback_bad|tojson }}+'</div>';
+    applied=false;
+    selected.clear();
+    document.querySelectorAll('.repair-fix').forEach(function(b){ b.classList.remove('selected','correct-fix','wrong-fix'); b.onclick=function(){toggleFix(b,parseInt(b.id.replace('fix',''))); }; });
+    document.getElementById('repairCount').textContent='0 fixes selected';
+  }
+}
+function submitMission3(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+</script>
+{% endif %}
+
+<!-- Back nav -->
+<div style="margin-top:24px;display:flex;gap:12px;">
+  <a href="{{ url_for('world_home', slug=slug) }}" class="btn btn-ghost btn-sm">{{ icon('arrow-left') }} World Map</a>
+</div>
+
+{% endblock %}

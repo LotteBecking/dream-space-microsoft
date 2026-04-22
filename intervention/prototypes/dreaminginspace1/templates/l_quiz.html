@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}Quiz &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{{ stepper_multi('quiz', lesson_num, progress) }}
+
+<div style="margin-top: 28px;"></div>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <div class="row-tight">
+      <span class="chip chip-primary">Lesson {{ lesson_num }}</span>
+      <span class="chip">{{ icon('help-circle') }} Quiz</span>
+    </div>
+    <h1 class="display-xl" style="margin-top:8px;">{{ lesson.title }} &mdash; Quiz</h1>
+  </div>
+</div>
+
+{% if result is not none %}
+<!-- Results -->
+<div style="margin-bottom:20px;">
+  {% if result.percent >= 75 %}
+  {{ callout('success', 'You scored ' ~ result.score ~ '/' ~ result.total ~ '! Quiz passed!', 'Great job!') }}
+  {% else %}
+  {{ callout('warning', 'You scored ' ~ result.score ~ '/' ~ result.total ~ '. Review the lessons and try again.', 'Keep going!') }}
+  {% endif %}
+</div>
+
+<div class="grid-2">
+  <div class="stack">
+    {% for q in questions %}
+    {% set qi = loop.index0 %}
+    <section class="card" style="{% if qi in result.wrong %}border-color:var(--color-danger, #ef4444);{% endif %}">
+      <div class="card-body">
+        <p class="title-md" style="margin-bottom:10px;">{{ loop.index }}. {{ q.question }}</p>
+        {% for opt in q.options %}
+        <div style="padding:8px 12px; border-radius:var(--radius-input); font-size:14px; margin-bottom:4px;
+          {% if loop.index0 == q.correct %}background:var(--color-success-soft, #dcfce7); color:#15803d; font-weight:600;
+          {% elif loop.index0 == result.answers[qi] and loop.index0 != q.correct %}background:#fce7f3; color:#9f1239; text-decoration:line-through;
+          {% else %}color:var(--color-text-muted);{% endif %}">
+          {{ opt }}{% if loop.index0 == q.correct %} &#10003;{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endfor %}
+  </div>
+
+  <div>
+    <aside class="hint-card">
+      <div class="hint-mascot" style="flex-direction:column; align-items:center; gap:0;">
+        {{ space_beaver(88) }}
+      </div>
+      <div class="speech-bubble" style="margin-top:14px; margin-bottom:0;">
+        <div class="section-bar" style="margin-bottom:8px; border-radius:8px; padding:5px 10px; font-size:9px;">
+          {% if result.percent >= 75 %}{{ icon('trophy') }} Nice work!{% else %}{{ icon('send') }} Space Beaver says{% endif %}
+        </div>
+        {% if result.percent >= 75 %}
+        <h3 class="title-md" style="margin-bottom:8px;">Quiz passed!</h3>
+        <p class="body-muted" style="margin:0;">You earned +10 XP. Head back to base to continue your journey!</p>
+        {% else %}
+        <h3 class="title-md" style="margin-bottom:8px;">Almost there!</h3>
+        <p class="body-muted" style="margin:0;">Review the missions and try the quiz again. You can do it!</p>
+        {% endif %}
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="card" style="margin-top:20px; padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
+  <a href="{{ url_for('lesson_quiz', lesson_num=lesson_num) }}" class="btn btn-ghost">{{ icon('refresh') }}<span>Try Again</span></a>
+  <a href="{{ url_for('lesson_recap', lesson_num=lesson_num) }}" class="btn btn-primary">
+    <span>Rewards &amp; Recap</span>{{ icon('arrow-right') }}
+  </a>
+</div>
+
+{% else %}
+<!-- Quiz form -->
+<div class="grid-2">
+  <div class="stack">
+    <form method="post">
+      {% for q in questions %}
+      {% set qi = loop.index0 %}
+      <section class="card">
+        <div class="card-body">
+          <p style="margin-bottom:12px; color:#111; font-size:17px; font-weight:700;">{{ loop.index }}. {{ q.question }}</p>
+          <ul class="stack-sm" style="list-style:none;">
+            {% for opt in q.options %}
+            <li>
+              <label style="display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:var(--radius-input);
+                     border:2px solid var(--color-border); cursor:pointer; font-family:var(--font-game); font-size:16px;
+                     background:var(--color-surface); color:#111; font-weight:500; transition:all .15s;">
+                <input type="radio" name="q{{ qi }}" value="{{ loop.index0 }}" required
+                       style="accent-color:var(--color-primary); width:18px; height:18px;" />
+                {{ opt }}
+              </label>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+      {% endfor %}
+
+      <div class="card" style="padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
+        <a href="{{ url_for('lesson_home', lesson_num=lesson_num) }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
+        <button type="submit" class="btn btn-primary">
+          <span>Submit Quiz</span>{{ icon('check') }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <aside class="hint-card">
+      <div class="hint-mascot" style="flex-direction:column; align-items:center; gap:0;">
+        {{ space_beaver(88) }}
+      </div>
+      <div class="speech-bubble" style="margin-top:14px; margin-bottom:0;">
+        <div class="section-bar" style="margin-bottom:8px; border-radius:8px; padding:5px 10px; font-size:9px;">
+          {{ icon('send') }} Space Beaver says
+        </div>
+        <h3 class="title-md" style="margin-bottom:8px;">You've got this!</h3>
+        <p class="body-muted" style="margin:0;">Read each question carefully. Think about what you learned in the missions. There's no rush!</p>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

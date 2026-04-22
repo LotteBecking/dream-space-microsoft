@@ -981,6 +981,7 @@ def world_mission(slug, n):
             return redirect(url_for("world_mission", slug=slug, n=n + 1))
         return redirect(url_for("world_reward", slug=slug))
 
+    # Pick random scenarios server-side for freshness
     extra = {}
     if slug == "data-defender":
         pool = info["data"]["scenarios"]
@@ -1041,6 +1042,7 @@ def world_mission(slug, n):
 
 @app.route("/world/<slug>/template-select", methods=["POST"])
 def world_template_select(slug):
+    """Store the chosen Build for Good template in session."""
     template_id = request.form.get("template_id")
     if template_id:
         session[f"world_{slug}_template"] = template_id

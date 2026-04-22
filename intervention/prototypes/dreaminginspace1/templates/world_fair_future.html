@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, space_beaver %}
+{% block title %}{{ world.title }} · Mission {{ mission_num }} · Dreaming in Space{% endblock %}
+
+{% block header_context %}
+  <span class="chip chip-primary" style="font-family:var(--font-pixel);font-size:10px;">🔬 FAIR FUTURE LAB</span>
+  <span class="dot"></span>
+  <span style="font-size:13px;color:var(--color-text-subtle);">Mission {{ mission_num }} / 3</span>
+{% endblock %}
+
+{% block content %}
+<style>
+  .ff-header {
+    background:linear-gradient(135deg,#0d9488,#2dd4bf);
+    border-radius:20px; padding:24px 28px; color:#fff; margin-bottom:24px;
+  }
+  .ct-tag {
+    display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);
+    border-radius:999px;padding:4px 12px;font-family:var(--font-pixel);font-size:10px;
+    letter-spacing:.07em;text-transform:uppercase;margin-bottom:12px;color:#fff;
+  }
+
+  /* Pipeline */
+  .pipeline {
+    display:flex;align-items:center;gap:0;
+    overflow-x:auto;padding-bottom:4px;margin-bottom:24px;
+  }
+  .pipe-stage {
+    flex-shrink:0;min-width:140px;background:var(--color-surface);
+    border:2px solid var(--color-border);border-radius:14px;padding:14px;
+    text-align:center;transition:border-color .3s,transform .2s;
+  }
+  .pipe-stage.active-stage { border-color:#0d9488;transform:translateY(-4px);box-shadow:0 8px 20px rgba(13,148,136,.2); }
+  .pipe-stage.problem-stage { border-color:var(--color-error);background:var(--color-error-soft); }
+  .pipe-arrow { font-size:24px;color:var(--color-border-strong);padding:0 8px;flex-shrink:0; }
+  .stage-icon { font-size:28px;margin-bottom:4px; }
+  .stage-label { font-family:var(--font-pixel);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-subtle); }
+  .stage-name { font-family:var(--font-game);font-size:14px;font-weight:700; }
+
+  /* Input/output rows */
+  .person-row {
+    display:grid;grid-template-columns:auto 1fr auto auto;
+    align-items:center;gap:12px;
+    padding:12px 16px;border-radius:12px;border:2px solid var(--color-border);
+    background:var(--color-surface);margin-bottom:8px;
+    transition:border-color .3s,background .3s;
+  }
+  .person-emoji { font-size:28px; }
+  .person-name { font-family:var(--font-game);font-size:15px;font-weight:700; }
+  .person-note { font-size:12px;color:var(--color-text-subtle); }
+  .output-badge {
+    padding:4px 12px;border-radius:999px;font-family:var(--font-pixel);font-size:11px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.06em;
+  }
+  .output-badge.accepted  { background:var(--color-success-soft);color:var(--color-success-ink); }
+  .output-badge.rejected  { background:var(--color-error-soft);color:var(--color-error-ink); }
+  .output-badge.review    { background:var(--color-warning-soft);color:var(--color-warning-ink); }
+  .output-badge.human-review { background:var(--color-primary-soft);color:var(--color-primary-ink); }
+  .fair-dot { width:10px;height:10px;border-radius:50%;flex-shrink:0; }
+
+  /* Rule box */
+  .rule-box {
+    border-radius:12px;padding:14px 16px;margin:12px 0;
+    display:flex;align-items:flex-start;gap:12px;
+  }
+  .rule-box.broken { background:var(--color-error-soft);border:1.5px solid var(--color-error); }
+  .rule-box.good   { background:var(--color-success-soft);border:1.5px solid var(--color-success); }
+  .rule-code { font-family:var(--font-pixel);font-size:12px;letter-spacing:.03em;line-height:1.6; }
+
+  /* Fix options */
+  .fix-opts { display:flex;flex-direction:column;gap:10px;margin:16px 0; }
+  .fix-opt {
+    padding:14px 16px;border-radius:14px;border:2px solid var(--color-border);
+    background:var(--color-surface);cursor:pointer;text-align:left;
+    transition:border-color .15s,transform .1s;
+  }
+  .fix-opt:hover { border-color:#0d9488;transform:translateX(4px); }
+  .fix-opt.selected-fix { border-color:#0d9488;background:rgba(13,148,136,.08); }
+  .fix-opt.revealed-best { border-color:var(--color-success);background:var(--color-success-soft); }
+  .fix-opt.revealed-ok   { border-color:var(--color-warning);background:var(--color-warning-soft); }
+
+  /* Comparison panel */
+  .compare-panel {
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;
+  }
+  @media(max-width:640px){ .compare-panel { grid-template-columns:1fr; } }
+  .compare-col { border-radius:14px;padding:16px; }
+  .compare-col.before { background:var(--color-error-soft);border:1.5px solid var(--color-error); }
+  .compare-col.after  { background:var(--color-success-soft);border:1.5px solid var(--color-success); }
+  .compare-label { font-family:var(--font-pixel);font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px; }
+
+  /* Escalation */
+  .escalation-opts { display:flex;flex-direction:column;gap:10px;margin:16px 0; }
+  .esc-opt {
+    padding:14px 16px;border-radius:14px;border:2px solid var(--color-border);
+    background:var(--color-surface);cursor:pointer;text-align:left;
+    transition:border-color .15s,transform .1s;font-size:14px;font-weight:500;
+  }
+  .esc-opt:hover { border-color:#0d9488;transform:translateX(4px); }
+  .esc-opt.best-esc { border-color:var(--color-success);background:var(--color-success-soft); }
+  .esc-opt.wrong-esc { border-color:var(--color-error);background:var(--color-error-soft); }
+  .esc-opt.ok-esc { border-color:var(--color-warning);background:var(--color-warning-soft); }
+</style>
+
+<div class="ff-header">
+  <div class="ct-tag">🧠 {{ world.ct_skill }} · {{ world.ct_skill_2 }}</div>
+  <h1 style="font-family:var(--font-game);font-size:28px;font-weight:800;margin-bottom:6px;">{{ mission.title }}</h1>
+  <p style="opacity:.85;font-size:15px;margin:0;">{{ mission.goal }}</p>
+</div>
+
+{% if mission_num in (1, 2) %}
+{% set sys = system %}
+
+{# Pipeline visual #}
+<div class="pipeline">
+  <div class="pipe-stage active-stage">
+    <div class="stage-icon">📥</div>
+    <div class="stage-label">Step 1</div>
+    <div class="stage-name">Input</div>
+  </div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-stage problem-stage" id="ruleStage">
+    <div class="stage-icon">⚖️</div>
+    <div class="stage-label">Step 2</div>
+    <div class="stage-name">Rule</div>
+  </div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-stage active-stage">
+    <div class="stage-icon">📤</div>
+    <div class="stage-label">Step 3</div>
+    <div class="stage-name">Output</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+  <div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--color-text-subtle);margin-bottom:8px;">THE SYSTEM: {{ sys.title }}</div>
+      <div style="font-size:14px;color:var(--color-text-muted);margin-bottom:12px;">{{ sys.description }}</div>
+
+      <div class="rule-box broken">
+        <span style="font-size:20px;flex-shrink:0;">🚨</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--color-error-ink);margin-bottom:4px;">CURRENT RULE: {{ sys.broken_rule.name }}</div>
+          <div class="rule-code">{{ sys.broken_rule.description }}</div>
+          <div style="font-size:12px;color:var(--color-error-ink);margin-top:6px;font-style:italic;">Problem: {{ sys.broken_rule.problem }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--color-text-subtle);margin-bottom:8px;">INPUTS → OUTPUTS (current rule)</div>
+      {% for out in sys.broken_outputs %}
+      <div class="person-row" style="{% if not out.fair %}border-color:var(--color-error);{% endif %}">
+        <span class="person-emoji">{{ out.emoji }}</span>
+        <div>
+          <div class="person-name">{{ out.name }}</div>
+          <div class="person-note">{{ out.reason }}</div>
+        </div>
+        <div class="fair-dot" style="background:{% if out.fair %}var(--color-success){% else %}var(--color-error){% endif %};"></div>
+        <span class="output-badge {{ out.result|lower|replace(' ', '-') }}">{{ out.result }}</span>
+      </div>
+      {% endfor %}
+      <div style="font-size:12px;color:var(--color-error-ink);margin-top:8px;font-style:italic;">⚠️ {{ sys.issue }}</div>
+    </div>
+  </div>
+</div>
+
+{% if mission_num == 1 %}
+{# Mission 1: Spot which rule causes the problem #}
+<div class="card" id="spotCard">
+  <div style="font-size:16px;font-weight:700;margin-bottom:8px;">Which rule is causing the unfair output?</div>
+  <div style="font-size:14px;color:var(--color-text-subtle);margin-bottom:16px;">Look at the inputs and outputs above. Which part of the system is the problem?</div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <button class="verdict-opt fix-opt" style="border-radius:12px;font-size:14px;" onclick="spotRule(this,false,'The data inputs (who applied) are the problem')">The input data is biased</button>
+    <button class="verdict-opt fix-opt" style="border-radius:12px;font-size:14px;" onclick="spotRule(this,true,'{{ sys.broken_rule.name }} is the broken rule — '+{{ sys.broken_rule.problem|tojson }})">The rule: {{ sys.broken_rule.name }}</button>
+    <button class="verdict-opt fix-opt" style="border-radius:12px;font-size:14px;" onclick="spotRule(this,false,'The output labels are standard — the problem is what rule drives them')">The output labels are wrong</button>
+  </div>
+  <div id="spotFeedback" style="display:none;margin-top:12px;"></div>
+  <button id="spotNext" class="btn btn-primary btn-lg" style="display:none;margin-top:16px;" onclick="submitM1()">
+    Next: Repair the Rule →
+  </button>
+</div>
+
+<style>.verdict-opt { padding:14px 16px;border-radius:12px;border:2px solid var(--color-border);background:var(--color-surface);cursor:pointer;font-size:14px;font-weight:500;text-align:left;transition:border-color .15s,transform .1s;display:block;width:100%;} .verdict-opt:hover{border-color:#0d9488;transform:translateX(4px);} .verdict-opt.correct-v{border-color:var(--color-success);background:var(--color-success-soft);} .verdict-opt.wrong-v{border-color:var(--color-error);background:var(--color-error-soft);}</style>
+
+<script>
+var spotDone=false;
+function spotRule(btn,correct,feedback){
+  if(spotDone) return; spotDone=true;
+  document.querySelectorAll('#spotCard .fix-opt').forEach(function(b){b.onclick=null;});
+  btn.classList.add(correct?'correct-v':'wrong-v');
+  var fb=document.getElementById('spotFeedback');
+  fb.style.display='block';
+  fb.innerHTML='<div style="padding:12px 14px;border-radius:10px;font-size:14px;background:'+(correct?'var(--color-success-soft)':'var(--color-error-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-error)')+';">'+feedback+'</div>';
+  document.getElementById('spotNext').style.display='inline-flex';
+}
+function submitM1(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+</script>
+
+{% elif mission_num == 2 %}
+{# Mission 2: Repair lab — choose a fix #}
+<div class="card">
+  <div style="font-size:16px;font-weight:700;margin-bottom:4px;">🔧 Repair Lab</div>
+  <div style="font-size:14px;color:var(--color-text-subtle);margin-bottom:16px;">Choose a rule change. See what happens to the outputs.</div>
+
+  <div class="fix-opts" id="fixOpts">
+    {% for fix in sys.fix_options %}
+    <div class="fix-opt" onclick="previewFix({{ loop.index0 }}, this)">
+      <div style="font-weight:700;font-size:14px;margin-bottom:2px;">{{ fix.label }}</div>
+      <div style="font-family:var(--font-pixel);font-size:11px;color:var(--color-text-subtle);">NEW RULE: {{ fix.rule_change }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div id="compareSection" style="display:none;">
+    <div style="font-size:15px;font-weight:700;margin:16px 0 8px;">Before vs. After:</div>
+    <div class="compare-panel">
+      <div class="compare-col before">
+        <div class="compare-label" style="color:var(--color-error-ink);">⚠️ Before (broken rule)</div>
+        {% for out in sys.broken_outputs %}
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px;">
+          <span>{{ out.emoji }}</span>
+          <span style="flex:1;font-weight:600;">{{ out.name }}</span>
+          <span class="output-badge {{ out.result|lower|replace(' ','-') }}">{{ out.result }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="compare-col after" id="afterCol">
+        <div class="compare-label" style="color:var(--color-success-ink);">✅ After (new rule)</div>
+        <div id="afterOutputs"></div>
+      </div>
+    </div>
+
+    <div id="fixVerdict" style="display:none;margin-top:12px;"></div>
+    <div style="margin-top:8px;background:var(--color-surface-muted);border-radius:10px;padding:12px;font-size:13px;font-style:italic;color:var(--color-text-subtle);">
+      {{ sys.escalation_note }}
+    </div>
+    <button id="fixNext" class="btn btn-primary btn-lg" style="display:none;margin-top:16px;" onclick="submitM2()">
+      Final Mission →
+    </button>
+  </div>
+</div>
+
+<script>
+var fixes = {{ sys.fix_options|tojson }};
+var chosenFix = -1;
+
+function previewFix(idx, btn){
+  if(chosenFix === idx){ return; }
+  chosenFix = idx;
+  document.querySelectorAll('.fix-opt').forEach(function(b){ b.classList.remove('selected-fix'); });
+  btn.classList.add('selected-fix');
+
+  var fix = fixes[idx];
+  document.getElementById('compareSection').style.display='block';
+
+  var afterHtml='';
+  fix.outputs.forEach(function(o){
+    afterHtml+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px;"><span>'+o.emoji+'</span><span style="flex:1;font-weight:600;">'+o.name+'</span><span class="output-badge '+o.result.toLowerCase().replace(/ /g,'-')+'">'+o.result+'</span></div>';
+  });
+  document.getElementById('afterOutputs').innerHTML=afterHtml;
+
+  var vd=document.getElementById('fixVerdict');
+  vd.style.display='block';
+  var isBetter=fix.better;
+  vd.innerHTML='<div style="padding:14px;border-radius:12px;font-size:14px;background:'+(isBetter?'var(--color-success-soft)':'var(--color-warning-soft)')+';border-left:3px solid '+(isBetter?'var(--color-success)':'var(--color-warning)')+';">'+fix.verdict+'</div>';
+  document.getElementById('fixNext').style.display='inline-flex';
+  document.getElementById('compareSection').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function submitM2(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+</script>
+{% endif %}
+
+{% elif mission_num == 3 %}
+{# ── MISSION 3: ESCALATION ── #}
+{% set esc = escalation %}
+<div style="background:var(--color-primary-soft);border:2px solid var(--color-primary-border);border-radius:16px;padding:20px;margin-bottom:20px;">
+  <div style="font-family:var(--font-pixel);font-size:10px;letter-spacing:.08em;color:var(--color-primary-ink);margin-bottom:8px;">HARD CASE — WHEN SHOULD A HUMAN DECIDE?</div>
+  <div style="font-size:15px;line-height:1.6;">{{ esc.context }}</div>
+  <div class="rule-box broken" style="margin-top:12px;">
+    <span style="font-size:18px;">⚙️</span>
+    <div class="rule-code">{{ esc.rule_triggered }}</div>
+  </div>
+</div>
+
+<div style="font-size:16px;font-weight:700;margin-bottom:12px;">{{ esc.question }}</div>
+
+<div class="escalation-opts" id="escOpts">
+  {% for opt in esc.options %}
+  <div class="esc-opt" onclick="answerEsc(this, {{ loop.index0 }})">
+    <div style="font-weight:700;font-size:15px;margin-bottom:2px;">{{ opt.label }}</div>
+  </div>
+  {% endfor %}
+</div>
+
+<div id="escFeedback" style="display:none;"></div>
+
+<script>
+var escOpts = {{ esc.options|tojson }};
+var escBest = {{ esc.best|tojson }};
+var escKeyLesson = {{ esc.key_lesson|tojson }};
+var escDone=false;
+
+function answerEsc(btn, idx){
+  if(escDone) return; escDone=true;
+  document.querySelectorAll('.esc-opt').forEach(function(el,i){
+    el.onclick=null;
+    if(escOpts[i].id===escBest){ el.classList.add('best-esc'); }
+    else if(i===idx){ el.classList.add('ok-esc'); }
+  });
+  var opt=escOpts[idx];
+  var isBest=opt.id===escBest;
+  var fb=document.getElementById('escFeedback');
+  fb.style.display='block';
+  fb.innerHTML='<div style="padding:14px;border-radius:12px;font-size:14px;margin-bottom:10px;background:'+(isBest?'var(--color-success-soft)':'var(--color-warning-soft)')+';border-left:3px solid '+(isBest?'var(--color-success)':'var(--color-warning)')+';">'
+    +'<div style="font-weight:700;margin-bottom:4px;">'+opt.verdict+'</div>'
+    +'<div>'+opt.feedback+'</div></div>'
+    +'<div style="background:var(--color-primary-soft);border-radius:10px;padding:12px;font-size:13px;font-weight:600;color:var(--color-primary-ink);">💡 '+escKeyLesson+'</div>'
+    +'<div style="text-align:center;margin-top:16px;"><button class="btn btn-primary btn-lg" onclick="submitEsc()">Claim Reward →</button></div>';
+}
+function submitEsc(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+</script>
+{% endif %}
+
+<div style="margin-top:24px;">
+  <a href="{{ url_for('world_home', slug=slug) }}" class="btn btn-ghost btn-sm">{{ icon('arrow-left') }} World Map</a>
+</div>
+{% endblock %}

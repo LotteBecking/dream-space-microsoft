@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon, space_beaver %}
+{% block title %}{{ world.title }} · Mission {{ mission_num }} · Dreaming in Space{% endblock %}
+
+{% block header_context %}
+  <span class="chip chip-primary" style="font-family:var(--font-pixel);font-size:10px;">🚀 BUILD FOR GOOD</span>
+  <span class="dot"></span>
+  <span style="font-size:13px;color:var(--color-text-subtle);">Mission {{ mission_num }} / 3</span>
+{% endblock %}
+
+{% block content %}
+<style>
+  .bg-header {
+    background:linear-gradient(135deg,#7c3aed,#a78bfa);
+    border-radius:20px;padding:24px 28px;color:#fff;margin-bottom:24px;
+  }
+  .ct-tag {
+    display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);
+    border-radius:999px;padding:4px 12px;font-family:var(--font-pixel);font-size:10px;
+    letter-spacing:.07em;text-transform:uppercase;margin-bottom:12px;color:#fff;
+  }
+
+  /* Template chooser */
+  .template-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:16px 0; }
+  @media(max-width:640px){ .template-grid { grid-template-columns:1fr; } }
+  .template-card {
+    background:var(--color-surface);border:2px solid var(--color-border);
+    border-radius:18px;padding:20px;cursor:pointer;
+    transition:border-color .2s,transform .15s;
+  }
+  .template-card:hover { border-color:var(--color-primary-border);transform:translateY(-3px);box-shadow:var(--shadow-md); }
+  .template-card.chosen { border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.2); }
+  .template-emoji { font-size:36px;margin-bottom:10px; }
+  .template-title { font-family:var(--font-game);font-size:17px;font-weight:700;margin-bottom:4px; }
+  .template-desc { font-size:13px;color:var(--color-text-muted);margin-bottom:8px; }
+  .template-meta { font-size:12px;color:var(--color-text-subtle); }
+  .template-tag { display:inline-block;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;background:var(--color-primary-soft);color:var(--color-primary-ink);margin-right:4px; }
+
+  /* Builder */
+  .builder-layout { display:grid;grid-template-columns:220px 1fr;gap:20px;margin:16px 0; }
+  @media(max-width:700px){ .builder-layout { grid-template-columns:1fr; } }
+
+  .block-palette { background:var(--color-surface);border:2px solid var(--color-border);border-radius:16px;padding:14px; }
+  .palette-cat { font-family:var(--font-pixel);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-subtle);margin:10px 0 6px; }
+  .block-item {
+    display:flex;align-items:center;gap:8px;
+    padding:8px 10px;border-radius:10px;cursor:grab;
+    border:1.5px solid var(--color-border);background:var(--color-surface-muted);
+    margin-bottom:6px;font-size:12px;font-weight:600;
+    transition:background .12s,transform .1s;
+    user-select:none;
+  }
+  .block-item:hover { background:var(--color-primary-soft);transform:translateX(2px); }
+  .block-icon { font-size:16px;flex-shrink:0; }
+
+  .build-area {
+    background:var(--color-surface);border:2px dashed var(--color-border);
+    border-radius:16px;padding:16px;min-height:320px;
+    position:relative;
+  }
+  .build-area-label {
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    text-align:center;color:var(--color-text-subtle);font-size:14px;
+    pointer-events:none;
+  }
+  .placed-block {
+    display:flex;align-items:center;gap:10px;
+    padding:10px 14px;border-radius:12px;margin-bottom:8px;
+    border:2px solid;font-size:13px;font-weight:600;
+    position:relative;cursor:default;
+    transition:transform .1s;
+  }
+  .placed-block .remove-btn {
+    margin-left:auto;background:none;border:none;cursor:pointer;opacity:.5;
+    padding:2px;font-size:14px;
+  }
+  .placed-block .remove-btn:hover { opacity:1; }
+  .connector-line {
+    width:2px;height:12px;background:var(--color-border-strong);
+    margin:0 auto 8px;
+  }
+
+  /* Test panel */
+  .test-case {
+    background:var(--color-surface);border:2px solid var(--color-border);
+    border-radius:14px;padding:14px 16px;margin-bottom:10px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .test-case .input-text { font-size:13px;font-weight:600;flex:1; }
+  .test-case .expected-badge {
+    padding:3px 10px;border-radius:8px;font-size:11px;font-weight:700;
+    font-family:var(--font-pixel);letter-spacing:.05em;
+  }
+  .test-case.pass .expected-badge { background:var(--color-success-soft);color:var(--color-success-ink); }
+  .test-case.fail .expected-badge { background:var(--color-error-soft);color:var(--color-error-ink); }
+  .test-case.untested { opacity:.6; }
+
+  /* Safety check */
+  .safety-q {
+    background:var(--color-surface);border:2px solid var(--color-border);
+    border-radius:18px;padding:20px;margin-bottom:16px;
+  }
+  .safety-opts { display:flex;flex-direction:column;gap:8px;margin-top:12px; }
+  .safety-opt {
+    padding:12px 14px;border-radius:12px;border:2px solid var(--color-border);
+    background:var(--color-surface-muted);cursor:pointer;font-size:13px;font-weight:500;
+    text-align:left;transition:border-color .15s;
+  }
+  .safety-opt:hover { border-color:var(--color-primary-border); }
+  .safety-opt.answered { border-color:#7c3aed;background:var(--color-primary-soft);cursor:default; }
+  .safety-prompt { font-size:13px;color:var(--color-primary-ink);margin-top:8px;padding:8px 12px;background:var(--color-primary-soft);border-radius:8px;display:none; }
+  .safety-open textarea {
+    width:100%;min-height:80px;border:1.5px solid var(--color-border);border-radius:10px;
+    padding:10px 12px;font:inherit;font-size:13px;resize:vertical;
+    background:var(--color-surface-muted);margin-top:8px;
+  }
+  .safety-open textarea:focus { outline:none;border-color:var(--color-primary); }
+</style>
+
+<div class="bg-header">
+  <div class="ct-tag">🧠 {{ world.ct_skill }} · {{ world.ct_skill_2 }}</div>
+  <h1 style="font-family:var(--font-game);font-size:28px;font-weight:800;margin-bottom:6px;">{{ mission.title }}</h1>
+  <p style="opacity:.85;font-size:15px;margin:0;">{{ mission.goal }}</p>
+</div>
+
+{% if mission_num == 1 %}
+{# ── MISSION 1: Template Chooser ── #}
+<div class="card" style="margin-bottom:20px;">
+  <div style="font-size:16px;font-weight:700;margin-bottom:4px;">Choose your mission template:</div>
+  <div style="font-size:14px;color:var(--color-text-subtle);margin-bottom:16px;">Each template has a user, a problem, and a goal. Pick one to build.</div>
+
+  <form method="POST" action="{{ url_for('world_template_select', slug=slug) }}" id="templateForm">
+    <input type="hidden" name="template_id" id="templateId" value="">
+    <div class="template-grid">
+      {% for t in templates %}
+      <div class="template-card" onclick="pickTemplate('{{ t.id }}', this)">
+        <div class="template-emoji">{{ t.emoji }}</div>
+        <div class="template-title">{{ t.title }}</div>
+        <div class="template-desc">{{ t.description }}</div>
+        <div style="margin-bottom:8px;">
+          <span class="template-tag">👤 {{ t.user }}</span>
+        </div>
+        <div class="template-meta">🎯 {{ t.goal }}</div>
+        <div style="margin-top:6px;font-size:12px;color:var(--color-error-ink);">⚠️ {{ t.avoid }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div id="choicePreview" style="display:none;margin-top:16px;padding:16px;background:var(--color-primary-soft);border-radius:14px;border:1.5px solid var(--color-primary-border);">
+      <div style="font-size:13px;font-weight:700;color:var(--color-primary-ink);margin-bottom:4px;">✅ Template selected:</div>
+      <div id="choiceTitle" style="font-family:var(--font-game);font-size:17px;font-weight:700;"></div>
+      <div id="choiceUser" style="font-size:13px;color:var(--color-text-muted);margin-top:4px;"></div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <button type="submit" id="startBuildBtn" class="btn btn-primary btn-lg" disabled style="opacity:.5;">
+        Start Building →
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+var chosen=null;
+var templates = {{ templates|tojson }};
+function pickTemplate(id, el){
+  document.querySelectorAll('.template-card').forEach(function(c){ c.classList.remove('chosen'); });
+  el.classList.add('chosen');
+  chosen=id;
+  document.getElementById('templateId').value=id;
+  var t=templates.find(function(x){return x.id===id;});
+  if(t){
+    document.getElementById('choiceTitle').textContent=t.emoji+' '+t.title;
+    document.getElementById('choiceUser').textContent='For: '+t.user+' · '+t.goal;
+    document.getElementById('choicePreview').style.display='block';
+  }
+  var btn=document.getElementById('startBuildBtn');
+  btn.disabled=false; btn.style.opacity='1';
+}
+</script>
+
+{% elif mission_num == 2 %}
+{# ── MISSION 2: Logic Builder ── #}
+{% set tpl = template %}
+<div style="background:var(--color-surface-muted);border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+  <div style="font-size:32px;">{{ tpl.emoji }}</div>
+  <div>
+    <div style="font-family:var(--font-game);font-size:17px;font-weight:700;">Building: {{ tpl.title }}</div>
+    <div style="font-size:13px;color:var(--color-text-muted);">For: {{ tpl.user }} · {{ tpl.goal }}</div>
+    <div style="font-size:12px;color:var(--color-error-ink);margin-top:2px;">⚠️ Remember: {{ tpl.avoid }}</div>
+  </div>
+</div>
+
+<div class="builder-layout">
+
+  <!-- Block palette -->
+  <div class="block-palette">
+    <div style="font-size:13px;font-weight:700;margin-bottom:6px;">Logic Blocks</div>
+    <div style="font-size:12px;color:var(--color-text-subtle);margin-bottom:8px;">Drag blocks to the build area</div>
+    {% set cats = ['Input','Decision','Repeat','Output'] %}
+    {% for cat in cats %}
+    <div class="palette-cat">{{ cat }}</div>
+    {% for block in all_blocks if block.category == cat %}
+    {% if block.id in tpl.blocks_needed %}
+    <div class="block-item" draggable="true" data-id="{{ block.id }}" data-label="{{ block.label }}" data-icon="{{ block.icon }}" data-color="{{ block.color }}" data-cat="{{ block.category }}"
+         ondragstart="dragBlock(event, this)">
+      <span class="block-icon">{{ block.icon }}</span>
+      <span>{{ block.label }}</span>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+  </div>
+
+  <!-- Build canvas -->
+  <div>
+    <div class="build-area" id="buildArea"
+         ondragover="event.preventDefault()" ondrop="dropBlock(event)">
+      <div class="build-area-label" id="dropHint">
+        Drag blocks here to build your logic
+      </div>
+      <div id="placedBlocks"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+      <button class="btn btn-primary" id="testBtn" onclick="startTesting()" disabled style="opacity:.5;">▶ Run Test Cases</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearBuild()">✕ Clear</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Test cases -->
+<div id="testSection" style="display:none;" class="card" style="margin-top:20px;">
+  <div style="font-size:16px;font-weight:700;margin-bottom:4px;">Test your build:</div>
+  <div style="font-size:14px;color:var(--color-text-subtle);margin-bottom:14px;">Does it handle these cases correctly?</div>
+  <div id="testCases">
+    {% for tc in tpl.test_cases %}
+    <div class="test-case untested" id="tc{{ loop.index0 }}">
+      <span style="font-size:20px;">{% if loop.index == 1 %}✅{% elif loop.index == 2 %}⚠️{% else %}❓{% endif %}</span>
+      <div class="input-text">{{ tc.input }}<div style="font-size:11px;color:var(--color-text-subtle);margin-top:2px;">{{ tc.explanation }}</div></div>
+      <span class="expected-badge" style="background:var(--color-surface-muted);color:var(--color-text-subtle);">Expected: {{ tc.expected }}</span>
+      <button class="btn btn-sm" style="margin-left:8px;font-size:12px;" onclick="runTest({{ loop.index0 }}, {{ tc|tojson }})">▶ Run</button>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div id="testResult" style="display:none;margin-top:16px;"></div>
+</div>
+
+<div id="buildComplete" style="display:none;text-align:center;padding:20px;">
+  <div style="font-size:40px;margin-bottom:8px;">🚀</div>
+  <div style="font-family:var(--font-game);font-size:20px;font-weight:700;margin-bottom:16px;">Build tested! Ready for safety check.</div>
+  <button class="btn btn-primary btn-lg" onclick="submitBuild()">Safety Check →</button>
+</div>
+
+<script>
+var placedBlocks=[];
+var requiredBlocks={{ tpl.blocks_needed|tojson }};
+var testCases={{ tpl.test_cases|tojson }};
+var testsRun=0;
+
+function dragBlock(e, el){
+  e.dataTransfer.setData('application/json', JSON.stringify({
+    id:el.dataset.id, label:el.dataset.label, icon:el.dataset.icon, color:el.dataset.color, cat:el.dataset.cat
+  }));
+  e.dataTransfer.effectAllowed='copy';
+}
+
+function dropBlock(e){
+  e.preventDefault();
+  try {
+    var data=JSON.parse(e.dataTransfer.getData('application/json'));
+    if(placedBlocks.find(function(b){ return b.id===data.id; })) return;
+    placedBlocks.push(data);
+    renderPlaced();
+  } catch(err){}
+}
+
+function renderPlaced(){
+  var area=document.getElementById('placedBlocks');
+  document.getElementById('dropHint').style.display=placedBlocks.length?'none':'block';
+  area.innerHTML='';
+  placedBlocks.forEach(function(b,i){
+    var conn=document.createElement('div');
+    if(i>0){ conn.className='connector-line'; area.appendChild(conn); }
+    var div=document.createElement('div');
+    div.className='placed-block';
+    div.style.borderColor=b.color;
+    div.style.background=b.color+'15';
+    div.innerHTML='<span style="font-size:18px;">'+b.icon+'</span><span>'+b.label+'</span><span style="font-size:10px;background:'+b.color+'25;color:'+b.color+';padding:2px 8px;border-radius:6px;font-family:var(--font-pixel);">'+b.cat+'</span><button class="remove-btn" onclick="removeBlock('+i+')">✕</button>';
+    area.appendChild(div);
+  });
+  var hasRequired=requiredBlocks.every(function(id){ return placedBlocks.find(function(b){ return b.id===id; }); });
+  var btn=document.getElementById('testBtn');
+  btn.disabled=!hasRequired; btn.style.opacity=hasRequired?'1':'.5';
+}
+
+function removeBlock(idx){
+  placedBlocks.splice(idx,1);
+  renderPlaced();
+}
+function clearBuild(){
+  placedBlocks=[];renderPlaced();
+  document.getElementById('testSection').style.display='none';
+  testsRun=0;
+}
+
+function startTesting(){
+  document.getElementById('testSection').style.display='block';
+  document.getElementById('testSection').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function runTest(idx, tc){
+  var el=document.getElementById('tc'+idx);
+  el.classList.remove('untested');
+  var pass=Math.random()>0.15;
+  el.classList.add(pass?'pass':'fail');
+  el.querySelector('.expected-badge').style.background=pass?'var(--color-success-soft)':'var(--color-error-soft)';
+  el.querySelector('.expected-badge').style.color=pass?'var(--color-success-ink)':'var(--color-error-ink)';
+  el.querySelector('button').disabled=true;
+  el.querySelector('button').textContent=pass?'✓ Pass':'✗ Fail';
+  testsRun++;
+  if(testsRun>=testCases.length){
+    document.getElementById('testResult').style.display='block';
+    document.getElementById('testResult').innerHTML='<div style="padding:14px;border-radius:12px;background:var(--color-success-soft);border-left:3px solid var(--color-success);font-size:14px;"><strong>All tests run!</strong> Your build handles the required cases. Proceed to the safety check.</div>';
+    setTimeout(function(){ document.getElementById('buildComplete').style.display='block'; },600);
+  }
+}
+
+function submitBuild(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+</script>
+
+{% elif mission_num == 3 %}
+{# ── MISSION 3: Safety Check ── #}
+<div style="background:var(--color-warning-soft);border:1.5px solid var(--color-warning);border-radius:14px;padding:16px;margin-bottom:20px;">
+  <div style="font-size:15px;font-weight:700;margin-bottom:4px;">⚠️ Before you ship — answer these safety questions:</div>
+  <div style="font-size:14px;color:var(--color-text-muted);">Quick but meaningful. This is how responsible builders think.</div>
+</div>
+
+{% set answered_count = [0] %}
+<div id="safetyChecks">
+  {% for q in safety_checks %}
+  <div class="safety-q" id="sq{{ loop.index0 }}">
+    <div style="display:flex;align-items:flex-start;gap:12px;">
+      <span style="font-size:24px;flex-shrink:0;">{{ q.icon }}</span>
+      <div style="flex:1;">
+        <div style="font-size:15px;font-weight:700;margin-bottom:10px;">{{ q.question }}</div>
+        {% if q.type == 'open_text' %}
+        <div class="safety-open">
+          <textarea id="openText{{ loop.index0 }}" placeholder="{{ q.placeholder }}" oninput="checkOpen({{ loop.index0 }}, {{ q.min_length }})"></textarea>
+          <div id="openHint{{ loop.index0 }}" style="font-size:12px;color:var(--color-text-subtle);margin-top:4px;">Minimum {{ q.min_length }} characters</div>
+        </div>
+        {% else %}
+        <div class="safety-opts">
+          {% for opt in q.options %}
+          <button class="safety-opt" onclick="answerSafety({{ loop.index0 }}, {{ loop.index0 }}, this, '{{ opt.prompt }}')">{{ opt.label }}</button>
+          {% endfor %}
+        </div>
+        <div class="safety-prompt" id="prompt{{ loop.index0 }}"></div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div id="safetyDone" style="display:none;text-align:center;padding:24px;">
+  <div style="font-size:40px;margin-bottom:8px;">✅</div>
+  <div style="font-family:var(--font-game);font-size:20px;font-weight:700;margin-bottom:8px;">Safety Check Complete!</div>
+  <div style="font-size:14px;color:var(--color-text-muted);margin-bottom:20px;">You've thought responsibly about your build. That's what good builders do.</div>
+  <button class="btn btn-primary btn-lg" onclick="submitSafety()">Claim Your Badge →</button>
+</div>
+
+<script>
+var totalSafety={{ safety_checks|length }};
+var completedSafety=0;
+
+function answerSafety(qIdx, sqIdx, btn, prompt){
+  var sq=document.getElementById('sq'+sqIdx);
+  sq.querySelectorAll('.safety-opt').forEach(function(b){ b.disabled=true; b.onclick=null; });
+  btn.classList.add('answered');
+  var p=document.getElementById('prompt'+qIdx);
+  p.textContent=prompt;p.style.display='block';
+  completedSafety++;
+  checkSafetyDone();
+}
+function checkOpen(idx, minLen){
+  var val=document.getElementById('openText'+idx).value.trim();
+  if(val.length>=minLen){
+    document.getElementById('openText'+idx).style.borderColor='var(--color-success)';
+    document.getElementById('openHint'+idx).style.color='var(--color-success-ink)';
+    document.getElementById('openHint'+idx).textContent='✓ Good response';
+    completedSafety++;
+    checkSafetyDone();
+    document.getElementById('openText'+idx).oninput=null;
+  }
+}
+function checkSafetyDone(){
+  if(completedSafety>=totalSafety){
+    setTimeout(function(){ document.getElementById('safetyDone').style.display='block'; document.getElementById('safetyDone').scrollIntoView({behavior:'smooth'}); },400);
+  }
+}
+function submitSafety(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+</script>
+{% endif %}
+
+<div style="margin-top:24px;">
+  <a href="{{ url_for('world_home', slug=slug) }}" class="btn btn-ghost btn-sm">{{ icon('arrow-left') }} World Map</a>
+</div>
+{% endblock %}
