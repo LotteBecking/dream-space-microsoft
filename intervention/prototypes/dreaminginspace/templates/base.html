@@ -82,8 +82,8 @@
 
     /* ---------- Base ---------- */
     *, *::before, *::after { box-sizing: border-box; }
-    html { overflow-y: scroll; }
-    html, body { margin: 0; padding: 0; min-height: 100%; }
+    html { overflow-y: scroll; overflow-x: hidden; scroll-behavior: smooth; }
+    html, body { margin: 0; padding: 0; min-height: 100%; overflow-x: hidden; }
     body {
       font-family: var(--font-game);
       font-size: 16px;
@@ -1228,44 +1228,35 @@
        FUN ANIMATIONS & ENGAGEMENT LAYER
        ══════════════════════════════════════════════════════ */
 
-    /* --- Card entrance: fade-slide-up on load --- */
+    /* --- Card entrance: smooth fade on load --- */
     .card, .page-header, .hero-card, .hint-card {
-      animation: fadeSlideUp 0.5s ease-out both;
+      animation: fadeIn 0.4s ease-out both;
     }
     .card:nth-child(1) { animation-delay: 0.05s; }
-    .card:nth-child(2) { animation-delay: 0.12s; }
-    .card:nth-child(3) { animation-delay: 0.19s; }
-    .card:nth-child(4) { animation-delay: 0.26s; }
-    .card:nth-child(5) { animation-delay: 0.33s; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.2s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
 
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
     /* --- Card hover lift --- */
     .card {
-      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      will-change: transform;
+      transition: box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(107, 57, 217, 0.1), 0 0 0 1px rgba(107, 57, 217, 0.06);
+      box-shadow: 0 8px 28px rgba(107, 57, 217, 0.12), 0 0 0 1px rgba(107, 57, 217, 0.06);
     }
 
-    /* --- Button bounce on hover --- */
+    /* --- Button hover glow --- */
     .btn-primary {
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      transition: box-shadow 0.2s ease, background 0.2s ease;
     }
     .btn-primary:hover {
-      animation: btnBounce 0.4s ease;
-    }
-    @keyframes btnBounce {
-      0%   { transform: translateY(-2px); }
-      40%  { transform: translateY(-6px); }
-      60%  { transform: translateY(-3px); }
-      80%  { transform: translateY(-5px); }
-      100% { transform: translateY(-2px); }
+      box-shadow: 0 4px 16px rgba(107, 57, 217, 0.3);
     }
 
     /* --- Glowing pulse for active/important elements --- */
@@ -1323,12 +1314,8 @@
 
     /* --- Page header title entrance --- */
     .display-xl, .display-lg {
-      animation: titlePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-      animation-delay: 0.1s;
-    }
-    @keyframes titlePop {
-      from { opacity: 0; transform: scale(0.9) translateY(10px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
+      animation: fadeIn 0.4s ease-out both;
+      animation-delay: 0.05s;
     }
 
     /* --- Stepper step pulse for current --- */
@@ -1379,11 +1366,7 @@
 
     /* --- Smooth page entrance --- */
     .app-main {
-      animation: pageEnter 0.4s ease-out both;
-    }
-    @keyframes pageEnter {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
+      animation: fadeIn 0.3s ease-out both;
     }
 
     /* --- Smooth selection color --- */
@@ -1398,23 +1381,12 @@
     /* --- Global smooth rendering --- */
     * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
-    /* --- Hint card beaver bounce --- */
-    .hint-card .hint-mascot {
-      animation: beaverBob 3s ease-in-out infinite;
-    }
-    @keyframes beaverBob {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-6px); }
-    }
+    /* --- Hint card beaver (static, no bounce to avoid shifts) --- */
 
-    /* --- Speech bubble pop-in --- */
+    /* --- Speech bubble fade-in --- */
     .speech-bubble {
-      animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-      animation-delay: 0.3s;
-    }
-    @keyframes bubblePop {
-      from { opacity: 0; transform: scale(0.85) translateY(8px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
+      animation: fadeIn 0.3s ease-out both;
+      animation-delay: 0.2s;
     }
 
     /* --- Track foldout smooth open --- */
@@ -1925,20 +1897,7 @@
       }
     }
 
-    /* ── Smooth hover tilt on cards ─────────────────── */
-    document.querySelectorAll('.app-main > .card, .app-main > div > .card').forEach(function(card) {
-      // Skip cards inside the stats sidebar
-      if (card.closest('#stats-panel')) return;
-      card.addEventListener('mousemove', function(e) {
-        var rect = card.getBoundingClientRect();
-        var x = (e.clientX - rect.left) / rect.width - 0.5;
-        var y = (e.clientY - rect.top) / rect.height - 0.5;
-        card.style.transform = 'translateY(-4px) perspective(800px) rotateX(' + (-y * 2) + 'deg) rotateY(' + (x * 2) + 'deg)';
-      });
-      card.addEventListener('mouseleave', function() {
-        card.style.transform = '';
-      });
-    });
+    /* ── Card hover is now shadow-only, no tilt needed ── */
 
     /* ── Button click ripple effect ────────────────── */
     document.querySelectorAll('.btn').forEach(function(btn) {
