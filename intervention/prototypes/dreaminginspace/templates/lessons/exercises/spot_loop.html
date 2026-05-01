@@ -1,0 +1,58 @@
+{% extends "_exercise_wrapper.html" %}
+
+{% block success_message %}You spotted the patterns!{% endblock %}
+
+{% block concept_explainer %}
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #6ee7b7;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 What is a Loop?</h3>
+    <p style="font-size:16px; color:#064e3b; line-height:1.7; margin:0 0 12px 0;">
+      A <strong>loop</strong> is when you repeat the same steps over and over again.
+      Instead of writing "clap" ten times, you can say <strong>"LOOP 10 TIMES: clap"</strong>!
+    </p>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:160px; padding:12px; border-radius:10px; background:white; border:2px solid #bbf7d0;">
+        <div style="font-size:14px; font-weight:600; color:#dc2626; margin-bottom:6px;">❌ Without a loop:</div>
+        <div style="font-size:13px; color:#333;">Jump, Jump, Jump, Jump, Jump</div>
+        <div style="font-size:12px; color:#999; margin-top:4px;">5 lines of code!</div>
+      </div>
+      <div style="flex:1; min-width:160px; padding:12px; border-radius:10px; background:white; border:2px solid #86efac;">
+        <div style="font-size:14px; font-weight:600; color:#16a34a; margin-bottom:6px;">✅ With a loop:</div>
+        <div style="font-size:13px; color:#333;">LOOP 5 TIMES: Jump</div>
+        <div style="font-size:12px; color:#16a34a; margin-top:4px;">Just 1 line!</div>
+      </div>
+    </div>
+    <p style="font-size:15px; color:#064e3b; line-height:1.6; margin:12px 0 0 0;">
+      Below are some routines. <strong>Can you spot which steps repeat?</strong>
+    </p>
+  </div>
+</section>
+{% endblock %}
+
+{% block exercise_form %}
+{% for prob in exercise.problems %}
+<section class="card" style="margin-bottom:16px;">
+  <div class="card-body">
+    <div class="section-title">
+      <span class="section-title-icon">{{ icon('search') }}</span>
+      <h2 class="title-lg">{{ prob.label }}</h2>
+    </div>
+    <div style="background:var(--color-surface); border:2px solid var(--color-border); border-radius:var(--radius-card); padding:14px; margin:12px 0;">
+      <ol style="padding-left:20px; margin:0;">
+        {% for step in prob.steps %}
+        <li class="body" style="line-height:1.6; padding:2px 0;">{{ step }}</li>
+        {% endfor %}
+      </ol>
+    </div>
+    <div style="margin-top:12px;">
+      <label class="eyebrow" style="display:block; margin-bottom:4px;">Which steps repeat?</label>
+      <input type="text" name="repeat_{{ loop.index0 }}" class="input" placeholder="e.g. Brush top left, top right..." />
+    </div>
+    <div style="margin-top:10px;">
+      <label class="eyebrow" style="display:block; margin-bottom:4px;">How many times?</label>
+      <input type="number" name="count_{{ loop.index0 }}" class="input" style="max-width:120px;" placeholder="e.g. 3" min="1" max="20" />
+    </div>
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

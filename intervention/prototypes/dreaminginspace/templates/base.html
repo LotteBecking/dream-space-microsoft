@@ -75,7 +75,7 @@
       --font-pixel: "Silkscreen", "Courier New", monospace;
 
       /* ---------- Layout ---------- */
-      --container-max: 1180px;
+      --container-max: 75%;
       --nav-height: 72px;
       --content-gap: 24px;
     }
@@ -212,15 +212,15 @@
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: saturate(180%) blur(10px);
-      -webkit-backdrop-filter: saturate(180%) blur(10px);
-      border-bottom: 1px solid var(--color-border);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: saturate(180%) blur(16px);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+      border-bottom: 1px solid rgba(107, 57, 217, 0.08);
     }
     .app-header-inner {
       max-width: var(--container-max);
       margin: 0 auto;
-      padding: 14px 32px;
+      padding: 14px clamp(16px, 3vw, 48px);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -233,18 +233,18 @@
       font-family: var(--font-game);
       font-weight: 700;
       color: var(--color-text);
-      font-size: 17px;
+      font-size: 24px;
       letter-spacing: 0;
     }
     .brand-mark {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--color-primary-soft), var(--color-accent-soft));
-      color: var(--color-primary-ink);
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: #fff;
       display: grid;
       place-items: center;
-      box-shadow: 0 4px 10px rgba(107, 57, 217, 0.15);
+      box-shadow: 0 4px 12px rgba(107, 57, 217, 0.25);
     }
     .brand-mark svg { width: 22px; height: 22px; }
     .brand-sub {
@@ -269,66 +269,35 @@
       z-index: 1;
       max-width: var(--container-max);
       margin: 0 auto;
-      padding: 32px 32px 48px;
+      padding: 32px clamp(16px, 3vw, 48px) 48px;
     }
-
-    /* ---------- Bottom nav ---------- */
-    .app-bottom-nav {
-      display: none; /* removed - nav moved to top header */
-    }
-    .app-bottom-nav-inner {
-      max-width: var(--container-max);
-      margin: 0 auto;
-      height: 100%;
-      padding: 0 32px;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      align-items: stretch;
-    }
-    .nav-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 0 12px;
-      font-family: var(--font-game);
-      font-weight: 600;
-      font-size: 13px;
-      color: var(--color-text-muted);
-      border-radius: var(--radius-button);
-      margin: 8px 0;
-      transition: background .12s ease, color .12s ease, transform .12s ease;
-    }
-    .nav-item svg { width: 20px; height: 20px; }
-    .nav-item:hover { color: var(--color-text); background: var(--color-surface-muted); transform: translateY(-1px); }
-    .nav-item.is-active {
-      color: var(--color-primary-ink);
-      background: var(--color-primary-soft);
-      box-shadow: 0 2px 0 var(--color-primary-border);
-    }
-    .nav-item.is-locked { color: var(--color-text-subtle); cursor: not-allowed; }
-    .nav-item.is-locked:hover { background: transparent; color: var(--color-text-subtle); transform: none; }
 
     /* ---------- Top nav pills ---------- */
     .nav-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 7px 14px;
-      border-radius: var(--radius-button);
+      gap: 7px;
+      padding: 9px 18px;
+      border-radius: 100px;
       font-family: var(--font-game);
       font-weight: 600;
-      font-size: 14px;
+      font-size: 16px;
       color: var(--color-text-muted);
       text-decoration: none;
-      transition: background .12s, color .12s;
+      transition: background .15s, color .15s, box-shadow .15s, transform .15s;
+      position: relative;
     }
-    .nav-pill svg { width: 16px; height: 16px; }
-    .nav-pill:hover { background: var(--color-surface-muted); color: var(--color-text); }
+    .nav-pill svg { width: 19px; height: 19px; }
+    .nav-pill:hover { background: var(--color-surface-muted); color: var(--color-text); transform: translateY(-1px); }
     .nav-pill.is-active {
-      background: var(--color-primary-soft);
-      color: var(--color-primary-ink);
+      background: var(--color-primary-ink);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(107, 57, 217, 0.3);
+    }
+    .nav-pill.is-active:hover {
+      background: var(--color-primary-ink);
+      color: #fff;
+      transform: translateY(-1px);
     }
 
     /* ---------- Typography ---------- */
@@ -346,11 +315,12 @@
 
     /* ---------- Cards & panels ---------- */
     .card {
-      background: var(--color-surface);
-      border: 2px solid;
-      border-color: rgba(255,255,255,0.9) var(--color-border) var(--color-border) rgba(255,255,255,0.9);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
       border-radius: var(--radius-card);
-      box-shadow: inset -1px -1px 0 rgba(107,57,217,0.06), inset 1px 1px 0 rgba(255,255,255,0.6), var(--shadow-sm);
+      box-shadow: 0 2px 8px rgba(107, 57, 217, 0.06), 0 0 0 1px rgba(107, 57, 217, 0.04);
     }
     .card-body { padding: 24px; color: #111; }
     .card-body label, .card-body p, .card-body li, .card-body h2, .card-body h3, .card-body span { color: #111; }
@@ -374,7 +344,7 @@
       justify-content: center;
       gap: 8px;
       padding: 11px 18px;
-      border-radius: var(--radius-button);
+      border-radius: 14px;
       font-family: var(--font-game);
       font-weight: 600;
       font-size: 15px;
@@ -382,8 +352,10 @@
       border: 1px solid transparent;
       background: transparent;
       color: var(--color-text);
-      transition: background .12s, border-color .12s, color .12s, box-shadow .15s, transform .12s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       text-decoration: none;
+      position: relative;
+      overflow: hidden;
     }
     .btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
     .btn:active { transform: scale(0.96) !important; }
@@ -1240,9 +1212,10 @@
     }
     @media (max-width: 720px) {
       .app-header-inner, .app-main { padding-left: 16px; padding-right: 16px; }
-      .app-bottom-nav-inner { padding: 0 8px; gap: 2px; }
-      .nav-item { font-size: 0; padding: 0; gap: 0; justify-content: center; }
-      .nav-item svg { width: 22px; height: 22px; }
+      .app-header-inner { flex-wrap: wrap; gap: 12px; padding-top: 10px; padding-bottom: 10px; }
+      .header-nav { order: 3; width: 100%; justify-content: center; }
+      .nav-pill span { display: none; }
+      .nav-pill { padding: 8px 14px; }
       .vocab-grid { grid-template-columns: repeat(2, 1fr); }
       .grid-3, .grid-4 { grid-template-columns: 1fr; }
       .kitchen-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1250,11 +1223,229 @@
       .display-xl { font-size: 32px; }
       .display-lg { font-size: 26px; }
     }
+
+    /* ══════════════════════════════════════════════════════
+       FUN ANIMATIONS & ENGAGEMENT LAYER
+       ══════════════════════════════════════════════════════ */
+
+    /* --- Card entrance: fade-slide-up on load --- */
+    .card, .page-header, .hero-card, .hint-card {
+      animation: fadeSlideUp 0.5s ease-out both;
+    }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.12s; }
+    .card:nth-child(3) { animation-delay: 0.19s; }
+    .card:nth-child(4) { animation-delay: 0.26s; }
+    .card:nth-child(5) { animation-delay: 0.33s; }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Card hover lift --- */
+    .card {
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(107, 57, 217, 0.1), 0 0 0 1px rgba(107, 57, 217, 0.06);
+    }
+
+    /* --- Button bounce on hover --- */
+    .btn-primary {
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .btn-primary:hover {
+      animation: btnBounce 0.4s ease;
+    }
+    @keyframes btnBounce {
+      0%   { transform: translateY(-2px); }
+      40%  { transform: translateY(-6px); }
+      60%  { transform: translateY(-3px); }
+      80%  { transform: translateY(-5px); }
+      100% { transform: translateY(-2px); }
+    }
+
+    /* --- Glowing pulse for active/important elements --- */
+    .chip-success, .callout-success {
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.3); }
+      50%      { box-shadow: 0 0 16px 4px rgba(34, 197, 94, 0.2); }
+    }
+
+    /* --- XP badge shimmer --- */
+    .game-level-badge {
+      position: relative;
+      overflow: hidden;
+    }
+    .game-level-badge::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 200%; height: 100%;
+      background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%   { transform: translateX(-50%); }
+      100% { transform: translateX(50%); }
+    }
+
+    /* --- Vocab card flip enhancement --- */
+    .vocab-card {
+      transition: transform 0.15s ease;
+    }
+    .vocab-card:hover {
+      transform: scale(1.04);
+    }
+    .vocab-card-inner {
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* --- Brand logo gentle bounce --- */
+    .brand-mark {
+      transition: transform 0.3s ease;
+    }
+    .brand:hover .brand-mark {
+      animation: logoWiggle 0.5s ease;
+    }
+    @keyframes logoWiggle {
+      0%   { transform: rotate(0deg); }
+      25%  { transform: rotate(-8deg) scale(1.1); }
+      50%  { transform: rotate(6deg) scale(1.05); }
+      75%  { transform: rotate(-3deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* --- Page header title entrance --- */
+    .display-xl, .display-lg {
+      animation: titlePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      animation-delay: 0.1s;
+    }
+    @keyframes titlePop {
+      from { opacity: 0; transform: scale(0.9) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* --- Stepper step pulse for current --- */
+    .stepper-step.is-current::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: inherit;
+      border: 2px solid var(--color-primary);
+      animation: stepPulse 1.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes stepPulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50%      { opacity: 0; transform: scale(1.15); }
+    }
+
+    /* --- Smooth scrollbar --- */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(107, 57, 217, 0.2); border-radius: 100px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(107, 57, 217, 0.4); }
+
+    /* --- Confetti canvas overlay --- */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* --- Emoji pop for achievements --- */
+    @keyframes emojiPop {
+      0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+      50%  { transform: scale(1.3) rotate(10deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    /* --- Streak counter wiggle --- */
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      20%  { transform: rotate(-6deg); }
+      40%  { transform: rotate(6deg); }
+      60%  { transform: rotate(-4deg); }
+      80%  { transform: rotate(4deg); }
+    }
+
+    /* --- Smooth page entrance --- */
+    .app-main {
+      animation: pageEnter 0.4s ease-out both;
+    }
+    @keyframes pageEnter {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Smooth selection color --- */
+    ::selection {
+      background: rgba(124, 58, 237, 0.2);
+      color: inherit;
+    }
+
+    /* --- Links smooth transition --- */
+    a { transition: color 0.15s ease, opacity 0.15s ease; }
+
+    /* --- Global smooth rendering --- */
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    /* --- Hint card beaver bounce --- */
+    .hint-card .hint-mascot {
+      animation: beaverBob 3s ease-in-out infinite;
+    }
+    @keyframes beaverBob {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+
+    /* --- Speech bubble pop-in --- */
+    .speech-bubble {
+      animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      animation-delay: 0.3s;
+    }
+    @keyframes bubblePop {
+      from { opacity: 0; transform: scale(0.85) translateY(8px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* --- Track foldout smooth open --- */
+    .track-foldout-body {
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    }
+
+    /* --- Input focus glow --- */
+    .input:focus, textarea:focus, select:focus {
+      border-color: var(--color-primary) !important;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    /* --- Success callout entrance --- */
+    .callout-success, [style*="background:#dcfce7"], [style*="background:#f0fdf4"] {
+      animation: successBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    @keyframes successBounce {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
   </style>
   {% block head %}{% endblock %}
 </head>
 <body>
   {% from "_macros.html" import icon, space_beaver, stepper, stepper_multi, callout, hint_card, planet_svg, star_svg, dot_svg, cross_svg with context %}
+
+  <!-- Confetti canvas for celebrations -->
+  <canvas id="confetti-canvas"></canvas>
 
   <!-- Decorative space scenery (planets + twinkles) -->
   <div class="space-scenery" aria-hidden="true">
@@ -1298,15 +1489,9 @@
         <span class="brand-mark">{{ icon('orbit') }}</span>
         <span>Dreaming in Space</span>
       </a>
-      <nav class="header-nav" style="display:flex; align-items:center; gap:4px;">
+      <nav class="header-nav" style="display:flex; align-items:center; gap:6px;">
         <a href="{{ url_for('home') }}" class="nav-pill {% if request.path == '/' %}is-active{% endif %}">
           {{ icon('home') }}<span>Home</span>
-        </a>
-        <a href="{{ url_for('simulator') }}" class="nav-pill {% if '/simulator' in request.path %}is-active{% endif %}">
-          {{ icon('terminal') }}<span>Practice</span>
-        </a>
-        <a href="{{ url_for('exercise', num=1) }}" class="nav-pill {% if '/exercise' in request.path %}is-active{% endif %}">
-          {{ icon('list-checks') }}<span>Missions</span>
         </a>
         <a href="{{ url_for('review') }}" class="nav-pill {% if '/review' in request.path %}is-active{% endif %}">
           {{ icon('trophy') }}<span>Rewards</span>
@@ -1317,9 +1502,10 @@
       </nav>
       <div class="header-context">
         {% block header_context %}
-          <span class="game-level-badge" style="margin-bottom:0; box-shadow:none; padding:4px 10px;">{{ icon('sparkles') }} LVL {{ global_level }}</span>
-          <span class="dot"></span>
-          <span style="font-family:var(--font-pixel); font-size:11px; font-weight:700; color:var(--color-primary-ink);">{{ global_xp }} XP</span>
+          <div style="display:flex; align-items:center; gap:10px; background:var(--color-surface); border:2px solid var(--color-border); border-radius:100px; padding:6px 16px 6px 10px;">
+            <span class="game-level-badge" style="margin-bottom:0; box-shadow:none; padding:4px 11px; font-size:13px; border-radius:100px;">LVL {{ global_level }}</span>
+            <span style="font-family:var(--font-pixel); font-size:14px; font-weight:700; color:var(--color-primary-ink);">{{ global_xp }} XP</span>
+          </div>
         {% endblock %}
       </div>
     </div>
@@ -1328,8 +1514,6 @@
   <main class="app-main">
     {% block content %}{% endblock %}
   </main>
-
-  <!-- bottom nav removed - navigation is now in the top header -->
 
   {% block scripts %}{% endblock %}
 
@@ -1637,5 +1821,193 @@
     });
   })();
   </script>
+
+  <!-- ═══════════════════════════════════════════════════
+       FUN ENGAGEMENT SCRIPTS
+       ═══════════════════════════════════════════════════ -->
+  <script>
+  (function() {
+    'use strict';
+
+    /* ── Confetti System ──────────────────────────────── */
+    var canvas = document.getElementById('confetti-canvas');
+    if (canvas) {
+      var ctx = canvas.getContext('2d');
+      var particles = [];
+      var animating = false;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      var COLORS = ['#7c3aed','#a855f7','#22c55e','#f59e0b','#3b82f6','#ec4899','#14b8a6','#f97316','#06b6d4'];
+
+      function Particle(x, y) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 12;
+        this.vy = Math.random() * -14 - 4;
+        this.gravity = 0.35;
+        this.drag = 0.98;
+        this.size = Math.random() * 8 + 4;
+        this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        this.rotation = Math.random() * 360;
+        this.rotSpeed = (Math.random() - 0.5) * 12;
+        this.opacity = 1;
+        this.shape = Math.random() > 0.5 ? 'rect' : 'circle';
+      }
+
+      function drawParticle(p) {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation * Math.PI / 180);
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = p.color;
+        if (p.shape === 'rect') {
+          ctx.fillRect(-p.size/2, -p.size/4, p.size, p.size/2);
+        } else {
+          ctx.beginPath();
+          ctx.arc(0, 0, p.size/2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var alive = false;
+        for (var i = particles.length - 1; i >= 0; i--) {
+          var p = particles[i];
+          p.vx *= p.drag;
+          p.vy += p.gravity;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.rotation += p.rotSpeed;
+          p.opacity -= 0.008;
+          if (p.opacity > 0 && p.y < canvas.height + 50) {
+            drawParticle(p);
+            alive = true;
+          } else {
+            particles.splice(i, 1);
+          }
+        }
+        if (alive) {
+          requestAnimationFrame(animate);
+        } else {
+          animating = false;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+
+      window.fireConfetti = function(x, y, count) {
+        x = x || canvas.width / 2;
+        y = y || canvas.height / 3;
+        count = count || 80;
+        for (var i = 0; i < count; i++) {
+          particles.push(new Particle(x, y));
+        }
+        if (!animating) {
+          animating = true;
+          animate();
+        }
+      };
+
+      /* Auto-fire confetti on success callouts */
+      var successEl = document.querySelector('.callout-success, [class*="chip-success"]');
+      if (successEl) {
+        setTimeout(function() {
+          var rect = successEl.getBoundingClientRect();
+          window.fireConfetti(rect.left + rect.width/2, rect.top + rect.height/2, 100);
+        }, 300);
+      }
+    }
+
+    /* ── Smooth hover tilt on cards ─────────────────── */
+    document.querySelectorAll('.app-main > .card, .app-main > div > .card').forEach(function(card) {
+      // Skip cards inside the stats sidebar
+      if (card.closest('#stats-panel')) return;
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width - 0.5;
+        var y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = 'translateY(-4px) perspective(800px) rotateX(' + (-y * 2) + 'deg) rotateY(' + (x * 2) + 'deg)';
+      });
+      card.addEventListener('mouseleave', function() {
+        card.style.transform = '';
+      });
+    });
+
+    /* ── Button click ripple effect ────────────────── */
+    document.querySelectorAll('.btn').forEach(function(btn) {
+      btn.style.position = 'relative';
+      btn.style.overflow = 'hidden';
+      btn.addEventListener('click', function(e) {
+        var ripple = document.createElement('span');
+        var rect = btn.getBoundingClientRect();
+        var size = Math.max(rect.width, rect.height) * 2;
+        ripple.style.cssText = 'position:absolute;border-radius:50%;background:rgba(255,255,255,0.35);' +
+          'width:' + size + 'px;height:' + size + 'px;' +
+          'left:' + (e.clientX - rect.left - size/2) + 'px;' +
+          'top:' + (e.clientY - rect.top - size/2) + 'px;' +
+          'transform:scale(0);animation:rippleOut 0.5s ease-out forwards;pointer-events:none;';
+        btn.appendChild(ripple);
+        setTimeout(function() { ripple.remove(); }, 600);
+      });
+    });
+
+    /* ── Counting animation for XP display ─────────── */
+    document.querySelectorAll('[style*="font-pixel"]').forEach(function(el) {
+      var text = el.textContent.trim();
+      var match = text.match(/^(\d+)\s*XP$/);
+      if (match) {
+        var target = parseInt(match[1]);
+        if (target > 0) {
+          var start = Math.max(0, target - 30);
+          var current = start;
+          el.textContent = current + ' XP';
+          var interval = setInterval(function() {
+            current += Math.ceil((target - current) / 5);
+            if (current >= target) {
+              current = target;
+              clearInterval(interval);
+            }
+            el.textContent = current + ' XP';
+          }, 40);
+        }
+      }
+    });
+
+    /* ── Emoji rain on achievement toast ──────────── */
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(m) {
+        m.addedNodes.forEach(function(node) {
+          if (node.nodeType === 1 && node.querySelector) {
+            var emoji = node.querySelector('[style*="font-size:48px"], [style*="font-size: 48px"]');
+            if (emoji) {
+              emoji.style.animation = 'emojiPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both';
+              /* Fire confetti for achievements */
+              if (window.fireConfetti) {
+                setTimeout(function() { window.fireConfetti(undefined, undefined, 60); }, 200);
+              }
+            }
+          }
+        });
+      });
+    });
+    var toastContainer = document.getElementById('achievement-toasts');
+    if (toastContainer) {
+      observer.observe(toastContainer, { childList: true });
+    }
+
+  })();
+  </script>
+  <style>
+    @keyframes rippleOut {
+      to { transform: scale(1); opacity: 0; }
+    }
+  </style>
 </body>
 </html>

@@ -18,87 +18,16 @@ import os
 import random
 import copy
 from difflib import get_close_matches
-from data.lesson_content import (
-    LESSON, ROLE_MODEL, VOCABULARY, LEARNING_OBJECTIVES,
+
+# All lesson & world content is loaded via data/__init__.py
+from data import ALL_LESSONS, ALL_WORLDS
+from data.lessons.lesson1 import (
+    LESSON, ROLE_MODEL, VOCABULARY, OBJECTIVES,
     EXERCISES, TEA_STEPS_CORRECT, TEA_STEPS_ALT, TASK_BLOCKS, CHALLENGES,
-    INITIAL_SANDWICH_STATE, COMMAND_ALIASES, QUIZ_1,
+    INITIAL_SANDWICH_STATE, COMMAND_ALIASES, QUIZ,
     CHEF_LUNCH_ITEMS, CHEF_BLOCKS, CHEF_IF_CONDITIONS, CHEF_THEN_ACTIONS,
 )
-from data.lesson2_robot_content import (
-    LESSON_2_ROBOT, ROLE_MODEL_2_ROBOT, VOCABULARY_2_ROBOT,
-    LEARNING_OBJECTIVES_2_ROBOT, EXERCISES_2_ROBOT, QUIZ_2_ROBOT,
-)
-from data.lesson2_content import (
-    LESSON_2, ROLE_MODEL_2, VOCABULARY_2, LEARNING_OBJECTIVES_2,
-    EXERCISES_2, QUIZ_2,
-)
-from data.lesson3_content import (
-    LESSON_3, ROLE_MODEL_3, VOCABULARY_3, LEARNING_OBJECTIVES_3,
-    EXERCISES_3, QUIZ_3,
-)
-from data.lesson4_content import (
-    LESSON_4, ROLE_MODEL_4, VOCABULARY_4, LEARNING_OBJECTIVES_4,
-    EXERCISES_4, QUIZ_4,
-)
-from data.lesson6_content import LESSON_6, ROLE_MODEL_6, VOCABULARY_6, OBJECTIVES_6, EXERCISES_6, QUIZ_6
-from data.lesson7_content import LESSON_7, ROLE_MODEL_7, VOCABULARY_7, OBJECTIVES_7, EXERCISES_7, QUIZ_7
-from data.lesson8_content import LESSON_8, ROLE_MODEL_8, VOCABULARY_8, OBJECTIVES_8, EXERCISES_8, QUIZ_8
-from data.lesson9_content import LESSON_9, ROLE_MODEL_9, VOCABULARY_9, OBJECTIVES_9, EXERCISES_9, QUIZ_9
-from data.lesson10_content import LESSON_10, ROLE_MODEL_10, VOCABULARY_10, OBJECTIVES_10, EXERCISES_10, QUIZ_10
-from data.lesson11_content import LESSON_11, ROLE_MODEL_11, VOCABULARY_11, OBJECTIVES_11, EXERCISES_11, QUIZ_11
-from data.lesson12_content import LESSON_12, ROLE_MODEL_12, VOCABULARY_12, OBJECTIVES_12, EXERCISES_12, QUIZ_12
-from data.lesson13_content import LESSON_13, ROLE_MODEL_13, VOCABULARY_13, OBJECTIVES_13, EXERCISES_13, QUIZ_13
-from data.lesson14_content import LESSON_14, ROLE_MODEL_14, VOCABULARY_14, OBJECTIVES_14, EXERCISES_14, QUIZ_14
-from data.lesson15_content import LESSON_15, ROLE_MODEL_15, VOCABULARY_15, OBJECTIVES_15, EXERCISES_15, QUIZ_15
-from data.lesson16_content import LESSON_16, ROLE_MODEL_16, VOCABULARY_16, OBJECTIVES_16, EXERCISES_16, QUIZ_16
-from data.lesson17_content import LESSON_17, ROLE_MODEL_17, VOCABULARY_17, OBJECTIVES_17, EXERCISES_17, QUIZ_17
-from data.lesson18_content import LESSON_18, ROLE_MODEL_18, VOCABULARY_18, OBJECTIVES_18, EXERCISES_18, QUIZ_18
-from data.world_data_defender import WORLD as WORLD_DD, PERMISSION_SCENARIOS, TRICK_CASES, REPAIR_TASKS, TOOLS as DD_TOOLS
-from data.world_city_fixer import WORLD as WORLD_CF, ROUTES as CF_ROUTES, TRADEOFF_SCENARIOS, DISRUPTIONS
-from data.world_truth_quest import WORLD as WORLD_TQ, CASES as TQ_CASES, AMBIGUOUS_CASES
-from data.world_fair_future import WORLD as WORLD_FF, SYSTEMS as FF_SYSTEMS, ESCALATION_SCENARIOS
-from data.world_build_good import WORLD as WORLD_BG, TEMPLATES as BG_TEMPLATES, ALL_BLOCKS, SAFETY_CHECKS
 
-ALL_WORLDS = {
-    "data-defender": {"world": WORLD_DD, "data": {"scenarios": PERMISSION_SCENARIOS, "trick_cases": TRICK_CASES, "repair_tasks": REPAIR_TASKS, "tools": DD_TOOLS}},
-    "city-fixer":    {"world": WORLD_CF, "data": {"routes": CF_ROUTES, "tradeoffs": TRADEOFF_SCENARIOS, "disruptions": DISRUPTIONS}},
-    "truth-quest":   {"world": WORLD_TQ, "data": {"cases": TQ_CASES, "ambiguous": AMBIGUOUS_CASES}},
-    "fair-future":   {"world": WORLD_FF, "data": {"systems": FF_SYSTEMS, "escalations": ESCALATION_SCENARIOS}},
-    "build-for-good":{"world": WORLD_BG, "data": {"templates": BG_TEMPLATES, "blocks": ALL_BLOCKS, "safety": SAFETY_CHECKS}},
-}
-
-# ---------------------------------------------------------------------------
-# All-lessons registry (16 lessons across 4 tracks)
-# ---------------------------------------------------------------------------
-def _lesson(l, rm, v, o, ex, q=None):
-    d = {"lesson": l, "role_model": rm, "vocabulary": v, "objectives": o, "exercises": ex}
-    if q: d["quiz"] = q
-    return d
-
-ALL_LESSONS = {
-    # Track 1: Foundations
-    1:  _lesson(LESSON, ROLE_MODEL, VOCABULARY, LEARNING_OBJECTIVES, EXERCISES, QUIZ_1),
-    2:  _lesson(LESSON_2_ROBOT, ROLE_MODEL_2_ROBOT, VOCABULARY_2_ROBOT, LEARNING_OBJECTIVES_2_ROBOT, EXERCISES_2_ROBOT, QUIZ_2_ROBOT),
-    3:  _lesson(LESSON_2, ROLE_MODEL_2, VOCABULARY_2, LEARNING_OBJECTIVES_2, EXERCISES_2, QUIZ_2),
-    4:  _lesson(LESSON_3, ROLE_MODEL_3, VOCABULARY_3, LEARNING_OBJECTIVES_3, EXERCISES_3, QUIZ_3),
-    5:  _lesson(LESSON_4, ROLE_MODEL_4, VOCABULARY_4, LEARNING_OBJECTIVES_4, EXERCISES_4, QUIZ_4),
-    # Track 2: Text-Based Coding
-    6:  _lesson(LESSON_6, ROLE_MODEL_6, VOCABULARY_6, OBJECTIVES_6, EXERCISES_6, QUIZ_6),
-    7:  _lesson(LESSON_7, ROLE_MODEL_7, VOCABULARY_7, OBJECTIVES_7, EXERCISES_7, QUIZ_7),
-    8:  _lesson(LESSON_8, ROLE_MODEL_8, VOCABULARY_8, OBJECTIVES_8, EXERCISES_8, QUIZ_8),
-    9:  _lesson(LESSON_9, ROLE_MODEL_9, VOCABULARY_9, OBJECTIVES_9, EXERCISES_9, QUIZ_9),
-    # Track 3: Creation & Application
-    10: _lesson(LESSON_10, ROLE_MODEL_10, VOCABULARY_10, OBJECTIVES_10, EXERCISES_10, QUIZ_10),
-    11: _lesson(LESSON_11, ROLE_MODEL_11, VOCABULARY_11, OBJECTIVES_11, EXERCISES_11, QUIZ_11),
-    12: _lesson(LESSON_12, ROLE_MODEL_12, VOCABULARY_12, OBJECTIVES_12, EXERCISES_12, QUIZ_12),
-    13: _lesson(LESSON_13, ROLE_MODEL_13, VOCABULARY_13, OBJECTIVES_13, EXERCISES_13, QUIZ_13),
-    # Track 4: Digital World
-    14: _lesson(LESSON_14, ROLE_MODEL_14, VOCABULARY_14, OBJECTIVES_14, EXERCISES_14, QUIZ_14),
-    15: _lesson(LESSON_15, ROLE_MODEL_15, VOCABULARY_15, OBJECTIVES_15, EXERCISES_15, QUIZ_15),
-    16: _lesson(LESSON_16, ROLE_MODEL_16, VOCABULARY_16, OBJECTIVES_16, EXERCISES_16, QUIZ_16),
-    17: _lesson(LESSON_17, ROLE_MODEL_17, VOCABULARY_17, OBJECTIVES_17, EXERCISES_17, QUIZ_17),
-    18: _lesson(LESSON_18, ROLE_MODEL_18, VOCABULARY_18, OBJECTIVES_18, EXERCISES_18, QUIZ_18),
-}
 TOTAL_LESSONS = len(ALL_LESSONS)
 
 app = Flask(__name__)
@@ -498,7 +427,7 @@ def home():
     session.modified = True
 
     return render_template(
-        "home.html",
+        "pages/home.html",
         lesson=LESSON,
         progress=progress,
         all_lessons=ALL_LESSONS,
@@ -517,11 +446,11 @@ def home():
 def lesson_intro():
     progress = get_progress()
     return render_template(
-        "lesson_intro.html",
+        "lesson1/intro.html",
         lesson=LESSON,
         role_model=ROLE_MODEL,
         vocabulary=VOCABULARY,
-        objectives=LEARNING_OBJECTIVES,
+        objectives=OBJECTIVES,
         progress=progress,
     )
 
@@ -584,7 +513,7 @@ def simulator():
         return redirect(url_for("simulator"))
 
     return render_template(
-        "simulator.html",
+        "pages/simulator.html",
         state=state,
         log=log,
         commands=commands,
@@ -745,14 +674,8 @@ def exercise(num):
         context["chef_conditions"] = CHEF_IF_CONDITIONS
         context["chef_actions"] = CHEF_THEN_ACTIONS
 
-    template = f"exercise{num}.html"
+    template = f"lesson1/exercise{num}.html"
     return render_template(template, **context)
-
-
-@app.route("/challenge")
-def challenge():
-    # Challenges are now folded into the recap page as "Extensions".
-    return redirect(url_for("review") + "#extensions")
 
 
 @app.route("/review", methods=["GET", "POST"])
@@ -768,7 +691,7 @@ def review():
             success = True
 
     return render_template(
-        "review.html",
+        "lesson1/review.html",
         vocabulary=VOCABULARY,
         challenges=CHALLENGES,
         progress=progress,
@@ -815,7 +738,7 @@ def profile():
     track1_lessons_done = sum(1 for s in track1.values() if s["completed"])
 
     return render_template(
-        "profile.html",
+        "pages/profile.html",
         progress=progress,
         achievements=achievements,
         lesson_stats=lesson_stats,
@@ -889,7 +812,7 @@ def lesson_home(lesson_num):
     info = ALL_LESSONS[lesson_num]
     progress = get_lesson_progress(lesson_num)
     return render_template(
-        "lesson_home.html",
+        "lessons/home.html",
         lesson=info["lesson"],
         role_model=info["role_model"],
         vocabulary=info["vocabulary"],
@@ -1038,21 +961,6 @@ def lesson_exercise(lesson_num, ex_num):
                 success = True
                 progress = get_lesson_progress(lesson_num)
 
-        elif ex_type == "bug_hunt":
-            bugs = ex.get("bugs", [])
-            all_filled = True
-            for i in range(len(bugs)):
-                if not request.form.get(f"fix_{i}", "").strip():
-                    all_filled = False
-            if not all_filled:
-                error = "Please write a fix for every bug!"
-            else:
-                if ex_num not in lesson_data["completed_exercises"]:
-                    lesson_data["completed_exercises"].append(ex_num)
-                session.modified = True
-                success = True
-                progress = get_lesson_progress(lesson_num)
-
         elif ex_type == "read_conditional":
             problems = ex.get("problems", [])
             correct_count = 0
@@ -1146,21 +1054,21 @@ def lesson_exercise(lesson_num, ex_num):
 
     # Template mapping
     TEMPLATE_MAP = {
-        "robot_maze": "l2r_maze.html",
-        "robot_commands": "l2r_commands.html",
-        "robot_debug": "l_bug_hunt.html",
-        "precision_rewrite": "l2r_precision.html",
-        "spot_loop": "l2_spot_loop.html",
-        "rewrite_loop": "l2_rewrite_loop.html",
-        "bug_hunt": "l_bug_hunt.html",
-        "read_conditional": "l3_read_conditional.html",
-        "write_conditional": "l3_write_conditional.html",
-        "grouping": "l4_grouping.html",
-        "decompose": "l4_decompose.html",
-        "ordering_dependencies": "l4_ordering.html",
+        "robot_maze": "lessons/exercises/maze.html",
+        "robot_commands": "lessons/exercises/commands.html",
+        "robot_debug": "lessons/exercises/bug_hunt.html",
+        "precision_rewrite": "lessons/exercises/precision.html",
+        "spot_loop": "lessons/exercises/spot_loop.html",
+        "rewrite_loop": "lessons/exercises/rewrite_loop.html",
+        "bug_hunt": "lessons/exercises/bug_hunt.html",
+        "read_conditional": "lessons/exercises/read_conditional.html",
+        "write_conditional": "lessons/exercises/write_conditional.html",
+        "grouping": "lessons/exercises/grouping.html",
+        "decompose": "lessons/exercises/decompose.html",
+        "ordering_dependencies": "lessons/exercises/ordering.html",
     }
     ex_type = ex.get("type", "written")
-    template = TEMPLATE_MAP.get(ex_type, "l_generic.html")
+    template = TEMPLATE_MAP.get(ex_type, "lessons/exercises/generic.html")
     return render_template(template, **context)
 
 
@@ -1192,7 +1100,7 @@ def lesson_quiz(lesson_num):
         if result["percent"] == 100:
             session["quiz_perfect"] = True
             session.modified = True
-    return render_template("l_quiz.html", questions=quiz, lesson_num=lesson_num, lesson=lesson, result=result, progress=get_lesson_progress(lesson_num))
+    return render_template("lessons/quiz.html", questions=quiz, lesson_num=lesson_num, lesson=lesson, result=result, progress=get_lesson_progress(lesson_num))
 
 
 @app.route("/lesson/<int:lesson_num>/recap", methods=["GET", "POST"])
@@ -1218,7 +1126,7 @@ def lesson_recap(lesson_num):
         recap_submitted = True
 
     return render_template(
-        "l_recap.html",
+        "lessons/recap.html",
         lesson=info["lesson"],
         vocabulary=info["vocabulary"],
         objectives=info["objectives"],
@@ -1255,7 +1163,7 @@ def world_home(slug):
     info = ALL_WORLDS[slug]
     progress = get_world_progress(slug)
     return render_template(
-        "world_hub.html",
+        "worlds/hub.html",
         world=info["world"],
         world_data=info["data"],
         progress=progress,
@@ -1323,11 +1231,11 @@ def world_mission(slug, n):
             extra["safety_checks"] = info["data"]["safety"]
 
     template_map = {
-        "data-defender": "world_data_defender.html",
-        "city-fixer": "world_city_fixer.html",
-        "truth-quest": "world_truth_quest.html",
-        "fair-future": "world_fair_future.html",
-        "build-for-good": "world_build_good.html",
+        "data-defender": "worlds/data_defender.html",
+        "city-fixer": "worlds/city_fixer.html",
+        "truth-quest": "worlds/truth_quest.html",
+        "fair-future": "worlds/fair_future.html",
+        "build-for-good": "worlds/build_good.html",
     }
 
     return render_template(
@@ -1358,7 +1266,7 @@ def world_reward(slug):
     world = ALL_WORLDS[slug]["world"]
     xp = session.get("xp", 0)
     return render_template(
-        "world_reward.html",
+        "worlds/reward.html",
         world=world,
         progress=progress,
         slug=slug,

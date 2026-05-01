@@ -1,0 +1,48 @@
+{% extends "_exercise_wrapper.html" %}
+
+{% block success_message %}Loops make everything shorter!{% endblock %}
+
+{% block concept_explainer %}
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #6ee7b7;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 How to Write a Loop</h3>
+    <p style="font-size:16px; color:#064e3b; line-height:1.7; margin:0 0 12px 0;">
+      When you see the same steps repeated, you can wrap them in a <strong>LOOP</strong>.
+      A loop has two parts: <strong>how many times</strong> to repeat, and <strong>what steps</strong> to repeat.
+    </p>
+    <div style="padding:14px 16px; border-radius:10px; background:white; border:2px solid #6ee7b7; font-size:15px; text-align:center;">
+      <strong style="color:#059669;">LOOP</strong> <em>[number]</em> <strong style="color:#059669;">TIMES:</strong> <em>[steps that repeat]</em>
+    </div>
+    <p style="font-size:14px; color:#064e3b; margin:10px 0 0 0;">
+      Look at the long code below. Find the repeating part, count how many times it repeats, then write it as a loop!
+    </p>
+  </div>
+</section>
+{% endblock %}
+
+{% block exercise_form %}
+{% for prob in exercise.problems %}
+<section class="card" style="margin-bottom:16px;">
+  <div class="card-body">
+    <div class="section-title">
+      <span class="section-title-icon">{{ icon('refresh') }}</span>
+      <h2 class="title-lg">{{ prob.label }}</h2>
+    </div>
+    <div style="background:var(--color-ink); color:#f1f5f9; border-radius:var(--radius-card); padding:16px 18px; margin:12px 0; font-family:var(--font-mono, monospace); font-size:15px; line-height:1.7; white-space:pre-wrap; font-weight:500;">{{ prob.long_code }}</div>
+    <div style="display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; margin-top:12px;">
+      <div>
+        <label class="eyebrow" style="display:block; margin-bottom:4px;">LOOP</label>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <input type="number" name="times_{{ loop.index0 }}" class="input" style="width:80px;" placeholder="?" min="1" max="100" />
+          <span class="eyebrow" style="white-space:nowrap;">TIMES:</span>
+        </div>
+      </div>
+      <div style="flex:1; min-width:200px;">
+        <label class="eyebrow" style="display:block; margin-bottom:4px;">Steps inside the loop</label>
+        <textarea name="body_{{ loop.index0 }}" class="input" rows="3" placeholder="Write the steps that repeat..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

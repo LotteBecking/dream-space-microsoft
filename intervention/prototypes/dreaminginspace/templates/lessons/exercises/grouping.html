@@ -1,0 +1,59 @@
+{% extends "_exercise_wrapper.html" %}
+
+{% block success_message %}Great grouping! You found the sub-tasks.{% endblock %}
+
+{% block concept_explainer %}
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #93c5fd;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 What is Decomposition?</h3>
+    <p style="font-size:16px; color:#1e3a5f; line-height:1.7; margin:0 0 12px 0;">
+      <strong>Decomposition</strong> means breaking a big task into <strong>smaller groups</strong>.
+      Each group is a <strong>sub-task</strong> you can tackle on its own!
+    </p>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:160px; padding:12px; border-radius:10px; background:white; border:2px solid #bfdbfe;">
+        <div style="font-size:14px; font-weight:600; color:#dc2626; margin-bottom:4px;">❌ One giant list:</div>
+        <div style="font-size:13px;">Buy flour, Preheat oven, Mix eggs, Frost cake...</div>
+      </div>
+      <div style="flex:1; min-width:160px; padding:12px; border-radius:10px; background:white; border:2px solid #86efac;">
+        <div style="font-size:14px; font-weight:600; color:#16a34a; margin-bottom:4px;">✅ Grouped:</div>
+        <div style="font-size:13px;">🛒 Shopping → 🥣 Mixing → 🎂 Baking → 🧁 Decorating</div>
+      </div>
+    </div>
+    <p style="font-size:15px; color:#1e3a5f; margin:12px 0 0 0;">
+      Sort the jumbled steps below into the <strong>right groups</strong>.
+    </p>
+  </div>
+</section>
+{% endblock %}
+
+{% block submit_button %}
+<button type="submit" class="btn btn-primary">
+  <span>Check Groups</span>{{ icon('check') }}
+</button>
+{% endblock %}
+
+{% block exercise_form %}
+<section class="card">
+  <div class="card-body">
+    <div class="section-title">
+      <span class="section-title-icon">{{ icon('layers') }}</span>
+      <h2 class="title-lg">{{ exercise.task_title }}</h2>
+    </div>
+    <p class="body-muted" style="margin-bottom:16px;">{{ exercise.description }}</p>
+    <div class="stack-sm">
+      {% for item in exercise.jumbled_steps %}
+      <div style="display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:var(--radius-input); border:2px solid var(--color-border); background:var(--color-surface);">
+        <span class="body" style="flex:1;">{{ item.step }}</span>
+        <select name="group_{{ loop.index0 }}" class="input" style="width:auto; max-width:180px; padding:8px 12px;" required>
+          <option value="">Choose group...</option>
+          {% for g in exercise.groups %}
+          <option value="{{ g }}">{{ g }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

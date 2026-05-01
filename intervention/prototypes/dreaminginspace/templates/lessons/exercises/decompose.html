@@ -1,0 +1,60 @@
+{% extends "_exercise_wrapper.html" %}
+
+{% block success_message %}You broke the problem into clean sub-tasks!{% endblock %}
+
+{% block concept_explainer %}
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #93c5fd;">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 Break It Down!</h3>
+    <p style="font-size:16px; color:#1e3a5f; line-height:1.7; margin:0;">
+      Big problems become easy when you <strong>decompose</strong> them into smaller sub-tasks.
+      Each sub-task should be small enough to do on its own. Give each one a name and list its steps!
+    </p>
+  </div>
+</section>
+{% endblock %}
+
+{% block exercise_form %}
+<section class="card">
+  <div class="card-body">
+    <div class="section-title">
+      <span class="section-title-icon">{{ icon('flag') }}</span>
+      <h2 class="title-lg">Choose your big task</h2>
+    </div>
+    <ul class="stack-sm" style="list-style:none;">
+      {% for opt in exercise.task_options %}
+      <li style="padding:12px 14px; border-radius:var(--radius-input); border:2px solid var(--color-border); background:var(--color-surface);">
+        <span class="body" style="font-weight:600;">{{ opt.label }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+{# Close wrapper form, open our own #}
+</form>
+<form method="post">
+  <section class="card">
+    <div class="card-body">
+      <div class="section-title">
+        <span class="section-title-icon">{{ icon('list-checks') }}</span>
+        <h2 class="title-lg">Your sub-tasks</h2>
+      </div>
+      <p class="body-muted" style="margin-bottom:14px;">Break the big task into at least {{ exercise.min_subtasks }} sub-tasks. Write {{ exercise.min_steps_per_subtask }}+ steps for each.</p>
+      {% for i in range(1, 5) %}
+      <div style="margin-bottom:16px; padding:16px; border-radius:var(--radius-card); border:2px solid var(--color-border); background:var(--color-surface);">
+        <label class="eyebrow" style="display:block; margin-bottom:8px; color:var(--color-primary);">Sub-task {{ i }}</label>
+        <input type="text" name="subtask_name_{{ i }}" class="input" placeholder="Name this sub-task..." style="margin-bottom:10px;" />
+        <div class="stack-sm">
+          {% for j in range(1, 4) %}
+          <div class="step-row">
+            <span class="step-index">{{ j }}</span>
+            <input type="text" name="subtask_{{ i }}_step_{{ j }}" class="input" placeholder="Step {{ j }}..." />
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}
