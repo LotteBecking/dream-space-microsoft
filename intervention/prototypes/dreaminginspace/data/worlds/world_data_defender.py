@@ -1,4 +1,4 @@
-"""World: Data Defender — privacy rescue game.
+"""World: Data Defender , privacy rescue game.
 Track 5: Digital Missions | Dreaming in Space.
 """
 
@@ -20,7 +20,7 @@ WORLD = {
         {
             "id": 1,
             "title": "Permission Patrol",
-            "goal": "Review incoming app requests. Decide what to allow — and why.",
+            "goal": "Review incoming app requests. Decide what to allow , and why.",
             "phase": "puzzle",
             "type": "permission_decisions",
         },
@@ -53,12 +53,12 @@ PERMISSION_SCENARIOS = [
         "description": "SpeedRoute wants your location at all times, even when the app is closed.",
         "necessary": False,
         "best_choice": "allow_using",
-        "explanation": "A map app needs location while you use it — not 24/7. Always-on is excessive.",
+        "explanation": "A map app needs location while you use it , not 24/7. Always-on is excessive.",
         "choices": {
             "allow": {"label": "Allow always", "feedback": "Too much! The app doesn't need your location when you're not using it.", "shield": -2},
             "allow_using": {"label": "Allow while using", "feedback": "Smart. Location access only when the app is open is enough.", "shield": +2},
             "deny": {"label": "Deny", "feedback": "Then the map can't work at all. Allow while using is better.", "shield": 0},
-            "inspect": {"label": "Inspect more", "feedback": "Good instinct — the 'always-on' wording is the red flag here.", "shield": +1},
+            "inspect": {"label": "Inspect more", "feedback": "Good instinct , the 'always-on' wording is the red flag here.", "shield": +1},
         },
         "secondary": "Was asking for always-on access…",
         "secondary_options": ["Necessary", "Excessive", "Unclear"],
@@ -76,9 +76,9 @@ PERMISSION_SCENARIOS = [
         "explanation": "A space shooter has no reason to use your camera.",
         "choices": {
             "allow": {"label": "Allow always", "feedback": "Why does a game need your camera? This is suspicious.", "shield": -3},
-            "allow_using": {"label": "Allow while using", "feedback": "Still no — games don't need cameras unless it's an AR feature (which this isn't).", "shield": -1},
+            "allow_using": {"label": "Allow while using", "feedback": "Still no , games don't need cameras unless it's an AR feature (which this isn't).", "shield": -1},
             "deny": {"label": "Deny", "feedback": "Correct! No legitimate reason for a space shooter to access your camera.", "shield": +3},
-            "inspect": {"label": "Inspect more", "feedback": "Good instinct. There's no reason listed — that's the problem.", "shield": +1},
+            "inspect": {"label": "Inspect more", "feedback": "Good instinct. There's no reason listed , that's the problem.", "shield": +1},
         },
         "secondary": "This request was…",
         "secondary_options": ["Necessary", "Excessive", "Unclear"],
@@ -95,7 +95,7 @@ PERMISSION_SCENARIOS = [
         "best_choice": "inspect",
         "explanation": "You could invite classmates without giving the app ALL your contacts. This bundles too much.",
         "choices": {
-            "allow": {"label": "Allow always", "feedback": "This gives a school app access to your entire contact list — that's a lot of private data.", "shield": -2},
+            "allow": {"label": "Allow always", "feedback": "This gives a school app access to your entire contact list , that's a lot of private data.", "shield": -2},
             "allow_using": {"label": "Allow while using", "feedback": "Better, but the app doesn't really need ALL contacts. Ask yourself: could it work with less?", "shield": 0},
             "deny": {"label": "Deny", "feedback": "Reasonable. You can invite classmates another way.", "shield": +1},
             "inspect": {"label": "Inspect more", "feedback": "Right call. The 'invite classmates' reason doesn't justify full contact access.", "shield": +2},
@@ -118,7 +118,7 @@ PERMISSION_SCENARIOS = [
             "allow": {"label": "Allow always", "feedback": "A weather app with microphone access? That's very suspicious.", "shield": -3},
             "allow_using": {"label": "Allow while using", "feedback": "Still no clear reason why a weather app needs your mic.", "shield": -1},
             "deny": {"label": "Deny", "feedback": "Good. No explanation = no permission.", "shield": +2},
-            "inspect": {"label": "Inspect more", "feedback": "Smart. No reason was given — that should always make you pause.", "shield": +3},
+            "inspect": {"label": "Inspect more", "feedback": "Smart. No reason was given , that should always make you pause.", "shield": +3},
         },
         "secondary": "A permission request with no explanation is…",
         "secondary_options": ["Necessary", "Excessive", "Unclear"],
@@ -133,10 +133,10 @@ PERMISSION_SCENARIOS = [
         "description": "ConnectMe (a chat app) wants to send you notifications for new messages.",
         "necessary": True,
         "best_choice": "allow",
-        "explanation": "Notifications make sense for a chat app — this is expected and reasonable.",
+        "explanation": "Notifications make sense for a chat app , this is expected and reasonable.",
         "choices": {
             "allow": {"label": "Allow", "feedback": "Makes sense. You'd miss messages without notifications from a chat app.", "shield": +2},
-            "allow_using": {"label": "Allow while using", "feedback": "Notifications only make sense when the app is in the background — so this actually blocks them.", "shield": -1},
+            "allow_using": {"label": "Allow while using", "feedback": "Notifications only make sense when the app is in the background , so this actually blocks them.", "shield": -1},
             "deny": {"label": "Deny", "feedback": "You'd miss messages. Notifications are necessary for a chat app.", "shield": 0},
             "inspect": {"label": "Inspect more", "feedback": "Fair, but this is a normal request for a chat app.", "shield": +1},
         },
@@ -150,14 +150,14 @@ PERMISSION_SCENARIOS = [
         "app_type": "creator",
         "app_emoji": "🎨",
         "permission": "Access to ALL files on your device",
-        "description": "ArtPad wants access to all files — not just your art folder.",
+        "description": "ArtPad wants access to all files , not just your art folder.",
         "necessary": False,
         "best_choice": "deny",
         "explanation": "An art app only needs access to save/open art files. Full device access is too much.",
         "choices": {
             "allow": {"label": "Allow always", "feedback": "All your files? The app only needs an art folder.", "shield": -3},
             "allow_using": {"label": "Allow while using", "feedback": "Still gives full access. The app needs much less than this.", "shield": -1},
-            "deny": {"label": "Deny", "feedback": "Correct. Ask for a specific folder instead — the app doesn't need everything.", "shield": +3},
+            "deny": {"label": "Deny", "feedback": "Correct. Ask for a specific folder instead , the app doesn't need everything.", "shield": +3},
             "inspect": {"label": "Inspect more", "feedback": "Good instinct. Full file access for an art app is excessive.", "shield": +2},
         },
         "secondary": "Full device file access for an art app is…",
@@ -172,13 +172,13 @@ TRICK_CASES = [
         "id": "fitness_health",
         "app": "FitSpark",
         "app_emoji": "🏃",
-        "title": "Sounds useful — but is it?",
+        "title": "Sounds useful , but is it?",
         "setup": "FitSpark tracks your steps. Now it wants access to your full health history, medical records, and family health data to give 'personalised tips'.",
         "question": "What's the problem here?",
         "options": [
-            {"text": "Nothing — personalised tips sound great", "correct": False, "feedback": "The tips might be useful, but sharing your full medical history for a step counter is a huge privacy risk."},
+            {"text": "Nothing , personalised tips sound great", "correct": False, "feedback": "The tips might be useful, but sharing your full medical history for a step counter is a huge privacy risk."},
             {"text": "The benefit sounds good but the data requested is far too sensitive", "correct": True, "feedback": "Exactly. 'Useful sounding' doesn't mean the data request is proportionate or safe."},
-            {"text": "The app should only track steps, not give tips", "correct": False, "feedback": "That's a product choice — the real issue is the amount of sensitive data being requested."},
+            {"text": "The app should only track steps, not give tips", "correct": False, "feedback": "That's a product choice , the real issue is the amount of sensitive data being requested."},
         ],
         "reveal": "This is called disproportionate data collection. The goal sounds good, but the data requested goes far beyond what's needed.",
         "ct_moment": "Rule Testing: Does the usefulness of the feature justify the privacy cost?",
@@ -191,12 +191,12 @@ TRICK_CASES = [
         "setup": "QuizCraft asks: 'Allow QuizCraft to access your microphone, camera, location, and contacts to improve your quiz experience.'",
         "question": "What's wrong with this request?",
         "options": [
-            {"text": "All four of those could be useful for a quiz app", "correct": False, "feedback": "Maybe one or two — but all four bundled in one request hides the individual impact."},
-            {"text": "It bundles four different permissions into one — hard to know what's really needed", "correct": True, "feedback": "Correct. Bundled permission requests make it hard to evaluate each one separately. It's a manipulative design."},
-            {"text": "Quiz apps can't use microphones", "correct": False, "feedback": "Some quiz apps do use microphones (voice answers) — the problem here is the bundling, not the mic."},
+            {"text": "All four of those could be useful for a quiz app", "correct": False, "feedback": "Maybe one or two , but all four bundled in one request hides the individual impact."},
+            {"text": "It bundles four different permissions into one , hard to know what's really needed", "correct": True, "feedback": "Correct. Bundled permission requests make it hard to evaluate each one separately. It's a manipulative design."},
+            {"text": "Quiz apps can't use microphones", "correct": False, "feedback": "Some quiz apps do use microphones (voice answers) , the problem here is the bundling, not the mic."},
         ],
         "reveal": "Bundling permissions is a dark pattern. Always ask: can I approve some but not others?",
-        "ct_moment": "Decomposition: Break the bundle apart — evaluate each permission on its own.",
+        "ct_moment": "Decomposition: Break the bundle apart , evaluate each permission on its own.",
     },
     {
         "id": "vague_reason",
@@ -206,7 +206,7 @@ TRICK_CASES = [
         "setup": "NoteSync says: 'We need your data to improve our services.' It requests access to your notes, browsing history, and purchase data.",
         "question": "Why is this a problem?",
         "options": [
-            {"text": "Improving services is a bad goal", "correct": False, "feedback": "Improving services is fine — the problem is using that vague phrase to justify collecting lots of unrelated data."},
+            {"text": "Improving services is a bad goal", "correct": False, "feedback": "Improving services is fine , the problem is using that vague phrase to justify collecting lots of unrelated data."},
             {"text": "The reason is too vague to justify three types of sensitive data", "correct": True, "feedback": "Yes. 'Improve our services' is almost meaningless. What specifically requires your browsing and purchase history?"},
             {"text": "Notes apps don't need internet access", "correct": False, "feedback": "That's a separate issue. The problem here is the vague justification for lots of data."},
         ],

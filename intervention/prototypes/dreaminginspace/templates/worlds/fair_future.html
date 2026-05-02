@@ -175,8 +175,8 @@
   <div style="font-size:14px;color:var(--color-text-subtle);margin-bottom:16px;">Look at the inputs and outputs above. Which part of the system is the problem?</div>
   <div style="display:flex;flex-direction:column;gap:10px;">
     <button class="verdict-opt fix-opt" style="border-radius:12px;font-size:14px;" onclick="spotRule(this,false,'The data inputs (who applied) are the problem')">The input data is biased</button>
-    <button class="verdict-opt fix-opt" style="border-radius:12px;font-size:14px;" onclick="spotRule(this,true,'{{ sys.broken_rule.name }} is the broken rule — '+{{ sys.broken_rule.problem|tojson }})">The rule: {{ sys.broken_rule.name }}</button>
-    <button class="verdict-opt fix-opt" style="border-radius:12px;font-size:14px;" onclick="spotRule(this,false,'The output labels are standard — the problem is what rule drives them')">The output labels are wrong</button>
+    <button class="verdict-opt fix-opt" style="border-radius:12px;font-size:14px;" onclick="spotRule(this,true,'{{ sys.broken_rule.name }} is the broken rule , '+{{ sys.broken_rule.problem|tojson }})">The rule: {{ sys.broken_rule.name }}</button>
+    <button class="verdict-opt fix-opt" style="border-radius:12px;font-size:14px;" onclick="spotRule(this,false,'The output labels are standard , the problem is what rule drives them')">The output labels are wrong</button>
   </div>
   <div id="spotFeedback" style="display:none;margin-top:12px;"></div>
   <button id="spotNext" class="btn btn-primary btn-lg" style="display:none;margin-top:16px;" onclick="submitM1()">
@@ -201,7 +201,7 @@ function submitM1(){ var f=document.createElement('form');f.method='POST';f.acti
 </script>
 
 {% elif mission_num == 2 %}
-{# Mission 2: Repair lab — choose a fix #}
+{# Mission 2: Repair lab , choose a fix #}
 <div class="card">
   <div style="font-size:16px;font-weight:700;margin-bottom:4px;">🔧 Repair Lab</div>
   <div style="font-size:14px;color:var(--color-text-subtle);margin-bottom:16px;">Choose a rule change. See what happens to the outputs.</div>
@@ -278,7 +278,7 @@ function submitM2(){ var f=document.createElement('form');f.method='POST';f.acti
 {# ── MISSION 3: ESCALATION ── #}
 {% set esc = escalation %}
 <div style="background:var(--color-primary-soft);border:2px solid var(--color-primary-border);border-radius:16px;padding:20px;margin-bottom:20px;">
-  <div style="font-family:var(--font-pixel);font-size:10px;letter-spacing:.08em;color:var(--color-primary-ink);margin-bottom:8px;">HARD CASE — WHEN SHOULD A HUMAN DECIDE?</div>
+  <div style="font-family:var(--font-pixel);font-size:10px;letter-spacing:.08em;color:var(--color-primary-ink);margin-bottom:8px;">HARD CASE , WHEN SHOULD A HUMAN DECIDE?</div>
   <div style="font-size:15px;line-height:1.6;">{{ esc.context }}</div>
   <div class="rule-box broken" style="margin-top:12px;">
     <span style="font-size:18px;">⚙️</span>

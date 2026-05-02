@@ -1,4 +1,4 @@
-"""Lesson 8: The Cargo Hold — Lists & Collections.
+"""Lesson 8: The Cargo Hold , Lists & Collections.
 Track 2: Text-Based Coding | Dreaming in Space.
 """
 

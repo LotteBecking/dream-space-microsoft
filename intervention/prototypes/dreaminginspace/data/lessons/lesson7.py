@@ -1,4 +1,4 @@
-"""Lesson 7: Function Factories — Reusable Instructions.
+"""Lesson 7: Function Factories , Reusable Instructions.
 Track 2: Text-Based Coding | Dreaming in Space.
 """
 

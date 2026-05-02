@@ -1,4 +1,4 @@
-"""Lesson 18: Prompt Pilot — Talking to AI.
+"""Lesson 18: Prompt Pilot , Talking to AI.
 Track 4: The Digital World | Dreaming in Space.
 """
 

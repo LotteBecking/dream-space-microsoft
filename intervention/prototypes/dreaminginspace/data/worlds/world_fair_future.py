@@ -1,4 +1,4 @@
-"""World: Fair Future Lab — system-testing lab game.
+"""World: Fair Future Lab , system-testing lab game.
 Track 5: Digital Missions | Dreaming in Space.
 """
 
@@ -6,7 +6,7 @@ WORLD = {
     "slug": "fair-future",
     "title": "Fair Future Lab",
     "tagline": "Change the rule. See what happens.",
-    "description": "Test automated systems, spot unfairness, and repair the rules — but know when to escalate.",
+    "description": "Test automated systems, spot unfairness, and repair the rules , but know when to escalate.",
     "color": "#0d9488",
     "color_light": "#2dd4bf",
     "icon": "sliders",
@@ -34,7 +34,7 @@ WORLD = {
         {
             "id": 3,
             "title": "The Hard Case",
-            "goal": "Some outputs need a human — not an algorithm. Know when to escalate.",
+            "goal": "Some outputs need a human , not an algorithm. Know when to escalate.",
             "phase": "twist",
             "type": "escalation",
         },
@@ -60,16 +60,16 @@ SYSTEMS = [
             "problem": "This rule rejects students before reading their essay or other qualities.",
         },
         "broken_outputs": [
-            {"name": "Amir", "emoji": "👦", "result": "REJECTED", "reason": "Grade B — filtered out", "fair": False},
+            {"name": "Amir", "emoji": "👦", "result": "REJECTED", "reason": "Grade B , filtered out", "fair": False},
             {"name": "Priya", "emoji": "👧", "result": "ACCEPTED", "reason": "Grade A", "fair": True},
-            {"name": "Jake", "emoji": "👦", "result": "REJECTED", "reason": "Grade C — filtered out", "fair": False},
+            {"name": "Jake", "emoji": "👦", "result": "REJECTED", "reason": "Grade C , filtered out", "fair": False},
             {"name": "Sofia", "emoji": "👧", "result": "ACCEPTED", "reason": "Grade A", "fair": True},
         ],
-        "issue": "Amir and Jake have strong essays and extracurricular involvement — but they never get considered. The rule is too blunt.",
+        "issue": "Amir and Jake have strong essays and extracurricular involvement , but they never get considered. The rule is too blunt.",
         "fix_options": [
             {
                 "id": "remove_grade",
-                "label": "Remove the grade filter entirely — assess all applicants",
+                "label": "Remove the grade filter entirely , assess all applicants",
                 "rule_change": "All applicants reviewed on essay + involvement",
                 "outputs": [
                     {"name": "Amir", "emoji": "👦", "result": "REVIEWED", "reason": "Essay 7/10 + extracurricular", "fair": True},
@@ -77,7 +77,7 @@ SYSTEMS = [
                     {"name": "Jake", "emoji": "👦", "result": "REVIEWED", "reason": "Essay 9/10 + extracurricular", "fair": True},
                     {"name": "Sofia", "emoji": "👧", "result": "REVIEWED", "reason": "Essay 6/10 + Grade A", "fair": True},
                 ],
-                "verdict": "Fairer — everyone gets considered. Not perfect (still needs a human reviewer).",
+                "verdict": "Fairer , everyone gets considered. Not perfect (still needs a human reviewer).",
                 "better": True,
             },
             {
@@ -90,7 +90,7 @@ SYSTEMS = [
                     {"name": "Jake", "emoji": "👦", "result": "REVIEWED", "reason": "Grade C meets new threshold", "fair": True},
                     {"name": "Sofia", "emoji": "👧", "result": "REVIEWED", "reason": "Grade A", "fair": True},
                 ],
-                "verdict": "More balanced — but still uses grade as a filter. Helps here, but could still exclude valid applicants.",
+                "verdict": "More balanced , but still uses grade as a filter. Helps here, but could still exclude valid applicants.",
                 "better": True,
             },
             {
@@ -98,12 +98,12 @@ SYSTEMS = [
                 "label": "Add rule: high essay score (8+) overrides grade filter",
                 "rule_change": "IF essay ≥ 8 → advance regardless of grade",
                 "outputs": [
-                    {"name": "Amir", "emoji": "👦", "result": "REJECTED", "reason": "Essay 7, Grade B — doesn't meet either threshold", "fair": False},
+                    {"name": "Amir", "emoji": "👦", "result": "REJECTED", "reason": "Essay 7, Grade B , doesn't meet either threshold", "fair": False},
                     {"name": "Priya", "emoji": "👧", "result": "ACCEPTED", "reason": "Grade A + Essay 8", "fair": True},
-                    {"name": "Jake", "emoji": "👦", "result": "ACCEPTED", "reason": "Essay 9 — override applied", "fair": True},
+                    {"name": "Jake", "emoji": "👦", "result": "ACCEPTED", "reason": "Essay 9 , override applied", "fair": True},
                     {"name": "Sofia", "emoji": "👧", "result": "ACCEPTED", "reason": "Grade A", "fair": True},
                 ],
-                "verdict": "Fairer for Jake — but Amir is still excluded despite a good overall profile. More balanced, not perfect.",
+                "verdict": "Fairer for Jake , but Amir is still excluded despite a good overall profile. More balanced, not perfect.",
                 "better": True,
             },
         ],
@@ -131,19 +131,19 @@ SYSTEMS = [
             {"name": "Fatima", "emoji": "👧", "result": "APPROVED", "reason": "Score: 9 (no bonus, genuinely high)", "fair": True},
             {"name": "Leo", "emoji": "👦", "result": "APPROVED", "reason": "Score: 8 (6 + W bonus)", "fair": False},
         ],
-        "issue": "Marcus and Leo's lower project scores are boosted by a postcode bonus — systematically favouring already-privileged applicants.",
+        "issue": "Marcus and Leo's lower project scores are boosted by a postcode bonus , systematically favouring already-privileged applicants.",
         "fix_options": [
             {
                 "id": "remove_postcode",
                 "label": "Remove the postcode bonus entirely",
                 "rule_change": "Score based on project quality only",
                 "outputs": [
-                    {"name": "Keiko", "emoji": "👧", "result": "APPROVED", "reason": "Score: 8 — now competitive", "fair": True},
-                    {"name": "Marcus", "emoji": "👦", "result": "REVIEW", "reason": "Score: 7 — no bonus", "fair": True},
-                    {"name": "Fatima", "emoji": "👧", "result": "APPROVED", "reason": "Score: 9 — highest", "fair": True},
-                    {"name": "Leo", "emoji": "👦", "result": "REVIEW", "reason": "Score: 6 — no bonus", "fair": True},
+                    {"name": "Keiko", "emoji": "👧", "result": "APPROVED", "reason": "Score: 8 , now competitive", "fair": True},
+                    {"name": "Marcus", "emoji": "👦", "result": "REVIEW", "reason": "Score: 7 , no bonus", "fair": True},
+                    {"name": "Fatima", "emoji": "👧", "result": "APPROVED", "reason": "Score: 9 , highest", "fair": True},
+                    {"name": "Leo", "emoji": "👦", "result": "REVIEW", "reason": "Score: 6 , no bonus", "fair": True},
                 ],
-                "verdict": "Much fairer. Project quality is what matters for a community grant — not where you live.",
+                "verdict": "Much fairer. Project quality is what matters for a community grant , not where you live.",
                 "better": True,
             },
             {
@@ -152,11 +152,11 @@ SYSTEMS = [
                 "rule_change": "Postcodes E, N, SE get +2 bonus points",
                 "outputs": [
                     {"name": "Keiko", "emoji": "👧", "result": "APPROVED", "reason": "Score: 10 (8 + EC bonus)", "fair": True},
-                    {"name": "Marcus", "emoji": "👦", "result": "REVIEW", "reason": "Score: 7 — no bonus", "fair": True},
+                    {"name": "Marcus", "emoji": "👦", "result": "REVIEW", "reason": "Score: 7 , no bonus", "fair": True},
                     {"name": "Fatima", "emoji": "👧", "result": "APPROVED", "reason": "Score: 11 (9 + E bonus)", "fair": True},
-                    {"name": "Leo", "emoji": "👦", "result": "REVIEW", "reason": "Score: 6 — no bonus", "fair": True},
+                    {"name": "Leo", "emoji": "👦", "result": "REVIEW", "reason": "Score: 6 , no bonus", "fair": True},
                 ],
-                "verdict": "This actively tries to correct existing inequality. Fairer in one way — but still uses a blunt postcode rule. Is postcode really the right proxy?",
+                "verdict": "This actively tries to correct existing inequality. Fairer in one way , but still uses a blunt postcode rule. Is postcode really the right proxy?",
                 "better": True,
             },
             {
@@ -164,10 +164,10 @@ SYSTEMS = [
                 "label": "Route all borderline applications to a human reviewer",
                 "rule_change": "Scores 6–8 go to human review panel",
                 "outputs": [
-                    {"name": "Keiko", "emoji": "👧", "result": "HUMAN REVIEW", "reason": "Score 8 — borderline", "fair": True},
-                    {"name": "Marcus", "emoji": "👦", "result": "HUMAN REVIEW", "reason": "Score 7 — borderline", "fair": True},
-                    {"name": "Fatima", "emoji": "👧", "result": "APPROVED", "reason": "Score 9 — clearly strong", "fair": True},
-                    {"name": "Leo", "emoji": "👦", "result": "HUMAN REVIEW", "reason": "Score 6 — borderline", "fair": True},
+                    {"name": "Keiko", "emoji": "👧", "result": "HUMAN REVIEW", "reason": "Score 8 , borderline", "fair": True},
+                    {"name": "Marcus", "emoji": "👦", "result": "HUMAN REVIEW", "reason": "Score 7 , borderline", "fair": True},
+                    {"name": "Fatima", "emoji": "👧", "result": "APPROVED", "reason": "Score 9 , clearly strong", "fair": True},
+                    {"name": "Leo", "emoji": "👦", "result": "HUMAN REVIEW", "reason": "Score 6 , borderline", "fair": True},
                 ],
                 "verdict": "Good approach. Automation handles clear cases; humans handle the grey areas. This is often the right architecture.",
                 "better": True,
@@ -188,7 +188,7 @@ ESCALATION_SCENARIOS = [
         "options": [
             {
                 "id": "auto_remove",
-                "label": "Auto-remove it — rules are rules",
+                "label": "Auto-remove it , rules are rules",
                 "verdict": "Too blunt",
                 "feedback": "Automated word lists can't understand context. A history essay discussing difficult events is very different from harmful content. Auto-removal without review causes real harm to students.",
                 "correct": False,
@@ -202,7 +202,7 @@ ESCALATION_SCENARIOS = [
             },
             {
                 "id": "ignore_flag",
-                "label": "Ignore the flag — the student's work should be protected",
+                "label": "Ignore the flag , the student's work should be protected",
                 "verdict": "Too simple",
                 "feedback": "Ignoring all flags defeats the purpose of moderation. The answer is human review, not ignoring flags entirely.",
                 "correct": False,
@@ -211,7 +211,7 @@ ESCALATION_SCENARIOS = [
                 "id": "improve_rule",
                 "label": "Improve the rule to understand context better",
                 "verdict": "Good longer-term fix",
-                "feedback": "Eventually yes — but right now this specific student needs their work reviewed fairly. Immediate action + longer-term rule improvement.",
+                "feedback": "Eventually yes , but right now this specific student needs their work reviewed fairly. Immediate action + longer-term rule improvement.",
                 "correct": True,
             },
         ],
@@ -226,7 +226,7 @@ ESCALATION_SCENARIOS = [
         "options": [
             {
                 "id": "apply_rule",
-                "label": "Yes — apply the rule as programmed",
+                "label": "Yes , apply the rule as programmed",
                 "verdict": "Problematic",
                 "feedback": "The tie-breaker rule encodes existing advantage. 'More prestigious school' often correlates with wealth, not merit. Automating this decision could entrench inequality.",
                 "correct": False,
@@ -235,21 +235,21 @@ ESCALATION_SCENARIOS = [
                 "id": "send_to_human",
                 "label": "Send both applications to a human committee",
                 "verdict": "Best option",
-                "feedback": "Correct. Tie-breaking in high-stakes decisions like scholarships deserves human judgment — not automated rules that might reinforce existing inequality.",
+                "feedback": "Correct. Tie-breaking in high-stakes decisions like scholarships deserves human judgment , not automated rules that might reinforce existing inequality.",
                 "correct": True,
             },
             {
                 "id": "random_select",
                 "label": "Randomly select between the two",
                 "verdict": "Arguably fairer than the rule",
-                "feedback": "Better than applying a biased rule — but high-stakes decisions still benefit from human review rather than randomness.",
+                "feedback": "Better than applying a biased rule , but high-stakes decisions still benefit from human review rather than randomness.",
                 "correct": False,
             },
             {
                 "id": "award_both",
                 "label": "Award the scholarship to both students",
                 "verdict": "Creative but unrealistic",
-                "feedback": "Nice idea — but usually there's one scholarship. The real answer is: this decision needs humans.",
+                "feedback": "Nice idea , but usually there's one scholarship. The real answer is: this decision needs humans.",
                 "correct": False,
             },
         ],

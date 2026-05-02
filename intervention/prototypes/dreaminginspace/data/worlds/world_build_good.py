@@ -1,4 +1,4 @@
-"""World: Build for Good — guided creator sandbox.
+"""World: Build for Good , guided creator sandbox.
 Track 5: Digital Missions | Dreaming in Space.
 """
 
@@ -34,7 +34,7 @@ WORLD = {
         {
             "id": 3,
             "title": "Safety Check",
-            "goal": "Before you ship — check for exclusion, data overreach, and false results.",
+            "goal": "Before you ship , check for exclusion, data overreach, and false results.",
             "phase": "twist",
             "type": "safety",
         },
@@ -81,13 +81,13 @@ TEMPLATES = [
         "emoji": "💙",
         "description": "A simple daily check-in tool that notices patterns and suggests resources.",
         "user": "Students who want to track how they're feeling",
-        "problem": "It's easy to dismiss bad days — but patterns matter.",
+        "problem": "It's easy to dismiss bad days , but patterns matter.",
         "goal": "Record mood input. Spot if someone has had multiple difficult days. Offer a resource, not a diagnosis.",
         "avoid": "Never diagnose. Never share data without permission. Never make the user feel judged.",
         "blocks_needed": ["input_mood", "store_pattern", "check_pattern", "output_support", "privacy_check"],
         "test_cases": [
-            {"input": "Feeling fine today", "expected": "OK — logged", "explanation": "Normal day"},
-            {"input": "Bad day — 3rd this week", "expected": "Offer support resource", "explanation": "Pattern detected"},
+            {"input": "Feeling fine today", "expected": "OK , logged", "explanation": "Normal day"},
+            {"input": "Bad day , 3rd this week", "expected": "Offer support resource", "explanation": "Pattern detected"},
             {"input": "User asks to delete their data", "expected": "Data deleted immediately", "explanation": "Privacy requirement"},
         ],
     },
@@ -97,14 +97,14 @@ TEMPLATES = [
         "emoji": "🗺️",
         "description": "A route planner that prioritises accessibility, not just speed.",
         "user": "Wheelchair user or someone with mobility needs",
-        "problem": "Standard route planners optimise for speed — but they often suggest routes with stairs or steep inclines.",
+        "problem": "Standard route planners optimise for speed , but they often suggest routes with stairs or steep inclines.",
         "goal": "Find a route that avoids barriers, even if it takes longer.",
         "avoid": "Never suggest a route with stairs without warning. Prioritise access over speed.",
         "blocks_needed": ["input_start", "input_destination", "filter_barriers", "calculate_route", "output_route"],
         "test_cases": [
-            {"input": "Route A: 5 min, has stairs", "expected": "Not recommended — stairs", "explanation": "Barrier present"},
+            {"input": "Route A: 5 min, has stairs", "expected": "Not recommended , stairs", "explanation": "Barrier present"},
             {"input": "Route B: 9 min, fully flat", "expected": "Recommended", "explanation": "Accessible option"},
-            {"input": "No accessible route found", "expected": "Alert: no accessible route — suggest alternatives", "explanation": "Edge case"},
+            {"input": "No accessible route found", "expected": "Alert: no accessible route , suggest alternatives", "explanation": "Edge case"},
         ],
     },
 ]
@@ -144,10 +144,10 @@ SAFETY_CHECKS = [
         "question": "Could this tool exclude or disadvantage any group of users?",
         "icon": "👥",
         "options": [
-            {"id": "no", "label": "No — it works equally for everyone", "prompt": "Think carefully — is there any group who might not be able to use it, or who it might not work as well for?"},
-            {"id": "yes_fixed", "label": "Yes — but I've designed around it", "prompt": "Good awareness. Describe what you've done to address it."},
-            {"id": "yes_unsolved", "label": "Yes — and it's still a problem", "prompt": "Honest. What would you need to fix in version 2?"},
-            {"id": "unsure", "label": "Not sure", "prompt": "That's okay — uncertainty is honest. What test would help you find out?"},
+            {"id": "no", "label": "No , it works equally for everyone", "prompt": "Think carefully , is there any group who might not be able to use it, or who it might not work as well for?"},
+            {"id": "yes_fixed", "label": "Yes , but I've designed around it", "prompt": "Good awareness. Describe what you've done to address it."},
+            {"id": "yes_unsolved", "label": "Yes , and it's still a problem", "prompt": "Honest. What would you need to fix in version 2?"},
+            {"id": "unsure", "label": "Not sure", "prompt": "That's okay , uncertainty is honest. What test would help you find out?"},
         ],
     },
     {
@@ -155,9 +155,9 @@ SAFETY_CHECKS = [
         "question": "Does this tool collect more data than it needs?",
         "icon": "📊",
         "options": [
-            {"id": "no", "label": "No — it only collects what's necessary", "prompt": "Great data minimisation. What's the minimum it truly needs?"},
+            {"id": "no", "label": "No , it only collects what's necessary", "prompt": "Great data minimisation. What's the minimum it truly needs?"},
             {"id": "yes_reduced", "label": "I reduced it during building", "prompt": "Good. What did you remove?"},
-            {"id": "yes_problem", "label": "Yes — it asks for too much", "prompt": "Important to catch this. What can you remove in version 2?"},
+            {"id": "yes_problem", "label": "Yes , it asks for too much", "prompt": "Important to catch this. What can you remove in version 2?"},
         ],
     },
     {
@@ -165,9 +165,9 @@ SAFETY_CHECKS = [
         "question": "What happens if your tool gives a wrong result?",
         "icon": "⚠️",
         "options": [
-            {"id": "low_risk", "label": "Low risk — no big harm if it's wrong", "prompt": "Why is it low risk? Being specific helps."},
-            {"id": "medium_risk", "label": "Medium risk — could confuse or mislead", "prompt": "What safeguard could you add to reduce this?"},
-            {"id": "high_risk", "label": "High risk — wrong result could cause real harm", "prompt": "High-risk outputs need a human review step or a clear disclaimer. What would you add?"},
+            {"id": "low_risk", "label": "Low risk , no big harm if it's wrong", "prompt": "Why is it low risk? Being specific helps."},
+            {"id": "medium_risk", "label": "Medium risk , could confuse or mislead", "prompt": "What safeguard could you add to reduce this?"},
+            {"id": "high_risk", "label": "High risk , wrong result could cause real harm", "prompt": "High-risk outputs need a human review step or a clear disclaimer. What would you add?"},
         ],
     },
     {

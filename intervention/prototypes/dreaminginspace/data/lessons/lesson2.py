@@ -1,4 +1,4 @@
-"""Lesson 2: Give Your Robot Commands — Precise Instructions & Algorithms.
+"""Lesson 2: Give Your Robot Commands , Precise Instructions & Algorithms.
 Track 1: Foundations | Dreaming in Space.
 
 Learners act as 'programmers' giving precise step-by-step commands to a 'robot'.

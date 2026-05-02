@@ -1,4 +1,4 @@
-"""Lesson 4: Break It Down — Decomposition & Planning.
+"""Lesson 4: Break It Down , Decomposition & Planning.
 Track 1: Foundations | Dreaming in Space.
 """
 

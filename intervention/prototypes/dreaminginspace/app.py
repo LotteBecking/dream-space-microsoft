@@ -177,7 +177,7 @@ ALL_ACHIEVEMENTS = [
     # Skill-based
     {"id": "first_try", "icon": "🎯", "title": "First Try!", "desc": "You nailed a mission on the first attempt!"},
     {"id": "perseverance", "icon": "💪", "title": "Never Give Up", "desc": "You kept trying and succeeded!"},
-    {"id": "level_2", "icon": "⬆️", "title": "Level Up!", "desc": "You reached Level 2 — Coder!"},
+    {"id": "level_2", "icon": "⬆️", "title": "Level Up!", "desc": "You reached Level 2! Coder!"},
     {"id": "xp_100", "icon": "💎", "title": "Century Club", "desc": "You earned 100 XP!"},
     {"id": "quiz_ace", "icon": "📝", "title": "Quiz Ace", "desc": "You scored 100% on a quiz!"},
 ]
@@ -593,7 +593,7 @@ def exercise(num):
                     success = True
                     progress = get_progress()
                 else:
-                    error = "Not quite right! The green ones are correct — fix the red ones."
+                    error = "Not quite right! The green ones are correct,s fix the red ones."
                     session.modified = True
 
         elif num == 2:
@@ -898,7 +898,7 @@ def lesson_exercise(lesson_num, ex_num):
                         success = True
                         progress = get_lesson_progress(lesson_num)
                     else:
-                        error = f"You got {len(correct_bugs)}/{len(bugs)} correct. The wrong ones are highlighted in red — try again!"
+                        error = f"You got {len(correct_bugs)}/{len(bugs)} correct. The wrong ones are highlighted in red, try again!"
             else:
                 # Textarea mode (fallback)
                 all_filled = True

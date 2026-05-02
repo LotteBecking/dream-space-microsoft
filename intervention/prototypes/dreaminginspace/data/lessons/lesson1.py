@@ -89,7 +89,7 @@ EXERCISES = [
         "description": (
             "Write an algorithm for a robot chef in the school canteen. "
             "Your goal: make it so precise that a robot with NO common sense "
-            "can follow it perfectly — and handle allergies and missing ingredients too!"
+            "can follow it perfectly , and handle allergies and missing ingredients too!"
         ),
         "type": "Extension",
         "difficulty": "Medium",
@@ -114,7 +114,7 @@ TEA_STEPS_CORRECT = [
     "Add milk or sugar if you like",
 ]
 
-# Steps 5 and 6 can be swapped — both are valid
+# Steps 5 and 6 can be swapped , both are valid
 TEA_STEPS_ALT = [
     "Boil the water",
     "Place the tea bag in the cup",

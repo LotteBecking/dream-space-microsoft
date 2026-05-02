@@ -152,7 +152,7 @@
   </div>
 
   <div style="padding:16px 20px 8px;font-size:13px;font-weight:700;color:var(--color-text-subtle);">
-    FLIP THE CLUE CARDS — gather your evidence before deciding:
+    FLIP THE CLUE CARDS , gather your evidence before deciding:
   </div>
 
   <div class="clue-grid">
@@ -321,8 +321,8 @@ function submitV2(){ var f=document.createElement('form');f.method='POST';f.acti
 <div id="ambVerdictSection" style="display:none;" class="card">
   <div style="font-size:16px;font-weight:700;margin-bottom:8px;">What's your verdict?</div>
   <div class="verdict-opts">
-    <button class="verdict-opt" onclick="ambAnswer(this,'reliable',false)">Likely reliable — this is probably true</button>
-    <button class="verdict-opt" onclick="ambAnswer(this,'suspicious',false)">Suspicious — I don't trust it</button>
+    <button class="verdict-opt" onclick="ambAnswer(this,'reliable',false)">Likely reliable , this is probably true</button>
+    <button class="verdict-opt" onclick="ambAnswer(this,'suspicious',false)">Suspicious , I don't trust it</button>
     <button class="verdict-opt" onclick="ambAnswer(this,'not_enough',true)">⚠️ Not enough information to decide yet</button>
     <button class="verdict-opt" onclick="ambAnswer(this,'misleading',false)">Definitely misleading</button>
   </div>
@@ -365,7 +365,7 @@ function ambAnswer(btn, verdict, correct){
   var fb=document.getElementById('ambFeedback');
   fb.style.display='block';
   var explanation={{ ac.explanation|tojson }};
-  fb.innerHTML='<div style="padding:14px;border-radius:12px;font-size:14px;background:'+(correct?'var(--color-success-soft)':'var(--color-warning-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-warning)')+';margin-bottom:10px;">'+(correct?'✅ Correct — ':'⚠️ Not quite — ')+explanation+'</div>'
+  fb.innerHTML='<div style="padding:14px;border-radius:12px;font-size:14px;background:'+(correct?'var(--color-success-soft)':'var(--color-warning-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-warning)')+';margin-bottom:10px;">'+(correct?'✅ Correct , ':'⚠️ Not quite , ')+explanation+'</div>'
   +'<div style="background:var(--color-primary-soft);border-radius:10px;padding:12px;font-size:13px;font-weight:600;color:var(--color-primary-ink);">💡 '+{{ ac.key_lesson|tojson }}+'</div>';
   document.getElementById('ambActions').style.display='block';
 }

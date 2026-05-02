@@ -1,4 +1,4 @@
-"""World: City Fixer — civic map puzzle game.
+"""World: City Fixer , civic map puzzle game.
 Track 5: Digital Missions | Dreaming in Space.
 """
 
@@ -34,7 +34,7 @@ WORLD = {
         {
             "id": 3,
             "title": "Emergency Response",
-            "goal": "The city has a crisis. Adapt the route — fast.",
+            "goal": "The city has a crisis. Adapt the route , fast.",
             "phase": "fix",
             "type": "disruption",
         },
@@ -49,15 +49,15 @@ ROUTES = [
         "scenario": "The school bus route was scrambled after a system update. Students are confused and late.",
         "stops": [
             {"id": "A", "name": "Bus Depot", "icon": "🚌", "order": 1, "note": "Where the bus starts every morning"},
-            {"id": "B", "name": "Maple Street", "icon": "🏘️", "order": 2, "note": "Large residential area — many students here"},
+            {"id": "B", "name": "Maple Street", "icon": "🏘️", "order": 2, "note": "Large residential area , many students here"},
             {"id": "C", "name": "Community Centre", "icon": "🏛️", "order": 3, "note": "Accessible stop for wheelchair users"},
-            {"id": "D", "name": "Hill Top Road", "icon": "⛰️", "order": 4, "note": "Steep road — must be taken going uphill only"},
+            {"id": "D", "name": "Hill Top Road", "icon": "⛰️", "order": 4, "note": "Steep road , must be taken going uphill only"},
             {"id": "E", "name": "North Primary School", "icon": "🏫", "order": 5, "note": "The destination"},
         ],
         "shuffled": [2, 4, 0, 1, 3],
         "constraints": [
             "The bus must start at the depot",
-            "Hill Top Road is one-way uphill — must come after Maple Street",
+            "Hill Top Road is one-way uphill , must come after Maple Street",
             "Community Centre should be before school (wheelchair user needs the accessible ramp at school)",
         ],
         "stakeholders": [
@@ -66,24 +66,24 @@ ROUTES = [
             {"name": "Bus driver", "emoji": "🧑‍✈️", "impact_good": "Efficient route, no backtracking", "impact_bad": "Stuck at bottom of Hill Top Road"},
         ],
         "correct_order": [0, 1, 2, 3, 4],
-        "wrong_order_feedback": "This route has issues — check the constraints and stakeholder needs.",
+        "wrong_order_feedback": "This route has issues , check the constraints and stakeholder needs.",
     },
     {
         "id": "clinic_route",
         "name": "Clinic Access Route",
         "scenario": "The community shuttle to the health clinic was rerouted and now misses key stops.",
         "stops": [
-            {"id": "A", "name": "Town Square", "icon": "🏙️", "order": 1, "note": "Central hub — many connections here"},
+            {"id": "A", "name": "Town Square", "icon": "🏙️", "order": 1, "note": "Central hub , many connections here"},
             {"id": "B", "name": "Elder Care Home", "icon": "🏡", "order": 2, "note": "Residents need the earliest possible pick-up"},
             {"id": "C", "name": "Pharmacy", "icon": "💊", "order": 3, "note": "Many clinic visitors pick up prescriptions here"},
-            {"id": "D", "name": "Family Housing Block", "icon": "🏢", "order": 4, "note": "Families with young children — stroller accessible needed"},
+            {"id": "D", "name": "Family Housing Block", "icon": "🏢", "order": 4, "note": "Families with young children , stroller accessible needed"},
             {"id": "E", "name": "Community Clinic", "icon": "🏥", "order": 5, "note": "The destination"},
         ],
         "shuffled": [3, 0, 4, 2, 1],
         "constraints": [
             "Elder care home residents need the earliest pick-up",
             "The pharmacy should come before the clinic (patients collect medication first)",
-            "Family Housing needs a stroller-accessible stop — must not be on the hill section",
+            "Family Housing needs a stroller-accessible stop , must not be on the hill section",
         ],
         "stakeholders": [
             {"name": "Elder care residents", "emoji": "👴", "impact_good": "Early pick-up, less waiting", "impact_bad": "Long wait, health risk"},
@@ -99,7 +99,7 @@ ROUTES = [
 TRADEOFF_SCENARIOS = [
     {
         "id": "bus_frequency",
-        "title": "More buses — but where?",
+        "title": "More buses , but where?",
         "context": "The city has budget for 3 extra buses. There are two options.",
         "options": [
             {
@@ -123,10 +123,10 @@ TRADEOFF_SCENARIOS = [
         ],
         "question": "Which is the better trade-off for the city?",
         "verdict_a": "Best for speed. But it mostly helps people who already have good service.",
-        "verdict_b": "More fair. Helps people currently underserved — even if it's slower overall.",
+        "verdict_b": "More fair. Helps people currently underserved , even if it's slower overall.",
         "best": "B",
         "best_label": "More fair option",
-        "note": "Neither is 'wrong' — cities make these trade-offs every day. The key is being honest about who benefits and who doesn't.",
+        "note": "Neither is 'wrong' , cities make these trade-offs every day. The key is being honest about who benefits and who doesn't.",
         "stakeholders": [
             {"name": "City centre commuter", "emoji": "👔", "benefits_from": "A"},
             {"name": "Outer suburb family", "emoji": "👨‍👩‍👧", "benefits_from": "B"},
@@ -159,7 +159,7 @@ TRADEOFF_SCENARIOS = [
         ],
         "question": "Which trade-off would you make?",
         "verdict_a": "Faster. But this effectively excludes wheelchair users from this service.",
-        "verdict_b": "Good for access. Slower for speed — but improves fairness significantly.",
+        "verdict_b": "Good for access. Slower for speed , but improves fairness significantly.",
         "best": "B",
         "best_label": "Better accessibility option",
         "note": "This is a real design decision city planners face. Speed and accessibility often conflict.",
@@ -176,7 +176,7 @@ DISRUPTIONS = [
     {
         "id": "road_block",
         "title": "Road Block Ahead!",
-        "context": "A burst water main has closed Bridge Road — the main bus route to the school.",
+        "context": "A burst water main has closed Bridge Road , the main bus route to the school.",
         "normal_route": ["Depot", "Maple St", "Bridge Road", "School"],
         "blocked": "Bridge Road",
         "options": [
@@ -186,8 +186,8 @@ DISRUPTIONS = [
                 "speed": 2,
                 "fairness": 4,
                 "accessibility": 4,
-                "summary": "Students arrive 12 minutes late — but everyone can still get there.",
-                "outcome": "Improved — not perfect",
+                "summary": "Students arrive 12 minutes late , but everyone can still get there.",
+                "outcome": "Improved , not perfect",
                 "stakeholder_note": "Wheelchair user can still board. Everyone arrives late together.",
             },
             {
@@ -198,7 +198,7 @@ DISRUPTIONS = [
                 "accessibility": 1,
                 "summary": "Faster, but the wheelchair user can't board at the hill stop.",
                 "outcome": "Good for speed, bad for access",
-                "stakeholder_note": "Faster — but leaves the wheelchair user behind.",
+                "stakeholder_note": "Faster , but leaves the wheelchair user behind.",
             },
             {
                 "id": "cancel",
@@ -206,8 +206,8 @@ DISRUPTIONS = [
                 "speed": 1,
                 "fairness": 3,
                 "accessibility": 3,
-                "summary": "Same outcome for everyone — but everyone misses school.",
-                "outcome": "Equal — but not good",
+                "summary": "Same outcome for everyone , but everyone misses school.",
+                "outcome": "Equal , but not good",
                 "stakeholder_note": "Equally bad for everyone. No one benefits.",
             },
         ],
@@ -221,17 +221,17 @@ DISRUPTIONS = [
         "options": [
             {
                 "id": "skip_stops",
-                "label": "Skip the pharmacy and family stop — go direct",
+                "label": "Skip the pharmacy and family stop , go direct",
                 "speed": 5,
                 "fairness": 2,
                 "accessibility": 3,
                 "summary": "Gets to elder care in 15 min. Families and pharmacy patients have to wait.",
-                "outcome": "Best for speed — trade-off for others",
+                "outcome": "Best for speed , trade-off for others",
                 "stakeholder_note": "Elder care residents get help fast. Others miss their connection.",
             },
             {
                 "id": "split_service",
-                "label": "Send a second smaller vehicle to elder care — keep main route running",
+                "label": "Send a second smaller vehicle to elder care , keep main route running",
                 "speed": 4,
                 "fairness": 5,
                 "accessibility": 4,
@@ -241,11 +241,11 @@ DISRUPTIONS = [
             },
             {
                 "id": "normal_route",
-                "label": "Keep the normal route — don't disrupt other passengers",
+                "label": "Keep the normal route , don't disrupt other passengers",
                 "speed": 1,
                 "fairness": 3,
                 "accessibility": 4,
-                "summary": "Normal service maintained — but the emergency response is dangerously slow.",
+                "summary": "Normal service maintained , but the emergency response is dangerously slow.",
                 "outcome": "Not appropriate for emergency",
                 "stakeholder_note": "Elder residents don't get help in time.",
             },

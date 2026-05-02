@@ -1,4 +1,4 @@
-"""Lesson 13: The Algorithm Race — Design & Optimise.
+"""Lesson 13: The Algorithm Race , Design & Optimise.
 Track 3: Creation & Application | Dreaming in Space.
 """
 

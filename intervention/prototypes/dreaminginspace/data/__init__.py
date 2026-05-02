@@ -1,4 +1,4 @@
-"""Data package — dynamic lesson & world loader.
+"""Data package , dynamic lesson & world loader.
 
 Every lesson file (lessons/lesson1.py … lessons/lesson18.py) exports:
     LESSON, ROLE_MODEL, VOCABULARY, OBJECTIVES, EXERCISES, QUIZ

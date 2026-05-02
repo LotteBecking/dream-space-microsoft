@@ -38,7 +38,7 @@
           {% elif progress.all_exercises_done %}
             You've crushed Lesson 1, Commander! Ready to keep exploring? 🚀
           {% elif sim_done %}
-            Great job in the lab! Keep going — you're doing brilliantly!
+            Great job in the lab! Keep going , you're doing brilliantly!
           {% else %}
             Welcome back, Commander! Ready for your next challenge?
           {% endif %}
@@ -118,7 +118,7 @@
       </button>
       <div class="track-foldout-body"><div class="track-foldout-body-inner">
 
-    <!-- MISSION MAP — LESSON 1 -->
+    <!-- MISSION MAP , LESSON 1 -->
     <section>
       <div class="lesson-foldout" data-auto-open="{% if lesson_started and not progress.all_exercises_done %}true{% else %}false{% endif %}">
         <button type="button" class="lesson-foldout-header">
@@ -1079,7 +1079,7 @@
 
 <script>
 (function() {
-  // Generic accordion factory — works for both track and lesson foldouts
+  // Generic accordion factory , works for both track and lesson foldouts
   function makeAccordion(selector, headerSelector, bodySelector) {
     var panels = document.querySelectorAll(selector);
     var busy = false;

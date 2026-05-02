@@ -1,4 +1,4 @@
-"""Lesson 17: The Encryption Code — Cybersecurity Basics.
+"""Lesson 17: The Encryption Code , Cybersecurity Basics.
 Track 4: The Digital World | Dreaming in Space.
 """
 

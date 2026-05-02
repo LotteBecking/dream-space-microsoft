@@ -1,4 +1,4 @@
-"""Lesson 6: Variable Vaults — Storing Information.
+"""Lesson 6: Variable Vaults , Storing Information.
 Track 2: Text-Based Coding | Dreaming in Space.
 """
 

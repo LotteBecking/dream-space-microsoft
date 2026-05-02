@@ -1,4 +1,4 @@
-"""Lesson 3: The If-Then Gates — Conditionals & Decisions.
+"""Lesson 3: The If-Then Gates , Conditionals & Decisions.
 Track 1: Foundations | Dreaming in Space.
 """
 

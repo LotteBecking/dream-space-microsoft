@@ -309,7 +309,7 @@ function selectOpt(optId, idx, isFirst){
   var myVerdict=options[idx].summary;
   fb.innerHTML=
     '<div style="padding:14px;border-radius:12px;background:'+(isBest?'var(--color-success-soft)':'var(--color-warning-soft)')+';border-left:3px solid '+(isBest?'var(--color-success)':'var(--color-warning)')+';margin-bottom:10px;font-size:14px;">'
-    +'<strong>'+(isBest?'✅ Good choice.':'⚠️ Possible — but there\'s a better option.')+' </strong>'+ myVerdict+'</div>'
+    +'<strong>'+(isBest?'✅ Good choice.':'⚠️ Possible , but there\'s a better option.')+' </strong>'+ myVerdict+'</div>'
     +'<div style="background:var(--color-surface-muted);border-radius:10px;padding:12px;font-size:13px;color:var(--color-text-muted);font-style:italic;">💬 '+noteText+'</div>';
   document.getElementById('tdNext').style.display='block';
 }

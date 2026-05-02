@@ -1,4 +1,4 @@
-"""Lesson 2: The Loop Station — Loops & Iteration.
+"""Lesson 2: The Loop Station , Loops & Iteration.
 Track 1: Foundations | Dreaming in Space.
 """
 
