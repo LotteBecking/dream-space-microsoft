@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+{% block title %}Function Builder Lab &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{% from "_macros.html" import icon, space_beaver, callout with context %}
+
+<div style="margin-top:28px;"></div>
+
+<div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+  <a href="{{ url_for('mascot') }}" style="color:var(--color-text-muted); display:flex; align-items:center; gap:4px; font-size:14px; font-weight:500;">
+    {{ icon('arrow-left') }} Back to {{ pet_name }}
+  </a>
+</div>
+
+<!-- Lab header -->
+<div style="background:linear-gradient(135deg,#1e1b4b,#4c1d95); border-radius:20px; padding:28px 32px; margin-bottom:24px; color:white; display:flex; align-items:center; gap:24px;">
+  <div style="flex:1;">
+    <div style="font-size:12px; letter-spacing:.1em; text-transform:uppercase; opacity:.7; font-weight:600; margin-bottom:6px;">Track 1 Foundations</div>
+    <h1 style="font-family:var(--font-game); font-size:28px; font-weight:700; margin-bottom:6px;">Function Builder Lab</h1>
+    <p style="opacity:.8; font-size:15px; line-height:1.5; max-width:480px;">
+      A <strong>function</strong> is a named shortcut for a set of steps. Instead of writing the same steps over and over, you package them up, give them a name, and just call that name.
+    </p>
+  </div>
+  <div style="flex-shrink:0; text-align:center;">
+    {{ space_beaver(80) }}
+    <div style="font-family:var(--font-pixel); font-size:20px; color:#c4b5fd; margin-top:6px;">{{ pet.points }} pts</div>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 300px; gap:24px; align-items:start; margin-bottom:32px;">
+
+  <!-- Main exercise area -->
+  <div>
+
+    {% if result == "correct" %}
+    <!-- ── SUCCESS ── -->
+    <div style="margin-bottom:20px;">
+      {{ callout('success', 'You built a function and earned 1 care point for ' ~ pet_name ~ '!', 'Function created!') }}
+    </div>
+
+    <div class="card" style="overflow:hidden;">
+      <div class="card-body">
+
+        <div style="margin-bottom:20px;">
+          <div style="font-size:13px; font-weight:600; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px;">Your function:</div>
+          <div class="fn-code-block">
+            <div class="fn-code-line">
+              <span class="fn-keyword">def</span>
+              <span class="fn-name">{{ used_name if used_name else correct_label }}</span>
+              <span class="fn-paren">():</span>
+            </div>
+            {% for step in exercise.steps %}
+            <div class="fn-code-line fn-code-body">
+              <span class="fn-comment"># {{ step }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if used_custom %}
+        <div style="background:var(--color-highlight-soft); border:1px solid var(--color-highlight); border-radius:12px; padding:14px 16px; margin-bottom:20px;">
+          <div style="font-weight:700; font-size:14px; color:var(--color-highlight-ink); margin-bottom:4px;">You named it yourself!</div>
+          <p style="font-size:14px; color:var(--color-highlight-ink); margin:0; line-height:1.5;">
+            That is autonomy in action. Real programmers name their own functions. Your name <code style="background:rgba(0,0,0,.08); padding:1px 6px; border-radius:4px;">{{ used_name }}()</code> is yours to use in your own programs.
+          </p>
+        </div>
+        {% endif %}
+
+        <div style="background:var(--color-primary-soft); border:1px solid var(--color-primary-border); border-radius:12px; padding:14px 16px; margin-bottom:24px;">
+          <div style="font-weight:700; font-size:14px; color:var(--color-primary-ink); margin-bottom:4px;">Why does this work?</div>
+          <p style="font-size:14px; color:var(--color-primary-ink); margin:0; line-height:1.5;">{{ exercise.explain }}</p>
+        </div>
+
+        <!-- Call the function mini program -->
+        <div style="margin-bottom:24px;">
+          <div style="font-size:13px; font-weight:600; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px;">Now call your function in a program:</div>
+          <div class="fn-code-block">
+            <div class="fn-code-line"><span class="fn-comment"># Mission morning routine</span></div>
+            <div class="fn-code-line"><span class="fn-builtin">wakeUp()</span></div>
+            <div class="fn-code-line fn-code-call" id="call-line" style="cursor:pointer;" onclick="callFunction(this, '{{ used_name if used_name else correct_label }}')">
+              <span class="fn-call-placeholder">click to call your function</span>
+            </div>
+            <div class="fn-code-line"><span class="fn-builtin">startMission()</span></div>
+          </div>
+          <p style="font-size:13px; color:var(--color-text-muted); margin-top:8px;">Click the highlighted line to call your function.</p>
+        </div>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="{{ url_for('mascot_exercise') }}" class="btn btn-primary rocket-launch">Try Another Function</a>
+          <a href="{{ url_for('mascot') }}" class="btn" style="background:var(--color-surface); border:2px solid var(--color-border);">Back to {{ pet_name }}</a>
+        </div>
+      </div>
+    </div>
+
+    {% else %}
+    <!-- ── FRESH OR RETRY EXERCISE ── -->
+    {% set sc = shuffled_choices %}
+
+    <!-- Error modal (shown via JS when result == incorrect) -->
+    {% if result == "incorrect" %}
+    <div id="error-modal" style="position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);">
+      <div style="background:white;border-radius:20px;padding:32px 28px;max-width:400px;width:90%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.3);animation:fade-in .2s ease;">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--color-error-soft);border:2px solid var(--color-error);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+          <span style="color:var(--color-error);">{{ icon('alert-circle') }}</span>
+        </div>
+        <h2 style="font-family:var(--font-game);font-size:22px;font-weight:700;margin-bottom:10px;">Not quite!</h2>
+        <p style="font-size:15px;color:var(--color-text-muted);line-height:1.6;margin-bottom:8px;">
+          A good function name describes exactly what the steps <em>do</em>.
+        </p>
+        <p style="font-size:14px;color:var(--color-text-muted);line-height:1.6;margin-bottom:24px;">
+          Or write your own name below &mdash; make sure it relates to the task!
+        </p>
+        <button onclick="document.getElementById('error-modal').style.display='none'" class="btn btn-primary" style="width:100%;font-size:16px;">
+          Try Again
+        </button>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="card">
+      <div class="card-body">
+
+        <!-- Stage 1: Meet the task (hidden on retry) -->
+        <div class="fn-stage" id="stage-1" style="display:{% if result == 'incorrect' %}none{% else %}block{% endif %};">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+            <div style="width:28px; height:28px; border-radius:50%; background:var(--color-primary); color:white; display:flex; align-items:center; justify-content:center; font-family:var(--font-pixel); font-size:13px; font-weight:700; flex-shrink:0;">1</div>
+            <h2 style="font-family:var(--font-game); font-size:20px; font-weight:700;">Meet the task</h2>
+          </div>
+
+          <div style="background:var(--color-surface-muted); border:1px solid var(--color-border); border-radius:12px; padding:16px 18px; margin-bottom:16px;">
+            <div style="font-size:12px; font-weight:700; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;">{{ exercise.title }}</div>
+            <p style="font-size:15px; line-height:1.6; margin-bottom:14px;">{{ exercise.context }}</p>
+            <ol style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+              {% for step in exercise.steps %}
+              <li style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--color-surface); border:1px solid var(--color-border); border-radius:10px;">
+                <span style="font-family:var(--font-pixel); font-size:11px; font-weight:700; color:var(--color-primary); background:var(--color-primary-soft); width:22px; height:22px; border-radius:5px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">{{ loop.index }}</span>
+                <span style="font-size:14px; font-weight:500;">{{ step }}</span>
+              </li>
+              {% endfor %}
+            </ol>
+          </div>
+
+          <button onclick="goStage(2)" class="btn btn-primary" style="width:100%;">
+            Package these steps into a function
+          </button>
+        </div>
+
+        <!-- Stage 2: Name the function (shown on retry) -->
+        <div class="fn-stage" id="stage-2" style="display:{% if result == 'incorrect' %}block{% else %}none{% endif %};">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+            <div style="width:28px; height:28px; border-radius:50%; background:var(--color-primary); color:white; display:flex; align-items:center; justify-content:center; font-family:var(--font-pixel); font-size:13px; font-weight:700; flex-shrink:0;">2</div>
+            <h2 style="font-family:var(--font-game); font-size:20px; font-weight:700;">Name your function</h2>
+          </div>
+
+          <div class="fn-code-block" style="margin-bottom:20px;">
+            <div class="fn-code-line">
+              <span class="fn-keyword">def</span>
+              <span id="fn-name-preview" class="fn-name fn-name--placeholder">___________</span>
+              <span class="fn-paren">():</span>
+            </div>
+            {% for step in exercise.steps %}
+            <div class="fn-code-line fn-code-body">
+              <span class="fn-comment"># {{ step }}</span>
+            </div>
+            {% endfor %}
+          </div>
+
+          <form method="POST" action="{{ url_for('mascot_exercise') }}" id="fn-form">
+            <input type="hidden" name="exercise_id" value="{{ exercise.id }}">
+
+            <div style="margin-bottom:16px;">
+              <div style="font-size:13px; font-weight:600; color:var(--color-text-muted); margin-bottom:10px;">Pick a name from the list:</div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;" id="choice-grid">
+                {% for c in sc %}
+                <label class="fn-choice" data-id="{{ c.id }}">
+                  <input type="radio" name="choice" value="{{ c.id }}" style="display:none;" onchange="onChoicePick('{{ c.label }}', this)">
+                  <span class="fn-choice-label">{{ c.label }}</span>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div style="display:flex; align-items:center; margin-bottom:20px;">
+              <div style="flex:1; height:1px; background:var(--color-border);"></div>
+              <span style="padding:0 12px; font-size:13px; color:var(--color-text-muted); font-weight:600; white-space:nowrap;">or invent your own</span>
+              <div style="flex:1; height:1px; background:var(--color-border);"></div>
+            </div>
+
+            <div style="margin-bottom:8px;">
+              <div style="font-size:13px; color:var(--color-text-muted); margin-bottom:6px;">
+                Write a name related to the task — no spaces, counts for full points!
+              </div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <div style="font-family:var(--font-pixel); font-size:15px; color:var(--color-primary); flex-shrink:0;">def</div>
+                <input type="text" name="custom_name" id="custom-name-input"
+                  placeholder="myFunctionName"
+                  maxlength="30"
+                  oninput="onCustomInput(this)"
+                  style="flex:1; padding:10px 14px; border:2px solid var(--color-border); border-radius:10px; font-family:var(--font-pixel); font-size:14px; background:var(--color-surface); outline:none; transition:border-color .15s;">
+                <div style="font-family:var(--font-pixel); font-size:15px; color:var(--color-primary); flex-shrink:0;">()</div>
+              </div>
+              <div id="custom-hint" style="font-size:12px; color:var(--color-warning-ink); margin-top:4px; display:none;">No spaces — use camelCase like <code>myFunction</code>.</div>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn btn-primary" style="width:100%; margin-top:12px;" disabled>
+              Create My Function
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <!-- Sidebar -->
+  <div style="display:flex; flex-direction:column; gap:16px;">
+
+    <div class="card" style="text-align:center;">
+      <div class="card-body">
+        {{ space_beaver(72) }}
+        <div style="font-family:var(--font-game); font-weight:700; font-size:15px; margin-top:8px;">{{ pet_name }} needs you!</div>
+        <div style="font-size:13px; color:var(--color-text-muted); margin-top:4px;">Earn 1 point to care for your mascot.</div>
+        <div style="background:var(--color-primary-soft); border-radius:100px; padding:6px 16px; font-family:var(--font-game); font-weight:700; font-size:18px; color:var(--color-primary); display:inline-block; margin-top:10px;">
+          {{ pet.points }} pts
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--color-highlight-soft); border:1px solid var(--color-highlight);">
+      <div class="card-body">
+        <h4 style="font-family:var(--font-game); font-size:14px; font-weight:700; color:var(--color-highlight-ink); margin-bottom:8px;">What is a function?</h4>
+        <p style="font-size:13px; color:var(--color-highlight-ink); line-height:1.6; margin:0;">
+          A function is a <strong>named package of steps</strong> you can reuse. Define it once, call it by name whenever you need it.
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 style="font-family:var(--font-game); font-size:14px; font-weight:700; margin-bottom:8px;">Naming tip</h4>
+        <p style="font-size:13px; color:var(--color-text-muted); line-height:1.6; margin:0;">
+          A good function name describes what it <em>does</em>, uses no spaces, and starts with a lowercase letter. Like <code style="background:var(--color-surface-muted); padding:1px 5px; border-radius:4px;">chargeRobot()</code>.
+        </p>
+      </div>
+    </div>
+
+    {% if result != "correct" %}
+    <div class="card" style="background:var(--color-surface-muted); border:1px dashed var(--color-border-strong);">
+      <div class="card-body" style="text-align:center;">
+        <div style="font-size:13px; color:var(--color-text-muted); margin-bottom:8px; font-weight:600;">Your autonomy matters</div>
+        <p style="font-size:12px; color:var(--color-text-subtle); line-height:1.6; margin:0;">
+          Writing your own function name earns full points &mdash; as long as it relates to the task. Real programmers choose their own names.
+        </p>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function goStage(n) {
+  document.querySelectorAll('.fn-stage').forEach(function(el) { el.style.display = 'none'; });
+  var s = document.getElementById('stage-' + n);
+  if (s) { s.style.display = 'block'; s.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+}
+
+function onChoicePick(label, input) {
+  document.querySelectorAll('.fn-choice').forEach(function(el) { el.classList.remove('is-selected'); });
+  input.closest('.fn-choice').classList.add('is-selected');
+  document.getElementById('fn-name-preview').textContent = label.replace('()', '');
+  document.getElementById('fn-name-preview').classList.remove('fn-name--placeholder');
+  document.getElementById('submit-btn').disabled = false;
+  // clear custom input when picking a choice
+  var ci = document.getElementById('custom-name-input');
+  if (ci) { ci.value = ''; ci.style.borderColor = 'var(--color-border)'; }
+}
+
+function onCustomInput(input) {
+  var val = input.value.trim();
+  var hint = document.getElementById('custom-hint');
+  var preview = document.getElementById('fn-name-preview');
+  var btn = document.getElementById('submit-btn');
+
+  if (val.includes(' ')) {
+    hint.style.display = 'block';
+    input.style.borderColor = 'var(--color-warning)';
+  } else {
+    hint.style.display = 'none';
+    input.style.borderColor = val.length >= 3 ? 'var(--color-success)' : 'var(--color-border)';
+  }
+
+  if (val.length >= 3 && !val.includes(' ')) {
+    preview.textContent = val;
+    preview.classList.remove('fn-name--placeholder');
+    document.querySelectorAll('.fn-choice').forEach(function(el) { el.classList.remove('is-selected'); });
+    document.querySelectorAll('input[name="choice"]').forEach(function(el) { el.checked = false; });
+    btn.disabled = false;
+  } else if (val.length === 0) {
+    var checked = document.querySelector('input[name="choice"]:checked');
+    if (!checked) {
+      preview.textContent = '___________';
+      preview.classList.add('fn-name--placeholder');
+      btn.disabled = true;
+    }
+  }
+}
+
+function callFunction(el, name) {
+  el.innerHTML = '<span class="fn-builtin">' + name + '()</span> <span style="color:#166534;font-size:12px;font-weight:700;">called!</span>';
+  el.style.cursor = 'default';
+  el.style.background = 'rgba(22,101,52,.1)';
+  el.style.border = '1.5px solid #166534';
+}
+</script>
+{% endblock %}

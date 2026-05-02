@@ -15,6 +15,7 @@ from flask import (
 import os
 import random
 import copy
+import time
 from difflib import get_close_matches
 
 # All lesson & world content is loaded via data/__init__.py
@@ -1399,6 +1400,286 @@ def world_reward(slug):
         progress=progress,
         slug=slug,
         xp=xp,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pet / Tamagotchi system  (Cosmo the Space Beaver)
+# ---------------------------------------------------------------------------
+
+PET_DEFAULT_NAME = "Cosmo"
+
+# Stat decay per hour of real time
+_PET_DECAY = {"hunger": 18, "energy": -12, "happiness": -8}
+
+MASCOT_MOODS = {
+    "starving":  ("So hungry... please feed me!",    "#d36369"),
+    "exhausted": ("So sleepy... need rest...",         "#9b59b6"),
+    "sad":       ("I am feeling lonely. Come play!",  "#5fa8d3"),
+    "hungry":    ("My tummy is rumbling a little...", "#d99a3f"),
+    "tired":     ("I could use a little nap...",       "#8e7bbd"),
+    "happy":     ("Doing great! Let us learn something new!", "#5fae83"),
+    "content":   ("Feeling pretty good today!",        "#6B39D9"),
+    "okay":      ("I am okay! Maybe we can play soon?", "#e38bd0"),
+}
+
+# Function-naming exercises. Each has one correct choice (correct=True).
+# Writing a custom name is always accepted to reward autonomy.
+PET_EXERCISES = [
+    {
+        "id": "charge_robot",
+        "title": "Charge the Robot",
+        "context": "Every night your space robot needs to recharge. These are the steps it runs through:",
+        "steps": [
+            "Plug in the charging cable",
+            "Set the charge timer to 8 hours",
+            "Switch the robot to sleep mode",
+            "Confirm battery reaches 100%",
+        ],
+        "choices": [
+            {"id": "a", "label": "chargeRobot()",  "correct": True},
+            {"id": "b", "label": "cookFood()",     "correct": False},
+            {"id": "c", "label": "launchRocket()", "correct": False},
+            {"id": "d", "label": "buildRobot()",   "correct": False},
+        ],
+        "theme_words": ["charge", "robot", "battery", "power", "recharge", "sleep", "cable"],
+        "explain": "chargeRobot() is the best name because it tells you exactly what the function does. A good function name always describes its job.",
+    },
+    {
+        "id": "launch_check",
+        "title": "Pre-Launch Safety Check",
+        "context": "Before every rocket launch the crew runs a safety check. These steps always happen in the same order:",
+        "steps": [
+            "Check the fuel level",
+            "Test the communication systems",
+            "Confirm crew are strapped in",
+            "Get clearance from mission control",
+        ],
+        "choices": [
+            {"id": "a", "label": "makeDinner()",   "correct": False},
+            {"id": "b", "label": "launchCheck()",  "correct": True},
+            {"id": "c", "label": "landRocket()",   "correct": False},
+            {"id": "d", "label": "sleepRobot()",   "correct": False},
+        ],
+        "theme_words": ["launch", "check", "rocket", "safety", "mission", "fuel", "crew", "flight"],
+        "explain": "launchCheck() works perfectly. Functions are reusable — every time the crew needs to run the safety check they just call launchCheck() instead of writing all four steps again.",
+    },
+    {
+        "id": "clean_panels",
+        "title": "Clean the Solar Panels",
+        "context": "The space station's solar panels need cleaning every week. The maintenance robot always follows these steps:",
+        "steps": [
+            "Extend the robot arm to reach the panel",
+            "Spray cleaning solution on the surface",
+            "Wipe in straight lines from top to bottom",
+            "Retract the robot arm",
+        ],
+        "choices": [
+            {"id": "a", "label": "fixEngine()",    "correct": False},
+            {"id": "b", "label": "eatLunch()",     "correct": False},
+            {"id": "c", "label": "cleanPanels()",  "correct": True},
+            {"id": "d", "label": "startRocket()",  "correct": False},
+        ],
+        "theme_words": ["clean", "panel", "solar", "wash", "wipe", "polish", "maintain", "spray"],
+        "explain": "cleanPanels() is clear and specific. A function name should be short but descriptive — someone reading your code should know exactly what it does without looking inside.",
+    },
+]
+
+
+def get_pet_state():
+    """Load pet state from session, applying time-based stat decay."""
+    now = time.time()
+    if "pet" not in session:
+        session["pet"] = {
+            "hunger": 30,
+            "energy": 80,
+            "happiness": 70,
+            "points": 0,
+            "last_check": now,
+            "total_feeds": 0,
+        }
+    pet = dict(session["pet"])
+    elapsed_hours = (now - pet.get("last_check", now)) / 3600.0
+    if elapsed_hours > 0.01:
+        pet["hunger"]    = int(min(100, pet["hunger"]    + elapsed_hours * _PET_DECAY["hunger"]))
+        pet["energy"]    = int(max(0,   pet["energy"]    + elapsed_hours * _PET_DECAY["energy"]))
+        pet["happiness"] = int(max(0,   pet["happiness"] + elapsed_hours * _PET_DECAY["happiness"]))
+    pet["last_check"] = now
+    session["pet"] = pet
+    session.modified = True
+    return pet
+
+
+def _pet_mood_key(pet):
+    h, e, hap = pet["hunger"], pet["energy"], pet["happiness"]
+    if h >= 80:        return "starving"
+    if e <= 15:        return "exhausted"
+    if hap <= 20:      return "sad"
+    if h >= 60:        return "hungry"
+    if e <= 30:        return "tired"
+    avg = (e + hap + (100 - h)) / 3
+    if avg >= 75:      return "happy"
+    if avg >= 55:      return "content"
+    return "okay"
+
+
+def _get_pet_name():
+    return session.get("pet_name", PET_DEFAULT_NAME)
+
+
+@app.route("/mascot")
+def mascot():
+    pet = get_pet_state()
+    mood_key = _pet_mood_key(pet)
+    mood_msg, mood_color = MASCOT_MOODS[mood_key]
+    return render_template(
+        "pages/mascot.html",
+        pet=pet,
+        mood_key=mood_key,
+        mood_msg=mood_msg,
+        mood_color=mood_color,
+        pet_name=_get_pet_name(),
+    )
+
+
+@app.route("/mascot/rename", methods=["POST"])
+def mascot_rename():
+    name = request.form.get("pet_name", "").strip()
+    if 1 <= len(name) <= 20:
+        session["pet_name"] = name
+        session.modified = True
+    return redirect(url_for("mascot"))
+
+
+@app.route("/mascot/feed", methods=["POST"])
+def mascot_feed():
+    pet = get_pet_state()
+    if pet["points"] >= 5:
+        pet["hunger"]    = max(0, pet["hunger"] - 35)
+        pet["happiness"] = min(100, pet["happiness"] + 5)
+        pet["points"]   -= 5
+        pet["total_feeds"] = pet.get("total_feeds", 0) + 1
+        session["pet"] = pet
+        session.modified = True
+    return redirect(url_for("mascot"))
+
+
+@app.route("/mascot/play", methods=["POST"])
+def mascot_play():
+    pet = get_pet_state()
+    if pet["points"] >= 3:
+        pet["happiness"] = min(100, pet["happiness"] + 30)
+        pet["energy"]    = max(0,   pet["energy"]    - 8)
+        pet["points"]   -= 3
+        session["pet"] = pet
+        session.modified = True
+    return redirect(url_for("mascot"))
+
+
+@app.route("/mascot/tick", methods=["POST"])
+def mascot_tick():
+    """Called by JS every 10 minutes while the student is on the mascot page."""
+    from flask import jsonify
+    pet = get_pet_state()
+    pet["hunger"]    = min(100, pet["hunger"]    + 8)
+    pet["happiness"] = max(0,   pet["happiness"] - 5)
+    session["pet"] = pet
+    session.modified = True
+    mood_key = _pet_mood_key(pet)
+    mood_msg, mood_color = MASCOT_MOODS[mood_key]
+    return jsonify({
+        "hunger":    pet["hunger"],
+        "energy":    pet["energy"],
+        "happiness": pet["happiness"],
+        "mood_key":  mood_key,
+        "mood_msg":  mood_msg,
+        "mood_color": mood_color,
+    })
+
+
+@app.route("/mascot/rest", methods=["POST"])
+def mascot_rest():
+    pet = get_pet_state()
+    if pet["points"] >= 2:
+        pet["energy"]    = min(100, pet["energy"]    + 35)
+        pet["happiness"] = min(100, pet["happiness"] + 5)
+        pet["points"]   -= 2
+        session["pet"] = pet
+        session.modified = True
+    return redirect(url_for("mascot"))
+
+
+@app.route("/mascot/exercise", methods=["GET", "POST"])
+def mascot_exercise():
+    pet = get_pet_state()
+
+    if request.method == "POST":
+        exercise_id = request.form.get("exercise_id", "")
+        choice      = request.form.get("choice", "")
+        custom_name = request.form.get("custom_name", "").strip()
+        ex = next((e for e in PET_EXERCISES if e["id"] == exercise_id), None)
+        if not ex:
+            return redirect(url_for("mascot_exercise"))
+
+        correct_choice = next((c for c in ex["choices"] if c["correct"]), None)
+        picked_correct = correct_choice and choice == correct_choice["id"]
+
+        # Autonomy path: custom name must be theme-relevant (contain a keyword)
+        name_lower = custom_name.lower()
+        on_theme = any(w in name_lower for w in ex.get("theme_words", []))
+        valid_custom = (
+            len(custom_name) >= 3
+            and " " not in custom_name
+            and on_theme
+        )
+        is_correct = picked_correct or valid_custom
+
+        correct_label = correct_choice["label"] if correct_choice else ""
+        used_name = custom_name if valid_custom else (correct_label if picked_correct else "")
+
+        if is_correct:
+            pet["points"]    = pet.get("points", 0) + 1
+            pet["happiness"] = min(100, pet["happiness"] + 15)
+            session["pet"] = pet
+            session.modified = True
+
+        # Shuffle choices for retry so the layout feels fresh
+        retry_choices = ex["choices"][:]
+        random.shuffle(retry_choices)
+
+        return render_template(
+            "pages/mascot_exercise.html",
+            exercise=ex,
+            shuffled_choices=retry_choices,
+            result="correct" if is_correct else "incorrect",
+            used_name=used_name,
+            used_custom=valid_custom,
+            chosen_id=choice,
+            correct_label=correct_label,
+            pet=pet,
+            pet_name=_get_pet_name(),
+        )
+
+    # GET: pick a random exercise
+    ex = random.choice(PET_EXERCISES)
+    # Shuffle choices so order varies each time
+    choices = ex["choices"][:]
+    random.shuffle(choices)
+    session["pet_exercise_id"] = ex["id"]
+    session["pet_exercise_choices"] = [c["id"] for c in choices]
+    session.modified = True
+
+    return render_template(
+        "pages/mascot_exercise.html",
+        exercise=ex,
+        shuffled_choices=choices,
+        result=None,
+        used_name=None,
+        used_custom=False,
+        chosen_id=None,
+        correct_label="",
+        pet=pet,
+        pet_name=_get_pet_name(),
     )
 
 

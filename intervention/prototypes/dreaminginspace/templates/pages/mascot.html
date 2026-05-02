@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% block title %}{{ pet_name }} &middot; Dreaming in Space{% endblock %}
+
+{% block content %}
+{% from "_macros.html" import icon, space_beaver with context %}
+
+<div style="margin-top:28px;"></div>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <h1 class="display-xl" style="margin-top:8px;">My Mascot</h1>
+    <p style="color:var(--color-text-muted); margin-top:6px;">Take care of {{ pet_name }} by completing exercises and spending your points.</p>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns: 400px 1fr; gap:24px; margin-bottom:32px;">
+
+  <!-- Pet display card -->
+  <div class="card pet-card" style="overflow:hidden;">
+    <div class="pet-stage" data-mood="{{ mood_key }}">
+
+      <div id="mood-bubble" class="pet-bubble" style="background:{{ mood_color }}20; border:2px solid {{ mood_color }}40; color:{{ mood_color }};">
+        {{ mood_msg }}
+      </div>
+
+      <div id="pet-figure" class="pet-figure pet-anim--{{ mood_key }}">
+        {{ space_beaver(140) }}
+      </div>
+
+      <!-- Name display -->
+      <div id="name-display" style="display:flex; align-items:center; gap:8px;">
+        <span style="font-family:var(--font-game); font-size:22px; font-weight:700;">{{ pet_name }}</span>
+        <button onclick="toggleRename(true)" title="Give a nickname"
+          style="background:rgba(107,57,217,.12); border:1.5px solid var(--color-primary-border); border-radius:8px; cursor:pointer; color:var(--color-primary-ink); padding:4px 10px; font-family:var(--font-game); font-size:11px; font-weight:700; letter-spacing:.04em; display:flex; align-items:center; gap:4px;">
+          {{ icon('settings') }} rename
+        </button>
+      </div>
+
+      <!-- Rename form (hidden by default) -->
+      <div id="rename-form" style="display:none; width:100%; padding:0 16px;">
+        <form method="POST" action="{{ url_for('mascot_rename') }}" style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-family:var(--font-game); font-size:13px; font-weight:600; color:var(--color-primary-ink); text-align:center;">Give your mascot a nickname!</div>
+          <input type="text" name="pet_name" value="{{ pet_name }}" maxlength="20"
+            style="width:100%; padding:10px 14px; border:2px solid var(--color-primary); border-radius:10px; font-family:var(--font-game); font-size:16px; font-weight:700; background:white; outline:none; text-align:center;"
+            placeholder="Enter a name...">
+          <div style="display:flex; gap:8px;">
+            <button type="submit" class="btn btn-primary" style="flex:1; font-size:13px;">Save name</button>
+            <button type="button" onclick="toggleRename(false)" style="flex:1; padding:10px; border:2px solid var(--color-border); border-radius:10px; background:var(--color-surface); font-family:var(--font-game); font-size:13px; cursor:pointer;">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Points display -->
+    <div class="pet-points-banner">
+      <span style="font-size:13px; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:.06em; font-weight:600;">Care Points</span>
+      <span class="pet-points-count">{{ pet.points }}</span>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="card-body" style="padding-top:16px;">
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+
+        <form method="POST" action="{{ url_for('mascot_feed') }}">
+          <button type="submit"
+            class="pet-action-btn pet-action-btn--feed {% if pet.points < 5 %}is-disabled{% endif %}"
+            {% if pet.points < 5 %}disabled{% endif %}>
+            <span class="pet-action-icon">{{ icon('bread') }}</span>
+            <span class="pet-action-label">Feed</span>
+            <span class="pet-action-cost">5 pts</span>
+          </button>
+        </form>
+
+        <form method="POST" action="{{ url_for('mascot_play') }}">
+          <button type="submit"
+            class="pet-action-btn pet-action-btn--play {% if pet.points < 3 %}is-disabled{% endif %}"
+            {% if pet.points < 3 %}disabled{% endif %}>
+            <span class="pet-action-icon">{{ icon('sparkles') }}</span>
+            <span class="pet-action-label">Play</span>
+            <span class="pet-action-cost">3 pts</span>
+          </button>
+        </form>
+
+        <form method="POST" action="{{ url_for('mascot_rest') }}">
+          <button type="submit"
+            class="pet-action-btn pet-action-btn--rest {% if pet.points < 2 %}is-disabled{% endif %}"
+            {% if pet.points < 2 %}disabled{% endif %}>
+            <span class="pet-action-icon">{{ icon('clock') }}</span>
+            <span class="pet-action-label">Rest</span>
+            <span class="pet-action-cost">2 pts</span>
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats + exercise panel -->
+  <div style="display:flex; flex-direction:column; gap:20px;">
+
+    <!-- Stats card -->
+    <div class="card">
+      <div class="card-body">
+        <h3 style="font-family:var(--font-game); font-size:17px; font-weight:700; margin-bottom:16px;">{{ pet_name }}'s Stats</h3>
+
+        <div style="display:flex; flex-direction:column; gap:14px;">
+
+          <div id="hunger-row">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+              <span style="font-size:14px; font-weight:600; display:flex; align-items:center; gap:6px;">{{ icon('bread') }} Hunger</span>
+              <span id="hunger-label" class="pet-stat-value {% if pet.hunger >= 70 %}pet-stat--danger{% elif pet.hunger >= 45 %}pet-stat--warn{% else %}pet-stat--good{% endif %}">
+                {% if pet.hunger >= 80 %}Starving!{% elif pet.hunger >= 60 %}Hungry{% elif pet.hunger >= 35 %}A little hungry{% else %}Full{% endif %}
+              </span>
+            </div>
+            <div class="pet-bar-track">
+              <div id="hunger-fill" class="pet-bar-fill {% if pet.hunger >= 70 %}pet-bar--danger{% elif pet.hunger >= 45 %}pet-bar--warn{% else %}pet-bar--good{% endif %}"
+                   style="width:{{ pet.hunger }}%;"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+              <span style="font-size:14px; font-weight:600; display:flex; align-items:center; gap:6px;">{{ icon('sparkles') }} Energy</span>
+              <span class="pet-stat-value {% if pet.energy <= 20 %}pet-stat--danger{% elif pet.energy <= 40 %}pet-stat--warn{% else %}pet-stat--good{% endif %}">
+                {% if pet.energy <= 15 %}Exhausted!{% elif pet.energy <= 30 %}Tired{% elif pet.energy <= 55 %}Okay{% else %}Energised{% endif %}
+              </span>
+            </div>
+            <div class="pet-bar-track">
+              <div class="pet-bar-fill {% if pet.energy <= 20 %}pet-bar--danger{% elif pet.energy <= 40 %}pet-bar--warn{% else %}pet-bar--good{% endif %}"
+                   style="width:{{ pet.energy }}%;"></div>
+            </div>
+          </div>
+
+          <div id="happiness-row">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+              <span style="font-size:14px; font-weight:600; display:flex; align-items:center; gap:6px;">{{ icon('award') }} Happiness</span>
+              <span id="happiness-label" class="pet-stat-value {% if pet.happiness <= 25 %}pet-stat--danger{% elif pet.happiness <= 45 %}pet-stat--warn{% else %}pet-stat--good{% endif %}">
+                {% if pet.happiness <= 20 %}Very sad{% elif pet.happiness <= 40 %}Down{% elif pet.happiness <= 60 %}Okay{% else %}Happy{% endif %}
+              </span>
+            </div>
+            <div class="pet-bar-track">
+              <div id="happiness-fill" class="pet-bar-fill {% if pet.happiness <= 25 %}pet-bar--danger{% elif pet.happiness <= 45 %}pet-bar--warn{% else %}pet-bar--good{% endif %}"
+                   style="width:{{ pet.happiness }}%;"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Earn points card -->
+    <div class="card" style="border:2px solid var(--color-primary-border); background:var(--color-primary-soft);">
+      <div class="card-body">
+        <h3 style="font-family:var(--font-game); font-size:17px; font-weight:700; color:var(--color-primary-ink); margin-bottom:6px;">Earn Care Points</h3>
+        <p style="font-size:14px; color:var(--color-text-muted); margin-bottom:16px; line-height:1.5;">
+          Complete function challenges to earn points. Use them to feed, play with, and look after {{ pet_name }}!
+        </p>
+
+        <div style="background:var(--color-surface); border-radius:12px; padding:14px 16px; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <div style="font-weight:700; font-size:15px;">Function Builder Lab</div>
+            <div style="font-size:13px; color:var(--color-text-muted); margin-top:2px;">Name and build your own functions &mdash; Track 1 Foundations</div>
+          </div>
+          <div style="font-family:var(--font-game); font-weight:700; font-size:18px; color:var(--color-success-ink); background:var(--color-success-soft); padding:6px 14px; border-radius:100px; white-space:nowrap;">
+            +1 pt
+          </div>
+        </div>
+
+        <a href="{{ url_for('mascot_exercise') }}" class="btn btn-primary" style="width:100%; text-align:center; display:block;">
+          Open the Lab
+        </a>
+
+        <p style="font-size:12px; color:var(--color-text-subtle); text-align:center; margin-top:10px;">
+          Repeat as many times as you like to keep earning points.
+        </p>
+      </div>
+    </div>
+
+    <!-- How it works -->
+    <div class="card">
+      <div class="card-body">
+        <h3 style="font-family:var(--font-game); font-size:15px; font-weight:700; margin-bottom:12px;">How to look after {{ pet_name }}</h3>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; align-items:flex-start; gap:10px; font-size:14px;">
+            <div style="width:28px; height:28px; border-radius:8px; background:var(--color-warning-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0;">{{ icon('bread') }}</div>
+            <div><strong>Feed (5 pts)</strong> &mdash; Reduces hunger. Don't let {{ pet_name }} go hungry!</div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:10px; font-size:14px;">
+            <div style="width:28px; height:28px; border-radius:8px; background:var(--color-primary-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0;">{{ icon('sparkles') }}</div>
+            <div><strong>Play (3 pts)</strong> &mdash; Boosts happiness. {{ pet_name }} loves to have fun!</div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:10px; font-size:14px;">
+            <div style="width:28px; height:28px; border-radius:8px; background:var(--color-success-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0;">{{ icon('clock') }}</div>
+            <div><strong>Rest (2 pts)</strong> &mdash; Restores energy. {{ pet_name }} needs sleep too!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleRename(show) {
+  document.getElementById('rename-form').style.display = show ? 'block' : 'none';
+  document.getElementById('name-display').style.display = show ? 'none' : 'flex';
+  if (show) document.querySelector('#rename-form input').select();
+}
+
+/* ── Live decay: tick every 10 minutes while on this page ── */
+(function () {
+  var MOOD_ANIM = ['happy','content','okay','hungry','starving','tired','exhausted','sad'];
+
+  function pct(val) { return Math.max(0, Math.min(100, val)); }
+
+  function barClass(stat, val) {
+    if (stat === 'hunger') {
+      return val >= 70 ? 'pet-bar--danger' : val >= 45 ? 'pet-bar--warn' : 'pet-bar--good';
+    }
+    return val <= 20 ? 'pet-bar--danger' : val <= 40 ? 'pet-bar--warn' : 'pet-bar--good';
+  }
+
+  function labelClass(stat, val) {
+    if (stat === 'hunger') {
+      return val >= 70 ? 'pet-stat--danger' : val >= 45 ? 'pet-stat--warn' : 'pet-stat--good';
+    }
+    return val <= 25 ? 'pet-stat--danger' : val <= 45 ? 'pet-stat--warn' : 'pet-stat--good';
+  }
+
+  function hungerLabel(v) {
+    if (v >= 80) return 'Starving!';
+    if (v >= 60) return 'Hungry';
+    if (v >= 35) return 'A little hungry';
+    return 'Full';
+  }
+  function happinessLabel(v) {
+    if (v <= 20) return 'Very sad';
+    if (v <= 40) return 'Down';
+    if (v <= 60) return 'Okay';
+    return 'Happy';
+  }
+
+  function updateBar(id, fillId, labelId, stat, val) {
+    var fill  = document.getElementById(fillId);
+    var label = document.getElementById(labelId);
+    if (fill)  { fill.style.width = pct(val) + '%'; fill.className = 'pet-bar-fill ' + barClass(stat, val); }
+    if (label) { label.className = 'pet-stat-value ' + labelClass(stat, val); label.textContent = stat === 'hunger' ? hungerLabel(val) : happinessLabel(val); }
+  }
+
+  function applyTick(data) {
+    updateBar('hunger-row',    'hunger-fill',    'hunger-label',    'hunger',    data.hunger);
+    updateBar('happiness-row', 'happiness-fill', 'happiness-label', 'happiness', data.happiness);
+
+    // Update mood bubble
+    var bubble = document.getElementById('mood-bubble');
+    if (bubble) {
+      bubble.textContent = data.mood_msg;
+      bubble.style.background  = data.mood_color + '20';
+      bubble.style.borderColor = data.mood_color + '40';
+      bubble.style.color       = data.mood_color;
+    }
+
+    // Update beaver animation class
+    var fig = document.getElementById('pet-figure');
+    if (fig) {
+      MOOD_ANIM.forEach(function(m) { fig.classList.remove('pet-anim--' + m); });
+      fig.classList.add('pet-anim--' + data.mood_key);
+    }
+  }
+
+  setInterval(function () {
+    fetch('{{ url_for("mascot_tick") }}', { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function(r) { return r.json(); })
+      .then(applyTick)
+      .catch(function() {});
+  }, 10 * 60 * 1000); /* 10 minutes */
+})();
+</script>
+{% endblock %}

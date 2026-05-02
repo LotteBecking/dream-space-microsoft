@@ -69,6 +69,9 @@
         <a href="{{ url_for('profile') }}" class="nav-pill {% if '/profile' in request.path %}is-active{% endif %}">
           {{ icon('user') }}<span>Profile</span>
         </a>
+        <a href="{{ url_for('mascot') }}" class="nav-pill {% if '/mascot' in request.path %}is-active{% endif %}">
+          {{ icon('sparkles') }}<span>Mascot</span>
+        </a>
       </nav>
       <div class="header-context">
         {% block header_context %}

@@ -1720,3 +1720,250 @@
   .lesson-foldout-body-inner {
     padding: 12px 16px 8px;
   }
+
+  /* ───────────────────────────────────────────────────
+     Mascot / Tamagotchi styles
+     ─────────────────────────────────────────────────── */
+
+  .nav-pill--mascot {
+    background: linear-gradient(135deg, var(--color-primary-soft), var(--color-accent-soft));
+    border: 1.5px solid var(--color-primary-border);
+  }
+  .nav-pill--mascot.is-active,
+  .nav-pill--mascot:hover {
+    background: linear-gradient(135deg, var(--color-primary), #9b59b6);
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .pet-card {
+    border: 2px solid var(--color-primary-border);
+  }
+
+  .pet-stage {
+    padding: 28px 20px 16px;
+    background: linear-gradient(160deg, var(--color-bg-grad-1), var(--color-bg-grad-2));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-height: 260px;
+  }
+
+  .pet-bubble {
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--font-game);
+    text-align: center;
+    max-width: 280px;
+    line-height: 1.4;
+  }
+
+  .pet-figure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .pet-figure .mascot-halo { margin: 0 auto; }
+
+  @keyframes pet-bounce {
+    0%, 100% { transform: translateY(0); }
+    40%       { transform: translateY(-12px); }
+    60%       { transform: translateY(-6px); }
+  }
+  @keyframes pet-wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25%       { transform: rotate(-6deg); }
+    75%       { transform: rotate(6deg); }
+  }
+  @keyframes pet-nod {
+    0%, 100% { transform: rotate(0deg) translateY(0); }
+    50%       { transform: rotate(3deg) translateY(-4px); }
+  }
+  @keyframes pet-droop {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%       { transform: translateY(4px) rotate(-2deg); }
+  }
+
+  .pet-anim--happy     { animation: pet-bounce 1.2s ease-in-out infinite; }
+  .pet-anim--content   { animation: pet-nod    2.0s ease-in-out infinite; }
+  .pet-anim--okay      { animation: pet-nod    2.5s ease-in-out infinite; }
+  .pet-anim--hungry    { animation: pet-wiggle 1.8s ease-in-out infinite; }
+  .pet-anim--starving  { animation: pet-wiggle 0.8s ease-in-out infinite; }
+  .pet-anim--tired     { animation: pet-droop  2.4s ease-in-out infinite; }
+  .pet-anim--exhausted { animation: pet-droop  3.0s ease-in-out infinite; }
+  .pet-anim--sad       { animation: pet-droop  2.0s ease-in-out infinite; }
+
+  .pet-points-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: var(--color-surface-muted);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .pet-points-count {
+    font-family: var(--font-pixel);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .pet-action-btn {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 8px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-button);
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s, background .15s;
+  }
+  .pet-action-btn:hover:not(.is-disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .pet-action-btn:active:not(.is-disabled) { transform: translateY(0); }
+  .pet-action-btn.is-disabled { opacity: .45; cursor: not-allowed; }
+  .pet-action-btn .icon { width: 22px; height: 22px; }
+  .pet-action-label {
+    font-family: var(--font-game);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .pet-action-cost { font-size: 11px; color: var(--color-text-muted); font-weight: 600; }
+
+  .pet-action-btn--feed  { border-color: #fde68a; background: #fffbeb; color: #92400e; }
+  .pet-action-btn--feed:hover:not(.is-disabled)  { background: #fef3c7; }
+  .pet-action-btn--play  { border-color: var(--color-primary-border); background: var(--color-primary-soft); color: var(--color-primary-ink); }
+  .pet-action-btn--rest  { border-color: var(--color-success-soft); background: var(--color-success-soft); color: var(--color-success-ink); }
+
+  .pet-bar-track {
+    height: 10px;
+    background: var(--color-surface-muted);
+    border-radius: 100px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+  }
+  .pet-bar-fill {
+    height: 100%;
+    border-radius: 100px;
+    transition: width .6s cubic-bezier(.4,0,.2,1);
+  }
+  .pet-bar--good   { background: linear-gradient(90deg, #5fae83, #38d9a9); }
+  .pet-bar--warn   { background: linear-gradient(90deg, #d99a3f, #f4a347); }
+  .pet-bar--danger { background: linear-gradient(90deg, #d36369, #ff5580); }
+
+  .pet-stat-value {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 100px;
+  }
+  .pet-stat--good   { background: var(--color-success-soft); color: var(--color-success-ink); }
+  .pet-stat--warn   { background: var(--color-warning-soft); color: var(--color-warning-ink); }
+  .pet-stat--danger { background: var(--color-error-soft);   color: var(--color-error-ink); }
+
+  .pet-step-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .pet-step-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    cursor: grab;
+    user-select: none;
+    transition: box-shadow .15s, border-color .15s, transform .1s;
+  }
+  .pet-step-item:hover { border-color: var(--color-primary-border); box-shadow: var(--shadow-sm); }
+  .pet-step-item.is-dragging { opacity: .45; cursor: grabbing; transform: scale(.98); }
+  .pet-step-item.drag-over {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(107,57,217,.18);
+    background: var(--color-primary-soft);
+  }
+  .pet-step-handle { color: var(--color-text-subtle); flex-shrink: 0; display: flex; align-items: center; }
+  .pet-step-handle .icon { width: 16px; height: 16px; }
+  .pet-step-num {
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-primary);
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .pet-step-text { font-size: 15px; font-weight: 500; line-height: 1.4; }
+
+  /* ── Function Builder Lab styles ── */
+  .fn-code-block {
+    background: #ede3fb;
+    border: 1.5px solid #cdb8ec;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    line-height: 1.8;
+    color: #2e1065;
+  }
+  .fn-code-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .fn-code-body  { padding-left: 24px; }
+  .fn-code-call  {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1.5px dashed #9b59b6;
+    color: #7c3aed;
+    font-style: italic;
+    transition: background .2s;
+  }
+  .fn-code-call:hover { background: rgba(107,57,217,.1); }
+  .fn-keyword  { color: #6B39D9; font-weight: 700; }
+  .fn-name     { color: #0369a1; font-weight: 700; }
+  .fn-name--placeholder { color: rgba(3,105,161,.35); font-style: italic; }
+  .fn-paren    { color: #3f1f91; }
+  .fn-comment  { color: #6b5c7c; font-style: italic; }
+  .fn-builtin  { color: #166534; font-weight: 700; }
+  .fn-call-placeholder { color: #7c3aed; font-style: italic; font-size: 12px; }
+
+  /* Choice tiles */
+  .fn-choice {
+    display: block;
+    padding: 12px 14px;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s, transform .1s;
+    text-align: center;
+  }
+  .fn-choice:hover { border-color: var(--color-primary-border); background: var(--color-primary-soft); }
+  .fn-choice.is-selected {
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+    box-shadow: 0 0 0 3px rgba(107,57,217,.15);
+  }
+  .fn-choice-label {
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-primary-ink);
+  }
+
+  .fn-stage { animation: fade-in .25s ease; }
