@@ -499,29 +499,6 @@
 
 
 {# ============================================================
-   Hint card , Space Beaver as guide / hint / encouragement.
-   variant ∈ {'guide','hint','encourage'}
-   ============================================================ #}
-{% macro hint_card(title, body, variant='hint', size=88) -%}
-<aside class="hint-card">
-  <div class="hint-mascot" style="flex-direction:column; align-items:center; gap:0;">
-    {{ space_beaver(size) }}
-  </div>
-  <div class="speech-bubble" style="margin-top:14px; margin-bottom:0;">
-    <div class="section-bar" style="margin-bottom:8px; border-radius:8px; padding:5px 10px; font-size:9px;">
-      {%- if variant == 'guide' -%}{{ icon('send') }} Space Beaver says
-      {%- elif variant == 'encourage' -%}{{ icon('trophy') }} Nice work!
-      {%- else -%}{{ icon('lightbulb') }} Tip from Space Beaver
-      {%- endif -%}
-    </div>
-    <div class="title-md" style="margin-bottom:4px;">{{ title }}</div>
-    <p class="body-muted" style="font-size:13px; margin-top:4px;">{{ body }}</p>
-  </div>
-</aside>
-{%- endmacro %}
-
-
-{# ============================================================
    Callout , success/warning/error/info. Uses SVG icons only.
    ============================================================ #}
 {% macro callout(variant, message, title='') -%}
@@ -533,4 +510,69 @@
     <div>{{ message }}</div>
   </div>
 </div>
+{%- endmacro %}
+
+
+{# ============================================================
+   Mission map list (used in home.html for every lesson section).
+   `missions` is a list of dicts with: href, icon, title, meta?, done, active, locked
+   ============================================================ #}
+{% macro mission_map(missions, top_margin=true, locked_msg='Finish previous mission to unlock') -%}
+<ol class="mission-map"{% if top_margin %} style="margin-top:8px;"{% endif %}>
+  {% for m in missions %}
+  {% set state = 'done' if m.done else ('active' if m.active else 'locked') %}
+  <li class="mission-item">
+    <div class="mission-spine">
+      <div class="mission-node {{ state }}">{% if m.done %}{{ icon('check') }}{% elif m.locked %}{{ icon('lock') }}{% else %}{{ loop.index }}{% endif %}</div>
+      {% if not loop.last %}<div class="mission-connector {{ 'done' if m.done else '' }}"></div>{% endif %}
+    </div>
+    <div class="mission-body">
+      {% if not m.locked %}
+      <a href="{{ m.href }}" class="mission-card {{ state }}">
+        <div class="mission-card-icon">{{ icon(m.icon) }}</div>
+        <div style="flex:1; min-width:0;">
+          <div class="mission-title">{{ m.title|safe }}</div>
+          {% if m.meta %}<div class="mission-meta">{{ m.meta|safe }}</div>{% endif %}
+        </div>
+        <span class="mission-badge {{ state }}">{{ m.badge if m.badge is defined else ('Complete' if m.done else ('Go' if m.active else '')) }}</span>
+      </a>
+      {% else %}
+      <span class="mission-card locked">
+        <div class="mission-card-icon">{{ icon(m.icon) }}</div>
+        <div style="flex:1; min-width:0;">
+          <div class="mission-title">{{ m.title|safe }}</div>
+          {% if m.meta %}<div class="mission-meta">{{ m.locked_meta if m.locked_meta is defined else locked_msg }}</div>{% endif %}
+        </div>
+        <span class="mission-badge locked">Locked</span>
+      </span>
+      {% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</ol>
+{%- endmacro %}
+
+
+{# ============================================================
+   Standard lesson <section> wrapper for the home page (lessons 2+).
+   ============================================================ #}
+{% macro lesson_section(lesson_num, icon_name, title, missions) -%}
+{% set lc = session.get('lesson_' ~ lesson_num, {}).get('completed_exercises', []) %}
+{% set ex1 = 1 in lc %}{% set ex2 = 2 in lc %}{% set ex3 = 3 in lc %}
+{% set all_done = ex1 and ex2 and ex3 %}
+{% set started = lc|length > 0 %}
+<section>
+  <div class="lesson-foldout" data-auto-open="{% if started and not all_done %}true{% else %}false{% endif %}">
+    <button type="button" class="lesson-foldout-header">
+      <span style="color:rgba(255,255,255,.8);">{{ icon(icon_name) }}</span>
+      <span style="flex:1;">Lesson {{ lesson_num }} &middot; {{ title|safe }}</span>
+      {% if all_done %}<span class="mission-badge done">Complete</span>
+      {% elif started %}<span class="mission-badge active">In Progress</span>{% endif %}
+      <span class="chevron-icon">{{ icon('chevron-down') }}</span>
+    </button>
+    <div class="lesson-foldout-body"><div class="lesson-foldout-body-inner">
+      {{ mission_map(missions) }}
+    </div></div>
+  </div>
+</section>
 {%- endmacro %}

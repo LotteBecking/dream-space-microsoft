@@ -1,8 +1,24 @@
 {% extends "_exercise_wrapper.html" %}
 
-{% block success_message %}You read those rules perfectly!{% endblock %}
+{% block success_message %}You read every rule perfectly!{% endblock %}
 
 {% block concept_explainer %}
+{% if exercise.concept %}
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, {{ exercise.concept.bg_from|default('#fdf4ff') }}, {{ exercise.concept.bg_to|default('#f5d0fe') }}); border-color: {{ exercise.concept.border|default('#e879f9') }};">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 {{ exercise.concept.title }}</h3>
+    <p style="font-size:16px; color:#111; line-height:1.7; margin:0 0 12px 0;">{{ exercise.concept.body|safe }}</p>
+    {% if exercise.concept.examples %}
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      {% for ex in exercise.concept.examples %}
+      <div style="flex:1; min-width:180px; padding:10px 12px; border-radius:8px; background:white; border:1px solid {{ exercise.concept.border|default('#e879f9') }}; font-size:14px;">{{ ex|safe }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if exercise.concept.outro %}<p style="font-size:15px; margin:12px 0 0 0;"><strong>{{ exercise.concept.outro|safe }}</strong></p>{% endif %}
+  </div>
+</section>
+{% else %}
 <section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #fdf4ff, #f5d0fe); border-color: #e879f9;">
   <div class="card-body">
     <h3 class="title-lg" style="margin-bottom:10px;">💡 What is a Conditional?</h3>
@@ -30,32 +46,76 @@
     </p>
   </div>
 </section>
+{% endif %}
 {% endblock %}
 
 {% block exercise_form %}
+{% set ans_map = (result.answers if result else {}) %}
+{% set ok_idxs = (result.correct_idxs if result else []) %}
+
 {% for prob in exercise.problems %}
 {% set qi = loop.index0 %}
-<section class="card" style="margin-bottom:16px;">
+{% set picked = ans_map.get(qi|string) %}
+{% set correct = prob.correct %}
+{% set answered = picked is not none %}
+{% set is_right = qi in ok_idxs %}
+
+<section class="card" style="margin-bottom:16px; {% if answered and is_right %}border-color:#22c55e;{% elif answered and not is_right %}border-color:#ef4444;{% endif %}">
   <div class="card-body">
     <div class="section-title">
       <span class="section-title-icon">{{ icon('git-branch') }}</span>
-      <h2 class="title-lg">Question {{ loop.index }}</h2>
+      <h2 class="title-lg">Question {{ loop.index }}
+        {% if answered and is_right %}<span style="margin-left:8px; color:#16a34a;">✅</span>
+        {% elif answered %}<span style="margin-left:8px; color:#dc2626;">❌</span>{% endif %}
+      </h2>
     </div>
-    <div style="background:var(--color-ink); color:#f1f5f9; border-radius:var(--radius-card); padding:16px 18px; margin:12px 0; font-family:var(--font-mono, monospace); font-size:15px; line-height:1.7; white-space:pre-wrap; font-weight:500;">{{ prob.rule }}</div>
+    <div style="background:#1e1b4b; color:#f1f5f9; border-radius:var(--radius-card); padding:16px 18px; margin:12px 0; font-family:'Fira Code',Consolas,monospace; font-size:15px; line-height:1.7; white-space:pre-wrap; font-weight:500;">{{ prob.rule }}</div>
     <p style="margin-bottom:12px; color:#111; font-size:16px; font-weight:600;"><strong>Situation:</strong> {{ prob.situation }}</p>
+
     <ul class="stack-sm" style="list-style:none;">
       {% for opt in prob.options %}
+      {% set oi = loop.index0 %}
+      {% set is_picked = (picked == oi) %}
+      {% set is_correct = (oi == correct) %}
       <li>
-        <label style="display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:var(--radius-input);
-               border:2px solid var(--color-border); cursor:pointer; font-family:var(--font-game); font-size:16px;
-               background:var(--color-surface); color:#111; transition:all .15s; font-weight:500;">
-          <input type="radio" name="q{{ qi }}" value="{{ loop.index0 }}" required
+        <label style="
+          display:flex; align-items:center; gap:10px;
+          padding:14px 16px; border-radius:var(--radius-input);
+          cursor:pointer; font-family:var(--font-game); font-size:16px;
+          font-weight:500; transition:all .15s;
+          border:2px solid
+          {% if answered and is_picked and is_correct %}#22c55e
+          {% elif answered and is_picked and not is_correct %}#ef4444
+          {% elif answered and is_correct %}#22c55e
+          {% else %}var(--color-border){% endif %};
+          background:
+          {% if answered and is_picked and is_correct %}#dcfce7
+          {% elif answered and is_picked and not is_correct %}#fee2e2
+          {% elif answered and is_correct %}#f0fdf4
+          {% else %}var(--color-surface){% endif %};
+          color:
+          {% if answered and is_picked and not is_correct %}#991b1b
+          {% elif answered and is_correct %}#15803d
+          {% else %}#111{% endif %};">
+          <input type="radio" name="q{{ qi }}" value="{{ oi }}" required
+                 {% if is_picked %}checked{% endif %}
                  style="accent-color:var(--color-primary); width:18px; height:18px;" />
-          {{ opt }}
+          <span style="flex:1;">
+            {% if answered and is_picked and is_correct %}✅ {% endif %}
+            {% if answered and is_picked and not is_correct %}❌ {% endif %}
+            {% if answered and not is_picked and is_correct %}✓ {% endif %}
+            {{ opt }}
+          </span>
         </label>
       </li>
       {% endfor %}
     </ul>
+
+    {% if answered and not is_right and prob.explanation is defined %}
+    <div style="background:#eff6ff; border-left:4px solid #3b82f6; border-radius:0 10px 10px 0; padding:10px 14px; margin-top:12px;">
+      <p style="color:#1e40af; font-size:14px; margin:0; line-height:1.5;">💡 <strong>Why:</strong> {{ prob.explanation }}</p>
+    </div>
+    {% endif %}
   </div>
 </section>
 {% endfor %}

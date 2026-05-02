@@ -53,6 +53,18 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'What is a Function?',
+            'body': 'A <strong>function</strong> is a <strong>reusable power-up</strong>. You write the steps once, give it a name, then call it whenever you need it!',
+            'examples': [
+                '🔌 <strong>def shields_up():</strong> defines a function. <strong>shields_up()</strong> runs it.',
+                '💪 Functions can take <strong>inputs</strong> (parameters) and give back a <strong>result</strong> (return).',
+            ],
+            'outro': 'Read each function below &mdash; what does it print or return?',
+            'bg_from': '#fef3c7',
+            'bg_to': '#fde68a',
+            'border': '#f59e0b',
+        },
         "title": "Name That Action",
         "type": "read_conditional",
         "difficulty": "Easy",

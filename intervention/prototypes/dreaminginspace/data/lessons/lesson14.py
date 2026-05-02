@@ -53,6 +53,18 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'How does the Internet work?',
+            'body': 'When you send a message, photo or video, it gets split into tiny <strong>packets</strong> with an <strong>address label</strong>. Each packet finds its own way through the network and gets reassembled at the other end!',
+            'examples': [
+                '📦 <strong>Packet</strong> &mdash; a small chunk of data with an address.',
+                '🏠 <strong>IP address</strong> &mdash; like the home address of a computer.',
+            ],
+            'outro': 'Read each scenario and pick the right answer!',
+            'bg_from': '#dbeafe',
+            'bg_to': '#bfdbfe',
+            'border': '#3b82f6',
+        },
         "title": "Trace the Packet",
         "type": "read_conditional",
         "difficulty": "Easy",
@@ -83,6 +95,17 @@ EXERCISES = [
     },
     {
         "id": 2,
+        "concept": {
+            'title': 'The Internet is like a Post Office',
+            'body': 'Every part of the Internet has a real-world twin in the postal system. Match each Internet word to the postal idea it works like!',
+            'examples': [
+                '✋ <strong>IP address</strong> ↔ home address',
+                '📨 <strong>Data packet</strong> ↔ letter in an envelope',
+            ],
+            'bg_from': '#fef3c7',
+            'bg_to': '#fde68a',
+            'border': '#f59e0b',
+        },
         "title": "Address & Send",
         "type": "grouping",
         "difficulty": "Medium",

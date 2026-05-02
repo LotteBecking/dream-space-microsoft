@@ -262,7 +262,7 @@ function answerVerdict(btn, idx, correct, feedback){
   fb.innerHTML+='<div style="padding:10px 14px;border-radius:10px;font-size:13px;background:'+(correct?'var(--color-success-soft)':'var(--color-error-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-error)')+';margin-bottom:6px;">'+feedback+'</div>';
   if(correct){ document.getElementById('verdictNext').style.display='inline-flex'; }
 }
-function submitV1(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitV1(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 
 {% elif mission_num == 2 %}
 var actsDone=[];
@@ -276,7 +276,7 @@ function answerAction(btn, idx, correct, feedback){
   fb.innerHTML+='<div style="padding:10px 14px;border-radius:10px;font-size:13px;background:'+(correct?'var(--color-success-soft)':'var(--color-error-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-error)')+';margin-bottom:6px;">'+feedback+'</div>';
   if(correct){ document.getElementById('actionNext').style.display='inline-flex'; }
 }
-function submitV2(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitV2(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 {% endif %}
 </script>
 
@@ -377,7 +377,7 @@ function ambActionAns(btn, idx, correct, feedback){
   fb.innerHTML+='<div style="padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:4px;background:'+(correct?'var(--color-success-soft)':'var(--color-error-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-error)')+';">'+feedback+'</div>';
   if(correct){ document.getElementById('ambNext').style.display='inline-flex'; }
 }
-function submitAmb(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitAmb(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 {% endif %}
 

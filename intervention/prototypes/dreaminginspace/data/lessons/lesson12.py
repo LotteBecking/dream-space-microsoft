@@ -54,6 +54,18 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'Reading Data',
+            'body': '<strong>Data</strong> is just information &mdash; numbers, votes, scores, temperatures. When you read data carefully, you can answer real questions and make smart choices!',
+            'examples': [
+                '📊 <strong>Bar chart</strong> &mdash; compare amounts at a glance.',
+                '📈 <strong>Line graph</strong> &mdash; see how something changes over time.',
+            ],
+            'outro': 'Look at each table and pick the right answer!',
+            'bg_from': '#dbeafe',
+            'bg_to': '#bfdbfe',
+            'border': '#3b82f6',
+        },
         "title": "Read the Data",
         "type": "read_conditional",
         "difficulty": "Easy",

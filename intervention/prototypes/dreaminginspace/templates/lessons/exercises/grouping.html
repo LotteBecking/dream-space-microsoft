@@ -3,6 +3,22 @@
 {% block success_message %}Great grouping! You found the sub-tasks.{% endblock %}
 
 {% block concept_explainer %}
+{% if exercise.concept %}
+<section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, {{ exercise.concept.bg_from|default('#eff6ff') }}, {{ exercise.concept.bg_to|default('#dbeafe') }}); border-color: {{ exercise.concept.border|default('#93c5fd') }};">
+  <div class="card-body">
+    <h3 class="title-lg" style="margin-bottom:10px;">💡 {{ exercise.concept.title }}</h3>
+    <p style="font-size:16px; color:#111; line-height:1.7; margin:0 0 12px 0;">{{ exercise.concept.body|safe }}</p>
+    {% if exercise.concept.examples %}
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      {% for ex in exercise.concept.examples %}
+      <div style="flex:1; min-width:160px; padding:12px; border-radius:10px; background:white; border:2px solid {{ exercise.concept.border|default('#bfdbfe') }};"><div style="font-size:13px;">{{ ex|safe }}</div></div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if exercise.concept.outro %}<p style="font-size:15px; margin:12px 0 0 0;"><strong>{{ exercise.concept.outro|safe }}</strong></p>{% endif %}
+  </div>
+</section>
+{% else %}
 <section class="card" style="margin-bottom:20px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #93c5fd;">
   <div class="card-body">
     <h3 class="title-lg" style="margin-bottom:10px;">💡 What is Decomposition?</h3>
@@ -25,6 +41,7 @@
     </p>
   </div>
 </section>
+{% endif %}
 {% endblock %}
 
 {% block submit_button %}

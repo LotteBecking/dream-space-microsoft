@@ -327,7 +327,7 @@ function runTest(idx, tc){
   }
 }
 
-function submitBuild(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitBuild(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 
 {% elif mission_num == 3 %}
@@ -400,7 +400,7 @@ function checkSafetyDone(){
     setTimeout(function(){ document.getElementById('safetyDone').style.display='block'; document.getElementById('safetyDone').scrollIntoView({behavior:'smooth'}); },400);
   }
 }
-function submitSafety(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitSafety(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 {% endif %}
 

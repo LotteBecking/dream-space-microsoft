@@ -54,6 +54,18 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'What makes a great prompt?',
+            'body': 'AI is your <strong>co-pilot</strong>, but only YOU know what you really want. The more <strong>context</strong> you give the AI &mdash; who, what, length, style &mdash; the better the result!',
+            'examples': [
+                '🚫 Vague: <em>“Write something”</em>',
+                '✅ Great: <em>“Write a 100-word funny story about a robot dog for kids aged 8”</em>',
+            ],
+            'outro': 'Read each pair and pick the prompt that gives the better result!',
+            'bg_from': '#fef3c7',
+            'bg_to': '#fde68a',
+            'border': '#f59e0b',
+        },
         "title": "Context is Queen",
         "type": "read_conditional",
         "difficulty": "Easy",

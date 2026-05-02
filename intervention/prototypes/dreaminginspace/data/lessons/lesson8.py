@@ -54,6 +54,18 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'What is a List?',
+            'body': 'A <strong>list</strong> holds many things in <strong>order</strong>. Just like a Spotify playlist or a Minecraft inventory! Each item has a position, starting from <strong>0</strong>.',
+            'examples': [
+                '🎵 <strong>songs = ["a", "b", "c"]</strong> &mdash; <em>songs[0]</em> is <strong>"a"</strong>',
+                '🎒 <strong>bag = ["book", "pen"]</strong> &mdash; <em>bag[1]</em> is <strong>"pen"</strong>',
+            ],
+            'outro': 'Remember: the first item is at index <strong>0</strong>, not 1!',
+            'bg_from': '#dcfce7',
+            'bg_to': '#bbf7d0',
+            'border': '#22c55e',
+        },
         "title": "Read the List",
         "type": "read_conditional",
         "difficulty": "Easy",

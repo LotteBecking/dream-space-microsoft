@@ -1,4 +1,87 @@
 {% extends "base.html" %}
+{% block scripts %}
+<script>
+  (function() {
+    var list = document.getElementById('sort-list');
+    if (!list) return;
+
+    // Click-based move buttons
+    list.addEventListener('click', function(e) {
+      var btn = e.target.closest('.move-btn');
+      if (!btn) return;
+      var card = btn.closest('.sort-card');
+      var dir = btn.dataset.dir;
+      if (dir === 'up' && card.previousElementSibling) {
+        list.insertBefore(card, card.previousElementSibling);
+      } else if (dir === 'down' && card.nextElementSibling) {
+        list.insertBefore(card.nextElementSibling, card);
+      }
+      renumber();
+    });
+
+    function renumber() {
+      list.querySelectorAll('.sort-card').forEach(function(c, i) {
+        c.querySelector('.card-num').textContent = (i + 1);
+      });
+    }
+
+    // Drag-to-reorder
+    var dragItem = null;
+    list.querySelectorAll('.sort-card').forEach(function(card) {
+      card.setAttribute('draggable', 'true');
+      card.style.cursor = 'grab';
+      card.style.transition = 'opacity .15s, border-color .2s, background .2s';
+
+      card.addEventListener('dragstart', function(e) {
+        dragItem = card;
+        card.style.opacity = '0.4';
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      card.addEventListener('dragend', function() {
+        card.style.opacity = '1';
+        dragItem = null;
+        renumber();
+        // update hidden inputs
+        list.querySelectorAll('.sort-card').forEach(function(c) {
+          c.querySelector('input[name="order"]').value = c.dataset.index;
+        });
+      });
+      card.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+      });
+      card.addEventListener('drop', function(e) {
+        e.preventDefault();
+        if (dragItem && dragItem !== card) {
+          var allCards = Array.from(list.querySelectorAll('.sort-card'));
+          var fromIdx = allCards.indexOf(dragItem);
+          var toIdx = allCards.indexOf(card);
+          if (fromIdx < toIdx) {
+            list.insertBefore(dragItem, card.nextSibling);
+          } else {
+            list.insertBefore(dragItem, card);
+          }
+        }
+      });
+    });
+
+    // Highlight correct/wrong on error (don't reset order)
+    {% if error %}
+    var correctOrder = [{% for s in tea_steps %}"{{ s }}"{% if not loop.last %}, {% endif %}{% endfor %}];
+    list.querySelectorAll('.sort-card').forEach(function(card, i) {
+      var text = card.querySelector('.sort-text').textContent.trim();
+      if (text === correctOrder[i]) {
+        card.style.borderColor = '#22c55e';
+        card.style.background = '#f0fdf4';
+      } else {
+        card.style.borderColor = '#ef4444';
+        card.style.background = '#fef2f2';
+      }
+    });
+    {% endif %}
+  })();
+</script>
+{% endblock %}
 {% block title %}Mission 1 &middot; Dreaming in Space{% endblock %}
 
 {% block content %}
@@ -124,86 +207,3 @@
 {% endif %}
 {% endblock %}
 
-{% block scripts %}
-<script>
-  (function() {
-    var list = document.getElementById('sort-list');
-    if (!list) return;
-
-    // Click-based move buttons
-    list.addEventListener('click', function(e) {
-      var btn = e.target.closest('.move-btn');
-      if (!btn) return;
-      var card = btn.closest('.sort-card');
-      var dir = btn.dataset.dir;
-      if (dir === 'up' && card.previousElementSibling) {
-        list.insertBefore(card, card.previousElementSibling);
-      } else if (dir === 'down' && card.nextElementSibling) {
-        list.insertBefore(card.nextElementSibling, card);
-      }
-      renumber();
-    });
-
-    function renumber() {
-      list.querySelectorAll('.sort-card').forEach(function(c, i) {
-        c.querySelector('.card-num').textContent = (i + 1);
-      });
-    }
-
-    // Drag-to-reorder
-    var dragItem = null;
-    list.querySelectorAll('.sort-card').forEach(function(card) {
-      card.setAttribute('draggable', 'true');
-      card.style.cursor = 'grab';
-      card.style.transition = 'opacity .15s, border-color .2s, background .2s';
-
-      card.addEventListener('dragstart', function(e) {
-        dragItem = card;
-        card.style.opacity = '0.4';
-        e.dataTransfer.effectAllowed = 'move';
-      });
-      card.addEventListener('dragend', function() {
-        card.style.opacity = '1';
-        dragItem = null;
-        renumber();
-        // update hidden inputs
-        list.querySelectorAll('.sort-card').forEach(function(c) {
-          c.querySelector('input[name="order"]').value = c.dataset.index;
-        });
-      });
-      card.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-      });
-      card.addEventListener('drop', function(e) {
-        e.preventDefault();
-        if (dragItem && dragItem !== card) {
-          var allCards = Array.from(list.querySelectorAll('.sort-card'));
-          var fromIdx = allCards.indexOf(dragItem);
-          var toIdx = allCards.indexOf(card);
-          if (fromIdx < toIdx) {
-            list.insertBefore(dragItem, card.nextSibling);
-          } else {
-            list.insertBefore(dragItem, card);
-          }
-        }
-      });
-    });
-
-    // Highlight correct/wrong on error (don't reset order)
-    {% if error %}
-    var correctOrder = [{% for s in tea_steps %}"{{ s }}"{% if not loop.last %}, {% endif %}{% endfor %}];
-    list.querySelectorAll('.sort-card').forEach(function(card, i) {
-      var text = card.querySelector('.sort-text').textContent.trim();
-      if (text === correctOrder[i]) {
-        card.style.borderColor = '#22c55e';
-        card.style.background = '#f0fdf4';
-      } else {
-        card.style.borderColor = '#ef4444';
-        card.style.background = '#fef2f2';
-      }
-    });
-    {% endif %}
-  })();
-</script>
-{% endblock %}

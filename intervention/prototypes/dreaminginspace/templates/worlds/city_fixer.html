@@ -232,7 +232,7 @@ function shuffleAgain(){
   document.getElementById('routeFeedback').style.display='none';
   document.querySelectorAll('.stakeholder-chip').forEach(function(x){x.classList.remove('happy','unhappy');});
 }
-function submitRoute(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitRoute(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 
 {% elif mission_num == 2 %}
@@ -313,7 +313,7 @@ function selectOpt(optId, idx, isFirst){
     +'<div style="background:var(--color-surface-muted);border-radius:10px;padding:12px;font-size:13px;color:var(--color-text-muted);font-style:italic;">💬 '+noteText+'</div>';
   document.getElementById('tdNext').style.display='block';
 }
-function submitTd(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitTd(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 
 {% elif mission_num == 3 %}
@@ -377,7 +377,7 @@ function chooseDis(optId, idx){
     +'<div>'+opt.stakeholder_note+'</div></div>';
   document.getElementById('disNext').style.display='block';
 }
-function submitDis(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitDis(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 {% endif %}
 

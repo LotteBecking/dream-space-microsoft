@@ -53,6 +53,19 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'Reading Charts',
+            'body': "Charts turn numbers into <strong>pictures</strong> so you can spot what's happening at a glance. Bar charts compare, line graphs show change over time, pie charts show parts of a whole!",
+            'examples': [
+                '📊 <strong>Bar chart</strong> &mdash; compare amounts.',
+                '📈 <strong>Line graph</strong> &mdash; trend over time.',
+                '🥧 <strong>Pie chart</strong> &mdash; parts of 100%.',
+            ],
+            'outro': 'Read each chart carefully &mdash; what is it telling you?',
+            'bg_from': '#dbeafe',
+            'bg_to': '#bfdbfe',
+            'border': '#3b82f6',
+        },
         "title": "Read the Chart",
         "type": "read_conditional",
         "difficulty": "Easy",

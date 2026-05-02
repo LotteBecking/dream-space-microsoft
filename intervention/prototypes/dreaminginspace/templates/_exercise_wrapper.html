@@ -19,19 +19,44 @@
 
 {% block concept_explainer %}{% endblock %}
 
+{# ── Level-up motivation banner ── #}
+{% if not success and not at_max_level and xp_to_next_level <= exercise.xp %}
+<div style="background:linear-gradient(135deg, #fef3c7, #fde68a); border:2px solid #f59e0b; border-radius:16px; padding:16px 20px; margin-bottom:20px; display:flex; align-items:center; gap:14px;">
+  <div style="font-size:32px; flex-shrink:0;">⚡</div>
+  <div style="flex:1;">
+    <div style="font-family:var(--font-game); font-size:18px; font-weight:700; color:#92400e; margin-bottom:2px;">
+      Level Up alert!
+    </div>
+    <div style="font-size:16px; color:#78350f; line-height:1.5;">
+      Complete this mission to reach <strong>Level {{ next_level }} — {{ next_level_title }}</strong>! You only need <strong>{{ xp_to_next_level }} XP</strong> more.
+    </div>
+  </div>
+  <div style="font-size:28px; flex-shrink:0;">🚀</div>
+</div>
+{% elif not success and not at_max_level and xp_to_next_level <= (exercise.xp * 2) %}
+<div style="background:linear-gradient(135deg, #eff6ff, #dbeafe); border:2px solid #3b82f6; border-radius:16px; padding:14px 18px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+  <div style="font-size:24px; flex-shrink:0;">📈</div>
+  <div style="flex:1;">
+    <div style="font-size:15px; color:#1e40af; line-height:1.5;">
+      <strong>{{ xp_to_next_level }} XP</strong> until Level {{ next_level }} ({{ next_level_title }}) — you're almost there!
+    </div>
+  </div>
+</div>
+{% endif %}
+
 {% if success %}
 <div style="margin-bottom:20px;">
   {{ callout('success', self.success_message() | trim ~ ' +' ~ exercise.xp ~ ' XP', 'Mission complete!') }}
 </div>
 {% block success_extra %}{% endblock %}
-<div class="card" style="padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+<div class="card" style="padding:24px 28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
   <span>{{ space_beaver(56) }}</span>
   {% if num < total_exercises %}
-  <a href="{{ url_for('lesson_exercise', lesson_num=lesson_num, ex_num=num+1) }}" class="btn btn-primary">
+  <a href="{{ url_for('lesson_exercise', lesson_num=lesson_num, ex_num=num+1) }}" class="btn btn-primary btn-lg">
     <span>Mission {{ num + 1 }}</span>{{ icon('arrow-right') }}
   </a>
   {% else %}
-  <a href="{{ url_for('lesson_quiz', lesson_num=lesson_num) }}" class="btn btn-primary">
+  <a href="{{ url_for('lesson_quiz', lesson_num=lesson_num) }}" class="btn btn-primary btn-lg">
     <span>Take the Quiz</span>{{ icon('arrow-right') }}
   </a>
   {% endif %}
@@ -44,10 +69,10 @@
     {% if error %}{{ callout('error', error) }}{% endif %}
     <form method="post">
       {% block exercise_form %}{% endblock %}
-      <div class="card" style="padding:18px 24px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
+      <div style="padding:20px 28px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:16px;">
         <a href="{{ url_for('lesson_home', lesson_num=lesson_num) }}" class="btn btn-ghost">{{ icon('arrow-left') }}<span>Back</span></a>
         {% block submit_button %}
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary btn-lg">
           <span>Submit</span>{{ icon('check') }}
         </button>
         {% endblock %}
@@ -55,9 +80,33 @@
     </form>
   </div>
   <div>
-    <aside class="hint-card">
-      <div class="hint-mascot" style="flex-direction:column; align-items:center; gap:0;">
-        {{ space_beaver(88) }}
+    <!-- Commander stats panel -->
+    <div style="display:flex; flex-direction:column; gap:12px; position:sticky; top:90px;">
+      <!-- Commander card -->
+      <div style="background:linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); border-radius:16px; padding:16px; color:#fff; position:relative; overflow:hidden;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+          <div>{{ space_beaver(44) }}</div>
+          <div style="flex:1;">
+            <div style="font-family:var(--font-game); font-size:17px; font-weight:700;">Commander</div>
+            <div style="font-size:13px; opacity:.75;">Level {{ global_level }} {{ global_level_title }}</div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px;">
+          <span style="font-size:12px; opacity:.7;">XP Progress</span>
+          <span style="font-family:var(--font-pixel); font-size:16px; font-weight:700;">{{ global_xp }} XP</span>
+        </div>
+        <div style="height:5px; border-radius:3px; background:rgba(255,255,255,0.2);">
+          <div style="height:100%; width:{{ level_progress_pct }}%; border-radius:3px; background:linear-gradient(90deg, #a78bfa, #fbbf24); transition:width 0.6s;"></div>
+        </div>
+        {% if not at_max_level %}
+        <div style="font-size:11px; opacity:.6; margin-top:4px; text-align:right;">{{ xp_to_next_level }} XP to Level {{ next_level }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Hint card -->
+      <aside class="hint-card" style="margin:0;">
+        <div class="hint-mascot" style="flex-direction:column; align-items:center; gap:0;">
+          {{ space_beaver(88) }}
       </div>
       <div class="speech-bubble" style="margin-top:14px; margin-bottom:0;">
         <div class="section-bar" style="margin-bottom:8px; border-radius:8px; padding:5px 10px; font-size:9px;">
@@ -67,6 +116,7 @@
         <p class="body-muted" style="margin:0;">{{ exercise.beaver_hint }}</p>
       </div>
     </aside>
+    </div><!-- end sticky wrapper -->
   </div>
 </div>
 {% endblock exercise_layout %}

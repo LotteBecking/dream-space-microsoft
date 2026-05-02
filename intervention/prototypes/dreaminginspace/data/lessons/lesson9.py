@@ -56,6 +56,19 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'Three kinds of bugs',
+            'body': "When code goes wrong it usually does it in <strong>one of three ways</strong>. Spot the type and you're halfway to the fix!",
+            'examples': [
+                '✏️ <strong>Syntax error</strong> &mdash; a typo: a missing : or wrong spelling.',
+                '🧠 <strong>Logic error</strong> &mdash; the code runs but does the wrong thing.',
+                '💥 <strong>Runtime error</strong> &mdash; the code crashes while running.',
+            ],
+            'outro': 'Read each broken program and pick the bug type!',
+            'bg_from': '#fee2e2',
+            'bg_to': '#fecaca',
+            'border': '#ef4444',
+        },
         "title": "Spot the Bug Type",
         "type": "read_conditional",
         "difficulty": "Easy",
