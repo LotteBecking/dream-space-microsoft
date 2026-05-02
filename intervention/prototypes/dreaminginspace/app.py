@@ -6,13 +6,11 @@ Routes:
     /simulator              -- PB&J sandwich simulator
     /exercise/<1|2|3>       -- Stepped exercises
     /review                 -- Recap/completion (includes Extensions)
-    /challenge              -- Redirects to /review#extensions (folded)
-    /api/simulator/command  -- JSON endpoint for JS-enhanced simulator
     /reset                  -- Clear session
 """
 
 from flask import (
-    Flask, render_template, request, session, redirect, url_for, jsonify,
+    Flask, render_template, request, session, redirect, url_for,
 )
 import os
 import random
@@ -24,11 +22,9 @@ from data import ALL_LESSONS, ALL_WORLDS
 from data.lessons.lesson1 import (
     LESSON, ROLE_MODEL, VOCABULARY, OBJECTIVES,
     EXERCISES, TEA_STEPS_CORRECT, TEA_STEPS_ALT, TASK_BLOCKS, CHALLENGES,
-    INITIAL_SANDWICH_STATE, COMMAND_ALIASES, QUIZ,
+    INITIAL_SANDWICH_STATE, COMMAND_ALIASES,
     CHEF_LUNCH_ITEMS, CHEF_BLOCKS, CHEF_IF_CONDITIONS, CHEF_THEN_ACTIONS,
 )
-
-TOTAL_LESSONS = len(ALL_LESSONS)
 
 app = Flask(__name__)
 app.secret_key = os.environ.get(
@@ -178,9 +174,26 @@ ALL_ACHIEVEMENTS = [
     {"id": "first_try", "icon": "🎯", "title": "First Try!", "desc": "You nailed a mission on the first attempt!"},
     {"id": "perseverance", "icon": "💪", "title": "Never Give Up", "desc": "You kept trying and succeeded!"},
     {"id": "level_2", "icon": "⬆️", "title": "Level Up!", "desc": "You reached Level 2 — Coder!"},
+    {"id": "level_3", "icon": "🚀", "title": "Developer", "desc": "You reached Level 3 — Developer!"},
+    {"id": "level_5", "icon": "👑", "title": "Commander", "desc": "Maximum level — you are a Commander!"},
     {"id": "xp_100", "icon": "💎", "title": "Century Club", "desc": "You earned 100 XP!"},
+    {"id": "xp_500", "icon": "🌠", "title": "Galaxy Brain", "desc": "You earned 500 XP!"},
     {"id": "quiz_ace", "icon": "📝", "title": "Quiz Ace", "desc": "You scored 100% on a quiz!"},
+    {"id": "quiz_streak_3", "icon": "🔥", "title": "Quiz Streak", "desc": "Aced 3 quizzes in a row!"},
+    {"id": "world_explorer", "icon": "🌍", "title": "World Explorer", "desc": "Cleared your first Digital World!"},
+    {"id": "world_master", "icon": "🪐", "title": "World Master", "desc": "Cleared every Digital World!"},
 ]
+
+
+def _all_lesson_attempts():
+    """Yield (lesson_num, ex_num, attempts) over every lesson + exercise tracked."""
+    # Lesson 1 attempts live at top-level for legacy reasons.
+    for k, v in session.get("attempt_counts", {}).items():
+        yield 1, k, v
+    for ln in range(2, 19):
+        ldata = session.get(f"lesson_{ln}", {})
+        for k, v in ldata.get("attempt_counts", {}).items():
+            yield ln, k, v
 
 
 def check_new_achievements():
@@ -209,23 +222,58 @@ def check_new_achievements():
     if all_track1_done and session.get("simulator_completed"):
         earned.add("track1_complete")
 
-    # Skill-based (check lesson 1 attempts + all lesson attempts)
-    l1_attempts = session.get("attempt_counts", {})
-    if any(l1_attempts.get(str(i), 99) == 1 for i in l1_completed):
+    # Skill-based, now across ALL lessons
+    completed_first_try = False
+    perseverance_seen = False
+    for ln, ex, atts in _all_lesson_attempts():
+        # Was this exercise actually completed?
+        if ln == 1:
+            done = int(ex) in l1_completed
+        else:
+            done = int(ex) in session.get(f"lesson_{ln}", {}).get("completed_exercises", [])
+        if done and atts == 1:
+            completed_first_try = True
+        if done and atts >= 3:
+            perseverance_seen = True
+    if completed_first_try:
         earned.add("first_try")
-    if any(l1_attempts.get(str(i), 0) >= 3 for i in l1_completed):
+    if perseverance_seen:
         earned.add("perseverance")
 
     # XP-based
     xp = get_total_xp()
     if xp >= 100:
         earned.add("xp_100")
-    if get_player_level(xp) >= 2:
+    if xp >= 500:
+        earned.add("xp_500")
+    lvl = get_player_level(xp)
+    if lvl >= 2:
         earned.add("level_2")
+    if lvl >= 3:
+        earned.add("level_3")
+    if lvl >= 5:
+        earned.add("level_5")
 
-    # Quiz ace
+    # Quiz ace, now per-lesson
+    perfect_quizzes = set(session.get("quiz_perfect_lessons", []))
     if session.get("quiz_perfect"):
+        # back-compat: legacy single flag still grants the achievement
+        perfect_quizzes.add(0)
+    if perfect_quizzes:
         earned.add("quiz_ace")
+    if len(perfect_quizzes) >= 3:
+        earned.add("quiz_streak_3")
+
+    # Worlds
+    worlds_done = 0
+    for slug in ALL_WORLDS:
+        wdata = session.get(f"world_{slug}", {})
+        if len(wdata.get("completed_missions", [])) >= 3:
+            worlds_done += 1
+    if worlds_done >= 1:
+        earned.add("world_explorer")
+    if worlds_done >= len(ALL_WORLDS):
+        earned.add("world_master")
 
     new_ids = earned - seen
     if new_ids:
@@ -235,20 +283,36 @@ def check_new_achievements():
     return [a for a in ALL_ACHIEVEMENTS if a["id"] in new_ids]
 
 
+XP_LEVEL_THRESHOLDS = [0, 100, 250, 500, 800]
+
 @app.context_processor
 def inject_globals():
-    """Make XP, level, and achievements available in every template."""
+    """Make XP, level, achievements, and level-up info available in every template."""
     try:
         xp = get_total_xp()
         level = get_player_level(xp)
+        # Calculate XP needed for next level
+        next_threshold = XP_LEVEL_THRESHOLDS[level] if level < 5 else XP_LEVEL_THRESHOLDS[-1]
+        xp_to_next = max(0, next_threshold - xp)
+        prev_threshold = XP_LEVEL_THRESHOLDS[level - 1] if level > 1 else 0
+        level_progress_pct = int(((xp - prev_threshold) / (next_threshold - prev_threshold)) * 100) if (next_threshold - prev_threshold) > 0 else 100
+        next_level_title = get_level_title(min(level + 1, 5))
         return {
             "new_achievements": check_new_achievements() if "initialized" in session else [],
             "global_xp": xp,
             "global_level": level,
             "global_level_title": get_level_title(level),
+            "xp_to_next_level": xp_to_next,
+            "next_level": min(level + 1, 5),
+            "next_level_title": next_level_title,
+            "level_progress_pct": level_progress_pct,
+            "xp_per_exercise": XP_PER_EXERCISE,
+            "at_max_level": level >= 5,
         }
     except Exception:
-        return {"new_achievements": [], "global_xp": 0, "global_level": 1, "global_level_title": "Explorer"}
+        return {"new_achievements": [], "global_xp": 0, "global_level": 1, "global_level_title": "Explorer",
+                "xp_to_next_level": 100, "next_level": 2, "next_level_title": "Coder",
+                "level_progress_pct": 0, "xp_per_exercise": 25, "at_max_level": False}
 
 
 # ---------------------------------------------------------------------------
@@ -521,44 +585,6 @@ def simulator():
     )
 
 
-@app.route("/api/simulator/command", methods=["POST"])
-def api_simulator_command():
-    """JSON endpoint for JS-enhanced simulator interaction."""
-    progress = get_progress()
-    state = session.get("simulator_state", copy.deepcopy(INITIAL_SANDWICH_STATE))
-    commands = session.get("simulator_commands", [])
-    user_input = (request.json or {}).get("command", "").strip()
-    if not user_input:
-        return jsonify({"error": "No command provided"}), 400
-
-    commands.append(user_input)
-
-    state = copy.deepcopy(INITIAL_SANDWICH_STATE)
-    log = []
-    confusion = 0
-    for cmd_text in commands:
-        result = process_user_command(cmd_text, state)
-        log.append({"command": cmd_text, **result})
-        if result["type"] == "literal_interpretation":
-            confusion += 1
-
-    session["simulator_state"] = state
-    session["simulator_log"] = log
-    session["simulator_commands"] = commands
-    session["simulator_confusion_count"] = confusion
-    if state["sandwich_complete"]:
-        session["simulator_completed"] = True
-    session.modified = True
-
-    return jsonify({
-        "state": state,
-        "log": log,
-        "commands": commands,
-        "confusion_count": confusion,
-        "completed": state["sandwich_complete"],
-    })
-
-
 @app.route("/exercise/<int:num>", methods=["GET", "POST"])
 def exercise(num):
     if num not in (1, 2, 3):
@@ -771,17 +797,52 @@ def _ach_earned(ach_id):
             for n in [2, 3, 4, 5]
         ) and len(l1) >= 3 and sim
     if ach_id == "first_try":
-        atts = session.get("attempt_counts", {})
-        return any(atts.get(str(i), 99) == 1 for i in l1)
+        # check L1 + every lesson 2+
+        l1_atts = session.get("attempt_counts", {})
+        if any(l1_atts.get(str(i), 99) == 1 for i in l1):
+            return True
+        for ln in range(2, 19):
+            ldata = session.get(f"lesson_{ln}", {})
+            done = ldata.get("completed_exercises", [])
+            atts = ldata.get("attempt_counts", {})
+            if any(atts.get(str(i), 99) == 1 for i in done):
+                return True
+        return False
     if ach_id == "perseverance":
-        atts = session.get("attempt_counts", {})
-        return any(atts.get(str(i), 0) >= 3 for i in l1)
+        l1_atts = session.get("attempt_counts", {})
+        if any(l1_atts.get(str(i), 0) >= 3 for i in l1):
+            return True
+        for ln in range(2, 19):
+            ldata = session.get(f"lesson_{ln}", {})
+            done = ldata.get("completed_exercises", [])
+            atts = ldata.get("attempt_counts", {})
+            if any(atts.get(str(i), 0) >= 3 for i in done):
+                return True
+        return False
     if ach_id == "xp_100":
         return get_total_xp() >= 100
+    if ach_id == "xp_500":
+        return get_total_xp() >= 500
     if ach_id == "level_2":
         return get_player_level(get_total_xp()) >= 2
+    if ach_id == "level_3":
+        return get_player_level(get_total_xp()) >= 3
+    if ach_id == "level_5":
+        return get_player_level(get_total_xp()) >= 5
     if ach_id == "quiz_ace":
-        return session.get("quiz_perfect", False)
+        return session.get("quiz_perfect", False) or len(session.get("quiz_perfect_lessons", [])) > 0
+    if ach_id == "quiz_streak_3":
+        return len(session.get("quiz_perfect_lessons", [])) >= 3
+    if ach_id == "world_explorer":
+        for slug in ALL_WORLDS:
+            if len(session.get(f"world_{slug}", {}).get("completed_missions", [])) >= 3:
+                return True
+        return False
+    if ach_id == "world_master":
+        return all(
+            len(session.get(f"world_{slug}", {}).get("completed_missions", [])) >= 3
+            for slug in ALL_WORLDS
+        )
     return False
 
 
@@ -836,6 +897,8 @@ def lesson_exercise(lesson_num, ex_num):
     ex = exercises[ex_num - 1]
     key = f"lesson_{lesson_num}"
     lesson_data = session.setdefault(key, {"completed_exercises": [], "exercise_answers": {}})
+    if "attempt_counts" not in lesson_data:
+        lesson_data["attempt_counts"] = {}
     error = None
     success = False
     _debug_result = None
@@ -843,16 +906,30 @@ def lesson_exercise(lesson_num, ex_num):
     if request.method == "POST":
         ex_type = ex.get("type", "written")
 
+        # Count this attempt against this exercise
+        atts = lesson_data.setdefault("attempt_counts", {})
+        atts[str(ex_num)] = atts.get(str(ex_num), 0) + 1
+        session.modified = True
+
         if ex_type == "robot_maze":
-            cmds = request.form.get("commands", "")
-            if cmds:
+            # Server-side enforcement: must have actually solved the maze (frontend
+            # only sets `solved=1` when the JS reaches the goal cell).
+            cmds = request.form.get("commands", "").strip()
+            solved = request.form.get("solved", "").strip() == "1"
+            min_steps = ex.get("min_steps", 1)
+            cmd_count = len([c for c in cmds.split(",") if c.strip()]) if cmds else 0
+            if not cmds:
+                error = "Run your program and reach the goal first!"
+            elif not solved:
+                error = "Your robot didn't reach the goal yet — try a different path!"
+            elif cmd_count < min_steps:
+                error = f"You can do better — this maze needs at least {min_steps} moves!"
+            else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
                 session.modified = True
                 success = True
                 progress = get_lesson_progress(lesson_num)
-            else:
-                error = "Run your program and reach the goal first!"
 
         elif ex_type == "robot_commands":
             steps = [request.form.get(f"step_{i}", "").strip() for i in range(1, 21)]
@@ -933,12 +1010,23 @@ def lesson_exercise(lesson_num, ex_num):
 
         elif ex_type == "spot_loop":
             problems = ex.get("problems", [])
-            all_filled = True
-            for i in range(len(problems)):
-                if not request.form.get(f"repeat_{i}", "").strip() or not request.form.get(f"count_{i}", "").strip():
-                    all_filled = False
-            if not all_filled:
-                error = "Please answer both questions for each routine!"
+            answers = {}
+            correct_idxs = []
+            for i, p in enumerate(problems):
+                raw = request.form.get(f"count_{i}", "").strip()
+                try:
+                    val = int(raw)
+                except (TypeError, ValueError):
+                    val = None
+                answers[str(i)] = val
+                if val is not None and val == p.get("repeat_count"):
+                    correct_idxs.append(i)
+            unanswered = [i for i, p in enumerate(problems) if answers.get(str(i)) is None]
+            _debug_result = {"answers": answers, "correct_idxs": correct_idxs}
+            if unanswered:
+                error = "Pick how many times the pattern repeats for every routine!"
+            elif len(correct_idxs) < len(problems):
+                error = f"You spotted {len(correct_idxs)}/{len(problems)} patterns. The wrong ones are highlighted — try again!"
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
@@ -948,12 +1036,23 @@ def lesson_exercise(lesson_num, ex_num):
 
         elif ex_type == "rewrite_loop":
             problems = ex.get("problems", [])
-            all_filled = True
-            for i in range(len(problems)):
-                if not request.form.get(f"times_{i}", "").strip() or not request.form.get(f"body_{i}", "").strip():
-                    all_filled = False
-            if not all_filled:
-                error = "Fill in the loop count AND the steps for each problem!"
+            answers = {}
+            correct_idxs = []
+            for i, p in enumerate(problems):
+                raw = request.form.get(f"times_{i}", "").strip()
+                try:
+                    val = int(raw)
+                except (TypeError, ValueError):
+                    val = None
+                answers[str(i)] = val
+                if val is not None and val == p.get("answer_times"):
+                    correct_idxs.append(i)
+            unanswered = [i for i, p in enumerate(problems) if answers.get(str(i)) is None]
+            _debug_result = {"answers": answers, "correct_idxs": correct_idxs}
+            if unanswered:
+                error = "Pick the loop count for every problem!"
+            elif len(correct_idxs) < len(problems):
+                error = f"You got {len(correct_idxs)}/{len(problems)} loops right. Check the red ones!"
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
@@ -963,13 +1062,23 @@ def lesson_exercise(lesson_num, ex_num):
 
         elif ex_type == "read_conditional":
             problems = ex.get("problems", [])
-            correct_count = 0
+            answers = {}
+            correct_idxs = []
             for i, p in enumerate(problems):
-                ans = request.form.get(f"q{i}")
-                if ans is not None and int(ans) == p["correct"]:
-                    correct_count += 1
-            if correct_count < len(problems):
-                error = f"You got {correct_count}/{len(problems)} correct. Try again!"
+                raw = request.form.get(f"q{i}")
+                try:
+                    val = int(raw) if raw is not None else None
+                except (TypeError, ValueError):
+                    val = None
+                answers[str(i)] = val
+                if val is not None and val == p["correct"]:
+                    correct_idxs.append(i)
+            unanswered = [i for i, p in enumerate(problems) if answers.get(str(i)) is None]
+            _debug_result = {"answers": answers, "correct_idxs": correct_idxs}
+            if unanswered:
+                error = "Pick an answer for every question!"
+            elif len(correct_idxs) < len(problems):
+                error = f"You got {len(correct_idxs)}/{len(problems)} right. The wrong ones are highlighted — try again!"
             else:
                 if ex_num not in lesson_data["completed_exercises"]:
                     lesson_data["completed_exercises"].append(ex_num)
@@ -1095,10 +1204,18 @@ def lesson_quiz(lesson_num):
             "answers": answers, "wrong": wrong,
         }
         if result["percent"] >= 75:
-            session["quiz_bonuses"] = session.get("quiz_bonuses", 0) + XP_PER_QUIZ
+            # Award the quiz XP only once per lesson, not on every retry
+            awarded = set(session.get("quiz_xp_awarded", []))
+            if lesson_num not in awarded:
+                session["quiz_bonuses"] = session.get("quiz_bonuses", 0) + XP_PER_QUIZ
+                awarded.add(lesson_num)
+                session["quiz_xp_awarded"] = list(awarded)
             session.modified = True
         if result["percent"] == 100:
             session["quiz_perfect"] = True
+            perfect = set(session.get("quiz_perfect_lessons", []))
+            perfect.add(lesson_num)
+            session["quiz_perfect_lessons"] = list(perfect)
             session.modified = True
     return render_template("lessons/quiz.html", questions=quiz, lesson_num=lesson_num, lesson=lesson, result=result, progress=get_lesson_progress(lesson_num))
 
@@ -1112,17 +1229,21 @@ def lesson_recap(lesson_num):
     progress = get_lesson_progress(lesson_num)
     recap_key = f"recap_{lesson_num}"
     recap_submitted = False
+    recap_error = None
     recap_answer = session.get(recap_key, "")
 
     if request.method == "POST":
         reflection = request.form.get("reflection", "").strip()
-        if reflection:
+        if len(reflection) < 8:
+            recap_error = "Your reflection is a bit short — try writing at least one full sentence!"
+            recap_answer = reflection  # keep what they typed so they can edit
+        else:
             session[recap_key] = reflection
             recap_answer = reflection
             recap_submitted = True
             session.modified = True
 
-    if recap_answer:
+    if recap_answer and not recap_error and request.method != "POST":
         recap_submitted = True
 
     return render_template(
@@ -1134,6 +1255,7 @@ def lesson_recap(lesson_num):
         lesson_num=lesson_num,
         recap_submitted=recap_submitted,
         recap_answer=recap_answer,
+        recap_error=recap_error,
     )
 
 
@@ -1181,6 +1303,12 @@ def world_mission(slug, n):
     mission = world["missions"][n - 1]
 
     if request.method == "POST":
+        # Require that the user actually played the mission (set by the
+        # in-page submitMission helper). This blocks accidental direct POSTs
+        # without forcing a particular score.
+        if not request.form.get("played"):
+            return redirect(url_for("world_mission", slug=slug, n=n))
+
         key = f"world_{slug}"
         wdata = session.setdefault(key, {"completed_missions": [], "tools_unlocked": []})
         if n not in wdata["completed_missions"]:

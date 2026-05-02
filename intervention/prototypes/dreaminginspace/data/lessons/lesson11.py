@@ -55,6 +55,18 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'What is a Pattern?',
+            'body': "A <strong>pattern</strong> is something that <strong>repeats</strong> in a predictable way. Spotting patterns is a programmer's superpower &mdash; it helps you write less code!",
+            'examples': [
+                '🔢 Number pattern: <strong>2, 4, 6, 8, ...</strong> (add 2 each time)',
+                '🔃 Shape pattern: <strong>■ ○ ■ ○ ■ ...</strong> (alternate)',
+            ],
+            'outro': 'Look at each one and find the rule!',
+            'bg_from': '#fef9c3',
+            'bg_to': '#fef08a',
+            'border': '#eab308',
+        },
         "title": "Find the Pattern",
         "type": "read_conditional",
         "difficulty": "Easy",

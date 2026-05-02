@@ -53,6 +53,18 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'What is a Variable?',
+            'body': 'A <strong>variable</strong> is like a <strong>labelled box</strong> where you can put a value. You can read it, change it, or use it later in your code!',
+            'examples': [
+                '🎁 <strong>fuel = 50</strong> &mdash; the box called <em>fuel</em> holds the number <strong>50</strong>',
+                '📛 <strong>name = "Ada"</strong> &mdash; the box called <em>name</em> holds the word <strong>Ada</strong>',
+            ],
+            'outro': 'Read each program below carefully &mdash; what value is in each box at the end?',
+            'bg_from': '#ecfeff',
+            'bg_to': '#cffafe',
+            'border': '#22d3ee',
+        },
         "title": "Label Logic",
         "type": "read_conditional",
         "difficulty": "Easy",

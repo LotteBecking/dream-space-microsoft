@@ -197,7 +197,7 @@ function spotRule(btn,correct,feedback){
   fb.innerHTML='<div style="padding:12px 14px;border-radius:10px;font-size:14px;background:'+(correct?'var(--color-success-soft)':'var(--color-error-soft)')+';border-left:3px solid '+(correct?'var(--color-success)':'var(--color-error)')+';">'+feedback+'</div>';
   document.getElementById('spotNext').style.display='inline-flex';
 }
-function submitM1(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitM1(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 
 {% elif mission_num == 2 %}
@@ -270,7 +270,7 @@ function previewFix(idx, btn){
   document.getElementById('fixNext').style.display='inline-flex';
   document.getElementById('compareSection').scrollIntoView({behavior:'smooth',block:'start'});
 }
-function submitM2(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitM2(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 {% endif %}
 
@@ -321,7 +321,7 @@ function answerEsc(btn, idx){
     +'<div style="background:var(--color-primary-soft);border-radius:10px;padding:12px;font-size:13px;font-weight:600;color:var(--color-primary-ink);">💡 '+escKeyLesson+'</div>'
     +'<div style="text-align:center;margin-top:16px;"><button class="btn btn-primary btn-lg" onclick="submitEsc()">Claim Reward →</button></div>';
 }
-function submitEsc(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitEsc(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 {% endif %}
 

@@ -1,5 +1,6 @@
 {% extends "_exercise_wrapper.html" %}
 
+{% block scripts %}<script src="{{ url_for('static', filename='js/pages/lessons__exercises__write_conditional.js') }}" defer></script>{% endblock %}
 {% block success_message %}Your IF/ELSE logic is solid!{% endblock %}
 
 {% block concept_explainer %}
@@ -62,22 +63,4 @@
       </div>
     </div>
   </section>
-{% endblock %}
-
-{% block scripts %}
-<script>
-(function(){
-  var stepCount = 8;
-  var btn = document.getElementById('add-step-btn');
-  if (btn) btn.addEventListener('click', function() {
-    stepCount++;
-    var c = document.getElementById('steps-container');
-    var row = document.createElement('div');
-    row.className = 'step-row';
-    row.innerHTML = '<span class="step-index">' + stepCount + '</span>' +
-      '<input type="text" name="step_' + stepCount + '" class="input" placeholder="..." />';
-    c.appendChild(row);
-  });
-})();
-</script>
 {% endblock %}

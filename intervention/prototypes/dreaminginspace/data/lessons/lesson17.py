@@ -55,6 +55,18 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'What is a Caesar Cipher?',
+            'body': 'A <strong>cipher</strong> is a way to <strong>scramble a message</strong> so only people who know the secret can read it. The <strong>Caesar Cipher</strong> shifts every letter forward by the same number &mdash; the <em>key</em>.',
+            'examples': [
+                '🔑 With key = +1: <strong>A → B, B → C, ...</strong>',
+                '🔒 So <strong>CAT</strong> becomes <strong>DBU</strong>!',
+            ],
+            'outro': 'Try encrypting and decrypting these messages!',
+            'bg_from': '#ede9fe',
+            'bg_to': '#ddd6fe',
+            'border': '#8b5cf6',
+        },
         "title": "The Caesar Cipher",
         "type": "read_conditional",
         "difficulty": "Easy",

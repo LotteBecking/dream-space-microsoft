@@ -55,6 +55,18 @@ OBJECTIVES = [
 EXERCISES = [
     {
         "id": 1,
+        "concept": {
+            'title': 'Spot a Scam',
+            'body': '<strong>Phishing</strong> is a fake message that tries to trick you into giving away passwords, money, or personal info. The clues are always there if you look closely &mdash; weird email addresses, urgency, and asks for things real companies never ask for.',
+            'examples': [
+                '🚨 <strong>Urgency</strong> &mdash; “Act now! 24 hours!”',
+                '🔗 <strong>Weird link</strong> &mdash; <em>g00gle-support.xyz</em> is NOT google.com',
+            ],
+            'outro': 'Read each message and decide: real or fake?',
+            'bg_from': '#fee2e2',
+            'bg_to': '#fecaca',
+            'border': '#ef4444',
+        },
         "title": "Spot the Scam",
         "type": "read_conditional",
         "difficulty": "Easy",
@@ -85,6 +97,17 @@ EXERCISES = [
     },
     {
         "id": 2,
+        "concept": {
+            'title': 'What makes something AI?',
+            'body': "<strong>AI</strong> is software that <strong>learns from examples</strong> instead of just following fixed rules. A calculator isn't AI &mdash; it follows exact instructions. But Spotify recommendations and Siri use AI because they learn from huge amounts of data!",
+            'examples': [
+                '🤖 <strong>AI</strong> &mdash; learns from data, gets better over time.',
+                '⚙️ <strong>Not AI</strong> &mdash; follows fixed rules, behaves the same every time.',
+            ],
+            'bg_from': '#ede9fe',
+            'bg_to': '#ddd6fe',
+            'border': '#8b5cf6',
+        },
         "title": "AI or Not AI?",
         "type": "grouping",
         "difficulty": "Medium",

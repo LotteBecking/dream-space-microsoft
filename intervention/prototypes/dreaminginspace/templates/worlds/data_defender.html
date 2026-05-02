@@ -276,6 +276,7 @@ function checkAllAnswered(){
 function submitMission(){
   var form=document.createElement('form');
   form.method='POST';form.action='';
+  var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';form.appendChild(i);
   document.body.appendChild(form);form.submit();
 }
 </script>
@@ -342,7 +343,7 @@ function answerTrick(btn, idx, isCorrect, opts){
   document.getElementById('trickNext').style.display='inline-flex';
   document.getElementById('shieldVal').textContent=isCorrect?'🛡️ +10':'⚠️';
 }
-function submitMission2(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitMission2(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 
 <!-- ══════════════════════════════════════════════════════════
@@ -446,7 +447,7 @@ function checkRepair(){
     document.getElementById('repairCount').textContent='0 fixes selected';
   }
 }
-function submitMission3(){ var f=document.createElement('form');f.method='POST';f.action='';document.body.appendChild(f);f.submit(); }
+function submitMission3(){ var f=document.createElement('form');f.method='POST';f.action='';var i=document.createElement('input');i.type='hidden';i.name='played';i.value='1';f.appendChild(i);document.body.appendChild(f);f.submit(); }
 </script>
 {% endif %}
 

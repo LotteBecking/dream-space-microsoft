@@ -1,84 +1,88 @@
 {% extends "_exercise_wrapper.html" %}
 
+{% block scripts %}<script src="{{ url_for('static', filename='js/pages/lessons__exercises__commands.js') }}" defer></script>{% endblock %}
 {% block success_message %}Your robot followed every command!{% endblock %}
 
 {% block exercise_form %}
-<section class="card">
+<section class="card" style="margin-bottom:16px;">
   <div class="card-body">
     <div class="section-title">
-      <span class="section-title-icon">{{ icon('terminal') }}</span>
-      <h2 class="title-lg">Available commands</h2>
+      <span class="section-title-icon" style="background:#dbeafe; color:#1e40af;">{{ icon('flag') }}</span>
+      <h2 class="title-lg">Choose a scenario</h2>
     </div>
-    <div style="display:flex; flex-wrap:wrap; gap:6px;">
-      {% for cmd in exercise.command_set %}
-      <span style="padding:6px 12px; border-radius:8px; background:var(--color-primary-soft); color:var(--color-primary-ink); font-size:13px; font-weight:600; font-family:var(--font-mono, monospace);">{{ cmd }}</span>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="card">
-  <div class="card-body">
-    <div class="section-title">
-      <span class="section-title-icon">{{ icon('flag') }}</span>
-      <h2 class="title-lg">Choose your scenario</h2>
-    </div>
-    <ul class="stack-sm" style="list-style:none;">
+    {% if exercise.scenarios %}
+    <div id="scenario-list" style="display:flex; flex-direction:column; gap:8px;">
       {% for s in exercise.scenarios %}
-      <li style="padding:12px 14px; border-radius:var(--radius-input); border:2px solid var(--color-border); background:var(--color-surface);">
-        <span style="font-weight:700; color:var(--color-primary);">{{ s.label }}</span>
-        <p class="body-muted" style="margin-top:4px; font-size:13px;">{{ s.hint }}</p>
-      </li>
+      <button type="button" class="scenario-pick {% if loop.first %}active{% endif %}" data-idx="{{ loop.index0 }}" data-hint="{{ s.hint }}"
+        style="text-align:left; padding:14px 16px; border-radius:14px;
+               border:2px solid {% if loop.first %}var(--color-primary){% else %}var(--color-border){% endif %};
+               background:{% if loop.first %}var(--color-primary-soft){% else %}var(--color-surface){% endif %};
+               cursor:pointer; transition:all .15s; font-family:var(--font-game);">
+        <div style="font-size:15px; font-weight:700; color:var(--color-primary-ink);">{{ s.label }}</div>
+        <div style="font-size:13px; color:var(--color-text-muted); margin-top:2px;">💡 {{ s.hint }}</div>
+      </button>
       {% endfor %}
-    </ul>
+    </div>
+    {% endif %}
   </div>
 </section>
 
-{# Close wrapper form, open our own for add-step JS #}
+<section class="card" style="margin-bottom:16px;">
+  <div class="card-body">
+    <div class="section-title">
+      <span class="section-title-icon" style="background:#e0f2fe; color:#0369a1;">🧩</span>
+      <h2 class="title-lg">Action blocks</h2>
+    </div>
+    <p class="body-muted" style="margin-bottom:12px;">Click a block to add it to your program. Click again for as many copies as you need!</p>
+    <div id="block-palette" style="display:flex; flex-wrap:wrap; gap:8px;">
+      {% for cmd in exercise.command_set %}
+      <button type="button" class="cmd-block" data-cmd="{{ cmd }}"
+        style="display:inline-flex; align-items:center; gap:6px;
+               padding:10px 14px; border-radius:12px;
+               border:2px solid var(--color-primary-border);
+               background:var(--color-primary-soft); color:var(--color-primary-ink);
+               cursor:pointer; font-family:var(--font-mono, 'Fira Code', monospace);
+               font-size:14px; font-weight:600;
+               transition: transform .12s, box-shadow .12s;">
+        <span style="opacity:.6;">＋</span>
+        <span>{{ cmd }}</span>
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# Close wrapper form, open our own #}
 </form>
-<form method="post" id="algo-form">
-  <section class="card">
+<form method="post" id="cmd-form">
+  <section class="card" style="margin-bottom:16px;">
     <div class="card-body">
       <div class="section-title">
         <span class="section-title-icon">{{ icon('list-checks') }}</span>
-        <h2 class="title-lg">Your commands</h2>
+        <h2 class="title-lg">Your program <span id="cmd-count" style="font-weight:400; color:var(--color-text-muted); font-size:14px;">(0 commands)</span></h2>
       </div>
-      <p class="body-muted" style="margin-bottom:12px;">Write each command on its own line. Be precise!</p>
-      <div id="steps-container" class="stack-sm">
-        {% for i in range(1, 9) %}
-        <div class="step-row">
-          <span class="step-index">{{ i }}</span>
-          <input type="text" name="step_{{ i }}" class="input" placeholder="Command {{ i }}..." />
+
+      <div id="cmd-queue" class="stack-sm">
+        <div id="cmd-empty" style="text-align:center; padding:28px 20px; color:var(--color-text-muted); border:2px dashed var(--color-border); border-radius:var(--radius-card);">
+          <div style="font-size:32px; margin-bottom:6px;">🤖</div>
+          <p style="font-size:15px; margin:0;">Click action blocks above to build your program!</p>
+          <p style="font-size:13px; margin-top:4px;">You need at least <strong>{{ exercise.min_steps|default(5) }}</strong> commands.</p>
         </div>
-        {% endfor %}
       </div>
-      <div style="display:flex; gap:8px; margin-top:12px;">
-        <button type="button" id="add-step-btn" class="add-step-btn" style="flex:1;">+ Add command</button>
+
+      <div style="display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;">
+        <button type="button" id="add-custom-btn" class="add-step-btn" style="flex:1;">✏️ Add a custom command</button>
+        <button type="button" id="clear-btn" class="btn btn-ghost btn-sm">{{ icon('trash') }} Clear all</button>
       </div>
     </div>
   </section>
+
+  <input type="hidden" name="scenario_idx" id="scenario-idx-input" value="0" />
+  <div id="hidden-steps"></div>
 {% endblock %}
 
 {% block submit_button %}
-<button type="submit" class="btn btn-primary">
-  <span>Run Commands</span>{{ icon('check') }}
+<button type="submit" class="btn btn-primary btn-lg">
+  <span>Run program</span>{{ icon('check') }}
 </button>
-{% endblock %}
-
-{% block scripts %}
-<script>
-(function(){
-  var stepCount = 8;
-  var btn = document.getElementById('add-step-btn');
-  if (btn) btn.addEventListener('click', function() {
-    stepCount++;
-    var c = document.getElementById('steps-container');
-    var row = document.createElement('div');
-    row.className = 'step-row';
-    row.innerHTML = '<span class="step-index">' + stepCount + '</span>' +
-      '<input type="text" name="step_' + stepCount + '" class="input" placeholder="Command ' + stepCount + '..." />';
-    c.appendChild(row);
-  });
-})();
-</script>
 {% endblock %}

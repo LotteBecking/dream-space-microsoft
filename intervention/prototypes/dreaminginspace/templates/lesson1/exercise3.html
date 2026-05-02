@@ -1,4 +1,208 @@
 {% extends "base.html" %}
+{% block scripts %}
+<script>
+  (function() {
+    var CHEF_BLOCKS = {{ chef_blocks | tojson }};
+    var currentItem = -1;
+    var algoSteps = [];
+    var allergyRules = [];
+    var dragSrcIdx = null;
+    var allergyIfText = '', allergyThenText = '';
+
+    var palette = document.getElementById('chef-palette');
+    var algoList = document.getElementById('chef-algo-list');
+    var emptyMsg = document.getElementById('chef-empty');
+    var stepCount = document.getElementById('step-count');
+    var hiddenSteps = document.getElementById('hidden-steps');
+
+    // Item picker
+    document.querySelectorAll('.lunch-item-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var idx = parseInt(btn.dataset.index);
+        currentItem = idx;
+        document.getElementById('lunch-item-input').value = btn.dataset.name;
+        document.querySelectorAll('.lunch-item-btn').forEach(function(b) {
+          b.style.borderColor = 'var(--color-border)';
+          b.style.transform = '';
+        });
+        btn.style.borderColor = 'var(--color-primary)';
+        btn.style.transform = 'scale(1.05)';
+        algoSteps = [];
+        renderPalette();
+        renderAlgo();
+      });
+    });
+
+    function renderPalette() {
+      palette.innerHTML = '';
+      if (currentItem < 0) {
+        palette.innerHTML = '<div style="color:var(--color-text-muted); font-size:14px; padding:8px;">Pick what to cook first!</div>';
+        return;
+      }
+      var blocks = CHEF_BLOCKS[currentItem] || [];
+      blocks.forEach(function(block) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerHTML = '<span style="font-size:16px;">' + block.emoji + '</span> <span>' + block.text + '</span>';
+        btn.style.cssText = 'display:inline-flex; align-items:center; gap:6px; padding:7px 11px; border-radius:10px; border:2px solid var(--color-border); background:white; cursor:pointer; font-size:12px; font-family:var(--font-game); color:var(--color-text); transition:all .15s;';
+        btn.addEventListener('mouseenter', function() {
+          if (!btn.classList.contains('used')) { btn.style.borderColor = 'var(--color-primary-border)'; btn.style.background = 'var(--color-primary-soft)'; }
+        });
+        btn.addEventListener('mouseleave', function() {
+          if (!btn.classList.contains('used')) { btn.style.borderColor = 'var(--color-border)'; btn.style.background = 'white'; }
+        });
+        btn.addEventListener('click', function() {
+          addStep(block.emoji, block.text, false);
+          btn.classList.add('used');
+          btn.style.borderColor = '#86efac'; btn.style.background = '#f0fdf4';
+        });
+        palette.appendChild(btn);
+      });
+    }
+
+    function addStep(emoji, text, isCustom) {
+      algoSteps.push({emoji: emoji, text: text, custom: isCustom});
+      renderAlgo();
+    }
+
+    function renderAlgo() {
+      while (algoList.firstChild) algoList.removeChild(algoList.firstChild);
+      if (algoSteps.length === 0) {
+        emptyMsg.style.display = '';
+        algoList.appendChild(emptyMsg);
+      } else {
+        emptyMsg.style.display = 'none';
+        algoSteps.forEach(function(step, i) {
+          var row = document.createElement('div');
+          row.draggable = true;
+          row.dataset.index = i;
+          row.style.cssText = 'display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:2px solid var(--color-border); background:white; cursor:grab; transition:all .15s;';
+          row.innerHTML =
+            '<span style="width:26px; height:26px; border-radius:50%; background:var(--color-primary); color:white; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0;">' + (i+1) + '</span>' +
+            '<span style="font-size:18px; flex-shrink:0;">' + step.emoji + '</span>' +
+            (step.custom
+              ? '<input type="text" class="input algo-custom-input" data-idx="' + i + '" value="' + (step.text||'').replace(/"/g,'&quot;') + '" placeholder="Type step..." style="flex:1; font-size:13px; padding:5px 8px;">'
+              : '<span style="flex:1; font-size:13px; font-family:var(--font-game);">' + step.text + '</span>') +
+            '<button type="button" class="algo-remove-btn" data-idx="' + i + '" style="width:24px; height:24px; border-radius:50%; border:none; background:#fee2e2; color:#dc2626; cursor:pointer; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">✕</button>';
+          algoList.appendChild(row);
+        });
+      }
+      stepCount.textContent = '(' + algoSteps.length + ' step' + (algoSteps.length !== 1 ? 's' : '') + ')';
+    }
+
+    algoList.addEventListener('click', function(e) {
+      var btn = e.target.closest('.algo-remove-btn');
+      if (btn) { algoSteps.splice(parseInt(btn.dataset.idx), 1); renderAlgo(); }
+    });
+    algoList.addEventListener('input', function(e) {
+      if (e.target.classList.contains('algo-custom-input')) algoSteps[parseInt(e.target.dataset.idx)].text = e.target.value;
+    });
+
+    // Drag reorder
+    algoList.addEventListener('dragstart', function(e) {
+      var row = e.target.closest('[data-index]'); if (!row) return;
+      dragSrcIdx = parseInt(row.dataset.index); row.style.opacity = '0.4'; e.dataTransfer.effectAllowed = 'move';
+    });
+    algoList.addEventListener('dragend', function(e) {
+      var row = e.target.closest('[data-index]'); if (row) row.style.opacity = '1'; dragSrcIdx = null;
+    });
+    algoList.addEventListener('dragover', function(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+    algoList.addEventListener('drop', function(e) {
+      e.preventDefault();
+      var row = e.target.closest('[data-index]'); if (!row || dragSrcIdx === null) return;
+      var toIdx = parseInt(row.dataset.index);
+      if (dragSrcIdx !== toIdx) { var item = algoSteps.splice(dragSrcIdx, 1)[0]; algoSteps.splice(toIdx, 0, item); renderAlgo(); }
+      dragSrcIdx = null;
+    });
+
+    document.getElementById('add-custom-step').addEventListener('click', function() {
+      addStep('✏️', '', true);
+      setTimeout(function() { var inputs = algoList.querySelectorAll('.algo-custom-input'); if (inputs.length) inputs[inputs.length-1].focus(); }, 50);
+    });
+    document.getElementById('clear-steps').addEventListener('click', function() { algoSteps = []; renderPalette(); renderAlgo(); });
+
+    // ---- IF/THEN builder ----
+    var allergyIfSlot = document.getElementById('allergy-if-slot');
+    var allergyThenSlot = document.getElementById('allergy-then-slot');
+    var addAllergyBtn = document.getElementById('add-allergy-rule');
+
+    function updateBtn() { addAllergyBtn.disabled = !(allergyIfText && allergyThenText); }
+
+    document.querySelectorAll('.if-chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        allergyIfText = chip.dataset.text;
+        allergyIfSlot.textContent = allergyIfText;
+        allergyIfSlot.style.color = '#111'; allergyIfSlot.style.borderColor = '#9333ea'; allergyIfSlot.style.background = '#faf5ff';
+        // Highlight selected chip
+        document.querySelectorAll('.if-chip').forEach(function(c) { c.style.borderColor = '#e9d5ff'; c.style.background = '#faf5ff'; });
+        chip.style.borderColor = '#9333ea'; chip.style.background = '#ede9fe';
+        updateBtn();
+      });
+    });
+
+    document.querySelectorAll('.then-chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        allergyThenText = chip.dataset.text;
+        allergyThenSlot.textContent = allergyThenText;
+        allergyThenSlot.style.color = '#111'; allergyThenSlot.style.borderColor = '#059669'; allergyThenSlot.style.background = '#ecfdf5';
+        document.querySelectorAll('.then-chip').forEach(function(c) { c.style.borderColor = '#a7f3d0'; c.style.background = '#ecfdf5'; });
+        chip.style.borderColor = '#059669'; chip.style.background = '#d1fae5';
+        updateBtn();
+      });
+    });
+
+    function renderRules() {
+      var container = document.getElementById('allergy-rules');
+      container.innerHTML = '';
+      allergyRules.forEach(function(rule, i) {
+        var div = document.createElement('div');
+        div.style.cssText = 'display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:10px; border:2px solid #e9d5ff; background:white;';
+        div.innerHTML =
+          '<span style="font-weight:700; color:#9333ea; font-size:13px;">IF</span>' +
+          '<span style="font-size:13px; flex:1;">' + rule.ifText + '</span>' +
+          '<span style="font-weight:700; color:#059669; font-size:13px;">THEN</span>' +
+          '<span style="font-size:13px; flex:1;">' + rule.thenText + '</span>' +
+          '<button type="button" class="rule-remove" data-idx="' + i + '" style="width:22px; height:22px; border-radius:50%; border:none; background:#fee2e2; color:#dc2626; cursor:pointer; font-size:11px; flex-shrink:0;">✕</button>';
+        container.appendChild(div);
+      });
+    }
+
+    addAllergyBtn.addEventListener('click', function() {
+      if (allergyIfText && allergyThenText) {
+        allergyRules.push({ifText: allergyIfText, thenText: allergyThenText});
+        renderRules();
+        allergyIfText = ''; allergyThenText = '';
+        allergyIfSlot.textContent = 'pick a condition'; allergyIfSlot.style.color = '#999'; allergyIfSlot.style.borderColor = '#d8b4fe'; allergyIfSlot.style.background = 'white';
+        allergyThenSlot.textContent = 'pick an action'; allergyThenSlot.style.color = '#999'; allergyThenSlot.style.borderColor = '#6ee7b7'; allergyThenSlot.style.background = 'white';
+        document.querySelectorAll('.if-chip').forEach(function(c) { c.style.borderColor = '#e9d5ff'; c.style.background = '#faf5ff'; });
+        document.querySelectorAll('.then-chip').forEach(function(c) { c.style.borderColor = '#a7f3d0'; c.style.background = '#ecfdf5'; });
+        addAllergyBtn.disabled = true;
+      }
+    });
+
+    document.getElementById('allergy-rules').addEventListener('click', function(e) {
+      var btn = e.target.closest('.rule-remove');
+      if (btn) { allergyRules.splice(parseInt(btn.dataset.idx), 1); renderRules(); }
+    });
+
+    // Form submit
+    document.getElementById('chef-form').addEventListener('submit', function() {
+      hiddenSteps.innerHTML = '';
+      algoSteps.forEach(function(step, i) {
+        var inp = document.createElement('input');
+        inp.type = 'hidden'; inp.name = 'step_' + (i+1); inp.value = step.text;
+        hiddenSteps.appendChild(inp);
+      });
+      document.getElementById('allergy-input').value = allergyRules.map(function(r) {
+        return 'IF ' + r.ifText + ', THEN ' + r.thenText;
+      }).join('. ');
+    });
+
+    renderPalette();
+    renderAlgo();
+  })();
+</script>
+{% endblock %}
 {% block title %}Mission 3 &middot; Dreaming in Space{% endblock %}
 
 {% block content %}
@@ -221,207 +425,3 @@
 {% endif %}
 {% endblock %}
 
-{% block scripts %}
-<script>
-  (function() {
-    var CHEF_BLOCKS = {{ chef_blocks | tojson }};
-    var currentItem = -1;
-    var algoSteps = [];
-    var allergyRules = [];
-    var dragSrcIdx = null;
-    var allergyIfText = '', allergyThenText = '';
-
-    var palette = document.getElementById('chef-palette');
-    var algoList = document.getElementById('chef-algo-list');
-    var emptyMsg = document.getElementById('chef-empty');
-    var stepCount = document.getElementById('step-count');
-    var hiddenSteps = document.getElementById('hidden-steps');
-
-    // Item picker
-    document.querySelectorAll('.lunch-item-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var idx = parseInt(btn.dataset.index);
-        currentItem = idx;
-        document.getElementById('lunch-item-input').value = btn.dataset.name;
-        document.querySelectorAll('.lunch-item-btn').forEach(function(b) {
-          b.style.borderColor = 'var(--color-border)';
-          b.style.transform = '';
-        });
-        btn.style.borderColor = 'var(--color-primary)';
-        btn.style.transform = 'scale(1.05)';
-        algoSteps = [];
-        renderPalette();
-        renderAlgo();
-      });
-    });
-
-    function renderPalette() {
-      palette.innerHTML = '';
-      if (currentItem < 0) {
-        palette.innerHTML = '<div style="color:var(--color-text-muted); font-size:14px; padding:8px;">Pick what to cook first!</div>';
-        return;
-      }
-      var blocks = CHEF_BLOCKS[currentItem] || [];
-      blocks.forEach(function(block) {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.innerHTML = '<span style="font-size:16px;">' + block.emoji + '</span> <span>' + block.text + '</span>';
-        btn.style.cssText = 'display:inline-flex; align-items:center; gap:6px; padding:7px 11px; border-radius:10px; border:2px solid var(--color-border); background:white; cursor:pointer; font-size:12px; font-family:var(--font-game); color:var(--color-text); transition:all .15s;';
-        btn.addEventListener('mouseenter', function() {
-          if (!btn.classList.contains('used')) { btn.style.borderColor = 'var(--color-primary-border)'; btn.style.background = 'var(--color-primary-soft)'; }
-        });
-        btn.addEventListener('mouseleave', function() {
-          if (!btn.classList.contains('used')) { btn.style.borderColor = 'var(--color-border)'; btn.style.background = 'white'; }
-        });
-        btn.addEventListener('click', function() {
-          addStep(block.emoji, block.text, false);
-          btn.classList.add('used');
-          btn.style.borderColor = '#86efac'; btn.style.background = '#f0fdf4';
-        });
-        palette.appendChild(btn);
-      });
-    }
-
-    function addStep(emoji, text, isCustom) {
-      algoSteps.push({emoji: emoji, text: text, custom: isCustom});
-      renderAlgo();
-    }
-
-    function renderAlgo() {
-      while (algoList.firstChild) algoList.removeChild(algoList.firstChild);
-      if (algoSteps.length === 0) {
-        emptyMsg.style.display = '';
-        algoList.appendChild(emptyMsg);
-      } else {
-        emptyMsg.style.display = 'none';
-        algoSteps.forEach(function(step, i) {
-          var row = document.createElement('div');
-          row.draggable = true;
-          row.dataset.index = i;
-          row.style.cssText = 'display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:2px solid var(--color-border); background:white; cursor:grab; transition:all .15s;';
-          row.innerHTML =
-            '<span style="width:26px; height:26px; border-radius:50%; background:var(--color-primary); color:white; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0;">' + (i+1) + '</span>' +
-            '<span style="font-size:18px; flex-shrink:0;">' + step.emoji + '</span>' +
-            (step.custom
-              ? '<input type="text" class="input algo-custom-input" data-idx="' + i + '" value="' + (step.text||'').replace(/"/g,'&quot;') + '" placeholder="Type step..." style="flex:1; font-size:13px; padding:5px 8px;">'
-              : '<span style="flex:1; font-size:13px; font-family:var(--font-game);">' + step.text + '</span>') +
-            '<button type="button" class="algo-remove-btn" data-idx="' + i + '" style="width:24px; height:24px; border-radius:50%; border:none; background:#fee2e2; color:#dc2626; cursor:pointer; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">✕</button>';
-          algoList.appendChild(row);
-        });
-      }
-      stepCount.textContent = '(' + algoSteps.length + ' step' + (algoSteps.length !== 1 ? 's' : '') + ')';
-    }
-
-    algoList.addEventListener('click', function(e) {
-      var btn = e.target.closest('.algo-remove-btn');
-      if (btn) { algoSteps.splice(parseInt(btn.dataset.idx), 1); renderAlgo(); }
-    });
-    algoList.addEventListener('input', function(e) {
-      if (e.target.classList.contains('algo-custom-input')) algoSteps[parseInt(e.target.dataset.idx)].text = e.target.value;
-    });
-
-    // Drag reorder
-    algoList.addEventListener('dragstart', function(e) {
-      var row = e.target.closest('[data-index]'); if (!row) return;
-      dragSrcIdx = parseInt(row.dataset.index); row.style.opacity = '0.4'; e.dataTransfer.effectAllowed = 'move';
-    });
-    algoList.addEventListener('dragend', function(e) {
-      var row = e.target.closest('[data-index]'); if (row) row.style.opacity = '1'; dragSrcIdx = null;
-    });
-    algoList.addEventListener('dragover', function(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
-    algoList.addEventListener('drop', function(e) {
-      e.preventDefault();
-      var row = e.target.closest('[data-index]'); if (!row || dragSrcIdx === null) return;
-      var toIdx = parseInt(row.dataset.index);
-      if (dragSrcIdx !== toIdx) { var item = algoSteps.splice(dragSrcIdx, 1)[0]; algoSteps.splice(toIdx, 0, item); renderAlgo(); }
-      dragSrcIdx = null;
-    });
-
-    document.getElementById('add-custom-step').addEventListener('click', function() {
-      addStep('✏️', '', true);
-      setTimeout(function() { var inputs = algoList.querySelectorAll('.algo-custom-input'); if (inputs.length) inputs[inputs.length-1].focus(); }, 50);
-    });
-    document.getElementById('clear-steps').addEventListener('click', function() { algoSteps = []; renderPalette(); renderAlgo(); });
-
-    // ---- IF/THEN builder ----
-    var allergyIfSlot = document.getElementById('allergy-if-slot');
-    var allergyThenSlot = document.getElementById('allergy-then-slot');
-    var addAllergyBtn = document.getElementById('add-allergy-rule');
-
-    function updateBtn() { addAllergyBtn.disabled = !(allergyIfText && allergyThenText); }
-
-    document.querySelectorAll('.if-chip').forEach(function(chip) {
-      chip.addEventListener('click', function() {
-        allergyIfText = chip.dataset.text;
-        allergyIfSlot.textContent = allergyIfText;
-        allergyIfSlot.style.color = '#111'; allergyIfSlot.style.borderColor = '#9333ea'; allergyIfSlot.style.background = '#faf5ff';
-        // Highlight selected chip
-        document.querySelectorAll('.if-chip').forEach(function(c) { c.style.borderColor = '#e9d5ff'; c.style.background = '#faf5ff'; });
-        chip.style.borderColor = '#9333ea'; chip.style.background = '#ede9fe';
-        updateBtn();
-      });
-    });
-
-    document.querySelectorAll('.then-chip').forEach(function(chip) {
-      chip.addEventListener('click', function() {
-        allergyThenText = chip.dataset.text;
-        allergyThenSlot.textContent = allergyThenText;
-        allergyThenSlot.style.color = '#111'; allergyThenSlot.style.borderColor = '#059669'; allergyThenSlot.style.background = '#ecfdf5';
-        document.querySelectorAll('.then-chip').forEach(function(c) { c.style.borderColor = '#a7f3d0'; c.style.background = '#ecfdf5'; });
-        chip.style.borderColor = '#059669'; chip.style.background = '#d1fae5';
-        updateBtn();
-      });
-    });
-
-    function renderRules() {
-      var container = document.getElementById('allergy-rules');
-      container.innerHTML = '';
-      allergyRules.forEach(function(rule, i) {
-        var div = document.createElement('div');
-        div.style.cssText = 'display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:10px; border:2px solid #e9d5ff; background:white;';
-        div.innerHTML =
-          '<span style="font-weight:700; color:#9333ea; font-size:13px;">IF</span>' +
-          '<span style="font-size:13px; flex:1;">' + rule.ifText + '</span>' +
-          '<span style="font-weight:700; color:#059669; font-size:13px;">THEN</span>' +
-          '<span style="font-size:13px; flex:1;">' + rule.thenText + '</span>' +
-          '<button type="button" class="rule-remove" data-idx="' + i + '" style="width:22px; height:22px; border-radius:50%; border:none; background:#fee2e2; color:#dc2626; cursor:pointer; font-size:11px; flex-shrink:0;">✕</button>';
-        container.appendChild(div);
-      });
-    }
-
-    addAllergyBtn.addEventListener('click', function() {
-      if (allergyIfText && allergyThenText) {
-        allergyRules.push({ifText: allergyIfText, thenText: allergyThenText});
-        renderRules();
-        allergyIfText = ''; allergyThenText = '';
-        allergyIfSlot.textContent = 'pick a condition'; allergyIfSlot.style.color = '#999'; allergyIfSlot.style.borderColor = '#d8b4fe'; allergyIfSlot.style.background = 'white';
-        allergyThenSlot.textContent = 'pick an action'; allergyThenSlot.style.color = '#999'; allergyThenSlot.style.borderColor = '#6ee7b7'; allergyThenSlot.style.background = 'white';
-        document.querySelectorAll('.if-chip').forEach(function(c) { c.style.borderColor = '#e9d5ff'; c.style.background = '#faf5ff'; });
-        document.querySelectorAll('.then-chip').forEach(function(c) { c.style.borderColor = '#a7f3d0'; c.style.background = '#ecfdf5'; });
-        addAllergyBtn.disabled = true;
-      }
-    });
-
-    document.getElementById('allergy-rules').addEventListener('click', function(e) {
-      var btn = e.target.closest('.rule-remove');
-      if (btn) { allergyRules.splice(parseInt(btn.dataset.idx), 1); renderRules(); }
-    });
-
-    // Form submit
-    document.getElementById('chef-form').addEventListener('submit', function() {
-      hiddenSteps.innerHTML = '';
-      algoSteps.forEach(function(step, i) {
-        var inp = document.createElement('input');
-        inp.type = 'hidden'; inp.name = 'step_' + (i+1); inp.value = step.text;
-        hiddenSteps.appendChild(inp);
-      });
-      document.getElementById('allergy-input').value = allergyRules.map(function(r) {
-        return 'IF ' + r.ifText + ', THEN ' + r.thenText;
-      }).join('. ');
-    });
-
-    renderPalette();
-    renderAlgo();
-  })();
-</script>
-{% endblock %}
