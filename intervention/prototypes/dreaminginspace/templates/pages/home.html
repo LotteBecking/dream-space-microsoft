@@ -368,21 +368,21 @@
   <aside style="display:flex; flex-direction:column; gap:12px; min-width:0; position:sticky; top:90px;" id="stats-panel">
 
       <!-- Player card + XP combined -->
-      <div id="player-card" style="background:linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); border-radius:16px; padding:18px; color:#fff; position:relative; overflow:hidden;">
+      <div id="player-card" style="background:linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); border-radius:16px; padding:20px; color:#fff; position:relative; overflow:hidden;">
         <div id="player-particles" style="position:absolute; inset:0; pointer-events:none;"></div>
-        <div style="display:flex; align-items:center; gap:14px; position:relative; margin-bottom:14px;">
-          <div>{{ space_beaver(48) }}</div>
+        <div style="display:flex; align-items:center; gap:14px; position:relative; margin-bottom:16px;">
+          <div>{{ space_beaver(56) }}</div>
           <div style="flex:1; text-align:left;">
-            <div style="font-family:var(--font-game); font-size:20px; font-weight:700;">Commander</div>
-            <div style="font-size:15px; opacity:.75;">Level {{ global_level }} {{ global_level_title }}</div>
+            <div style="font-family:var(--font-game); font-size:24px; font-weight:700;">Commander</div>
+            <div style="font-size:17px; opacity:.75;">Level {{ global_level }} {{ global_level_title }}</div>
           </div>
         </div>
         <!-- XP bar -->
         <div style="position:relative;">
           <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">
-            <span style="font-size:15px; font-weight:600; opacity:.8;">Total XP</span>
+            <span style="font-size:17px; font-weight:600; opacity:.8;">Total XP</span>
             <span id="total-xp-num" data-from="{{ prev_xp }}" data-to="{{ current_xp }}"
-                  style="font-family:var(--font-pixel); font-size:26px; font-weight:700;">{{ prev_xp }}</span>
+                  style="font-family:var(--font-pixel); font-size:30px; font-weight:700;">{{ prev_xp }}</span>
           </div>
           {% set xp_levels = [0, 100, 250, 500, 800] %}
           {% set next_lvl = xp_levels[global_level] if global_level < 5 else 800 %}
@@ -392,32 +392,32 @@
             <div style="height:100%; width:{{ pct|int }}%; border-radius:3px; background:linear-gradient(90deg, #a78bfa, #fbbf24); transition:width 0.8s cubic-bezier(0.4,0,0.2,1);"></div>
           </div>
           <div style="display:flex; justify-content:space-between; margin-top:4px;">
-            <span style="font-size:10px; opacity:.6;">LVL {{ global_level }}</span>
-            <span style="font-size:10px; opacity:.6;">{% if global_level < 5 %}{{ next_lvl }} XP{% else %}MAX{% endif %}</span>
+            <span style="font-size:12px; opacity:.6;">LVL {{ global_level }}</span>
+            <span style="font-size:12px; opacity:.6;">{% if global_level < 5 %}{{ next_lvl }} XP{% else %}MAX{% endif %}</span>
           </div>
         </div>
         {% if xp_gained > 0 %}
-        <div id="xp-gain-badge" style="position:absolute; top:8px; right:8px; background:#16a34a; color:white; font-family:var(--font-pixel); font-size:12px; font-weight:700; padding:4px 10px; border-radius:20px; opacity:0; transform:translateY(10px) scale(0.8);">
+        <div id="xp-gain-badge" style="position:absolute; top:8px; right:8px; background:#16a34a; color:white; font-family:var(--font-pixel); font-size:13px; font-weight:700; padding:4px 10px; border-radius:20px; opacity:0; transform:translateY(10px) scale(0.8);">
           +{{ xp_gained }} XP
         </div>
         {% endif %}
       </div>
 
       <!-- Stars + Achievements combined -->
-      <div style="background:var(--color-surface); border:1px solid rgba(107,57,217,0.1); border-radius:14px; padding:14px;">
+      <div style="background:var(--color-surface); border:1px solid rgba(107,57,217,0.1); border-radius:14px; padding:16px;">
         <div style="display:flex; justify-content:center; gap:5px; margin-bottom:10px;">
           {% for i in range(1, 6) %}
             <span class="home-star" data-index="{{ i }}" data-earned="{% if i <= track1_lessons_done %}1{% else %}0{% endif %}"
                   data-new="{% if i > (track1_lessons_done - stars_gained) and i <= track1_lessons_done %}1{% else %}0{% endif %}"
-                  style="font-size:28px; {% if i > track1_lessons_done %}opacity:.15; filter:grayscale(1);{% endif %} display:inline-block; transition:all .4s;">⭐</span>
+                  style="font-size:32px; {% if i > track1_lessons_done %}opacity:.15; filter:grayscale(1);{% endif %} display:inline-block; transition:all .4s;">⭐</span>
           {% endfor %}
         </div>
         <div style="text-align:center; margin-bottom:12px;">
-          <span style="font-family:var(--font-pixel); font-size:14px; color:var(--color-text-muted);">{{ track1_lessons_done }} / 5 lessons</span>
+          <span style="font-family:var(--font-pixel); font-size:16px; color:var(--color-text-muted);">{{ track1_lessons_done }} / 5 lessons</span>
         </div>
-        <div style="height:1px; background:var(--color-border); margin:0 -14px 12px;"></div>
-        <div style="font-size:16px; font-weight:700; color:var(--color-text); margin-bottom:10px;">🏆 Achievements</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+        <div style="height:1px; background:var(--color-border); margin:0 -16px 14px;"></div>
+        <div style="font-size:19px; font-weight:700; color:var(--color-text); margin-bottom:12px;">🏆 Achievements</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px;">
           {% set home_achievements = [
             {'icon': '🚀', 'title': 'First Launch', 'done': progress.simulator_completed},
             {'icon': '🌟', 'title': 'Lesson 1', 'done': track1[1].completed},
@@ -428,40 +428,40 @@
             {'icon': '🏆', 'title': 'Track 1', 'done': track1_lessons_done >= 5},
           ] %}
           {% for ach in home_achievements %}
-          <div class="ach-row" style="display:flex; align-items:center; gap:6px; padding:5px 7px; border-radius:8px;
+          <div class="ach-row" style="display:flex; align-items:center; gap:7px; padding:7px 9px; border-radius:8px;
             background:{% if ach.done %}linear-gradient(135deg, #fef3c7, #fde68a){% else %}rgba(0,0,0,0.02){% endif %};
             {% if not ach.done %}opacity:.35;{% endif %}
             opacity:0; transform:translateY(6px);
             transition: all .3s;">
-            <span style="font-size:18px;">{% if ach.done %}{{ ach.icon }}{% else %}🔒{% endif %}</span>
-            <span style="font-size:14px; font-weight:{% if ach.done %}700{% else %}500{% endif %}; color:{% if ach.done %}#92400e{% else %}var(--color-text-muted){% endif %}; line-height:1.2;">{{ ach.title }}</span>
+            <span style="font-size:21px;">{% if ach.done %}{{ ach.icon }}{% else %}🔒{% endif %}</span>
+            <span style="font-size:16px; font-weight:{% if ach.done %}700{% else %}500{% endif %}; color:{% if ach.done %}#92400e{% else %}var(--color-text-muted){% endif %}; line-height:1.2;">{{ ach.title }}</span>
           </div>
           {% endfor %}
         </div>
       </div>
 
       <!-- Track 1 Lesson Progress -->
-      <div style="background:var(--color-surface); border:1px solid rgba(107,57,217,0.1); border-radius:14px; padding:14px;">
-        <div style="font-size:16px; font-weight:700; color:var(--color-text); margin-bottom:10px;">Track 1 Progress</div>
-        <div style="display:flex; flex-direction:column; gap:6px;">
+      <div style="background:var(--color-surface); border:1px solid rgba(107,57,217,0.1); border-radius:14px; padding:16px;">
+        <div style="font-size:19px; font-weight:700; color:var(--color-text); margin-bottom:12px;">Track 1 Progress</div>
+        <div style="display:flex; flex-direction:column; gap:7px;">
           {% set lesson_icons = {1: '🥪', 2: '🤖', 3: '🔄', 4: '🧠', 5: '🏗️'} %}
           {% for lnum in [1, 2, 3, 4, 5] %}
           {% set ls = track1[lnum] %}
           <div class="checklist-row" data-done="{{ 'true' if ls.completed else 'false' }}"
-               style="display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px;
+               style="display:flex; align-items:center; gap:9px; padding:7px 9px; border-radius:8px;
             background:{% if ls.completed %}rgba(22,163,74,.06){% else %}transparent{% endif %};
             opacity:0; transform:translateX(20px);
             transition: all .4s cubic-bezier(0.4,0,0.2,1);">
-            <span style="font-size:14px; flex-shrink:0;">{% if ls.completed %}✅{% else %}{{ lesson_icons[lnum] }}{% endif %}</span>
+            <span style="font-size:17px; flex-shrink:0;">{% if ls.completed %}✅{% else %}{{ lesson_icons[lnum] }}{% endif %}</span>
             <div style="flex:1; min-width:0;">
-              <div style="font-size:15px; font-weight:{% if ls.completed %}700{% else %}500{% endif %}; color:{% if ls.completed %}var(--color-text){% else %}var(--color-text-muted){% endif %};">
+              <div style="font-size:17px; font-weight:{% if ls.completed %}700{% else %}500{% endif %}; color:{% if ls.completed %}var(--color-text){% else %}var(--color-text-muted){% endif %};">
                 L{{ lnum }}: {{ ls.title[:18] }}{% if ls.title|length > 18 %}…{% endif %}
               </div>
               <div style="height:3px; border-radius:2px; background:#e5e7eb; margin-top:3px;">
                 <div style="height:100%; width:{{ (ls.exercises_done / ls.total * 100)|int }}%; background:{% if ls.completed %}#16a34a{% else %}var(--color-primary){% endif %}; border-radius:2px; transition:width .6s;"></div>
               </div>
             </div>
-            <span style="font-family:var(--font-pixel); font-size:12px; font-weight:700; color:{% if ls.completed %}#16a34a{% else %}var(--color-text-subtle){% endif %};">
+            <span style="font-family:var(--font-pixel); font-size:14px; font-weight:700; color:{% if ls.completed %}#16a34a{% else %}var(--color-text-subtle){% endif %};">
               {{ ls.exercises_done }}/{{ ls.total }}
             </span>
           </div>
