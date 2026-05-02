@@ -211,7 +211,7 @@
       max-width: none;
       width: 100%;
       margin: 0 auto;
-      padding: 14px 12.5vw;
+      padding: 22px 12.5vw;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -220,24 +220,24 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       font-family: var(--font-game);
       font-weight: 700;
       color: var(--color-text);
-      font-size: 24px;
+      font-size: 28px;
       letter-spacing: 0;
     }
     .brand-mark {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
       background: linear-gradient(135deg, #7c3aed, #a855f7);
       color: #fff;
       display: grid;
       place-items: center;
       box-shadow: 0 4px 12px rgba(107, 57, 217, 0.25);
     }
-    .brand-mark svg { width: 22px; height: 22px; }
+    .brand-mark svg { width: 26px; height: 26px; }
     .brand-sub {
       font-weight: 400;
       color: var(--color-text-muted);
@@ -268,18 +268,18 @@
     .nav-pill {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      padding: 9px 18px;
+      gap: 9px;
+      padding: 12px 22px;
       border-radius: 100px;
       font-family: var(--font-game);
       font-weight: 600;
-      font-size: 16px;
+      font-size: 18px;
       color: var(--color-text-muted);
       text-decoration: none;
       transition: background .15s, color .15s, box-shadow .15s, transform .15s;
       position: relative;
     }
-    .nav-pill svg { width: 19px; height: 19px; }
+    .nav-pill svg { width: 22px; height: 22px; }
     .nav-pill:hover { background: var(--color-surface-muted); color: var(--color-text); transform: translateY(-1px); }
     .nav-pill.is-active {
       background: var(--color-primary-ink);
@@ -1579,7 +1579,7 @@
   }
   .track-foldout-header .chevron-icon {
     margin-left: auto;
-    transition: transform .55s cubic-bezier(.65,0,.35,1), opacity .35s ease;
+    transition: transform .28s cubic-bezier(.65,0,.35,1), opacity .2s ease;
     opacity: .7;
     flex-shrink: 0;
     will-change: transform;
@@ -1592,7 +1592,7 @@
     overflow: hidden;
     height: 0;
     opacity: 0;
-    transition: height .7s cubic-bezier(.65,0,.35,1), opacity .45s cubic-bezier(.65,0,.35,1);
+    transition: height .35s cubic-bezier(.65,0,.35,1), opacity .22s cubic-bezier(.65,0,.35,1);
     border-radius: 0 0 20px 20px;
     background: transparent;
     border: none;
@@ -1672,7 +1672,7 @@
   }
   .lesson-foldout-header .chevron-icon {
     margin-left: auto;
-    transition: transform .5s cubic-bezier(.65,0,.35,1), opacity .35s ease;
+    transition: transform .25s cubic-bezier(.65,0,.35,1), opacity .2s ease;
     opacity: .7;
     flex-shrink: 0;
     will-change: transform;
@@ -1692,7 +1692,7 @@
     overflow: hidden;
     height: 0;
     opacity: 0;
-    transition: height .6s cubic-bezier(.65,0,.35,1), opacity .4s cubic-bezier(.65,0,.35,1);
+    transition: height .3s cubic-bezier(.65,0,.35,1), opacity .2s cubic-bezier(.65,0,.35,1);
     border-radius: 0 0 16px 16px;
     background: var(--color-surface, #fff);
     border: 2px solid var(--color-border, #e2e8f0);

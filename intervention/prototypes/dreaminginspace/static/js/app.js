@@ -553,7 +553,7 @@
           body.style.height = '0px';
           body.style.opacity = '0';
         });
-        afterHeightTransition(body, 900, function() {
+        afterHeightTransition(body, 450, function() {
           body.classList.remove('is-animating');
           delete el.dataset.animating;
           resolve();
@@ -587,7 +587,7 @@
           body.style.height = h + 'px';
           body.style.opacity = '1';
         });
-        afterHeightTransition(body, 900, function() {
+        afterHeightTransition(body, 450, function() {
           body.style.height = 'auto';
           body.classList.remove('is-animating');
           delete el.dataset.animating;

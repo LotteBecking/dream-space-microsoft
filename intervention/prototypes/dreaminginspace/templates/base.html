@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/space-beaver.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/space-beaver.png') }}">
   {% block head %}{% endblock %}
 </head>
 <body>
@@ -75,18 +77,18 @@
       </nav>
       <div class="header-context">
         {% block header_context %}
-          <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
+          <div style="display:flex; align-items:center; gap:14px; flex-shrink:0;">
             <!-- Commander avatar -->
-            <div style="display:flex; align-items:center; gap:8px; background:linear-gradient(135deg, #4c1d95, #7c3aed); border-radius:100px; padding:4px 14px 4px 4px; color:#fff;">
-              <div style="width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                {{ space_beaver(28) }}
+            <div style="display:flex; align-items:center; gap:10px; background:linear-gradient(135deg, #4c1d95, #7c3aed); border-radius:100px; padding:5px 18px 5px 5px; color:#fff;">
+              <div style="width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                {{ space_beaver(34) }}
               </div>
-              <span style="font-family:var(--font-game); font-size:13px; font-weight:700;">{{ global_level_title }}</span>
+              <span style="font-family:var(--font-game); font-size:15px; font-weight:700;">{{ global_level_title }}</span>
             </div>
             <!-- XP capsule -->
-            <div style="display:flex; align-items:center; gap:8px; background:var(--color-surface); border:2px solid var(--color-border); border-radius:100px; padding:6px 14px 6px 10px; min-width:145px;">
-              <span class="game-level-badge" style="margin-bottom:0; box-shadow:none; padding:4px 11px; font-size:13px; border-radius:100px;">LVL {{ global_level }}</span>
-              <span style="font-family:var(--font-pixel); font-size:14px; font-weight:700; color:var(--color-primary-ink); min-width:52px; text-align:right;">{{ global_xp }} XP</span>
+            <div style="display:flex; align-items:center; gap:10px; background:var(--color-surface); border:2px solid var(--color-border); border-radius:100px; padding:8px 18px 8px 12px; min-width:170px;">
+              <span class="game-level-badge" style="margin-bottom:0; box-shadow:none; padding:5px 13px; font-size:15px; border-radius:100px;">LVL {{ global_level }}</span>
+              <span style="font-family:var(--font-pixel); font-size:16px; font-weight:700; color:var(--color-primary-ink); min-width:60px; text-align:right;">{{ global_xp }} XP</span>
             </div>
           </div>
         {% endblock %}
